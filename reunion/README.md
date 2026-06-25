@@ -45,4 +45,4 @@ Usar guiones medios (`-`) en lugar de espacios. Evitar caracteres especiales.
 
 | Archivo | Fecha | Participantes | Estado |
 |---|---|---|---|
-| `Llamada con Daniel y 3 personas más.vtt` | 2026-06-25 | Daniel + 3 | Pendiente de análisis |
+| `Llamada con Daniel y 3 personas más.vtt` | 🔴 Pendiente de validación | Norberto Núñez, Marcos Casco, Daniel Medina, Elías Alfonzo, Rocío Duarte | ✅ Analizada — documentación en [`docs/`](../docs/) |

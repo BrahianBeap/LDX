@@ -4,8 +4,6 @@
 
 Este repositorio contiene la **documentación técnica oficial del proyecto LDX**.
 
-> **Nota:** La descripción detallada de LDX (qué es, qué problema resuelve, arquitectura) se incorporará tras el análisis de la primera reunión. Ver: [`docs/`](docs/)
-
 Su propósito es transformar el conocimiento tácito del equipo en documentación estructurada, reutilizable y mantenible, permitiendo que cualquier ingeniero pueda comprender, instalar, operar, mantener y ampliar la solución sin depender de quienes participaron en las reuniones originales.
 
 ---

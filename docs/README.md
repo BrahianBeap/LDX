@@ -1,8 +1,8 @@
-# docs/ — Documentación técnica oficial de LDX
+# docs/ — Documentación técnica oficial de LXD
 
-Este directorio contiene la documentación técnica oficial del proyecto LDX.
+Este directorio contiene la documentación técnica oficial del proyecto LXD.
 
-> **Estado actual:** Pendiente del análisis de la primera reunión. Los documentos se generarán tras procesar [`reunion/Llamada con Daniel y 3 personas más.vtt`](../reunion/).
+> **Fuente:** Los documentos 00–14 se generaron a partir de [`reunion/Llamada con Daniel y 3 personas más.vtt`](../reunion/). Los documentos 15 y 16 son informes de análisis independiente.
 
 ---
 
@@ -10,21 +10,23 @@ Este directorio contiene la documentación técnica oficial del proyecto LDX.
 
 | N° | Documento | Descripción | Estado |
 |---|---|---|---|
-| 00 | `00_Resumen_Ejecutivo.md` | Qué es LDX, qué problema resuelve, objetivos y alcance | Pendiente |
-| 01 | `01_Contexto.md` | Contexto del negocio, necesidad cubierta, beneficios | Pendiente |
-| 02 | `02_Arquitectura.md` | Arquitectura completa, diagramas, componentes y flujo | Pendiente |
-| 03 | `03_Componentes.md` | Descripción detallada de cada componente del sistema | Pendiente |
-| 04 | `04_Instalacion.md` | Procedimiento completo de instalación paso a paso | Pendiente |
-| 05 | `05_Configuracion.md` | Parámetros, archivos de configuración y buenas prácticas | Pendiente |
-| 06 | `06_Operacion.md` | Cómo operar el sistema en producción | Pendiente |
-| 07 | `07_Troubleshooting.md` | Problemas frecuentes, diagnóstico y soluciones | Pendiente |
-| 08 | `08_Glosario.md` | Diccionario de términos técnicos del proyecto | Pendiente |
-| 09 | `09_FAQ.md` | Preguntas frecuentes | Pendiente |
-| 10 | `10_Decisiones.md` | Resumen ejecutivo de decisiones técnicas (ver también `adr/`) | Pendiente |
-| 11 | `11_Riesgos.md` | Riesgos técnicos, operativos y de seguridad identificados | Pendiente |
-| 12 | `12_Lecciones_Aprendidas.md` | Conocimiento tácito extraído de reuniones y experiencia | Pendiente |
-| 13 | `13_Linea_de_Tiempo.md` | Cronología del proyecto y sus hitos | Pendiente |
-| 14 | `14_Manual_Operativo.md` | Procedimientos operativos, monitoreo y escalamiento | Pendiente |
+| 00 | [`00_Resumen_Ejecutivo.md`](00_Resumen_Ejecutivo.md) | Qué es LXD, qué problema resuelve, objetivos y alcance | ✅ Completo |
+| 01 | [`01_Contexto.md`](01_Contexto.md) | Contexto del negocio, necesidad cubierta, equipos involucrados | ✅ Completo |
+| 02 | [`02_Arquitectura.md`](02_Arquitectura.md) | Arquitectura completa, diagramas, redes, almacenamiento | ✅ Completo |
+| 03 | [`03_Componentes.md`](03_Componentes.md) | Descripción detallada de cada componente del sistema | ✅ Completo |
+| 04 | [`04_Instalacion.md`](04_Instalacion.md) | Procedimiento completo de instalación paso a paso | ✅ Completo |
+| 05 | [`05_Configuracion.md`](05_Configuracion.md) | Proxy, cloud-init, perfiles, dispositivos, firewall | ✅ Completo |
+| 06 | [`06_Operacion.md`](06_Operacion.md) | Gestión de contenedores, imágenes, perfiles, backup | ✅ Completo |
+| 07 | [`07_Troubleshooting.md`](07_Troubleshooting.md) | Problemas frecuentes, diagnóstico y soluciones | ✅ Completo |
+| 08 | [`08_Glosario.md`](08_Glosario.md) | Diccionario completo de términos técnicos del proyecto | ✅ Completo |
+| 09 | [`09_FAQ.md`](09_FAQ.md) | Preguntas frecuentes | ✅ Completo |
+| 10 | [`10_Decisiones.md`](10_Decisiones.md) | Resumen ejecutivo de decisiones técnicas (ver también `adr/`) | ✅ Completo |
+| 11 | [`11_Riesgos.md`](11_Riesgos.md) | Riesgos técnicos, operativos y de seguridad identificados | ✅ Completo |
+| 12 | [`12_Lecciones_Aprendidas.md`](12_Lecciones_Aprendidas.md) | Conocimiento tácito extraído de la primera reunión | ✅ Completo |
+| 13 | [`13_Linea_de_Tiempo.md`](13_Linea_de_Tiempo.md) | Hitos completados y próximos pasos | ✅ Completo |
+| 14 | [`14_Manual_Operativo.md`](14_Manual_Operativo.md) | Checklist de salud, monitoreo, escalamiento | ✅ Completo |
+| 15 | [`15_Revision_Arquitectonica.md`](15_Revision_Arquitectonica.md) | Auditoría técnica independiente — crítica, riesgos, recomendaciones priorizadas | ✅ Completo |
+| 16 | [`16_Auditoria_Knowledge_Base.md`](16_Auditoria_Knowledge_Base.md) | Auditoría de calidad del KB — duplicaciones, inconsistencias, plan de mejora | ✅ Completo |
 
 ---
 
@@ -39,6 +41,10 @@ docs/adr/
 | Archivo | Decisión | Estado |
 |---|---|---|
 | [`ADR-0001-template.md`](adr/ADR-0001-template.md) | Plantilla base | Plantilla |
+| [`ADR-0002-red-ovn-vs-ubuntu-fan.md`](adr/ADR-0002-red-ovn-vs-ubuntu-fan.md) | Red SDN: OVN via MicroOVN elegido sobre Ubuntu Fan | Aceptado |
+| [`ADR-0003-storage-zfs.md`](adr/ADR-0003-storage-zfs.md) | Storage driver: ZFS elegido sobre LVM y btrfs | Aceptado |
+| [`ADR-0004-autenticacion-tls-tokens.md`](adr/ADR-0004-autenticacion-tls-tokens.md) | Autenticación Web UI: TLS tokens + certificados de navegador | Aceptado |
+| [`ADR-0005-arquitectura-microservicios.md`](adr/ADR-0005-arquitectura-microservicios.md) | Arquitectura: un servicio por contenedor | Aceptado |
 
 ---
 
