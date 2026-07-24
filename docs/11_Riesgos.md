@@ -5,44 +5,72 @@
 
 ---
 
-## RIE-001 — Red OVN no funcional entre sitios
+## RIE-001 — Red OVN no funcional entre sitios *(✅ Resuelto para PFR1↔CAR1, parcialmente vigente para FDO1)*
 
 | Campo | Detalle |
 |---|---|
-| **Descripción** | La red OVN que conecta contenedores entre sitios geográficos no está operativa |
-| **Causa** | La interfaz de red VLAN 411 (dedicada para contenedores) no ha sido habilitada en las VMs |
-| **Impacto** | Los contenedores de distintos nodos del cluster no pueden comunicarse entre sí |
-| **Severidad** | Alta — bloquea la propuesta de valor principal del cluster |
-| **Mitigación actual** | Dispositivos proxy LXD sobre la interfaz de gestión (workaround temporal) |
-| **Acción requerida** | Solicitar a Cristian (VMware) la habilitación de VLAN 411 en PFR1, CAR1 y FDO1 |
-| **Responsable** | Marcos Casco → Cristian |
+| **Descripción** | La red OVN que conecta contenedores entre sitios geográficos no estaba operativa |
+| **Causa raíz** | El túnel de datos nativo de OVN, viajando directamente sobre la red corporativa, es bloqueado por un elemento de red intermedio entre sitios en Capa 3 separada (confirmado en dos implementaciones independientes, con un año de diferencia) — **no** era, como se asumió originalmente, la falta de una interfaz VLAN 411 |
+| **Impacto** | Los contenedores de distintos nodos del cluster no podían comunicarse entre sí |
+| **Severidad** | Alta (mientras estuvo sin resolver) — bloqueaba la propuesta de valor principal del cluster |
+| **Solución aplicada** | WireGuard como capa de transporte underlay cifrada entre sitios, con el túnel de OVN corriendo por encima. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
+| **Estado actual** | ✅ Resuelto y verificado entre PFR1 y CAR1. 🔴 Pendiente repetir el procedimiento para FDO1 cuando se incorpore al cluster |
+| **Responsable** | Norberto Núñez |
 
 ---
 
-## RIE-002 — Un solo nodo activo (sin alta disponibilidad real)
+## RIE-001b — Configuración de WireGuard no persistida (riesgo de pérdida del enlace inter-sitio)
 
 | Campo | Detalle |
 |---|---|
-| **Descripción** | Actualmente solo PFR1 está instalado. El cluster tiene un único miembro activo. |
-| **Causa** | CAR1 y FDO1 están pendientes de instalación |
-| **Impacto** | Si PFR1 falla, todos los contenedores quedan inaccesibles — no hay failover |
-| **Severidad** | Alta — el cluster no tiene redundancia hasta agregar más nodos |
-| **Mitigación actual** | Backup de VM en VMware (solicitar a SBA/AIT) |
-| **Acción requerida** | Instalar LXD en CAR1 y FDO1 y agregarlos al cluster. Ver [04_Instalacion.md](04_Instalacion.md) |
+| **Descripción** | La dirección IP de la interfaz WireGuard en PFR1 y CAR1 fue configurada manualmente durante la sesión, sin persistirla en `netplan` |
+| **Causa** | Falta de tiempo para completar la configuración persistente durante la demostración |
+| **Impacto** | Si el host se reinicia, la interfaz WireGuard pierde su IP y el enlace entre sitios (y por lo tanto la red OVN entre ellos) queda caído hasta que se reconfigure manualmente |
+| **Severidad** | Alta — un reinicio de rutina (ej. mantenimiento, actualización del sistema operativo) puede interrumpir la conectividad entre sitios sin aviso |
+| **Mitigación actual** | Ninguna — pendiente de aplicar |
+| **Acción requerida** | Persistir la configuración de IP, claves y rutas de WireGuard en `netplan` en PFR1 y CAR1. Ver [04_Instalacion.md](04_Instalacion.md) |
+| **Responsable** | Norberto Núñez |
+
+---
+
+## RIE-001c — Configuración manual de la malla WireGuard no escala automáticamente
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | WireGuard no tiene plano de control ni base de datos distribuida — cada nuevo sitio que se agregue al cluster requiere generar claves nuevas y modificar manualmente la configuración de **todos** los nodos existentes |
+| **Causa** | Es una limitación de diseño de WireGuard (por eso se eligió: simplicidad), aceptada como compromiso al tomar la decisión — ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
+| **Impacto** | A medida que se sumen más sitios (FDO1, y potencialmente IT y Ciudad del Este), el esfuerzo de configuración manual crece de forma cuadrática y aumenta la probabilidad de errores de configuración (claves, rutas) |
+| **Severidad** | Media — manejable con pocos sitios, se vuelve relevante a partir de 4-5 sitios |
+| **Mitigación actual** | Ninguna — proceso manual documentado en [04_Instalacion.md](04_Instalacion.md) |
+| **Acción requerida** | Evaluar automatización (script o herramienta de gestión de configuración) antes de escalar a más de 3-4 sitios |
+| **Responsable** | Norberto Núñez |
+
+---
+
+## RIE-002 — Dos de tres nodos activos (alta disponibilidad de base de datos incompleta)
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | PFR1 y CAR1 están instalados y forman parte del cluster (roles `database-leader` y `database-standby`). Falta un tercer miembro para completar el quórum de alta disponibilidad de la base de datos distribuida (Dqlite) |
+| **Causa** | FDO1 (Fernando) está pendiente de instalación |
+| **Impacto** | Si PFR1 o CAR1 fallan, el cluster puede seguir operando con el nodo restante pero **sin margen de tolerancia a una segunda falla**. El quórum de escritura pleno recién se alcanza con 3 miembros |
+| **Severidad** | Media-Alta — mejoró respecto del estado de un solo nodo, pero la HA real sigue incompleta |
+| **Mitigación actual** | Backup de VM en VMware (solicitar a SBA/AIT); gestión posible desde cualquiera de los dos nodos activos gracias a la base de datos replicada |
+| **Acción requerida** | Instalar LXD en FDO1 y agregarlo al cluster. Ver [04_Instalacion.md](04_Instalacion.md) |
 | **Responsable** | Norberto Núñez + equipo técnico |
 
 ---
 
-## RIE-003 — Proxy HTTP temporal con dependencia externa
+## RIE-003 — Proxy HTTP temporal con dependencia externa *(parcialmente vigente)*
 
 | Campo | Detalle |
 |---|---|
 | **Descripción** | Los contenedores acceden a internet via proxy HTTP corporativo, habilitado temporalmente por el equipo de seguridad |
-| **Causa** | La red OVN no está disponible; se usa dispositivo proxy LXD como workaround |
-| **Impacto** | Si el equipo de seguridad deshabilita el proxy, los contenedores pierden acceso a internet (no pueden instalar paquetes). La duración del permiso no fue confirmada. |
+| **Causa** | En sitios sin OVN funcional se sigue usando el dispositivo proxy LXD por contenedor como workaround. En PFR1 y CAR1 (con OVN ya funcional) el workaround se reemplazó por un contenedor gateway dedicado de operación y mantenimiento — ver [05_Configuracion.md](05_Configuracion.md) — pero la dependencia del proxy corporativo en sí sigue existiendo |
+| **Impacto** | Si el equipo de seguridad deshabilita el proxy, los contenedores pierden acceso a internet (no pueden instalar paquetes). La duración del permiso no fue confirmada |
 | **Severidad** | Media |
-| **Mitigación actual** | Nicolás (seguridad) habilitó el proxy. Marcos debe confirmar si es permanente. |
-| **Acción requerida** | Confirmar con Nicolás la permanencia del acceso al proxy, o acelerar la configuración de OVN |
+| **Mitigación actual** | Nicolás (seguridad) habilitó el proxy. Marcos debe confirmar si es permanente |
+| **Acción requerida** | Confirmar con Nicolás la permanencia del acceso al proxy. Repetir el patrón de gateway de operación y mantenimiento en FDO1 cuando se incorpore |
 | **Responsable** | Marcos Casco → Nicolás |
 
 ---
@@ -117,14 +145,31 @@
 
 ---
 
+## RIE-009 — Puerto de gestión de LXD en CAR1 sin alta de servicio formal
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | El servidor CAR1 ya está inventariado y reconocido por la VPN corporativa, pero el puerto específico de gestión de LXD (8444) todavía no fue dado de alta como servicio ante el equipo de seguridad |
+| **Causa** | El proceso de alta de servicio para CAR1 se inicia recién después de completar la instalación técnica (a diferencia de Franco, donde ya se completó) |
+| **Impacto** | Mientras no se complete el alta, el acceso remoto (VPN) al puerto 8444 de CAR1 puede no estar habilitado para todos los operadores que lo necesiten |
+| **Severidad** | Baja — mitigado porque el cluster se puede gestionar desde cualquier miembro con acceso habilitado (ver nota de mitigación abajo) |
+| **Mitigación actual** | El cluster LXD se puede gestionar desde **cualquier nodo miembro** (CLI o Web UI), porque la base de datos se replica entre todos. No depender de un único nodo para la gestión reduce el impacto de que un nodo puntual no tenga su puerto declarado |
+| **Acción requerida** | Marcos Casco debe gestionar el alta de servicio del puerto 8444 para CAR1 ante el equipo de seguridad |
+| **Responsable** | Marcos Casco |
+
+> **Nota — consulta de Marcos Casco sobre declarabilidad de IPs:** durante la reunión se preguntó si el rango IP de gestión de Carpinelli podía declararse sin problema ante seguridad. Norberto Núñez respondió que, siempre que la IP esté bien inventariada y declarada como servicio por las vías correspondientes, no debería haber problema — y que, en el peor caso de que un nodo puntual no pudiera inventariarse, el cluster sigue siendo gestionable desde los demás miembros gracias a la base de datos distribuida. Esta respuesta se documenta como mitigación de este riesgo, no como una garantía formal de seguridad — 🔴 pendiente de confirmación explícita por el equipo de seguridad.
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
 |---|---|
-| **Alta** | RIE-001 (OVN), RIE-002 (un nodo), RIE-004 (CentOS 7 EOL) |
-| **Media-Alta** | RIE-006 (sin backup) |
-| **Media** | RIE-003 (proxy temporal), RIE-005 (sin VPN) |
-| **Baja** | RIE-007 (IP proxy), RIE-008 (IPs firewall) |
+| **Alta** | RIE-001b (WireGuard no persistido), RIE-004 (CentOS 7 EOL) |
+| **Media-Alta** | RIE-002 (2/3 nodos), RIE-006 (sin backup) |
+| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN) |
+| **Baja** | RIE-007 (IP proxy), RIE-008 (IPs firewall), RIE-009 (alta de servicio CAR1) |
+| **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1) |
 
 ---
 

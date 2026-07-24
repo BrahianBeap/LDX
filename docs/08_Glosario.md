@@ -25,7 +25,7 @@ Proceso de inicialización de un componente que no tiene dependencias previas. E
 ## C
 
 ### CAR (Carpinelli)
-Uno de los tres sitios geográficos del cluster LXD. Prefijo para los nodos de ese sitio: `CAR1`, `CAR2`, etc. El nodo CAR1 está pendiente de instalación al momento de la primera reunión.
+Uno de los tres sitios geográficos del cluster LXD. Prefijo para los nodos de ese sitio: `CAR1`, `CAR2`, etc. CAR1 fue instalado y unido al cluster en la segunda reunión (rol `database-standby`). Ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
 
 ### cloud-init
 Framework de inicialización de instancias cloud. Permite especificar, en el momento de la creación de un contenedor o VM, qué paquetes instalar, qué usuarios crear, qué archivos escribir, etc. Se ejecuta **solo en el primer arranque** del contenedor. Si se necesita re-ejecutar, el contenedor debe ser eliminado y recreado.
@@ -58,17 +58,30 @@ Estado de un software cuando su desarrollador deja de publicar actualizaciones y
 ## F
 
 ### FDO (Fernando)
-Uno de los tres sitios geográficos del cluster LXD. Prefijo para los nodos de ese sitio: `FDO1`, `FDO2`, etc. El nodo FDO1 está pendiente de instalación al momento de la primera reunión.
+Uno de los tres sitios geográficos del cluster LXD. Prefijo para los nodos de ese sitio: `FDO1`, `FDO2`, etc. El nodo FDO1 está pendiente de instalación — sería el tercer miembro, necesario para completar el quórum de alta disponibilidad de la base de datos del cluster. Ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
 
 ### firewalld
 Sistema de gestión del firewall en Linux basado en zonas y reglas. Permite agregar reglas en tiempo real (`--runtime`) y hacerlas permanentes (`--permanent`) o usar `--runtime-to-permanent` para promover todas las reglas activas.
 
 ### Franco / PFR
-Sitio geográfico donde se instaló el primer nodo del cluster (PFR1). Es el nodo de referencia para replicar la instalación en otros sitios.
+Sitio geográfico donde se instaló el primer nodo del cluster (PFR1). Es el nodo de referencia para replicar la instalación en otros sitios. Rol actual en la base de datos distribuida: `database-leader`.
+
+---
+
+## G
+
+### gateway de servicios (contenedor)
+Patrón de diseño usado en cada sitio/proyecto del cluster: un contenedor dedicado que actúa como router entre la red OVN interna (tráfico este-oeste, entre contenedores) y la interfaz física de servicio del host (tráfico norte-sur, hacia la red del sitio), usando el driver [IPVLAN](#ipvlan). Concentra la IP de servicio del sitio o proyecto. Ver [02_Arquitectura.md](02_Arquitectura.md) y [03_Componentes.md](03_Componentes.md).
+
+### geneve
+Protocolo de encapsulamiento de red usado por OVN para el túnel de datos que interconecta los distintos chassis/hosts entre los que se distribuye la red virtualizada. No cifra el tráfico por defecto — ver [WireGuard](#wireguard) y [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md).
 
 ---
 
 ## I
+
+### IPVLAN
+Driver de red de Linux que permite que un contenedor use directamente una interfaz física del host, reutilizando su misma dirección MAC pero con una IP propia del contenedor. Se usa en los contenedores [gateway de servicios](#gateway-de-servicios-contenedor) para evitar el bloqueo de VMware a tráfico con MACs distintas de la asignada a la VM. Ver [03_Componentes.md](03_Componentes.md).
 
 ### InfraFileRoom
 Servicio productivo actualmente corriendo en CentOS 7. Contiene aproximadamente 800 GB de datos. Es una de las migraciones prioritarias al cluster LXD.
@@ -89,6 +102,9 @@ Wizard interactivo de inicialización de LXD. Configura: clustering, storage poo
 ### live migration
 Migración de un contenedor en ejecución de un nodo del cluster a otro sin detenerlo previamente. LXD soporta live migration, pero su configuración y comportamiento en este entorno 🔴 Pendiente de validación. La migración estándar (offline) requiere detener el contenedor antes de moverlo con `lxc move CONTENEDOR --target NODO`.
 
+### Loki
+Sistema de agregación y almacenamiento centralizado de logs. Cada host del cluster LXD reenvía sus logs de sistema (vía `rsyslog`) a un Loki alojado deliberadamente en **otra infraestructura**, distinta del propio cluster — para no perder visibilidad de logs justo si el cluster LXD tuviera una falla. Ver [03_Componentes.md](03_Componentes.md).
+
 ---
 
 ## M
@@ -104,14 +120,20 @@ Operación que mueve un contenedor de un nodo del cluster a otro. El contenedor 
 ## N
 
 ### nodo
-Cada VM que corre LXD y pertenece al cluster. Un cluster tiene múltiples nodos. Cada nodo tiene su propio almacenamiento ZFS pero comparten la base de datos del cluster.
+Cada VM que corre LXD y pertenece al cluster. Un cluster tiene múltiples nodos. Cada nodo tiene su propio almacenamiento local (ZFS o LVM, según cómo se instaló) pero comparten la base de datos del cluster.
+
+### northbound interface (OVN)
+Interfaz de comandos por la cual LXD interactúa con OVN para crear switches, routers e interfaces virtualizadas. Se configura una sola vez por cluster LXD (`network.ovn.northbound_connection_string`) porque se replica automáticamente vía la base de datos distribuida de LXD a todos los nodos. Ver [04_Instalacion.md](04_Instalacion.md).
 
 ---
 
 ## O
 
+### overlay / underlay
+Modelo de capas usado para describir una red virtualizada construida sobre otra red física o lógica preexistente. El **underlay** es la red de transporte subyacente (en este proyecto: la red corporativa IP entre sitios, y sobre ella, la malla [WireGuard](#wireguard)). El **overlay** es la red virtual que corre encima (en este proyecto: [OVN](#ovn-open-virtual-network)). Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md).
+
 ### OVN (Open Virtual Network)
-Capa de red definida por software (SDN) que permite crear redes virtuales que atraviesan múltiples hosts físicos o VMs. En este proyecto, OVN conecta los contenedores de distintos sitios geográficos como si estuvieran en la misma red.
+Capa de red definida por software (SDN) que permite crear redes virtuales que atraviesan múltiples hosts físicos o VMs. En este proyecto, OVN conecta los contenedores de distintos sitios geográficos como si estuvieran en la misma red. Su túnel de datos nativo (protocolo [geneve](#geneve)) no cifra el tráfico y, en este entorno, resultó bloqueado al viajar directamente sobre la red corporativa entre sitios en Capa 3 separada — por eso corre sobre una malla [WireGuard](#wireguard) como transporte underlay. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md). Usa la misma tecnología de base de datos distribuida que LXD (Dqlite) para su plano de control.
 
 ---
 
@@ -122,6 +144,9 @@ Objeto LXD que agrupa configuraciones reutilizables: cloud-init, dispositivos, v
 
 ### PFR (Franco)
 Ver [Franco / PFR](#franco--pfr).
+
+### proyecto (LXD project)
+Espacio de nombres aislado dentro del mismo cluster LXD: tiene su propio conjunto de contenedores, perfiles y, opcionalmente, redes. Permite definir límites de recursos (CPU, memoria, cantidad de instancias, redes) y restringir el acceso de un grupo de usuarios exclusivamente a ese proyecto. Es el mecanismo elegido por el equipo para dar aislamiento multi-tenant sobre la infraestructura compartida. Ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) y [05_Configuracion.md](05_Configuracion.md).
 
 ### proxy HTTP
 Servidor intermediario que reenvía solicitudes HTTP/HTTPS hacia internet. En este proyecto, el equipo de seguridad habilitó un proxy HTTP para que los contenedores puedan descargar paquetes. Se configura en LXD mediante `core.http_proxy` y en cloud-init mediante la sección de proxy.
@@ -166,7 +191,7 @@ Equipos responsables de la administración de la infraestructura VMware. Son qui
 Modelo de red donde la topología y el enrutamiento se gestionan por software en lugar de hardware físico. OVN es la implementación SDN elegida para este proyecto.
 
 ### snap
-Gestor de paquetes universal de Canonical para Linux. LXD y MicroOVN se instalan como snaps. Los snaps son autocontenidos y actualizan automáticamente.
+Gestor de paquetes universal de Canonical para Linux. LXD y MicroOVN se instalan como snaps. Los snaps son autocontenidos y **actualizan automáticamente por defecto** (una revisión diaria). Ver `snap refresh --hold` en [04_Instalacion.md](04_Instalacion.md) — necesario para evitar desincronización de versiones entre nodos del cluster.
 
 ### split-brain
 Condición de error en un cluster distribuido donde dos o más grupos de nodos quedan aislados entre sí (por corte de red) y cada grupo cree ser el único activo, tomando decisiones conflictivas sobre el mismo estado. En un cluster LXD de 3 nodos en 3 sitios distintos, un corte de enlace puede provocar que el nodo aislado y los otros dos intenten mantener el liderazgo simultáneamente. Dqlite mitiga esto mediante quórum, pero el riesgo no desaparece completamente. Ver también: [quórum](#quórum), [Dqlite](#dqlite).
@@ -199,10 +224,17 @@ Sección de la configuración de cloud-init donde se definen las instrucciones q
 ## V
 
 ### VLAN 411
-VLAN de red dedicada para el tráfico de contenedores (separada de la interfaz de gestión). Debe ser habilitada por Cristian (administrador VMware) en cada VM que forme parte del cluster. Es prerequisito para que OVN funcione correctamente.
+VLAN de red dedicada al tráfico de contenedores en Franco (Carpinelli y Fernando usan su propia VLAN local, con un número distinto). Debe ser habilitada por Cristian (administrador VMware) en la VM correspondiente. 🟡 A diferencia de lo asumido inicialmente en [ADR-0002](adr/ADR-0002-red-ovn-vs-ubuntu-fan.md), **no es necesario que todos los sitios usen la misma VLAN** — cada sitio puede tener la suya. Lo que sí exige LXD es que el **nombre de la interfaz** de servicio sea idéntico en todos los nodos del cluster. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md).
 
 ### VTT
 Formato de archivo de subtítulos web (WebVTT). En este proyecto, las grabaciones de reuniones se almacenan como archivos `.vtt` en [`reunion/`](../reunion/).
+
+---
+
+## W
+
+### WireGuard
+Tecnología de red overlay punto a punto (mesh), mucho más simple que OVN: no tiene plano de control ni base de datos distribuida, toda su configuración (claves, endpoints, rutas) es manual. Se adoptó como capa de transporte **underlay**, cifrada, para interconectar los sitios geográficos del cluster — el túnel de datos de OVN corre encima de la malla WireGuard. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) y [03_Componentes.md](03_Componentes.md).
 
 ---
 

@@ -25,6 +25,8 @@
 - Instalar siempre via snap (`snap install lxd`). No usar el paquete deb del sistema.
 - Ejecutar `lxd init` inmediatamente después de instalar, antes de cualquier otra configuración.
 - Solicitar backup de la VM a SBA/AIT tan pronto el nodo esté configurado.
+- ✅ Después de instalar, ejecutar `snap refresh --hold` para congelar las actualizaciones automáticas. Si un nodo del cluster se actualiza automáticamente y otro no, el cluster **bloquea todas las operaciones de configuración** hasta que todos los miembros tengan la misma versión. Ver [12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md) y [07_Troubleshooting.md](07_Troubleshooting.md).
+- ✅ Todos los nodos deben tener la hora sincronizada (NTP). Diferencias de reloj entre nodos, aunque sean de segundos, pueden hacer que el cluster interprete que la sincronización de la base de datos distribuida está rota y bloquee operaciones. Ver [05_Configuracion.md](05_Configuracion.md).
 
 ---
 
@@ -49,18 +51,64 @@
 |---|---|
 | **Nombre** | MicroOVN |
 | **Función** | Gestión simplificada de OVN para el cluster LXD |
-| **Responsabilidad** | Proveer la red SDN transversal entre nodos y sitios del cluster |
-| **Dependencias** | snap, red IP entre nodos (para comunicación del plano de control OVN) |
-| **Entradas** | Configuración del cluster OVN, interfaces de red (VLAN 411) |
+| **Responsabilidad** | Proveer la red SDN transversal (overlay) entre nodos y sitios del cluster |
+| **Dependencias** | snap, WireGuard (transporte underlay entre sitios — ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)), red IP entre nodos para el plano de control |
+| **Entradas** | Configuración del cluster OVN, interfaz de servicio local (`nicsrv1`) |
 | **Salidas** | Red virtual que conecta contenedores entre sitios |
 | **Impacto si falla** | Los contenedores existentes pueden seguir corriendo, pero pierden conectividad de red entre sitios |
-| **Cómo verificar** | `snap services microovn` |
-| **Estado actual** | ✅ Instalado y bootstrapped en PFR1. 🔴 Sin red OVN funcional (falta VLAN 411) |
+| **Cómo verificar** | `snap services microovn`, `microovn cluster list` |
+| **Estado actual** | ✅ Instalado, bootstrapped y funcional entre PFR1 y CAR1 (sobre WireGuard). 🔴 Pendiente extender a FDO1 |
+
+### Base de datos distribuida de MicroOVN
+
+MicroOVN usa la **misma tecnología de base de datos distribuida que LXD** (Dqlite — ver [08_Glosario.md](08_Glosario.md)) para sincronizar su plano de control entre los miembros del cluster OVN. Esto significa que el mecanismo para sumar un nuevo miembro es análogo al de LXD: se genera un token desde un nodo existente (`microovn cluster add HOSTNAME`) y se usa ese token en el nuevo nodo (`microovn cluster join TOKEN`). Ver el procedimiento completo en [04_Instalacion.md](04_Instalacion.md).
 
 ### Buenas prácticas
 
 - `microovn cluster bootstrap` se ejecuta **solo una vez**, en el primer nodo (PFR1).
-- Los nodos adicionales se agregan al cluster OVN durante el proceso de `lxd init` (usando join token).
+- Los nodos adicionales se agregan al cluster OVN con `microovn cluster add` / `microovn cluster join` (ver [04_Instalacion.md](04_Instalacion.md)), **después** de que la malla WireGuard hacia ese nodo esté configurada y probada.
+- La configuración de la interfaz *northbound* de OVN dentro de LXD (`lxc config set network.ovn.northbound_connection_string`, o equivalente vía el wizard) solo necesita definirse **una vez** por cluster LXD — al ser una base de datos distribuida, se replica automáticamente a los demás nodos.
+
+---
+
+## WireGuard
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | WireGuard |
+| **Función** | Red overlay punto a punto (mesh) cifrada, usada como transporte underlay entre sitios geográficos |
+| **Responsabilidad** | Transportar de forma cifrada el tráfico del túnel de datos de OVN entre sitios en Capa 3 separada |
+| **Dependencias** | Paquete `wireguard-tools`, conectividad IP básica (UDP) entre los hosts de cada sitio |
+| **Entradas** | Configuración manual por nodo: clave privada/pública, endpoint del peer, rutas |
+| **Salidas** | Túnel cifrado punto a punto entre dos hosts; sobre él corre el túnel de datos de OVN |
+| **Impacto si falla** | Los contenedores del sitio afectado pierden conectividad OVN con los demás sitios. La gestión del cluster LXD (plano de control) no se ve afectada porque usa la red de gestión, no la malla WireGuard |
+| **Cómo verificar** | `wg show` (en el host) — debe mostrar el peer con *handshake* reciente y tráfico (`transfer`) distinto de cero |
+| **Estado actual** | ✅ Configurado y probado entre PFR1 y CAR1. 🔴 Configuración de IP de la interfaz no persistida en `netplan` (se pierde al reiniciar el host) |
+
+### Buenas prácticas
+
+- No tiene plano de control ni base de datos distribuida: **toda la configuración es manual**. Al agregar un nuevo sitio al cluster, hay que generar un nuevo par de claves y actualizar la configuración de `netplan` en **todos** los nodos existentes para agregar el nuevo peer.
+- Persistir siempre la configuración (dirección IP, rutas, peers) en `netplan`, nunca solo en caliente (`ip addr`, `wg set`), para que sobreviva reinicios.
+- Ver el detalle completo de la decisión en [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) y la configuración paso a paso en [05_Configuracion.md](05_Configuracion.md).
+
+---
+
+## Driver de red IPVLAN
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | IPVLAN |
+| **Función** | Driver de red de Linux que permite que un contenedor use directamente una interfaz física del host, reutilizando su misma dirección MAC pero con IP propia del contenedor |
+| **Responsabilidad** | Conectar el contenedor "gateway de servicios" de cada sitio directamente a la interfaz de servicio del host (`nicsrv1`) |
+| **Dependencias** | Interfaz física de servicio del host |
+| **Entradas** | Configuración del dispositivo de red en el perfil LXD (`nictype: ipvlan`) |
+| **Salidas** | El contenedor queda accesible directamente sobre la red de servicio del sitio, con su propia IP |
+| **Impacto si falla** | El contenedor gateway de servicios pierde conectividad hacia/desde la red de servicio del sitio |
+| **Cómo verificar** | `lxc config device show CONTENEDOR` — debe mostrar `nictype: ipvlan` sobre el `parent` correspondiente |
+
+### ¿Por qué IPVLAN y no un bridge tradicional?
+
+Una política de seguridad de VMware no permite que, por la interfaz virtual asignada a la VM, salga tráfico con una dirección MAC distinta de la que VMware le asignó a esa VM. Un bridge de Linux tradicional (`macvlan` o un bridge L2 estándar) generaría tráfico con MACs distintas por cada contenedor, lo que sería bloqueado por esa política. IPVLAN evita el problema: **reutiliza la misma MAC de la interfaz física del host** para todo el tráfico, diferenciando el tráfico de cada contenedor únicamente por IP. Esta restricción de VMware se puede solicitar levantar formalmente, pero se optó por IPVLAN para no depender de ese cambio y evitar efectos adversos no deseados.
 
 ---
 
@@ -147,6 +195,64 @@
 | **Configuración** | 🟡 Dashboards importados desde Grafana Labs por ID |
 | **Impacto si falla** | Solo afecta la visibilidad, no la operación del cluster |
 | **Estado** | 🔴 Detalles de configuración: Pendiente de validación |
+
+---
+
+## Loki (logs centralizados)
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | Loki |
+| **Función** | Agregador y almacén de logs centralizado |
+| **Responsabilidad** | Recibir, vía `rsyslog`, los logs del sistema operativo de cada host del cluster LXD |
+| **Dependencias** | `rsyslog` configurado en cada host para reenviar logs hacia Loki |
+| **Entradas** | Logs de sistema (`syslog`) de cada nodo del cluster LXD |
+| **Salidas** | Logs consultables centralizadamente (fuera del propio cluster que los genera) |
+| **Impacto si falla** | Se pierde visibilidad centralizada de logs, pero no afecta la operación del cluster LXD |
+| **Cómo verificar** | 🔴 Endpoint y validación de recepción de logs: Pendiente de validación |
+
+> **Importante:** Este Loki vive en **otra infraestructura**, distinta del propio cluster LXD (se mencionó que está en SBA). La razón es deliberada: si los hosts del cluster LXD apuntaran a un Loki alojado dentro del mismo cluster, una falla del cluster dejaría sin logs justo en el momento en que más se necesitan para diagnosticar. Ver [12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md).
+
+---
+
+## Contenedor "gateway de servicios"
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | Contenedor gateway de servicios (patrón, no un paquete instalable) |
+| **Función** | Concentrar y enrutar el tráfico de entrada/salida de servicios de un sitio o proyecto |
+| **Responsabilidad** | Actuar como router entre la red OVN interna (este-oeste, entre contenedores) y la interfaz física de servicio del host (norte-sur, hacia la red del sitio), conservando la IP de servicio histórica cuando aplica |
+| **Dependencias** | Perfil LXD con dos dispositivos de red: uno sobre OVN, otro `ipvlan` sobre `nicsrv1` |
+| **Entradas** | Tráfico este-oeste desde/hacia otros contenedores del cluster; tráfico norte-sur desde/hacia la red del sitio |
+| **Salidas** | Tráfico enrutado hacia el destino correspondiente |
+| **Impacto si falla** | Los servicios de ese sitio/proyecto quedan inalcanzables desde la red del sitio, aunque los contenedores individuales sigan corriendo |
+| **Cómo verificar** | `lxc exec CONTENEDOR -- ip addr` (debe mostrar ambas interfaces con IP) |
+
+### Buenas prácticas (aplicadas por Norberto Núñez en la demostración)
+
+- Deshabilitar SSH dentro de este contenedor. La administración se hace exclusivamente vía `lxc exec` / consola del daemon LXD, nunca por SSH directo — reduce la posibilidad de movimiento lateral si algún contenedor del cluster llegara a estar comprometido.
+- Limitar el tamaño de `journald` a 100 MB (por defecto puede acumular hasta 4 GB de logs). Este contenedor actúa como router y no aloja aplicaciones, por lo que no necesita retener logs extensos.
+- Configurar NTP (`systemd-timesyncd`) igual que en el host — ver [05_Configuracion.md](05_Configuracion.md).
+- Un contenedor gateway de servicios distinto por cada sitio/proyecto (ej. `presidente-franco-ss-gw`, y su equivalente en Carpinelli), no compartido entre sitios.
+
+Ver la configuración completa del perfil en [05_Configuracion.md](05_Configuracion.md).
+
+---
+
+## Proyectos LXD (multi-tenancy)
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | Proyecto LXD (`lxc project`) |
+| **Función** | Espacio de nombres aislado dentro del mismo cluster LXD, con sus propios contenedores, perfiles y límites de recursos |
+| **Responsabilidad** | Separar visibilidad y consumo de recursos entre distintos equipos/áreas que comparten la infraestructura |
+| **Dependencias** | LXD (funcionalidad nativa, no requiere componentes adicionales) |
+| **Entradas** | Definición de límites (redes, CPU, memoria, instancias) y grupo de identidad asociado |
+| **Salidas** | Aislamiento de acceso: los usuarios de un grupo solo ven los recursos de su proyecto |
+| **Impacto si falla** | No aplica falla en sentido de servicio — un proyecto mal configurado (sin límites) puede permitir que un equipo consuma recursos de más |
+| **Cómo verificar** | `lxc project list`, `lxc project show NOMBRE_PROYECTO` |
+
+Ver la decisión completa en [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) y la configuración en [05_Configuracion.md](05_Configuracion.md).
 
 ---
 

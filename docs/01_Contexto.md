@@ -62,7 +62,7 @@ El equipo opera servidores corriendo CentOS 7 con servicios productivos activos,
 
 🟡 Con el cluster funcionando en 3 sitios geográficos independientes (Franco, Carpinelli, Fernando), la caída de un sitio completo no elimina la disponibilidad del sistema.
 
-> **Advertencia:** La HA real requiere que la red OVN esté funcional entre sitios. Mientras OVN no esté operativo, los contenedores de distintos sitios no pueden comunicarse directamente. Ver [11_Riesgos.md](11_Riesgos.md).
+> **Estado actual:** la red OVN ya es funcional entre Franco (PFR1) y Carpinelli (CAR1), corriendo sobre una malla WireGuard cifrada — ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md). Fernando (FDO1) todavía no fue incorporado al cluster, por lo que el quórum de alta disponibilidad de la base de datos (3 miembros) aún no está completo. Ver [11_Riesgos.md](11_Riesgos.md).
 
 ### Backup liviano
 
@@ -95,10 +95,11 @@ El equipo opera servidores corriendo CentOS 7 con servicios productivos activos,
 |---|---|---|
 | Instructor/consultor LXD | Norberto Núñez | Guía técnica, instalación inicial, transferencia de conocimiento |
 | Coordinación del proyecto | Marcos Casco | Gestión de accesos, comunicación con equipos externos |
-| Equipo técnico | Daniel Medina, Elías Alfonzo, Rocío Duarte | Operación, configuración, administración |
+| Equipo técnico | Daniel Medina, Elías Alfonzo, Rocío Duarte, Fernando Fleitas, Andrés Semidei | Operación, configuración, administración |
 | Administrador VMware | Cristian | Gestión de VMs, interfaces de red, recursos de hypervisor |
 | Seguridad / Accesos | Nicolás (Nico) | Proxy HTTP, permisos de red, antivirus |
 | Administrador de edificio | Gustavo García | Acceso físico a infraestructura |
+| Infraestructura/servidores adicionales | Roberto de Paula | Provisión de nuevos servidores para sitios adicionales |
 
 ---
 

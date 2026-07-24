@@ -128,3 +128,31 @@ La mayor amenaza identificada es el contenido duplicado: 10 conjuntos de concept
 
 **Resumen:**
 Fase de aplicación de la auditoría. Se corrigieron todos los errores objetivos (Prioridad 1) y se eliminaron las duplicaciones identificadas (Prioridad 2). El repositorio queda con una única fuente de verdad por concepto: los documentos 07, 05, 06, 11 y los ADRs son ahora los únicos lugares donde se documentan las reglas técnicas; los demás documentos enlazan a ellos.
+
+---
+
+### 2026-07-24 (sexta entrada)
+
+**Fuente:** Análisis completo de `reunion/segunda_reunion LXD _ Implementacion.vtt` — Segunda reunión de implementación del cluster LXD (participantes: Norberto Núñez, Marcos Casco, Elías Alfonzo, Rocío Duarte, Daniel Medina, Andrés Semidei, Fernando Fleitas).
+
+**ADRs creados:**
+- `docs/adr/ADR-0006-wireguard-underlay-ovn-multisitio.md` — WireGuard elegido como transporte underlay para el túnel de datos de OVN entre sitios en Capa 3 separada (el túnel nativo de OVN es bloqueado por la red corporativa entre Franco y Carpinelli y no cifra el tráfico). Aclara además que la VLAN de servicio no necesita ser idéntica entre sitios — solo el nombre de la interfaz.
+- `docs/adr/ADR-0007-proyectos-lxd-multitenancy.md` — Proyectos LXD (`lxc project`) con límites de recursos y grupos de identidad adoptados como modelo estándar de aislamiento multi-tenant, en previsión de futuros equipos (CCR, OMC, AIT/transporte).
+
+**Archivos actualizados (todos los documentos 00–14 y ADR-0002):**
+- `docs/00_Resumen_Ejecutivo.md`, `docs/01_Contexto.md`, `docs/02_Arquitectura.md`, `docs/03_Componentes.md` — incorporación de CAR1 al cluster, modelo de proyectos, gateways de servicio por sitio
+- `docs/04_Instalacion.md` — procedimiento de unión de un nuevo miembro al cluster vía token, `snap refresh --hold`, configuración de WireGuard, renombrado de interfaces por MAC con `netplan`
+- `docs/05_Configuracion.md` — configuración de proyectos LXD y sus límites, WireGuard (claves, peers, rutas), reenvío de logs a Loki externo vía `rsyslog`
+- `docs/06_Operacion.md`, `docs/07_Troubleshooting.md` — TRB-009 (bloqueos intermitentes del cluster por desincronización de reloj/NTP), TRB-010 (bloqueo del cluster por versiones de LXD desincronizadas)
+- `docs/08_Glosario.md` — términos nuevos: WireGuard, proyecto LXD, IPVLAN, gateway de servicios, Loki, Dqlite (uso ampliado)
+- `docs/09_FAQ.md`, `docs/10_Decisiones.md` — referencias a ADR-0006 y ADR-0007
+- `docs/11_Riesgos.md` — riesgo de configuración manual de WireGuard no persistida en `netplan`; puerto 8444 de CAR1 pendiente de alta de servicio
+- `docs/12_Lecciones_Aprendidas.md` — LL-011 (`snap refresh --hold` obligatorio en cluster)
+- `docs/13_Linea_de_Tiempo.md` — CAR1 unido al cluster, pendientes de FDO1 e IT
+- `docs/14_Manual_Operativo.md` — ajustes menores de coherencia
+- `docs/adr/ADR-0002-red-ovn-vs-ubuntu-fan.md` — actualizado para reflejar que el transporte entre sitios requiere WireGuard como underlay (ver ADR-0006)
+- `reunion/README.md` — segunda reunión agregada a la tabla de reuniones disponibles
+- `docs/README.md` — ADR-0006 y ADR-0007 agregados al índice; nota de fuente actualizada para reflejar ambas reuniones
+
+**Resumen:**
+Segunda generación de documentación técnica, a partir de la reunión donde se incorporó CAR1 (Carpinelli) como segundo miembro del cluster. Los hallazgos más relevantes: el túnel de datos nativo de OVN no funciona entre sitios en Capa 3 separada (confirmado por segunda vez, tras un intento fallido el año anterior) y se resolvió con una malla WireGuard como underlay; se adoptó el modelo de proyectos LXD para multi-tenancy de cara a futuros equipos; se documentó el incidente real de bloqueo del cluster por desincronización de reloj entre Carpinelli y Fernando. Persisten pendientes de validación: persistencia de la IP de WireGuard en `netplan`, alta de servicio del puerto 8444 de CAR1, y confirmación de la directiva de reenvío `rsyslog` → Loki.

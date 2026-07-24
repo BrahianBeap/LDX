@@ -32,7 +32,16 @@ firewall-cmd --state
 
 # 6. Estado de MicroOVN (en cada nodo):
 snap services microovn
-# Todos los servicios deben estar active
+microovn cluster list
+# Todos los servicios deben estar active; todos los miembros deben aparecer
+
+# 7. Estado del túnel WireGuard entre sitios (en cada nodo):
+wg show
+# Debe mostrar "latest handshake" reciente y "transfer" distinto de cero por cada peer
+
+# 8. Sincronización de reloj (en cada nodo):
+timedatectl
+# "System clock synchronized: yes"
 ```
 
 ---

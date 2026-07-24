@@ -102,10 +102,19 @@ OVN es la única opción viable que:
 
 ## Pendientes de seguimiento
 
-- [ ] Solicitar interfaz VLAN 411 a Cristian para PFR1, CAR1 y FDO1.
-- [ ] Configurar OVN con la nueva interfaz una vez disponible.
-- [ ] Verificar conectividad OVN entre PFR1 y CAR1 (primer test inter-sitio).
+- [x] Solicitar interfaz de red dedicada a Cristian para PFR1 y CAR1 — completado (ver actualización debajo).
+- [x] Configurar OVN con la nueva interfaz — completado en PFR1 y CAR1.
+- [x] Verificar conectividad OVN entre PFR1 y CAR1 (primer test inter-sitio) — completado.
+- [ ] Solicitar/configurar interfaz de red dedicada en FDO1 (Fernando) al incorporarlo como tercer miembro.
 - [ ] Documentar la configuración OVN resultante en [05_Configuracion.md](../05_Configuracion.md).
+
+---
+
+## Actualización (2026-07-24 — segunda reunión)
+
+La conectividad OVN entre sitios en Capa 3 separada **no funcionó** usando el túnel nativo de OVN directamente sobre la red corporativa (bloqueado por un elemento de red intermedio no identificado). Se resolvió agregando WireGuard como capa de transporte underlay, con el túnel de OVN corriendo por encima. Ver el análisis completo, las alternativas evaluadas y la decisión en **[ADR-0006](ADR-0006-wireguard-underlay-ovn-multisitio.md)**.
+
+También se aclaró que la interfaz de red dedicada para contenedores (referida originalmente como "VLAN 411") **no necesita ser la misma VLAN ni pertenecer a la misma Capa 2 en los tres sitios** — cada sitio puede tener su propia VLAN local. Lo único que LXD exige es que el **nombre de la interfaz** sea idéntico en todos los miembros del cluster. Ver detalle en [ADR-0006](ADR-0006-wireguard-underlay-ovn-multisitio.md#aclaración-importante-sobre-vlan-411-actualiza-adr-0002).
 
 ---
 
@@ -114,3 +123,4 @@ OVN es la única opción viable que:
 - [02_Arquitectura.md — Sección de redes](../02_Arquitectura.md)
 - [11_Riesgos.md — RIE-001](../11_Riesgos.md)
 - [13_Linea_de_Tiempo.md](../13_Linea_de_Tiempo.md)
+- [ADR-0006 — WireGuard como transporte underlay para OVN entre sitios](ADR-0006-wireguard-underlay-ovn-multisitio.md)

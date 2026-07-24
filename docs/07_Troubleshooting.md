@@ -128,6 +128,32 @@ config:
 
 ---
 
+## TRB-009 — Cluster con bloqueos intermitentes (desincronización de reloj)
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Operaciones de configuración del cluster (crear contenedor, editar perfil, migrar, etc.) fallan o se bloquean de forma intermitente y sin un patrón claro |
+| **Síntomas** | En la Web UI aparecen indicadores en rojo/error sin razón evidente. A veces la operación se permite, a veces no, para la misma acción repetida |
+| **Causa** | Diferencia de reloj entre nodos del cluster (aunque sea de 1-2 segundos). LXD y MicroOVN usan Dqlite, que depende de la hora de cada nodo para coordinar la sincronización de la base de datos distribuida. Norberto Núñez reportó haber vivido este problema en una implementación previa |
+| **Diagnóstico** | `timedatectl` en cada nodo — comparar la hora entre todos los miembros del cluster |
+| **Solución** | Configurar NTP (`systemd-timesyncd`) apuntando a los mismos servidores NTP en todos los nodos. Ver [04_Instalacion.md — Paso 10](04_Instalacion.md) |
+| **Prevención** | Configurar NTP como parte obligatoria de la instalación de cada nodo, **antes** de unirlo al cluster. Aplicar la misma configuración a los contenedores gateway de servicios |
+
+---
+
+## TRB-010 — Cluster bloqueado por versiones de snap distintas entre nodos
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | No se pueden hacer cambios de configuración en el cluster (crear contenedores, editar perfiles, etc.) |
+| **Síntomas** | En `lxc cluster list` o en la Web UI, uno o más nodos aparecen marcados (ej. en rojo) con una versión de LXD distinta a la de los demás. Los contenedores en ejecución siguen funcionando con normalidad — el bloqueo es solo sobre operaciones de configuración |
+| **Causa** | `snapd` actualizó automáticamente LXD o MicroOVN en un nodo (comportamiento por defecto: revisa actualizaciones una vez por día) mientras los demás nodos quedaron en una versión anterior. LXD bloquea deliberadamente las operaciones de configuración para evitar incompatibilidades entre versiones distintas dentro del mismo cluster |
+| **Diagnóstico** | `snap list lxd` en cada nodo — comparar versiones |
+| **Solución** | Actualizar manualmente (`snap refresh lxd`) los nodos que quedaron atrás, hasta que todos tengan la misma versión |
+| **Prevención** | Aplicar `snap refresh --hold` en todos los nodos inmediatamente después de la instalación (ver [04_Instalacion.md](04_Instalacion.md)). Actualizar siempre de forma manual y coordinada en todos los nodos el mismo día |
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash
@@ -156,6 +182,16 @@ lxc exec CONTENEDOR -- ss -ntlp
 
 # Verificar estado de MicroOVN:
 snap services microovn
+microovn cluster list
+
+# Verificar estado del túnel WireGuard (transporte entre sitios):
+wg show
+
+# Verificar sincronización de reloj (NTP):
+timedatectl
+
+# Verificar si hay actualizaciones automáticas pendientes de snap:
+snap refresh --list
 ```
 
 ---

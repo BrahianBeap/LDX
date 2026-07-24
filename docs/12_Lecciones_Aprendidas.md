@@ -116,6 +116,66 @@ No escalar la arquitectura basándose en dispositivos proxy LXD. Cuando OVN est�
 
 ---
 
+## LL-010 — Un problema de red intermitente puede tener causa raíz en el reloj del sistema, no en la red
+
+**¿Qué pasó?**
+Norberto Núñez relató una experiencia previa: durante una implementación anterior del cluster, la interfaz mostraba errores intermitentes al intentar migrar contenedores o hacer cambios — a veces funcionaba, a veces no, sin patrón aparente. Después de investigar, la causa fue una pequeña diferencia horaria (1-2 segundos) entre los relojes de los nodos del cluster.
+
+**Lección:**
+Cuando un cluster distribuido con base de datos consensuada (Dqlite, usada tanto por LXD como por MicroOVN) muestra comportamiento errático e intermitente, verificar la sincronización de reloj (NTP) **antes** de asumir que es un problema de red o de configuración. El síntoma (bloqueos aleatorios) puede ser engañoso.
+
+Ver [TRB-009 en 07_Troubleshooting.md](07_Troubleshooting.md#trb-009) y la configuración recomendada en [04_Instalacion.md](04_Instalacion.md).
+
+---
+
+## LL-011 — `snap refresh --hold` es obligatorio en un cluster, no opcional
+
+**¿Qué pasó?**
+Norberto Núñez explicó que, sin este comando, `snapd` busca actualizaciones de LXD y MicroOVN una vez por día. Si un nodo tiene salida a internet (o a un repositorio distinto) y otro no, o simplemente se actualizan en momentos distintos, terminan con versiones diferentes — y el cluster bloquea todas las operaciones de configuración hasta que todos los nodos vuelvan a coincidir en versión.
+
+**Lección:**
+Aplicar `snap refresh --hold` inmediatamente después de instalar LXD y MicroOVN en cada nodo. Las actualizaciones deben hacerse siempre de forma manual y coordinada, el mismo día, en todos los nodos del cluster.
+
+Ver [TRB-010 en 07_Troubleshooting.md](07_Troubleshooting.md#trb-010) y el procedimiento en [04_Instalacion.md](04_Instalacion.md).
+
+---
+
+## LL-012 — Los nombres de interfaz de red deben ser idénticos en todo el cluster
+
+**¿Qué pasó?**
+Cada VM llegó con nombres de interfaz distintos, asignados por el sistema operativo (ej. `NS35` en Carpinelli, `NS192` en Franco). Marcos Casco preguntó si esto era un problema. Norberto Núñez explicó que sí lo es: cuando un contenedor migra de un nodo a otro, se lleva consigo la configuración de red tal cual está, incluido el nombre de la interfaz a la que estaba asociado — si el nodo destino no tiene una interfaz con ese mismo nombre, la migración queda inconsistente.
+
+**Lección:**
+Renombrar todas las interfaces de red relevantes (gestión y servicio) a un nombre común (`nicsrv1`, etc.) usando `netplan` con `match` por MAC y `set-name`, **antes** de crear cualquier contenedor. Esto no depende de que la VLAN física sea la misma entre sitios — solo el nombre lógico de la interfaz debe coincidir.
+
+Ver el procedimiento completo en [04_Instalacion.md — Paso 0](04_Instalacion.md).
+
+---
+
+## LL-013 — Deshabilitar SSH en los contenedores de infraestructura reduce el riesgo de movimiento lateral
+
+**¿Qué pasó?**
+Al configurar los contenedores gateway de servicios, Norberto Núñez deshabilitó SSH explícitamente en cada uno, dejando la administración exclusivamente vía `lxc exec`.
+
+**Lección:**
+Para contenedores que no necesitan ser accedidos desde afuera (routers internos, gateways), deshabilitar SSH reduce la superficie de ataque: si un contenedor del cluster llegara a estar comprometido, no hay un canal SSH adicional para saltar lateralmente hacia otros contenedores. La gestión vía `lxc exec` no depende de un servicio de red expuesto dentro del contenedor. SSH se reserva únicamente para los contenedores que deliberadamente necesitan ser accedidos como servidores desde el exterior.
+
+Ver la configuración en [05_Configuracion.md](05_Configuracion.md).
+
+---
+
+## LL-014 — Limitar el tamaño de journald en contenedores de infraestructura
+
+**¿Qué pasó?**
+Al configurar el contenedor gateway de servicios, Norberto Núñez limitó `journald` a 100 MB explícitamente, señalando que por defecto puede acumular hasta 4 GB de logs.
+
+**Lección:**
+Un contenedor que actúa como router/gateway (sin aplicaciones propias) no necesita retener grandes volúmenes de logs. Limitar `journald` explícitamente evita que un contenedor de infraestructura consuma espacio de disco de forma desproporcionada a su función. El límite adecuado depende del rol del contenedor — no aplicar el mismo límite bajo a un contenedor que sí aloja una aplicación con logs relevantes.
+
+Ver la configuración en [05_Configuracion.md](05_Configuracion.md).
+
+---
+
 ## Documentos relacionados
 
 | Tema | Documento |

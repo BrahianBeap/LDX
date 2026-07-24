@@ -70,7 +70,15 @@ Si muestra `error`, revisar logs en `/var/log/cloud-init-output.log` dentro del 
 
 ### ¿Por qué no funciona la red entre contenedores de distintos nodos?
 
-La red OVN aún no está activa: requiere VLAN 411 en cada VM, pendiente de habilitación por Cristian (administrador VMware). Ver: [11_Riesgos.md](11_Riesgos.md).
+✅ Entre Franco (PFR1) y Carpinelli (CAR1) ya funciona: la red OVN corre sobre una malla WireGuard cifrada que actúa como transporte entre sitios. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md). Fernando (FDO1) todavía no fue incorporado al cluster — ver [11_Riesgos.md](11_Riesgos.md) y [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
+
+### ¿Por qué se necesitó agregar WireGuard si ya se había elegido OVN?
+
+El túnel de datos nativo de OVN, viajando directamente sobre la red corporativa, resultó bloqueado entre sitios en Capa 3 separada (confirmado dos veces, en dos implementaciones independientes). WireGuard se agregó como transporte underlay cifrado sobre el cual corre el túnel de OVN — no reemplaza la decisión de usar OVN, la complementa. Ver el análisis completo en [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md).
+
+### ¿Todas las VLAN de los sitios tienen que ser la misma?
+
+No. Cada sitio puede tener su propia VLAN local para la interfaz de servicio de contenedores. Lo único que exige LXD es que el **nombre de la interfaz** sea idéntico en todos los nodos del cluster (se logra renombrando por MAC en `netplan`). Ver [04_Instalacion.md](04_Instalacion.md) y [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md).
 
 ### ¿Puedo acceder a la Web UI desde fuera de la red local?
 
@@ -98,6 +106,18 @@ Las imágenes base de Ubuntu (sin datos de usuario) pesan muy poco. LXD las cach
 
 ---
 
+## Sobre proyectos y multi-tenancy
+
+### ¿Por qué no simplemente crear todos los contenedores en el proyecto `default`?
+
+Porque no da aislamiento: cualquier usuario con acceso ve y puede modificar los recursos de todos los equipos, y no hay forma de limitar cuánto consume cada equipo del cluster compartido. Desde la segunda reunión, el equipo adopta **proyectos LXD** dedicados por área, con límites de recursos y grupos de acceso restringidos. Ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) y [05_Configuracion.md](05_Configuracion.md).
+
+### ¿Qué pasa si creo un proyecto nuevo y no le defino límites?
+
+Hereda un comportamiento sin restricciones — el mismo riesgo que el proyecto `default`. Definir límites (`limits.cpu`, `limits.memory`, `limits.instances`, etc.) es un paso obligatorio al dar de alta un proyecto nuevo. Ver [05_Configuracion.md](05_Configuracion.md).
+
+---
+
 ## Sobre seguridad
 
 ### ¿Es seguro agregar a alguien al grupo lxd?
@@ -107,6 +127,14 @@ No, o más precisamente: debe hacerse con precaución. El grupo `lxd` otorga acc
 ### ¿El acceso a la Web UI es seguro?
 
 Sí. La comunicación es HTTPS con TLS. Cada usuario se autentica con su propio certificado TLS generado en su navegador. El token inicial tiene tiempo de expiración.
+
+### ¿Por qué se deshabilita SSH dentro de los contenedores del cluster?
+
+Para reducir la superficie de movimiento lateral: si un contenedor llegara a estar comprometido, no debería poder usarse SSH para saltar a otros contenedores. La administración del cluster se hace exclusivamente vía `lxc exec` (shell del propio LXD). SSH solo se habilita de forma excepcional en contenedores que necesitan ser accedidos explícitamente desde afuera. Ver [05_Configuracion.md](05_Configuracion.md) y [12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md).
+
+### ¿Es un problema que la IP de gestión de un nodo no se pueda inventariar o declarar ante seguridad?
+
+Es un riesgo menor gracias a la naturaleza distribuida del cluster: como la base de datos se replica entre todos los miembros, el cluster se puede gestionar desde **cualquier** nodo — no es necesario tener acceso específicamente al nodo cuya IP no pudiera declararse. Alcanza con que al menos un miembro del cluster esté correctamente inventariado y accesible. Ver [11_Riesgos.md](11_Riesgos.md).
 
 ---
 

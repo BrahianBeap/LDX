@@ -200,6 +200,56 @@ lxc profile add NOMBRE_CONTENEDOR NOMBRE_PERFIL
 
 ---
 
+## Trabajar con proyectos (multi-tenancy)
+
+### Objetivo
+Operar contenedores dentro de un proyecto específico, en lugar del proyecto `default`. Ver la configuración de límites y grupos en [05_Configuracion.md](05_Configuracion.md) y la decisión en [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md).
+
+```bash
+# Listar proyectos existentes:
+lxc project list
+
+# Cambiar el proyecto activo de la sesión de CLI:
+lxc project switch NOMBRE_PROYECTO
+
+# Listar contenedores de un proyecto específico sin cambiar de sesión:
+lxc list --project NOMBRE_PROYECTO
+
+# Crear un contenedor dentro de un proyecto específico:
+lxc launch ubuntu:24.04 NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO --profile NOMBRE_PERFIL
+```
+
+> **Nota:** Si no se especifica `--project` ni se hizo `lxc project switch`, todos los comandos `lxc` operan sobre el proyecto `default`. Verificar siempre en qué proyecto se está trabajando antes de crear o eliminar recursos.
+
+---
+
+## Actualizar LXD y MicroOVN de forma coordinada (snap)
+
+### Objetivo
+Actualizar la versión de LXD o MicroOVN sin romper la consistencia del cluster.
+
+### Procedimiento
+
+```bash
+# En CADA nodo del cluster, de forma coordinada (todos el mismo día, uno después del otro):
+snap refresh lxd
+snap refresh microovn
+```
+
+> **Advertencia:** Todos los nodos deben tener `snap refresh --hold` aplicado (ver [04_Instalacion.md](04_Instalacion.md)) para que la actualización **no** ocurra automáticamente en un nodo mientras los demás quedan en una versión distinta. Si un nodo queda con una versión distinta de los demás, el cluster bloquea las operaciones de configuración hasta que todos coincidan. Ver [TRB-010 en 07_Troubleshooting.md](07_Troubleshooting.md#trb-010).
+
+### Cómo verificar
+
+```bash
+snap list lxd
+# La versión debe coincidir en todos los nodos
+
+lxc cluster list
+# Ningún nodo debe mostrarse bloqueado/con advertencia de versión
+```
+
+---
+
 ## Agregar usuarios al grupo lxd (acceso CLI)
 
 ### Objetivo

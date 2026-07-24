@@ -2,7 +2,7 @@
 
 Este directorio contiene la documentación técnica oficial del proyecto LXD.
 
-> **Fuente:** Los documentos 00–14 se generaron a partir de [`reunion/Llamada con Daniel y 3 personas más.vtt`](../reunion/). Los documentos 15 y 16 son informes de análisis independiente.
+> **Fuente:** Los documentos 00–14 se generaron a partir de [`reunion/Llamada con Daniel y 3 personas más.vtt`](../reunion/) (primera reunión) y se actualizaron con [`reunion/segunda_reunion LXD _ Implementacion.vtt`](../reunion/) (segunda reunión — WireGuard/OVN multisitio, proyectos LXD multi-tenant, incorporación de CAR1 al cluster). Los documentos 15 y 16 son informes de análisis independiente.
 
 ---
 
@@ -45,6 +45,8 @@ docs/adr/
 | [`ADR-0003-storage-zfs.md`](adr/ADR-0003-storage-zfs.md) | Storage driver: ZFS elegido sobre LVM y btrfs | Aceptado |
 | [`ADR-0004-autenticacion-tls-tokens.md`](adr/ADR-0004-autenticacion-tls-tokens.md) | Autenticación Web UI: TLS tokens + certificados de navegador | Aceptado |
 | [`ADR-0005-arquitectura-microservicios.md`](adr/ADR-0005-arquitectura-microservicios.md) | Arquitectura: un servicio por contenedor | Aceptado |
+| [`ADR-0006-wireguard-underlay-ovn-multisitio.md`](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) | WireGuard como transporte underlay para OVN entre sitios en Capa 3 | Aceptado |
+| [`ADR-0007-proyectos-lxd-multitenancy.md`](adr/ADR-0007-proyectos-lxd-multitenancy.md) | Proyectos LXD como modelo de aislamiento multi-tenant | Aceptado |
 
 ---
 

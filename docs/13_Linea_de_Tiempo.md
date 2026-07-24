@@ -28,43 +28,57 @@
 
 ---
 
-## Hitos pendientes (próximos pasos)
+### Segunda reunión — Implementación (WireGuard, CAR1, proyectos)
+**Fecha:** 2026-07-24 (fecha de procesamiento de la reunión; fecha real de la reunión 🔴 pendiente de validación — el archivo VTT no trae fecha en el nombre)
+**Referencia:** [`reunion/segunda_reunion LXD _ Implementacion.vtt`](../reunion/segunda_reunion%20LXD%20_%20Implementacion.vtt)
 
-### Corto plazo — Prerequisito: VLAN 411
-
-> Responsable coordinación: Marcos Casco → Cristian (administrador VMware)
-
-| Acción | Responsable | Estado |
-|---|---|---|
-| Solicitar interfaz de red VLAN 411 en PFR1 | Marcos Casco → Cristian | 🔴 Pendiente |
-| Solicitar interfaz de red VLAN 411 en CAR1 | Marcos Casco → Cristian | 🔴 Pendiente |
-| Solicitar interfaz de red VLAN 411 en FDO1 | Marcos Casco → Cristian | 🔴 Pendiente |
+| Hito | Estado |
+|---|---|
+| Diagnóstico de causa raíz del bloqueo de red OVN entre sitios en Capa 3 | ✅ Completado |
+| Decisión: WireGuard como transporte underlay para OVN entre sitios | ✅ Completado — ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
+| Malla WireGuard configurada y probada entre PFR1 y CAR1 | ✅ Completado |
+| Red OVN funcional entre PFR1 y CAR1 (sobre WireGuard) | ✅ Completado |
+| Instalación de LXD y MicroOVN en Carpinelli (CAR1) | ✅ Completado |
+| CAR1 unido al cluster LXD (segundo miembro, `database-standby`) | ✅ Completado |
+| Renombrado de interfaces de red por MAC (`netplan`) para consistencia entre nodos | ✅ Completado en PFR1 y CAR1 |
+| Contenedores gateway de servicios creados (perfil, IPVLAN) en PFR1 y CAR1 | ✅ Completado |
+| Contenedor gateway de operación y mantenimiento (salida a proxy) en PFR1 y CAR1 | ✅ Completado |
+| Decisión y adopción de proyectos LXD para multi-tenancy | ✅ Completado — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
+| Primer proyecto LXD con límites de recursos creado (ejemplo/demostración) | ✅ Completado |
+| `snap refresh --hold` aplicado en PFR1 y CAR1 | ✅ Completado |
+| NTP (`systemd-timesyncd`) configurado en hosts y contenedores gateway | ✅ Completado |
+| `rsyslog` instalado para reenvío de logs a Loki externo | 🟡 Instalado; directiva de reenvío no confirmada — Pendiente de validación |
+| Documentación técnica migrada a OneNote compartido con el equipo | ✅ Completado |
+| Diagrama de arquitectura de networking (dibujo detallado) | 🔴 Pendiente — Norberto Núñez se comprometió a completarlo y convocar una nueva reunión |
 
 ---
 
-### Corto plazo — Instalación de nodos adicionales
+## Hitos pendientes (próximos pasos)
 
-> Referencia: [04_Instalacion.md](04_Instalacion.md) — seguir el mismo procedimiento que PFR1.
+### Corto plazo — Tercer miembro del cluster (Fernando / FDO1)
+
+> Referencia: [04_Instalacion.md](04_Instalacion.md) — seguir el mismo procedimiento que PFR1/CAR1, incluyendo la configuración de WireGuard hacia los sitios existentes.
 
 | Acción | Nodo | Estado |
 |---|---|---|
-| Instalar LXD y MicroOVN en Carpinelli | CAR1 | 🔴 Pendiente |
-| Unir CAR1 al cluster (join token desde PFR1) | CAR1 | 🔴 Pendiente |
+| Solicitar/confirmar interfaz de red dedicada a servicio en FDO1 | FDO1 | 🔴 Pendiente |
+| Configurar malla WireGuard entre FDO1 y los sitios existentes | FDO1 | 🔴 Pendiente |
 | Instalar LXD y MicroOVN en Fernando | FDO1 | 🔴 Pendiente |
-| Unir FDO1 al cluster (join token desde PFR1) | FDO1 | 🔴 Pendiente |
+| Unir FDO1 al cluster (join token) — completaría el quórum de HA de la base de datos | FDO1 | 🔴 Pendiente |
+| Crear contenedor gateway de servicios en FDO1 (interfaz de servicio `FDO-SS-gateway-servicio`) | FDO1 | 🔴 Pendiente |
 
 ---
 
-### Mediano plazo — OVN funcional
+### Corto plazo — Consolidación de lo implementado
 
-> Requiere VLAN 411 en todos los nodos.
-
-| Acción | Estado |
-|---|---|
-| Configurar OVN con interfaz VLAN 411 en PFR1 | 🔴 Pendiente |
-| Extender OVN a CAR1 y FDO1 | 🔴 Pendiente |
-| Verificar conectividad cross-site entre contenedores | 🔴 Pendiente |
-| Eliminar dispositivos proxy temporales de los contenedores | 🔴 Pendiente |
+| Acción | Responsable | Estado |
+|---|---|---|
+| Persistir configuración de IP de WireGuard en `netplan` (PFR1 y CAR1) | Norberto Núñez | 🔴 Pendiente — ver [RIE-001b en 11_Riesgos.md](11_Riesgos.md) |
+| Completar y compartir diagrama de arquitectura de networking | Norberto Núñez | 🔴 Pendiente |
+| Gestionar alta de servicio del puerto 8444 (gestión LXD) para CAR1 | Marcos Casco | 🔴 Pendiente — ver [RIE-009 en 11_Riesgos.md](11_Riesgos.md) |
+| Confirmar directiva de reenvío de logs `rsyslog` → Loki | Equipo técnico | 🔴 Pendiente |
+| Enviar diagrama de red a Roberto de Paula / equipo SVA para apoyo de diseño | Marcos Casco | 🔴 Pendiente |
+| Definir política estándar de límites de recursos por proyecto LXD | Equipo técnico | 🔴 Pendiente — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 
 ---
 
@@ -84,6 +98,7 @@
 |---|---|---|
 | Migrar InfraFileRoom (~800 GB) de CentOS 7 a LXD | Alta | 🔴 Pendiente |
 | Definir plan de migración de otros servicios CentOS 7 | Media | 🔴 Pendiente |
+| Onboarding de equipos adicionales (CCR, OMC, AIT/transporte) usando proyectos LXD dedicados | Media | 🔴 Pendiente — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 
 ---
 
@@ -91,6 +106,9 @@
 
 | Acción | Estado |
 |---|---|
+| Solicitar nuevo servidor para un sitio adicional (a través de Roberto de Paula) | 🔴 Pendiente |
+| Evaluar sitios adicionales fuera de los 3 iniciales (candidatos mencionados: IT, Ciudad del Este) | 🟡 Planificación abierta, sin compromiso de fecha |
+| Automatizar la configuración de la malla WireGuard antes de escalar a más sitios | 🔴 Pendiente — ver [RIE-001c en 11_Riesgos.md](11_Riesgos.md) |
 | Configurar VPN para acceso remoto a la Web UI | 🔴 Pendiente |
 | Documentar todos los servicios migrados | 🔴 Pendiente |
 | Establecer procedimientos de DR (Disaster Recovery) | 🔴 Pendiente |
@@ -100,18 +118,21 @@
 ## Dependencias entre hitos
 
 ```
-Instalar CAR1 y FDO1 ──► Unir al cluster
-(independiente de VLAN 411)
+FDO1: interfaz de servicio dedicada ──► Malla WireGuard PFR1↔CAR1↔FDO1 ──► microovn cluster join
+                                                                                    │
+                                                                                    ▼
+                                                              Tercer miembro del cluster
+                                                              (quórum de HA de base de datos)
+                                                                                    │
+                                                                                    ▼
+                                                    Contenedor gateway de servicios en FDO1
 
-VLAN 411 habilitada
-       │
-       └──► Configurar OVN ──► Red cross-site funcional
-                                       │
-                                       ├──► Eliminar proxies temporales
-                                       └──► Despliegue en producción
+Persistir config. WireGuard en netplan (PFR1, CAR1) ──► Enlace inter-sitio resiliente a reinicios
+
+Proyecto LXD con límites definidos ──► Onboarding de equipos adicionales (CCR, OMC, AIT)
 ```
 
-> **Nota:** La instalación de nodos (CAR1, FDO1) y la habilitación de VLAN 411 son acciones **paralelas e independientes**. No es necesario esperar a VLAN 411 para instalar los nodos. Ambas deben completarse antes de configurar OVN.
+> **Nota:** A diferencia de la primera reunión (donde se asumía que la red OVN dependía de habilitar una VLAN 411 compartida entre sitios), el modelo actual desacopla la conectividad inter-sitio (resuelta con WireGuard) de la VLAN local de cada sitio. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md).
 
 ---
 
@@ -121,5 +142,7 @@ VLAN 411 habilitada
 |---|---|
 | Estado actual del cluster | [00_Resumen_Ejecutivo.md](00_Resumen_Ejecutivo.md) |
 | Procedimiento de instalación para nuevos nodos | [04_Instalacion.md](04_Instalacion.md) |
-| Riesgos mientras OVN no esté activo | [11_Riesgos.md](11_Riesgos.md) |
+| Riesgos actuales | [11_Riesgos.md](11_Riesgos.md) |
 | Decisión sobre OVN vs alternativas | [10_Decisiones.md](10_Decisiones.md) |
+| Decisión sobre WireGuard como underlay | [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
+| Decisión sobre proyectos LXD | [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |

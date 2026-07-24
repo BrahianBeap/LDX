@@ -47,19 +47,34 @@ Este proyecto implementa un **cluster LXD distribuido geográficamente** para vi
 | Usuarios con acceso a la UI | ✅ Completado (Daniel, Rocío) |
 | Proxy HTTP configurado para contenedores | ✅ Completado (temporal) |
 | Cloud-init con instalación automática de paquetes | ✅ Demostrado |
-| Nodo CAR1 (Carpinelli) instalado | 🔴 Pendiente |
+| Nodo CAR1 (Carpinelli) instalado | ✅ Completado en la segunda reunión (ver abajo) |
 | Nodo FDO1 (Fernando) instalado | 🔴 Pendiente |
-| VLAN 411 habilitada para red de contenedores | 🔴 Pendiente (requiere Cristian) |
-| OVN funcional entre sitios | 🔴 Pendiente (depende de VLAN 411) |
+| Red de contenedores dedicada habilitada por sitio | ✅ Completado en PFR1 y CAR1 |
+| OVN funcional entre sitios | ✅ Completado entre PFR1 y CAR1 — ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
 | Servicios en producción | 🔴 Pendiente |
+
+---
+
+## Alcance de la segunda reunión (`reunion/segunda_reunion LXD _ Implementacion.vtt`)
+
+| Tarea | Estado |
+|---|---|
+| Diagnóstico de la causa raíz del bloqueo de red entre sitios | ✅ Completado |
+| WireGuard como transporte underlay para OVN entre sitios | ✅ Implementado y probado (PFR1↔CAR1) |
+| CAR1 unido al cluster (segundo miembro, `database-standby`) | ✅ Completado |
+| Contenedores gateway de servicios (patrón por sitio/proyecto) | ✅ Completado en PFR1 y CAR1 |
+| Proyectos LXD para aislamiento multi-tenant | ✅ Adoptado como práctica estándar — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
+| Buenas prácticas operativas (`snap refresh --hold`, NTP, límites de journald, SSH deshabilitado) | ✅ Aplicadas |
+
+Ver el detalle completo en [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
 
 ---
 
 ## Estado actual del proyecto
 
-🟡 El cluster está en **fase de instalación inicial**. El primer nodo (PFR1) es funcional y sirve como referencia para replicar la instalación en los nodos restantes.
+🟡 El cluster está en **fase de implementación activa**, con 2 de 3 sitios iniciales instalados y unidos (PFR1 y CAR1). Falta FDO1 (Fernando) para completar el quórum de alta disponibilidad de la base de datos distribuida.
 
-La red de contenedores (OVN) **aún no está operativa** por falta de la interfaz de red dedicada (VLAN 411) en las VMs. Como solución temporal, los servicios se exponen mediante un dispositivo de proxy reverso sobre la interfaz de gestión.
+La red de contenedores (OVN) **es funcional entre PFR1 y CAR1**, corriendo sobre una malla WireGuard cifrada que sirve de transporte entre sitios geográficamente separados en Capa 3 (ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)). El dispositivo de proxy reverso sobre la interfaz de gestión, usado como solución temporal en la primera reunión, sigue vigente únicamente en sitios donde OVN todavía no está disponible.
 
 ---
 
