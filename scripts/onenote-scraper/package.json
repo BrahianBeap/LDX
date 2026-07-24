@@ -1,0 +1,10 @@
+{
+  "name": "onenote-scraper",
+  "version": "1.0.0",
+  "description": "Captura de solo lectura del OneNote 'Cluster-OSS' via automatizacion de navegador, para actualizar la base de conocimiento LDX",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "playwright": "^1.61.1"
+  }
+}

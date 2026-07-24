@@ -1,2 +1,8 @@
 # Obsidian vault metadata
 .obsidian/
+
+# Dependencias y datos de sesión del scraper de OneNote (nunca commitear
+# node_modules ni el perfil de navegador, que guarda cookies de sesión)
+scripts/onenote-scraper/node_modules/
+scripts/onenote-scraper/edge-profile/
+scripts/onenote-scraper/output/

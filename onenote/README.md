@@ -15,7 +15,9 @@ Microsoft 365; no hay un conector con permisos de administrador disponible
 para leerlo por API. La captura se hizo el **2026-07-24** mediante
 automatización de navegador (Playwright + Edge, con la sesión ya autenticada
 del usuario), recorriendo cada sección y página del notebook y extrayendo el
-texto visible de cada una.
+texto visible de cada una. El script queda guardado en
+[`scripts/onenote-scraper/`](../scripts/onenote-scraper/) para repetir la
+captura cuando el notebook se actualice.
 
 **Limitaciones conocidas de este método:**
 - Es una foto del contenido al momento de la captura — no se actualiza sola.
