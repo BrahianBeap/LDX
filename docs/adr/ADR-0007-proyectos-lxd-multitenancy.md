@@ -107,7 +107,7 @@ Los proyectos LXD son la única alternativa evaluada que resuelve simultáneamen
 
 - [ ] Definir una política estándar (o rangos recomendados) de límites de recursos por proyecto, en lugar de valores ad-hoc por reunión.
 - [ ] Documentar el procedimiento completo de alta de un proyecto nuevo (perfil, contenedor gateway de servicios, límites, grupo) como parte de [06_Operacion.md](../06_Operacion.md).
-- [ ] Evaluar si los proyectos deben tener redes OVN propias y separadas, o compartir la red OVN del proyecto `default` con aislamiento a nivel de dispositivo.
+- [x] Evaluar si los proyectos deben tener redes OVN propias y separadas, o compartir la red OVN del proyecto `default` con aislamiento a nivel de dispositivo. ✅ **Confirmado en servidor real (2026-07-24):** `PRJ-OSS` no tiene redes propias (`lxc project list` muestra `NETWORKS: NO`) — actualmente comparte la red `OVN_1` del proyecto `default`. El aislamiento de `PRJ-OSS` es a nivel de proyecto/grupo de identidad, no de red OVN dedicada.
 
 ---
 

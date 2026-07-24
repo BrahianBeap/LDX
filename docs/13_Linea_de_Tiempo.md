@@ -41,8 +41,8 @@
 | Instalación de LXD y MicroOVN en Carpinelli (CAR1) | ✅ Completado |
 | CAR1 unido al cluster LXD (segundo miembro, `database-standby`) | ✅ Completado |
 | Renombrado de interfaces de red por MAC (`netplan`) para consistencia entre nodos | ✅ Completado en PFR1 y CAR1 |
-| Contenedores gateway de servicios creados (perfil, IPVLAN) en PFR1 y CAR1 | ✅ Completado |
-| Contenedor gateway de operación y mantenimiento (salida a proxy) en PFR1 y CAR1 | ✅ Completado |
+| Contenedores gateway de servicios creados (perfil, IPVLAN) en PFR1 y CAR1 | ✅ Creados (`PFR-OSS-GW-SRV`, `CAR-OSS-GW-SRV`) — 🔴 aún **detenidos**, pendientes de activación para producción (verificado en servidor real, ver nota abajo) |
+| Contenedor gateway de operación y mantenimiento (salida a proxy) en PFR1 y CAR1 | ✅ Creados (`PFR-GW-OAM`, `CAR-GW-OAM`, proyecto `default`) — 🔴 aún **detenidos**, pendientes de activación |
 | Decisión y adopción de proyectos LXD para multi-tenancy | ✅ Completado — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 | Primer proyecto LXD con límites de recursos creado (ejemplo/demostración) | ✅ Completado |
 | `snap refresh --hold` aplicado en PFR1 y CAR1 | ✅ Completado |
@@ -50,6 +50,8 @@
 | `rsyslog` instalado para reenvío de logs a Loki externo | 🟡 Instalado; directiva de reenvío no confirmada — Pendiente de validación |
 | Documentación técnica migrada a OneNote compartido con el equipo | ✅ Completado |
 | Diagrama de arquitectura de networking (dibujo detallado) | 🔴 Pendiente — Norberto Núñez se comprometió a completarlo y convocar una nueva reunión |
+
+> **✅ Verificación en servidor real (`pfr-oss` / PFR1, 2026-07-24):** se confirmó por inspección directa (`lxc cluster list`, `lxc list`, `lxc project list`, `lxc network list`) que `pfr.1` (database-leader) y `car.1` (database-standby) están ambos `ONLINE`; la red `OVN_1` existe y está `CREATED`, con dos contenedores de prueba (`C-PFR-1` 192.168.0.100, `C-CAR-1` 192.168.0.101) **en ejecución** y con conectividad cruzada confirmada entre sitios; el proyecto `PRJ-OSS` existe con sus perfiles y contenedores gateway. Esto eleva de 🟡 inferencia a ✅ hecho confirmado varios de los hitos de esta tabla que hasta ahora dependían solo del relato de la reunión.
 
 ---
 

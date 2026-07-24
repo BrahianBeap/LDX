@@ -14,7 +14,7 @@
 | **Impacto** | Los contenedores de distintos nodos del cluster no podían comunicarse entre sí |
 | **Severidad** | Alta (mientras estuvo sin resolver) — bloqueaba la propuesta de valor principal del cluster |
 | **Solución aplicada** | WireGuard como capa de transporte underlay cifrada entre sitios, con el túnel de OVN corriendo por encima. Ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
-| **Estado actual** | ✅ Resuelto y verificado entre PFR1 y CAR1. 🔴 Pendiente repetir el procedimiento para FDO1 cuando se incorpore al cluster |
+| **Estado actual** | ✅ Resuelto y verificado entre PFR1 y CAR1 — confirmado de forma independiente por inspección directa del servidor real el 2026-07-24 (`lxc network list` muestra `OVN_1` `CREATED`, con contenedores de prueba `C-PFR-1`/`C-CAR-1` en ejecución en ambos sitios). 🔴 Pendiente repetir el procedimiento para FDO1 cuando se incorpore al cluster |
 | **Responsable** | Norberto Núñez |
 
 ---
