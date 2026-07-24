@@ -19,16 +19,15 @@
 
 ---
 
-## RIE-001b — Configuración de WireGuard no persistida (riesgo de pérdida del enlace inter-sitio)
+## RIE-001b — Configuración de WireGuard no persistida (riesgo de pérdida del enlace inter-sitio) *(✅ Resuelto)*
 
 | Campo | Detalle |
 |---|---|
-| **Descripción** | La dirección IP de la interfaz WireGuard en PFR1 y CAR1 fue configurada manualmente durante la sesión, sin persistirla en `netplan` |
+| **Descripción** | Durante la reunión, la dirección IP de la interfaz WireGuard en PFR1 y CAR1 se había configurado manualmente (`ip addr add`), sin persistirla en `netplan` |
 | **Causa** | Falta de tiempo para completar la configuración persistente durante la demostración |
-| **Impacto** | Si el host se reinicia, la interfaz WireGuard pierde su IP y el enlace entre sitios (y por lo tanto la red OVN entre ellos) queda caído hasta que se reconfigure manualmente |
-| **Severidad** | Alta — un reinicio de rutina (ej. mantenimiento, actualización del sistema operativo) puede interrumpir la conectividad entre sitios sin aviso |
-| **Mitigación actual** | Ninguna — pendiente de aplicar |
-| **Acción requerida** | Persistir la configuración de IP, claves y rutas de WireGuard en `netplan` en PFR1 y CAR1. Ver [04_Instalacion.md](04_Instalacion.md) |
+| **Impacto (mientras estuvo vigente)** | Si el host se reiniciaba, la interfaz WireGuard perdía su IP y el enlace entre sitios (y por lo tanto la red OVN entre ellos) quedaba caído hasta reconfigurar manualmente |
+| **Severidad** | Alta (mientras estuvo sin resolver) |
+| **Estado actual** | ✅ Resuelto — confirmado en [`onenote/Clúster-OSS/Clúster/Netplan.md`](../onenote/Clúster-OSS/Clúster/Netplan.md): tanto PFR1 como CAR1 tienen el túnel `wg0` (dirección IP, clave privada, puerto, peer y rutas) definido dentro de `/etc/netplan/00-installer-config.yaml` como bloque `tunnels:`, y aplicado con `netplan try`. Esto sí sobrevive un reinicio |
 | **Responsable** | Norberto Núñez |
 
 ---
@@ -117,30 +116,26 @@
 
 ---
 
-## RIE-007 — IP de proxy HTTP sin confirmar
+## RIE-007 — IP de proxy HTTP sin confirmar *(✅ Resuelto)*
 
 | Campo | Detalle |
 |---|---|
-| **Descripción** | La dirección exacta del proxy HTTP (mencionada como `32.x.x.x:3128` en la reunión) no fue confirmada con certeza |
-| **Causa** | Durante la reunión hubo confusión entre `31.100` y `32.x.x.x` en la discusión de la IP |
-| **Impacto** | Si la IP configurada es incorrecta, los contenedores no pueden acceder a internet |
+| **Descripción** | Durante la reunión hubo confusión entre `31.100` y `32.x.x.x` al mencionar de memoria la IP del proxy HTTP corporativo |
+| **Impacto (mientras estuvo vigente)** | Si la IP configurada era incorrecta, los contenedores no podían acceder a internet |
 | **Severidad** | Baja (detectable fácilmente) |
-| **Mitigación actual** | Verificar con `lxc config get core.http_proxy` y probar conectividad desde un contenedor |
-| **Acción requerida** | Confirmar la IP correcta del proxy con Nicolás (equipo de seguridad) |
+| **Estado actual** | ✅ Confirmado: `10.150.32.100:3128` (alias interno "proxy SDI"). Ver [`onenote/Clúster-OSS/Clúster/Proxy.md`](../onenote/Clúster-OSS/Clúster/Proxy.md) y [05_Configuracion.md](05_Configuracion.md) |
 | **Responsable** | Equipo técnico → Nicolás |
 
 ---
 
-## RIE-008 — IPs de operadores en firewall sin validar
+## RIE-008 — IPs de operadores en firewall sin validar *(✅ Resuelto)*
 
 | Campo | Detalle |
 |---|---|
-| **Descripción** | Las IPs de los operadores (Daniel, Rocío) agregadas al firewall fueron capturadas parcialmente durante la reunión |
-| **Causa** | La transcripción VTT no capturó correctamente las IPs completas |
-| **Impacto** | Si las IPs del firewall son incorrectas, los operadores no pueden acceder a la Web UI |
+| **Descripción** | Las IPs de los operadores (Daniel, Rocío) agregadas al firewall habían sido capturadas parcialmente durante la reunión (la transcripción VTT no capturó las IPs completas) |
+| **Impacto (mientras estuvo vigente)** | Si las IPs del firewall eran incorrectas, los operadores no podían acceder a la Web UI |
 | **Severidad** | Baja |
-| **Mitigación actual** | Verificar acceso con cada operador |
-| **Acción requerida** | Que cada operador confirme su IP pública y verificar que está en las rich rules del firewall |
+| **Estado actual** | ✅ Confirmadas las 4 IPs (Norberto, Rocío, Daniel, Elías) — ver [04_Instalacion.md — Paso 6](04_Instalacion.md) y [`onenote/Clúster-OSS/Clúster/Firewall.md`](../onenote/Clúster-OSS/Clúster/Firewall.md). El riesgo estructural de fondo (reglas por IP individual en lugar de por identidad/VPN) sigue siendo una limitación de diseño — ver recomendación A-08 en [15_Revision_Arquitectonica.md](15_Revision_Arquitectonica.md) |
 | **Responsable** | Equipo técnico |
 
 ---
@@ -165,11 +160,11 @@
 
 | Severidad | Riesgos |
 |---|---|
-| **Alta** | RIE-001b (WireGuard no persistido), RIE-004 (CentOS 7 EOL) |
+| **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-002 (2/3 nodos), RIE-006 (sin backup) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN) |
-| **Baja** | RIE-007 (IP proxy), RIE-008 (IPs firewall), RIE-009 (alta de servicio CAR1) |
-| **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1) |
+| **Baja** | RIE-009 (alta de servicio CAR1) |
+| **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 
 ---
 

@@ -113,6 +113,30 @@ El sistema es un **cluster LXD distribuido en 3 sitios geográficos**. Cada siti
 
 > **Importante:** Mientras un sitio no tenga la malla WireGuard configurada hacia los demás, sus contenedores **no pueden comunicarse** con contenedores de otros sitios. Ver [11_Riesgos.md](11_Riesgos.md) y [10_Decisiones.md](10_Decisiones.md).
 
+### Direccionamiento IP confirmado
+
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Planning/`](../onenote/Clúster-OSS/Planning/)).
+
+**Red OVN_1 (`192.168.0.0/24`)** — red virtualizada este-oeste entre contenedores:
+
+| Rango/IP | Asignación | Uso |
+|---|---|---|
+| `.1` – `.5` | Fija | Gateways de servicio por proyecto (`PFR-OSS-GW-SRV`, `CAR-OSS-GW-SRV`, y reservadas para `CDE`, `FDO`, `IT` cuando se incorporen) |
+| `.6` – `.10` | Fija | Gateways de operación y mantenimiento por sitio (proyecto `default`: `PFR-GW-OAM`, `CAR-GW-OAM`, y reservadas para `CDE`, `FDO`, `IT`) |
+| `.11` – `.99` | Fija (reservado) | Sin asignar todavía |
+| `.100` – `.253` | DHCP | Contenedores de aplicación (asignación dinámica vía OVN) |
+| `.254` | Fija | Gateway de la red (`OVN_1.ipv4.address`) |
+
+**IPs y VLANs por host** (interfaz `nic_srv1`, red de servicio del proyecto `PRJ-OSS`):
+
+| Sitio | Host | IP de gestión (`nic_oam`) | VLAN gestión | IP de servicio (`nic_srv1`) | VLAN servicio |
+|---|---|---|---|---|---|
+| Franco | `pfr-oss` | `10.143.11.228/29` | 410 | `10.143.11.8/26` | 411 |
+| Carpinelli | `car-oss` | `192.168.91.116/27` | — | `192.168.91.117/27` | — |
+| Fernando | `fdo-oss` | `10.150.32.x/24` | 701 | `10.11.11.x/24` | 5 |
+
+Esto confirma lo aclarado en [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md): la VLAN de servicio **no es la misma** entre sitios (411 en Franco, 5 en Fernando) — lo único que debe coincidir en todo el cluster es el **nombre lógico** de la interfaz (`nic_srv1`), no su VLAN física.
+
 ### Patrón de contenedor "gateway de servicios"
 
 Cada sitio/proyecto tiene un contenedor dedicado que actúa como **router/gateway de entrada y salida de servicios** para ese sitio (ejemplo: `presidente-franco-ss-gw` en Franco). Este contenedor:

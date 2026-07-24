@@ -176,6 +176,18 @@ Ver la configuración en [05_Configuracion.md](05_Configuracion.md).
 
 ---
 
+## LL-015 — Ubuntu 26.04 LTS reemplaza `sudo` por `sudo-rs` y eso puede romper la instalación de SSSD/LDAP
+
+**¿Qué pasó?**
+Durante la reunión, Norberto Núñez mencionó al pasar que Ubuntu 26.04 LTS "tiene una pequeña diferencia con 24.04, que es que el sudo es distinto" y que había que "poner el uno" en un prompt con dos alternativas — sin más detalle audible en la grabación. La bitácora técnica (OneNote) confirma el contexto exacto: al instalar `sssd`/`sssd-ldap` en Ubuntu 26.04 LTS, el sistema pregunta con `update-alternatives --config sudo` cuál de las dos implementaciones de `sudo` usar — la clásica (`sudo`) o la reescritura en Rust (`sudo-rs`), que Canonical introdujo como opción en 26.04.
+
+**Lección:**
+En hosts con Ubuntu 26.04 LTS, ejecutar `update-alternatives --config sudo` explícitamente y elegir la opción clásica (`sudo`, no `sudo-rs`) antes o después de instalar SSSD, para evitar incompatibilidades con la integración LDAP/PAM que asume el comportamiento tradicional de `sudo`. Este paso no existe en Ubuntu 24.04 LTS.
+
+Ver el procedimiento completo de SSSD/LDAP en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../onenote/Clúster-OSS/Clúster/SSSD.md).
+
+---
+
 ## Documentos relacionados
 
 | Tema | Documento |

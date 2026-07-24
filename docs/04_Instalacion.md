@@ -410,11 +410,16 @@ firewalld gestiona el firewall del host. Las rich rules permiten especificar el 
 
 ### IPs a agregar
 
-| Operador | IP | Estado |
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Clúster/Firewall.md`](../onenote/Clúster-OSS/Clúster/Firewall.md)). Son IPs internas asignadas por la VPN corporativa (rango `10.150.60.0/24`), no IPs públicas/domiciliarias.
+
+| Operador | IP | Puertos habilitados |
 |---|---|---|
-| Daniel Medina | 🔴 Pendiente de validación (IP parcialmente capturada en reunión) | Pendiente |
-| Rocío Duarte | 🔴 Pendiente de validación | Pendiente |
-| Otros operadores | 🔴 Pendiente de validación | Pendiente |
+| Norberto Núñez | `10.150.60.92` | 22 (SSH), 8444 |
+| Rocío Duarte | `10.150.60.66` | 22 (SSH), 8444 |
+| Daniel Medina | `10.150.60.94` | 22 (SSH), 8444 |
+| Elías Alfonzo | `10.150.60.85` | 22 (SSH), 8444 |
+
+Además, la regla de firewall base incluye: `--set-default-zone trusted`, remueve el servicio `ssh` y `dhcpv6-client` de la zona por defecto, y agrega reglas específicas para los puertos del cluster LXD (8443), OVN (6641–6644, 6686 TCP y 6081 UDP) y WireGuard (51820 UDP) con origen restringido a las IPs de los otros miembros del cluster — ver el detalle completo por sitio en [`onenote/Clúster-OSS/Clúster/Firewall.md`](../onenote/Clúster-OSS/Clúster/Firewall.md).
 
 > **Nota — CAR1 (Carpinelli):** el puerto de gestión de LXD (8444) para este nodo aún debe darse de alta formalmente como "alta de servicio" ante el equipo de seguridad, además de estar inventariado. La VPN corporativa ya reconoce el servidor, pero el puerto específico de LXD todavía no. Ver [11_Riesgos.md](11_Riesgos.md).
 
@@ -441,12 +446,12 @@ Permitir que LXD (y los contenedores) descarguen imágenes y paquetes a través 
 ### Comandos
 
 ```bash
-lxc config set core.http_proxy http://PROXY_IP:3128
-lxc config set core.https_proxy http://PROXY_IP:3128
-lxc config set core.proxy_ignore_hosts 127.0.0.1,localhost
+lxc config set core.http_proxy http://10.150.32.100:3128
+lxc config set core.https_proxy http://10.150.32.100:3128
+lxc config set core.proxy_ignore_hosts 10.0.0.0/8,192.168.0.0/16,172.16.0.0/12,169.254.0.0/16
 ```
 
-> **Nota:** La IP exacta del proxy (🔴 Pendiente de validación — se mencionó `32.x.x.x:3128` en la reunión) debe ser confirmada con Nicolás (equipo de seguridad).
+> **Nota:** IP del proxy confirmada (`10.150.32.100:3128`, alias interno "SDI"). Ver el detalle completo de las tres capas de proxy que hay que configurar (APT, snap y LXD) en [05_Configuracion.md](05_Configuracion.md).
 
 ### Explicación
 

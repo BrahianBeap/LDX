@@ -47,7 +47,7 @@
 | Primer proyecto LXD con límites de recursos creado (ejemplo/demostración) | ✅ Completado |
 | `snap refresh --hold` aplicado en PFR1 y CAR1 | ✅ Completado |
 | NTP (`systemd-timesyncd`) configurado en hosts y contenedores gateway | ✅ Completado |
-| `rsyslog` instalado para reenvío de logs a Loki externo | 🟡 Instalado; directiva de reenvío no confirmada — Pendiente de validación |
+| `rsyslog` instalado para reenvío de logs a Loki externo | ✅ Completado y directiva confirmada — ver [05_Configuracion.md](05_Configuracion.md) |
 | Documentación técnica migrada a OneNote compartido con el equipo | ✅ Completado |
 | Diagrama de arquitectura de networking (dibujo detallado) | 🔴 Pendiente — Norberto Núñez se comprometió a completarlo y convocar una nueva reunión |
 
@@ -75,10 +75,9 @@
 
 | Acción | Responsable | Estado |
 |---|---|---|
-| Persistir configuración de IP de WireGuard en `netplan` (PFR1 y CAR1) | Norberto Núñez | 🔴 Pendiente — ver [RIE-001b en 11_Riesgos.md](11_Riesgos.md) |
+| Persistir configuración de IP de WireGuard en `netplan` (PFR1 y CAR1) | Norberto Núñez | ✅ Completado — ver [RIE-001b en 11_Riesgos.md](11_Riesgos.md) |
 | Completar y compartir diagrama de arquitectura de networking | Norberto Núñez | 🔴 Pendiente |
 | Gestionar alta de servicio del puerto 8444 (gestión LXD) para CAR1 | Marcos Casco | 🔴 Pendiente — ver [RIE-009 en 11_Riesgos.md](11_Riesgos.md) |
-| Confirmar directiva de reenvío de logs `rsyslog` → Loki | Equipo técnico | 🔴 Pendiente |
 | Enviar diagrama de red a Roberto de Paula / equipo SVA para apoyo de diseño | Marcos Casco | 🔴 Pendiente |
 | Definir política estándar de límites de recursos por proyecto LXD | Equipo técnico | 🔴 Pendiente — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 

@@ -147,6 +147,28 @@ Una política de seguridad de VMware no permite que, por la interfaz virtual asi
 
 ---
 
+## SSSD (autenticación LDAP)
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | SSSD (System Security Services Daemon) + `sssd-ldap` |
+| **Función** | Autenticación e identidad de sistema operativo (login SSH/consola y `sudo`) de los hosts del cluster contra el LDAP corporativo, en lugar de usuarios locales |
+| **Responsabilidad** | Resolver identidad y grupos de los operadores contra `ldap.sis.personal.net.py`, y autorizar `sudo` vía `sudo_provider = ldap` |
+| **Dependencias** | Certificado de la cadena CA del LDAP corporativo instalado en `/usr/local/share/ca-certificates/` (`update-ca-certificates`), paquetes `sssd sssd-ldap libsss-sudo oddjob-mkhomedir` |
+| **Entradas** | `/etc/sssd/sssd.conf` (dominio, `ldap_search_base`, `simple_allow_groups`) |
+| **Salidas** | Sesiones de usuario autenticadas contra LDAP; creación automática de `$HOME` vía `pam-auth-update --enable mkhomedir` |
+| **Impacto si falla** | Los operadores no pueden iniciar sesión en el host por su cuenta LDAP (afecta acceso administrativo al SO, no al login de LXD vía TLS/tokens, que es independiente) |
+| **Cómo verificar** | `systemctl status sssd` — debe estar `active (running)`. Login de prueba con un usuario del grupo permitido |
+| **Restricción crítica (Ubuntu 26.04 LTS)** | Ejecutar `update-alternatives --config sudo` y elegir la implementación clásica de `sudo` (no `sudo-rs`) — ver [LL-015 en 12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md) |
+
+### Grupos con acceso permitido
+
+`simple_allow_groups` restringe el login a: `seguridad`, `css`, `SVA`, `sva_tec_ps`, `SegInf_ps`, `SegInf`, `nunezno_opr`, `AK402_opr`. Agregar un grupo nuevo a esta lista es la forma de dar acceso de sistema operativo (distinto del acceso al grupo `lxd`, ver [06_Operacion.md](06_Operacion.md)) a un equipo adicional.
+
+Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../onenote/Clúster-OSS/Clúster/SSSD.md).
+
+---
+
 ## cloud-init
 
 | Campo | Valor |

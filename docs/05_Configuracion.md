@@ -12,13 +12,39 @@ El proxy HTTP que LXD usa para comunicarse con internet: descargar imágenes de 
 
 ### Parámetros
 
-| Parámetro | Archivo/Comando | Función | Ejemplo |
-|---|---|---|---|
-| `core.http_proxy` | `lxc config set` | Proxy para tráfico HTTP de LXD | `http://32.x.x.x:3128` |
-| `core.https_proxy` | `lxc config set` | Proxy para tráfico HTTPS de LXD | `http://32.x.x.x:3128` |
-| `core.proxy_ignore_hosts` | `lxc config set` | Hosts sin proxy (acceso directo) | `127.0.0.1,localhost` |
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Clúster/Proxy.md`](../onenote/Clúster-OSS/Clúster/Proxy.md)) — el proxy corporativo (alias interno "SDI") es `10.150.32.100:3128`.
 
-> **Nota:** La IP del proxy (🔴 Pendiente de validación) debe confirmarse con Nicolás (equipo de seguridad). En la reunión se mencionó `32.x.x.x:3128`.
+| Parámetro | Archivo/Comando | Función | Valor |
+|---|---|---|---|
+| `core.http_proxy` | `lxc config set` | Proxy para tráfico HTTP de LXD | `http://10.150.32.100:3128` |
+| `core.https_proxy` | `lxc config set` | Proxy para tráfico HTTPS de LXD | `http://10.150.32.100:3128` |
+| `core.proxy_ignore_hosts` | `lxc config set` | Hosts/redes sin proxy (acceso directo) | `10.0.0.0/8,192.168.0.0/16,172.16.0.0/12,169.254.0.0/16` |
+
+### Configuración completa en el host (APT, snap y LXD)
+
+El mismo proxy debe configurarse en tres capas independientes del host — configurar solo `core.http_proxy` de LXD **no** alcanza para que `apt` o `snap` funcionen:
+
+```bash
+proxy_sdi=http://10.150.32.100:3128
+no_proxy=10.0.0.0/8,192.168.0.0/16,172.16.0.0/12,169.254.0.0/16
+
+# APT
+cat > /etc/apt/apt.conf.d/99proxy.conf <<HERE
+Acquire::http::Proxy "$proxy_sdi";
+Acquire::https::Proxy "$proxy_sdi";
+HERE
+
+# SNAP
+snap set system proxy.http=$proxy_sdi
+snap set system proxy.https=$proxy_sdi
+
+# LXD
+lxc config set core.proxy_http  $proxy_sdi
+lxc config set core.proxy_https $proxy_sdi
+lxc config set core.proxy_ignore_hosts $no_proxy
+```
+
+> **Nota:** `no_proxy`/`core.proxy_ignore_hosts` excluye todo el rango de redes privadas RFC1918 y el rango link-local (usado por WireGuard, ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)) para que el tráfico interno del cluster no intente salir por el proxy corporativo.
 
 ### Ver la configuración actual
 ```bash
@@ -27,7 +53,7 @@ lxc config show
 ```
 
 ### Impacto de configuración incorrecta
-Sin el proxy configurado correctamente, LXD no puede descargar imágenes de contenedores ni el cloud-init puede instalar paquetes via APT.
+Sin el proxy configurado correctamente en las tres capas, LXD no puede descargar imágenes de contenedores, `apt`/`snap` no pueden instalar o actualizar paquetes, y el cloud-init de los contenedores (que replica esta misma configuración vía `apt.http_proxy`/`apt.https_proxy` en su `user-data`) no puede completar su primer arranque.
 
 ---
 
@@ -292,13 +318,161 @@ Que los logs del sistema operativo de cada host del cluster se envíen a un serv
 
 ### Configuración (rsyslog)
 
-Agregar en la configuración de `rsyslog` (ej. `/etc/rsyslog.d/`) una directiva de reenvío hacia el endpoint de Loki correspondiente. 🔴 Sintaxis exacta y endpoint: Pendiente de validación — se instaló el paquete pero la directiva de reenvío no quedó documentada en la sesión.
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Clúster/Syslog.md`](../onenote/Clúster-OSS/Clúster/Syslog.md)):
+
+```bash
+echo 'action(type="omfwd" name="fw-To-Svatool-Loki" Target="10.150.31.68" Port="1514" Protocol="tcp" Template="RSYSLOG_SyslogProtocol23Format" queue.filename="fw-To-Svatool-Loki" queue.size="5000" queue.type="fixedarray" queue.maxFileSize="10M" queue.saveOnShutdown="on")' > /etc/rsyslog.d/To-Svatool-Loki.conf
+
+systemctl restart rsyslog
+```
+
+| Parámetro | Valor | Función |
+|---|---|---|
+| `Target` | `10.150.31.68` (SVATOOL) | IP del servidor Loki externo al cluster |
+| `Port` / `Protocol` | `1514` / `tcp` | Puerto y protocolo de recepción de syslog en el destino |
+| `Template` | `RSYSLOG_SyslogProtocol23Format` | Formato estándar RFC 5424 |
+| `queue.type=fixedarray`, `queue.size=5000` | — | Cola en memoria para no bloquear el envío si el destino está momentáneamente inaccesible |
+| `queue.saveOnShutdown=on` | — | Persiste la cola a disco si el servicio se detiene, evitando pérdida de logs en tránsito |
+
+El mismo servidor SVATOOL (`10.150.31.68`) recibe además las métricas de `prometheus-node-exporter` (puerto 9100) y del exportador de LXD (puerto 8555) — ver reglas de firewall en [`onenote/Clúster-OSS/Clúster/Firewall.md`](../onenote/Clúster-OSS/Clúster/Firewall.md).
 
 ### Por qué un Loki externo al cluster
 Si los hosts del cluster LXD apuntaran a un Loki alojado dentro del mismo cluster, una falla del cluster dejaría al equipo sin logs justo en el momento en que más se necesitan para diagnosticar. Ver [12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md).
 
 ### Cómo verificar
 🔴 Pendiente de validación — confirmar recepción de logs en el Loki destino.
+
+---
+
+## Creación de redes LXD (OVN_1 y bridges de gestión)
+
+### ¿Qué controla?
+Las redes lógicas de LXD que existen **antes** de poder asignarlas a un proyecto o perfil. Se crean una sola vez en el proyecto `default` (ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) sobre por qué los proyectos comparten estas redes en lugar de tener redes propias).
+
+### Comandos
+
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto default.md`](../onenote/Clúster-OSS/Proyectos/Proyecto%20default.md)):
+
+```bash
+# Red OVN para conectividad este-oeste entre contenedores
+lxc network create UplinkOvn1 --type=bridge ipv4.address=none ipv6.address=none ipv4.routes=192.168.0.0/24
+lxc network create OVN_1      --type=ovn    network=UplinkOvn1  ipv4.address=none
+
+# Bridge para salida por la interfaz de gestión del host (usado por los gateway de OAM)
+lxc network create lxdbr_OAM --type=bridge
+
+# Bridge para conectividad este-oeste sobre la malla WireGuard (uno por miembro, con el mismo nombre)
+lxc network create lxdbr_wg0 --type bridge bridge.external_interfaces=wg0 --target pfr.1
+lxc network create lxdbr_wg0 --type bridge bridge.external_interfaces=wg0 --target car.1
+lxc network create lxdbr_wg0 --type=bridge ipv4.address=none ipv6.address=none
+```
+
+| Red | Tipo | Función |
+|---|---|---|
+| `UplinkOvn1` | bridge | Red física/uplink que sostiene a `OVN_1` — sin IP propia, solo enruta hacia `192.168.0.0/24` |
+| `OVN_1` | ovn | Red virtualizada este-oeste entre contenedores (ver el esquema de IPAM en [02_Arquitectura.md](02_Arquitectura.md)) |
+| `lxdbr_OAM` | bridge | Salida de los contenedores gateway de operación y mantenimiento hacia la interfaz de gestión del host |
+| `lxdbr_wg0` | bridge | Vincula la interfaz física `wg0` (WireGuard, ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)) como bridge — se crea una vez por miembro del cluster con `--target`, más una definición general sin target |
+
+> **Nota:** `lxc network create` con `--target` configura la red **solo en ese miembro** del cluster (necesario porque cada miembro tiene su propia interfaz física `wg0`); sin `--target`, la configuración se aplica a nivel de cluster.
+
+### Cómo verificar
+```bash
+lxc network list
+# Deben aparecer OVN_1, UplinkOvn1, lxdbr_OAM y lxdbr_wg0 en estado CREATED
+```
+
+---
+
+## Perfil y contenedor "gateway de operación y mantenimiento" (`PRF-GW-OAM`)
+
+### ¿Qué controla?
+El contenedor por sitio que da salida a internet (vía el proxy corporativo) a las tareas de gestión del propio cluster — actualización de paquetes, descarga de imágenes — separado del contenedor "gateway de servicios" de cada proyecto (ver [02_Arquitectura.md](02_Arquitectura.md)).
+
+### Comandos
+
+✅ Confirmado (ejemplo real para Franco/PFR1; fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto default.md`](../onenote/Clúster-OSS/Proyectos/Proyecto%20default.md)):
+
+```bash
+lxc profile create PRF-GW-OAM
+lxc profile edit   PRF-GW-OAM <<HERE
+name: PRF-Proxy
+description: Salida por la interface de gestión del host
+devices:
+  eth0:
+    network: lxdbr_OAM
+    type: nic
+  eth1:
+    network: OVN_1
+    type: nic
+  root:
+    path: /
+    pool: local
+    size: 5GiB
+    type: disk
+config:
+  limits.cpu: '1'
+  limits.memory: 1GiB
+  limits.processes: '500'
+  cloud-init.user-data: |
+    #cloud-config
+    apt:
+      http_proxy: "http://10.150.32.100:3128"
+      https_proxy: "http://10.150.32.100:3128"
+    package_update: true
+    package_upgrade: true
+    packages:
+      - firewalld
+HERE
+
+lxc launch ubuntu-minimal:resolute PFR-GW-OAM --profile PRF-GW-OAM
+```
+
+Para replicar el mismo contenedor en otro miembro (ej. Carpinelli), se copia la instancia existente en lugar de relanzarla desde cero, y se le ajusta la IP de su interfaz de servicio:
+
+```bash
+lxc copy PFR-GW-OAM CAR-GW-OAM --profile PRF-GW-OAM --target car.1
+lxc config set CAR-GW-OAM cloud-init.network-config='#cloud-config
+version: 2
+ethernets:
+  eth0:
+    dhcp4: true
+    dhcp6: false
+  eth1:
+    dhcp4: false
+    dhcp6: false
+    addresses:
+      - 192.168.0.8/24'
+```
+
+Dentro de cada instancia, se deshabilita SSH y se configura el firewall como router (mismo criterio que el gateway de servicios, ver [LL-013 en 12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md)):
+
+```bash
+lxc shell PFR-GW-OAM
+systemctl stop ssh ssh.socket
+systemctl disable ssh ssh.socket
+systemctl mask ssh
+
+firewall-cmd --permanent --set-default-zone drop
+firewall-cmd --permanent --zone external --change-interface eth0
+firewall-cmd --permanent --zone external --remove-service ssh
+firewall-cmd --permanent --zone internal --change-interface eth1
+firewall-cmd --permanent --zone internal --remove-service ssh
+firewall-cmd --permanent --zone internal --remove-service samba-client
+firewall-cmd --permanent --zone internal --remove-service mdns
+firewall-cmd --permanent --zone internal --remove-service dhcpv6-client
+firewall-cmd --permanent --zone external --set-target=ACCEPT
+firewall-cmd --permanent --zone internal --set-target=ACCEPT
+firewall-cmd --reload
+```
+
+### Cómo verificar
+```bash
+lxc list --project default
+# PFR-GW-OAM / CAR-GW-OAM deben aparecer (RUNNING una vez activados para producción)
+```
+
+> **Nota:** al 2026-07-24, estos contenedores existen creados en ambos sitios pero **detenidos** — ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
 
 ---
 
@@ -362,6 +536,96 @@ lxc auth group list
 ### Recomendación del equipo
 
 ✅ A partir de esta reunión, **todo trabajo nuevo de un equipo/área se hace en un proyecto dedicado**, no en `default`. Ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md).
+
+### Ejemplo real completo: proyecto `PRJ-OSS`
+
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto PRJ-OSS.md`](../onenote/Clúster-OSS/Proyectos/Proyecto%20PRJ-OSS.md)) — este es el procedimiento real aplicado, como referencia concreta de la plantilla genérica de arriba:
+
+```bash
+# 1. Crear el proyecto
+lxc project create PRJ-OSS
+
+# 2. Definir límites y restricciones
+lxc project set PRJ-OSS \
+  limits.networks=2 \
+  restricted.networks.access=nic_srv1,OVN_1 \
+  restricted.devices.nic=allow \
+  features.networks=false features.networks.zones=true \
+  restricted=true
+```
+
+`restricted.networks.access` es la forma concreta de limitar a qué redes puede llegar un proyecto sin darle una red OVN propia (ver [ADR-0007 — pendiente resuelto](adr/ADR-0007-proyectos-lxd-multitenancy.md)): `PRJ-OSS` solo puede usar `OVN_1` (este-oeste) y `nic_srv1` (servicio local del sitio), no cualquier otra red del cluster.
+
+```bash
+# 3. Crear el perfil del gateway de servicios (uno por sitio)
+lxc profile create PRF-PFR-OSS-GW-SRV --project PRJ-OSS
+lxc profile edit   PRF-PFR-OSS-GW-SRV --project PRJ-OSS <<HERE
+name: PRF-PFR-OSS-GW-SRV
+description: Perfil para Gateway de networking para servicios entre los contenedores y la red corporativa
+devices:
+  eth0:
+    network: OVN_1
+    type: nic
+  eth1:
+    mode: l2
+    nictype: ipvlan
+    parent: nic_srv1
+    type: nic
+  root:
+    path: /
+    pool: local
+    size: 5GiB
+    type: disk
+config:
+  limits.cpu: '1'
+  limits.memory: 1GiB
+  limits.processes: '500'
+  cloud-init.user-data: |
+    #cloud-config
+    apt:
+      http_proxy: "http://10.150.32.100:3128"
+      https_proxy: "http://10.150.32.100:3128"
+    package_update: true
+    package_upgrade: true
+    packages:
+      - firewalld
+  cloud-init.network-config: |
+    #cloud-config
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: false
+        dhcp6: false
+        addresses:
+          - 192.168.0.1/24
+        routes:
+          - to: 10.150.32.100
+            via: 192.168.0.6
+      eth1:
+        dhcp4: false
+        dhcp6: false
+        addresses:
+          - 10.143.11.8/26
+        nameservers:
+          addresses:
+            - 10.129.4.176
+            - 10.129.4.177
+        routes:
+          - to: default
+            via: 10.143.11.1
+HERE
+
+# 4. Lanzar la instancia y endurecerla (SSH deshabilitado, firewall como router)
+lxc launch ubuntu-minimal:resolute PFR-OSS-GW-SRV --profile PRF-PFR-OSS-GW-SRV --project PRJ-OSS
+```
+
+Para Carpinelli, se repite el mismo patrón con un perfil propio (`PRF-CAR-OSS-GW-SRV`, misma estructura con IPs distintas) y se copia la instancia al nuevo miembro:
+
+```bash
+lxc copy PFR-OSS-GW-SRV CAR-OSS-GW-SRV --profile PRF-CAR-OSS-GW-SRV --target car.1 --project PRJ-OSS
+```
+
+> **Nota:** la ruta `via: 192.168.0.6` en `eth0` apunta al contenedor `PFR-GW-OAM`/`CAR-GW-OAM` (gateway de operación y mantenimiento) — es cómo el gateway de servicios sale a internet a través del proxy corporativo sin tener él mismo una salida directa. Ver la sección anterior.
 
 ---
 
