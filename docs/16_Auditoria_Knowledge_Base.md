@@ -293,7 +293,7 @@ La tabla del resumen dice para autenticación: "🔴 Pendiente de validación ot
 ### INC-003 — `ADR-0003` referencia de riesgo incorrecta
 
 En la sección Consecuencias/Riesgos, `ADR-0003` dice:
-> "La falla del pool ZFS es un incidente crítico. Mitigación: solicitar backup de VM a SBA/AIT. Ver [11_Riesgos.md — RIE-006](../11_Riesgos.md)."
+> "La falla del pool ZFS es un incidente crítico. Mitigación: solicitar backup de VM a SBA/AIT. Ver [11_Riesgos.md — RIE-006](11_Riesgos.md)."
 
 RIE-006 trata sobre "Sin política de backup documentada". El riesgo específico de falla del pool ZFS es más cercano a RIE-002 (el único nodo activo) o debería ser su propio ítem de riesgo. La referencia a RIE-006 es imprecisa.
 

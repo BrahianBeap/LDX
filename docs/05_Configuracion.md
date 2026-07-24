@@ -351,7 +351,7 @@ Las redes lógicas de LXD que existen **antes** de poder asignarlas a un proyect
 
 ### Comandos
 
-✅ Confirmado (fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto default.md`](../onenote/Clúster-OSS/Proyectos/Proyecto%20default.md)):
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto-default.md`](../onenote/Clúster-OSS/Proyectos/Proyecto-default.md)):
 
 ```bash
 # Red OVN para conectividad este-oeste entre contenedores
@@ -391,7 +391,7 @@ El contenedor por sitio que da salida a internet (vía el proxy corporativo) a l
 
 ### Comandos
 
-✅ Confirmado (ejemplo real para Franco/PFR1; fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto default.md`](../onenote/Clúster-OSS/Proyectos/Proyecto%20default.md)):
+✅ Confirmado (ejemplo real para Franco/PFR1; fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto-default.md`](../onenote/Clúster-OSS/Proyectos/Proyecto-default.md)):
 
 ```bash
 lxc profile create PRF-GW-OAM
@@ -539,7 +539,7 @@ lxc auth group list
 
 ### Ejemplo real completo: proyecto `PRJ-OSS`
 
-✅ Confirmado (fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto PRJ-OSS.md`](../onenote/Clúster-OSS/Proyectos/Proyecto%20PRJ-OSS.md)) — este es el procedimiento real aplicado, como referencia concreta de la plantilla genérica de arriba:
+✅ Confirmado (fuente: [`onenote/Clúster-OSS/Proyectos/Proyecto-PRJ-OSS.md`](../onenote/Clúster-OSS/Proyectos/Proyecto-PRJ-OSS.md)) — este es el procedimiento real aplicado, como referencia concreta de la plantilla genérica de arriba:
 
 ```bash
 # 1. Crear el proyecto

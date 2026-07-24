@@ -90,6 +90,9 @@ Servicio productivo actualmente corriendo en CentOS 7. Contiene aproximadamente 
 
 ## L
 
+### LDAP (Lightweight Directory Access Protocol)
+Protocolo de directorio usado para centralizar identidades corporativas. En este proyecto, los hosts del cluster autentican operadores contra el LDAP corporativo (`ldap.sis.personal.net.py`) vía SSSD, en lugar de usar usuarios locales. Ver [SSSD](#sssd) y [03_Componentes.md](03_Componentes.md).
+
 ### lxc
 Herramienta de línea de comandos (CLI) para interactuar con LXD. Permite crear, iniciar, detener, eliminar y configurar contenedores e imágenes. Es el cliente del servicio `lxd`.
 
@@ -189,6 +192,9 @@ Equipos responsables de la administración de la infraestructura VMware. Son qui
 
 ### SDN (Software Defined Networking)
 Modelo de red donde la topología y el enrutamiento se gestionan por software en lugar de hardware físico. OVN es la implementación SDN elegida para este proyecto.
+
+### SSSD (System Security Services Daemon)
+Servicio que permite a los hosts Linux del cluster autenticar usuarios contra un directorio externo (en este proyecto, [LDAP](#ldap) corporativo) en lugar de usuarios locales. También gestiona la autorización de `sudo` (`sudo_provider = ldap`). Ver [03_Componentes.md](03_Componentes.md) y [LL-015 en 12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md).
 
 ### snap
 Gestor de paquetes universal de Canonical para Linux. LXD y MicroOVN se instalan como snaps. Los snaps son autocontenidos y **actualizan automáticamente por defecto** (una revisión diaria). Ver `snap refresh --hold` en [04_Instalacion.md](04_Instalacion.md) — necesario para evitar desincronización de versiones entre nodos del cluster.

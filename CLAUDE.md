@@ -307,4 +307,6 @@ Ver [`README.md`](README.md) para la estructura completa y el flujo de trabajo.
 | [`docs/adr/`](docs/adr/) | Decisiones de arquitectura |
 | [`laboratorio/`](laboratorio/) | Experimentos y validaciones previas |
 | [`reunion/`](reunion/) | Transcripciones originales de reuniones |
+| [`onenote/`](onenote/) | Copia sanitizada de bitácoras externas (OneNote, etc.) — fuente cruda, no documentación final |
 | [`recursos/`](recursos/) | Plantillas y materiales de apoyo |
+| [`scripts/`](scripts/) | Scripts operativos documentados (ej. captura de fuentes externas) |

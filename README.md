@@ -41,6 +41,8 @@ LDX/
 │
 ├── reunion/                ← transcripciones y notas de reuniones
 │
+├── onenote/                ← copia sanitizada de bitácoras externas (OneNote), fuente cruda
+│
 ├── laboratorio/            ← experimentos y pruebas previas a documentación oficial
 │
 ├── recursos/               ← plantillas y materiales de apoyo
@@ -130,5 +132,6 @@ El conocimiento debe permanecer en la documentación, no en la memoria de quiene
 - [Índice de documentación técnica](docs/README.md)
 - [Decisiones de arquitectura (ADR)](docs/adr/)
 - [Reuniones procesadas](reunion/README.md)
+- [Fuentes externas sanitizadas (OneNote)](onenote/README.md)
 - [Laboratorio de experimentos](laboratorio/README.md)
 - [Plantilla de análisis de reunión](recursos/prompt_analisis_reunion.md)

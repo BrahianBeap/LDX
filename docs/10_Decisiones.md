@@ -76,7 +76,7 @@ Ver detalles completos: [ADR-0005](adr/ADR-0005-arquitectura-microservicios.md)
 
 **Razón principal:** Es la única alternativa probada que atraviesa la red corporativa sin ser bloqueada, y de paso agrega cifrado en tránsito que el túnel nativo de OVN no provee.
 
-**Estado actual:** ✅ Probado y funcional entre PFR1 y CAR1. 🔴 Configuración de IP de la interfaz WireGuard aún no persistida en `netplan` (se pierde al reiniciar el host).
+**Estado actual:** ✅ Probado y funcional entre PFR1 y CAR1, con la configuración de IP de WireGuard persistida en `netplan` (confirmado — ver [RIE-001b en 11_Riesgos.md](11_Riesgos.md)).
 
 Ver detalles completos: [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)
 
