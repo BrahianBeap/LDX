@@ -223,6 +223,293 @@ lxc launch ubuntu:24.04 NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO --profile NO
 
 ---
 
+## Cómo incorporar un nuevo sitio al cluster (checklist completo)
+
+### Objetivo
+
+Esta es la **hoja de ruta única** para agregar un sitio nuevo al cluster
+(ej. Fernando/FDO1, IT, Ciudad del Este) — desde la instalación del
+sistema operativo hasta tener sus contenedores gateway funcionando. Reúne
+en un solo lugar, en el orden correcto, comandos que ya están documentados
+por separado en [04_Instalacion.md](04_Instalacion.md),
+[05_Configuracion.md](05_Configuracion.md), [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)
+y [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md). Si un paso tiene
+parámetros, tabla de errores frecuentes o rollback que no están repetidos
+acá, ese detalle está en el documento enlazado — esta checklist es la
+**secuencia**, no reemplaza la referencia completa de cada comando.
+
+> Ejemplo usado en todos los comandos de abajo: se agrega **Fernando
+> (FDO1)** como tercer miembro, junto a Franco (PFR1) y Carpinelli (CAR1)
+> ya activos. Reemplazar `FDO`/`fdo-oss`/`fdo.1` por el sitio que
+> corresponda.
+
+---
+
+### Fase 0 — Antes de tocar una terminal
+
+- [ ] Confirmar con SBA/AIT que la VM del nuevo sitio existe, con **dos**
+      interfaces de red (gestión y servicio) — ver
+      [01_Contexto.md](01_Contexto.md).
+- [ ] Confirmar el número de sitio en el esquema de direccionamiento ya
+      reservado (no inventar uno nuevo). Para FDO ya está reservado en
+      [02_Arquitectura.md](02_Arquitectura.md):
+
+  | Dato | Valor reservado para FDO |
+  |---|---|
+  | IP interna WireGuard (`wg0`) | `169.254.0.2` |
+  | IP del gateway de servicios en `OVN_1` (`FDO-OSS-GW-SRV`) | `192.168.0.4` |
+  | IP del gateway de OAM en `OVN_1` (`FDO-GW-OAM`) | `192.168.0.9` |
+  | IP de gestión (`nic_oam`) | `10.150.32.x/24`, VLAN 701 |
+  | IP de servicio (`nic_srv1`) | `10.11.11.x/24`, VLAN 5 |
+
+---
+
+### Fase 1 — Sistema operativo, LXD y MicroOVN en el nuevo host
+
+En **`fdo-oss`** (el nuevo host). Detalle completo, parámetros y errores
+frecuentes de cada comando: [04_Instalacion.md — Pasos 0, 1, 1.5 y 3](04_Instalacion.md).
+
+```bash
+# Paso 0 — Renombrar interfaces (mismo nombre lógico que los demás nodos)
+# Editar /etc/netplan/*.yaml: nic_oam y nic_srv1, match por MAC + set-name
+
+# Paso 1 — Instalar LXD
+snap install lxd
+snap refresh --hold          # Paso 1.5 — congelar actualizaciones automáticas
+
+# Paso 3 — Instalar MicroOVN (todavía NO se hace bootstrap ni join acá)
+snap install microovn
+```
+
+---
+
+### Fase 2 — Conectar el nuevo sitio a la malla WireGuard
+
+**El paso más importante de toda la checklist.** Debe completarse y
+verificarse **antes** de unir el nuevo sitio a LXD o a OVN — si no, se
+repite el problema original que motivó [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)
+(plano de control sincronizado, pero sin tráfico de datos entre
+contenedores).
+
+WireGuard no tiene base de datos distribuida — **hay que tocar todos los
+nodos existentes, uno por uno**, no solo el nuevo. Matriz de qué hacer en
+cada nodo para este ejemplo (agregar FDO):
+
+| Nodo | Acción |
+|---|---|
+| `fdo-oss` (nuevo) | Generar su propio par de claves. Configurar `wg0` en su `netplan` con un `peer` por cada sitio ya existente (PFR1, CAR1). |
+| `pfr-oss` (existente) | Agregar a FDO como **nuevo peer** en su `netplan` (nueva entrada en `peers` y en `routes`). |
+| `car-oss` (existente) | Agregar a FDO como **nuevo peer** en su `netplan` (nueva entrada en `peers` y en `routes`). |
+
+**1. En `fdo-oss` — generar el par de claves:**
+
+```bash
+apt install wireguard-tools
+wg genkey | tee privatekey | wg pubkey > publickey
+chown root:systemd-network privatekey
+chmod 640 privatekey
+```
+
+**2. En `fdo-oss` — configurar `wg0` en netplan, con un peer hacia cada sitio existente:**
+
+```yaml
+network:
+  tunnels:
+    wg0:
+      mode: wireguard
+      addresses: [169.254.0.2/32]        # IP interna reservada para FDO
+      key: /ruta/a/privatekey
+      peers:
+        - keys:
+            public: "CLAVE_PUBLICA_DE_PFR1"
+          endpoint: 10.143.11.228:51820
+          allowed-ips: [169.254.0.0/32]
+          keepalive: 25
+        - keys:
+            public: "CLAVE_PUBLICA_DE_CAR1"
+          endpoint: 192.168.91.116:51820
+          allowed-ips: [169.254.0.1/32]
+          keepalive: 25
+  routes:
+    - to: 169.254.0.0/32
+      via: 169.254.0.2
+    - to: 169.254.0.1/32
+      via: 169.254.0.2
+```
+
+**3. En `pfr-oss` y en `car-oss` — agregar a FDO como peer nuevo** (editar
+el `netplan` existente, **no** reemplazarlo — solo sumar la entrada):
+
+```yaml
+      peers:
+        # ... peers existentes se mantienen ...
+        - keys:
+            public: "CLAVE_PUBLICA_DE_FDO1"
+          endpoint: 10.150.32.X:51820      # IP de gestión real de fdo-oss
+          allowed-ips: [169.254.0.2/32]
+          keepalive: 25
+  routes:
+    # ... rutas existentes se mantienen ...
+    - to: 169.254.0.2/32
+      via: 169.254.0.X                     # X = propia IP interna de ese nodo
+```
+
+**4. Aplicar y verificar en los tres nodos:**
+
+```bash
+netplan try     # o netplan apply, una vez confirmado
+wg show
+# Debe mostrar el peer nuevo con "latest handshake" reciente en los TRES nodos
+```
+
+📖 Tabla completa de parámetros, errores frecuentes (`wg show` sin
+handshake, túnel que se pierde al reiniciar) y por qué la IP va siempre en
+`netplan` y nunca solo con `ip addr add`: [04_Instalacion.md — Paso 4](04_Instalacion.md).
+
+---
+
+### Fase 3 — Unir el nuevo nodo al cluster LXD
+
+Detalle completo del wizard y variante de storage con LVM:
+[04_Instalacion.md — Paso 2](04_Instalacion.md).
+
+```bash
+# En un nodo YA miembro del cluster (ej. pfr-oss), generar el token:
+lxc cluster add fdo.1
+
+# En fdo-oss, ejecutar el wizard:
+lxd init
+# "Use LXD clustering?" -> yes
+# "Are you joining an existing cluster?" -> yes
+# Pegar el token generado en el paso anterior
+# El resto de las respuestas: ver tabla completa en 04_Instalacion.md
+```
+
+```bash
+# Verificar:
+lxc cluster list
+# fdo.1 debe aparecer ONLINE
+```
+
+---
+
+### Fase 4 — Unir el nuevo nodo al cluster OVN
+
+Requiere que la Fase 2 (WireGuard) ya esté verificada. Detalle completo:
+[04_Instalacion.md — Paso 5](04_Instalacion.md).
+
+```bash
+# En un nodo ya miembro del cluster OVN:
+microovn cluster add fdo-oss
+
+# En fdo-oss, con el token generado:
+microovn cluster join TOKEN_GENERADO
+```
+
+```bash
+# Verificar:
+microovn cluster list
+snap services microovn
+# Todos los servicios deben estar active/enabled
+```
+
+---
+
+### Fase 5 — Firewall, proxy, NTP y usuarios del nuevo host
+
+Igual que en cualquier nodo — detalle completo, parámetros y errores
+frecuentes: [04_Instalacion.md — Pasos 6 a 10](04_Instalacion.md).
+
+```bash
+# Firewall: reglas por IP de cada operador (puertos 8443-8444)
+firewall-cmd --add-rich-rule='rule family=ipv4 source address=IP_OPERADOR port port=8443-8444 protocol=tcp accept'
+firewall-cmd --runtime-to-permanent
+
+# Proxy HTTP corporativo
+lxc config set core.http_proxy http://10.150.32.100:3128
+lxc config set core.https_proxy http://10.150.32.100:3128
+
+# Usuarios al grupo lxd
+usermod -aG lxd NOMBRE_USUARIO
+
+# NTP — ver 04_Instalacion.md Paso 10 para el contenido completo de timesyncd.conf
+```
+
+---
+
+### Fase 6 — Crear los contenedores gateway del nuevo sitio
+
+Las redes LXD (`OVN_1`, `lxdbr_OAM`, etc.) **no se vuelven a crear** — ya
+existen a nivel de cluster desde que se crearon la primera vez (ver
+[05_Configuracion.md — Creación de redes LXD](05_Configuracion.md)). Lo
+que sí hay que crear por cada sitio nuevo son sus dos contenedores
+gateway.
+
+**6.1 — Gateway de operación y mantenimiento (`FDO-GW-OAM`, proyecto `default`):**
+
+```bash
+# Se copia desde un gateway OAM existente en vez de crear un perfil nuevo
+lxc copy PFR-GW-OAM FDO-GW-OAM --profile PRF-GW-OAM --target fdo.1
+lxc config set FDO-GW-OAM cloud-init.network-config='#cloud-config
+version: 2
+ethernets:
+  eth0:
+    dhcp4: true
+    dhcp6: false
+  eth1:
+    dhcp4: false
+    dhcp6: false
+    addresses:
+      - 192.168.0.9/24'   # IP reservada para el gateway OAM de FDO
+```
+
+Endurecimiento (deshabilitar SSH, firewall como router) — comandos
+completos en [05_Configuracion.md — gateway de OAM](05_Configuracion.md).
+
+**6.2 — Gateway de servicios por cada proyecto que use este sitio** (ej.
+`FDO-OSS-GW-SRV` para el proyecto `PRJ-OSS`):
+
+```bash
+# Crear el perfil propio del sitio (mismo patrón que PFR/CAR, IPs distintas)
+lxc profile create PRF-FDO-OSS-GW-SRV --project PRJ-OSS
+lxc profile edit   PRF-FDO-OSS-GW-SRV --project PRJ-OSS
+#   -> misma estructura que PRF-PFR-OSS-GW-SRV (ver 05_Configuracion.md),
+#      con eth0 en 192.168.0.4/24 (IP reservada para el gateway de
+#      servicios de FDO) y eth1 con la IP real de nic_srv1 en FDO
+
+lxc copy PFR-OSS-GW-SRV FDO-OSS-GW-SRV --profile PRF-FDO-OSS-GW-SRV --target fdo.1 --project PRJ-OSS
+```
+
+📖 YAML completo del perfil (dispositivos, límites, cloud-init) y por qué
+la ruta de salida pasa por el gateway de OAM:
+[05_Configuracion.md — Ejemplo real completo: proyecto PRJ-OSS](05_Configuracion.md).
+
+---
+
+### Fase 7 — Verificación end-to-end
+
+```bash
+# 1. El nuevo miembro aparece online en ambos clusters (LXD y OVN)
+lxc cluster list
+microovn cluster list
+
+# 2. Conectividad OVN cruzada: contenedor de prueba en el nuevo sitio
+#    debe poder ver contenedores de los otros sitios (mismo método que
+#    se usó para validar PFR1<->CAR1, ver ADR-0006)
+lxc launch IMAGEN C-FDO-1 --project PRJ-OSS --target fdo.1
+lxc exec C-FDO-1 -- ping -c 3 IP_DE_C-PFR-1
+
+# 3. Los gateways del nuevo sitio están accesibles
+lxc list --project default    # FDO-GW-OAM
+lxc list --project PRJ-OSS    # FDO-OSS-GW-SRV
+```
+
+Si el ping cruzado no responde, volver a la Fase 2 — el 95% de las veces
+el problema está en una clave pública, un endpoint o una ruta de
+WireGuard mal copiada en alguno de los tres nodos.
+
+---
+
 ## Actualizar LXD y MicroOVN de forma coordinada (snap)
 
 ### Objetivo
