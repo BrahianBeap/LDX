@@ -1,0 +1,563 @@
+[
+  {
+    "bucket": "BackLog",
+    "cantidad": 10,
+    "tareas": [
+      {
+        "titulo": "Capacitaciones & Utilización - JIRA PY",
+        "etiqueta": "",
+        "vencimiento": "30 de junio de 2026",
+        "asignados": "Rocio Duarte, Bruno Miño, Natalia Duarte",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "30/6",
+        "textoCompleto": "Capacitaciones & Utilización - JIRA PY30/6RDBMND"
+      },
+      {
+        "titulo": "# ADM-TECH  * Actualizaciones administrativas",
+        "etiqueta": "adm-tech",
+        "vencimiento": "5 de julio de 2026",
+        "asignados": "Elias Alfonzo",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "5/7",
+        "textoCompleto": "adm-tech# ADM-TECH  * Actualizaciones administrativas- Permitir que ADM o el requirente puedan actualizar ciertos datos aunque la reserva esté en estados posteriores.\n      - Registrar en auditoría us"
+      },
+      {
+        "titulo": "# ADM-TECH  * Update masivo",
+        "etiqueta": "adm-tech",
+        "vencimiento": "31 de diciembre de 2026",
+        "asignados": "Elias Alfonzo",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "31/12",
+        "textoCompleto": "adm-tech# ADM-TECH  * Update masivo- Permitir la edición masiva de ciertos campos cuando la reserva aún está “en campo” del requirente.\n      - Registrar todos los cambios en auditoría.31/12EA"
+      },
+      {
+        "titulo": "INFRAWORK - DEVENGAMIENTO",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "30 de junio de 2026",
+        "asignados": "Elias Alfonzo, Daniel Medina",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "115/1930",
+        "textoCompleto": "INFRAWORKINFRAWORK - DEVENGAMIENTO115 / 1930/6EADM"
+      },
+      {
+        "titulo": "INFRAWORK - Notas de acceso",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "30 de junio de 2026",
+        "asignados": "Elias Alfonzo",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "30/6",
+        "textoCompleto": "INFRAWORKINFRAWORK - Notas de accesoDefinidos todos los sitios que tienen que enviarse correo particular.\nAvisado a gestión para que actualicen en caso de ser necesario. Se les paso lista vía correo.\n"
+      },
+      {
+        "titulo": "INFRAWORK - ZRE - CARGA MASIVA",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "30 de junio de 2026",
+        "asignados": "Elias Alfonzo, Daniel Medina, Marcos Casco",
+        "prioridad": "Importante",
+        "estado": "En curso",
+        "checklist": "13/930",
+        "textoCompleto": "INFRAWORKINFRAWORK - ZRE - CARGA MASIVAcarga_masiva_zre 1.png13 / 930/6EADMMC"
+      },
+      {
+        "titulo": "# ADM-TECH  * Devoluciones pendientes",
+        "etiqueta": "adm-tech",
+        "vencimiento": "31 de diciembre de 2026",
+        "asignados": "Elias Alfonzo",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "31/12",
+        "textoCompleto": "adm-tech# ADM-TECH  * Devoluciones pendientes- Crear una vista que muestre reservas con materiales pendientes de devolución.\n- Controlar que no superen 60 días desde la fecha de salida.\n- Enviar corre"
+      },
+      {
+        "titulo": "#INFRAWORK - Integracion Pedido Proveedor - Incidencias",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "31 de diciembre de 2026",
+        "asignados": "Elias Alfonzo, Daniel Medina",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "31/12",
+        "textoCompleto": "INFRAWORK#INFRAWORK - Integracion Pedido Proveedor - IncidenciasIntegrar el flujo Alta Proveedor – Compras – Alquiler con el módulo de Incidencias, permitiendo visualizar el estado general del sitio p"
+      },
+      {
+        "titulo": "INFRAWORK - MODULO ENERGIA",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "31 de diciembre de 2026",
+        "asignados": "Elias Alfonzo",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "1/331",
+        "textoCompleto": "INFRAWORKINFRAWORK - MODULO ENERGIA* Update masivo de datos de los sitios\n* Eliminacion\n* Consumo ( distribucion : adelante<-->atras )\n*Pasaron un correo para ajustar el consumo de enero a marzo, qued"
+      },
+      {
+        "titulo": "INFRAWORK - Reporte ZRE Alquiler de Sitios",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "",
+        "asignados": "Elias Alfonzo, Daniel Medina",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "26/02",
+        "textoCompleto": "INFRAWORKINFRAWORK - Reporte ZRE Alquiler de SitiosElías/Daniel buenas tardes,\nFavor considerar que el dato de\nbeneficiario o razón social mantenga el nombre y apellido del acreedor del\ncontrato sitio"
+      }
+    ]
+  },
+  {
+    "bucket": "En Curso",
+    "cantidad": 10,
+    "tareas": [
+      {
+        "titulo": "Ajustes Tembiapo",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "Marcos Casco, Norberto Nuñez",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "2/6",
+        "textoCompleto": "Ajustes TembiapoCreación de múltiples tickets de Energía/ATE/TX/Siniestro desde la vista de SIGAT/Resumen FSAcción de editar ticket en la lista de SIGAT/Registros FSNotificaciones según email \"Notific"
+      },
+      {
+        "titulo": "FRA SVC Probe deployment - SVC Probe",
+        "etiqueta": "SOC",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "0/5",
+        "textoCompleto": "SOCFRA SVC Probe deployment - SVC Probe0 / 5"
+      },
+      {
+        "titulo": "CAR E9000 IMS Replacement - ARO5200",
+        "etiqueta": "SOC",
+        "vencimiento": "",
+        "asignados": "Rocio Duarte",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "3/8",
+        "textoCompleto": "SOCCAR E9000 IMS Replacement - ARO5200Instalacion de 2 nuevos servidores IMS (CP + UP).Comisionamiento de servidores IMS (CP+UP).Reconexion de patchcord de FO entre el LSW y el nuevo servidor.Migracio"
+      },
+      {
+        "titulo": "CAR Probe Expansión - ARO5200",
+        "etiqueta": "SOC",
+        "vencimiento": "",
+        "asignados": "Rocio Duarte",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "3/5",
+        "textoCompleto": "SOCCAR Probe Expansión - ARO5200Instalacion de LSW y cableado de FOConfiguracion de politicas de filtrado3 / 5RD"
+      },
+      {
+        "titulo": "Gestion de Inventario - Vulnerabilidades",
+        "etiqueta": "NCE",
+        "vencimiento": "",
+        "asignados": "Rocio Duarte",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "63870/2",
+        "textoCompleto": "NCEGestion de Inventario - VulnerabilidadesAlta de Servicio 10.147.8.3:31945 #1007371Vulnerabilidades detectadas en 10.147.8.3 CVE-2026-35385  CVE-2024-63870 / 2RD"
+      },
+      {
+        "titulo": "Gestión de Inventario - Vulnerabilidades",
+        "etiqueta": "NCE-FAN",
+        "vencimiento": "31 de julio de 2026",
+        "asignados": "Rocio Duarte",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "07/07",
+        "textoCompleto": "NCE-FANGestión de Inventario - VulnerabilidadesVulnerabilidades activas para la IP 10.152.2.1Creación de Roles - Reunión con Huawei 07/07/2067 / 931/7RD"
+      },
+      {
+        "titulo": "Gestion de Vulnerabilidades",
+        "etiqueta": "SOC",
+        "vencimiento": "",
+        "asignados": "Rocio Duarte",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "600011/2",
+        "textoCompleto": "SOCGestion de VulnerabilidadesQuedan pendiente de fecha los puertos 22 y 600011 / 2RD"
+      },
+      {
+        "titulo": "Alta de Usuarios Inventarios ODCIM/LISY",
+        "etiqueta": "ODCIMLISY",
+        "vencimiento": "31 de julio de 2026",
+        "asignados": "Rocio Duarte",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "2/331",
+        "textoCompleto": "ODCIMLISYAlta de Usuarios Inventarios ODCIM/LISYAsignación de perfiles en diferentes gestores de telecom2 / 331/7RD"
+      },
+      {
+        "titulo": "SOC - Implementaciones",
+        "etiqueta": "SOC",
+        "vencimiento": "28 de julio de 2026",
+        "asignados": "Marcos Casco, Rocio Duarte, Andres Semidei",
+        "prioridad": "",
+        "estado": "En curso",
+        "checklist": "22/7",
+        "textoCompleto": "SOCSOC - ImplementacionesEuler upgrade from 2.10 to EulerOS 2.12 (FDO) 22/7Euler upgrade from 2.10 to EulerOS 2.12 (FDO) 23/7Euler upgrade from 2.10 to EulerOS 2.12 (CAR - SEQ) 11/8Euler upgrade from "
+      },
+      {
+        "titulo": "# ADM-TECH  * Linea Capex (CTO)",
+        "etiqueta": "adm-tech",
+        "vencimiento": "31 de julio de 2026",
+        "asignados": "Elias Alfonzo, Daniel Medina, Marcos Casco",
+        "prioridad": "Importante",
+        "estado": "En curso",
+        "checklist": "231/7",
+        "textoCompleto": "adm-tech# ADM-TECH  * Linea Capex (CTO)linea_capex_2.png231/7EADMMC"
+      }
+    ]
+  },
+  {
+    "bucket": "En Revisión",
+    "cantidad": 1,
+    "tareas": [
+      {
+        "titulo": "Reporte Tx Tembiapo",
+        "etiqueta": "",
+        "vencimiento": "11 de junio de 2026",
+        "asignados": "Daniel Medina, Fernando Fleitas",
+        "prioridad": "Urgente",
+        "estado": "En curso",
+        "checklist": "16/1711",
+        "textoCompleto": "Reporte Tx TembiapoPresentación  ejecutiva para HL16 / 1711/6DMFF"
+      }
+    ]
+  },
+  {
+    "bucket": "En Revisión",
+    "cantidad": 2,
+    "tareas": [
+      {
+        "titulo": "Tembiapo - Viaticos",
+        "etiqueta": "Tembiapo OS",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "7/8",
+        "textoCompleto": "Tembiapo OSTembiapo - ViaticosPendiente de revisión y optimización para comenzar su uso7 / 8DMCompletada por Daniel Medina el 12/5"
+      },
+      {
+        "titulo": "INFRAWORK - Optimización / Compras informe sitios.",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "21/04",
+        "textoCompleto": "INFRAWORKINFRAWORK - Optimización / Compras informe sitios.21/04\nSe agregaron a los reportes mensuales a Omar y Catherin.\nQueda pendiente aun reporte final que sale desde modulo solped.\n______________"
+      }
+    ]
+  },
+  {
+    "bucket": "Realizados - Culminados.",
+    "cantidad": 10,
+    "tareas": [
+      {
+        "titulo": "TEMBIAPO - Modulo TicketCorrectivoProgramado",
+        "etiqueta": "Tembiapo OS",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "9/9",
+        "textoCompleto": "Tembiapo OSTEMBIAPO - Modulo TicketCorrectivoProgramado9 / 9DMCompletada por Daniel Medina el 21/7"
+      },
+      {
+        "titulo": "FRA Probe Expansion - ARO5200",
+        "etiqueta": "SOC",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "52005/5",
+        "textoCompleto": "SOCFRA Probe Expansion - ARO52005 / 5RDCompletada por Rocio Duarte el 9/7"
+      },
+      {
+        "titulo": "Actualizacion Video Wall",
+        "etiqueta": "Video Wall",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "11/11",
+        "textoCompleto": "Video WallActualizacion Video Wall11 / 11MCCompletada por Marcos Casco el 7/7"
+      },
+      {
+        "titulo": "Tembiapo - Modulo Energia Nueva Contratista",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "7/7",
+        "textoCompleto": "Tembiapo - Modulo Energia Nueva ContratistaMCCompletada por Marcos Casco el 7/7"
+      },
+      {
+        "titulo": "SW con SN duplicada - Andres Semidei. - Se da por cerrado, se van apagar los SW",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "16/6",
+        "textoCompleto": "SW con SN duplicada - Andres Semidei. - Se da por cerrado, se van apagar los SWMCCompletada por Marcos Casco el 16/6"
+      },
+      {
+        "titulo": "INFRAWORK - Ficha tecnica",
+        "etiqueta": "INFRAWORK",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "7/16",
+        "textoCompleto": "INFRAWORKINFRAWORK - Ficha tecnicaAgregar link desde -- Ver Expediente.Visualizar por lista de opciones. Tal cual como tiene en contrato.Agregar un input para indicar que estar con cofre/jaula o no. ("
+      },
+      {
+        "titulo": "Autencitacion OATUH - Tembiapo",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "26/5",
+        "textoCompleto": "Autencitacion OATUH - TembiapoMCCompletada por Marcos Casco el 26/5"
+      },
+      {
+        "titulo": "Migracion Influx -> Grafana",
+        "etiqueta": "OSS",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "5/5",
+        "textoCompleto": "OSSMigracion Influx -> Grafana5 / 5MCCompletada por Marcos Casco el 19/5"
+      },
+      {
+        "titulo": "Acutalizacion TEMBIAPO SITIOS",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "1/1",
+        "textoCompleto": "Acutalizacion TEMBIAPO SITIOS1 / 1MCCompletada por Marcos Casco el 9/6"
+      },
+      {
+        "titulo": "Tembiapo OS - Personas",
+        "etiqueta": "TEMBIAPO - SIGAT",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "17/18",
+        "textoCompleto": "TEMBIAPO - SIGATTembiapo OS - Personas17 / 18MCCompletada por Marcos Casco el 28/4"
+      }
+    ]
+  },
+  {
+    "bucket": "Proyectos OSS",
+    "cantidad": 0,
+    "tareas": []
+  },
+  {
+    "bucket": "",
+    "cantidad": 19,
+    "tareas": [
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 1, Informe para HL, comprobado, Opciones disponibles: Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 2, (ADM) Confirmar si cada flujo siempre corresponde a un nuevo período, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 3, (ADM) Confirmar si existen casos de un flujo que cubra múltiples períodos, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 4, (ADM) Definir regla oficial de negocio para asignación de períodos, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 5, (ADM) Validar ejemplos reales de carga (casos actuales de ZRE), comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 6, (OSS) Analizar impacto en el cálculo de devengamiento según la definición de ADM, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 7, (OSS) Evaluar si el modelo actual soporta múltiples períodos por flujo, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 8, (OSS) Definir lógica final: Período único por flujo, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 9, (OSS) Definir lógica final: Múltiples períodos por flujo (si aplica), comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 10, (OSS) Definir cambios en base de datos (si aplica), comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 11, (OSS / Backend) Ajustar lógica de guardado de flujos con período(s), comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 12, (OSS / Backend) Adaptar cálculo de devengamiento según nueva lógica, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 13, (OSS / Backend) Validar consistencia con datos históricos. (ADM pasa los sitios con pagos adelantado, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 14, (OSS / Backend) Agregar validaciones (ej: obligatoriedad de período), comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 15, (OSS / Frontend) Modificar formulario de carga ZRE:, comprobado, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 16, (OSS / Frontend) Período por cada flujo (si aplica) - O select de múltiples períodos, sin comprobar, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 17, (OSS / Frontend) Validaciones visuales (no permitir guardar sin período válido), sin comprobar, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 18, (Testing / Validación) Probar escenarios:, sin comprobar, Opciones disponibles: Subir elemento de lista de comprobación, Bajar elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      },
+      {
+        "titulo": "Elemento de lista de arrastrar y colocar 19, (Testing / Validación) 1 flujo → 1 período || 1 flujo → múltiples períodos (si aplica), sin comprobar, Opciones disponibles: Subir elemento de lista de comprobación, Convertir esta tarea en Nueva, Quitar elemento de la lista de comprobación",
+        "etiqueta": "",
+        "vencimiento": "",
+        "asignados": "",
+        "prioridad": "",
+        "estado": "",
+        "checklist": "",
+        "textoCompleto": ""
+      }
+    ]
+  }
+]
