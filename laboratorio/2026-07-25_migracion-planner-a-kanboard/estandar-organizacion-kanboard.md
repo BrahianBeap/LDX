@@ -4,7 +4,9 @@
 > **Alcance:** Aplica a la migración de "Proyectos OSS" (Microsoft Planner)
 > y a cualquier proyecto nuevo que se cargue en Kanboard de ahora en más,
 > salvo que se indique explícitamente lo contrario.
-> **Proyecto piloto de este estándar:** INFRAWORK.
+> **Proyecto piloto de este estándar:** INFRAWORK — plantilla de
+> referencia para todos los proyectos de tipo **Desarrollo** (flujo de
+> columnas y criterio de miembros), no solo para sí mismo.
 
 Este documento reemplaza el enfoque inicial descrito en
 [`README.md`](README.md) (un único proyecto "Proyectos OSS" con tags por
@@ -21,21 +23,22 @@ aplicaciones distintas.
 
 Proyectos identificados hasta ahora:
 
-- INFRAWORK
-- ADM-TECH
-- VulnApp
-- Portal OSS
-- SOC
+- INFRAWORK — ✅ migrado (piloto)
+- ADM-TECH — ✅ migrado
+- VulnApp — 🔴 pendiente
+- Portal OSS — 🔴 pendiente
+- SOC — 🔴 pendiente
 - (y los demás que vayan apareciendo)
 
 Los proyectos con pocas tareas se evalúan más adelante para decidir si
 quedan independientes o se agrupan — no hay que decidirlo de una.
 
-## 2. Cada proyecto define su propio flujo de trabajo
+## 2. Cada *tipo* de proyecto define su propio flujo de trabajo
 
-No existe una estructura de columnas única para todos los proyectos. Cada
-uno define el flujo que representa su proceso real de trabajo. Ejemplos
-de tipo de proyecto y su flujo:
+No existe una estructura de columnas única para todos los proyectos, pero
+tampoco es libre por proyecto individual: el flujo se define **por tipo
+de proyecto**, y todos los proyectos del mismo tipo reutilizan el mismo
+flujo como estándar. Tipos de proyecto identificados:
 
 - Desarrollo
 - Infraestructura
@@ -45,13 +48,22 @@ de tipo de proyecto y su flujo:
 - Soporte
 - Proyectos personales
 
-**Ejemplo — INFRAWORK** (proyecto de desarrollo de software):
+**Flujo estándar para proyectos de tipo Desarrollo** (INFRAWORK es la
+plantilla de referencia — confirmado 2026-07-26, aplica también a
+ADM-TECH, VulnApp, Portal OSS y cualquier otro proyecto de desarrollo que
+se cree de ahora en más, independientemente de su volumen de tareas):
 
 1. Pendiente de Análisis
 2. Listo para Desarrollo
 3. En Curso
 4. En Revisión
 5. Realizados
+
+Los demás tipos de proyecto (Infraestructura, Operaciones, Documentación,
+etc.) todavía no tienen un flujo estándar definido — se define la primera
+vez que se cree un proyecto de ese tipo, y ese primer proyecto pasa a ser
+la plantilla de referencia para los siguientes del mismo tipo, siguiendo
+el mismo criterio que con INFRAWORK.
 
 ## 3. Convención de nombres de tareas
 
@@ -100,6 +112,16 @@ Para desarrollos grandes, además:
 - Validaciones
 - Consideraciones técnicas
 
+**Subtareas:** se usan únicamente para acciones concretas de trabajo (lo
+que hay que hacer). No se usan para registrar eventos, reuniones o
+decisiones — eso va en comentarios (ver abajo).
+
+**Comentarios:** se usan para dejar registro cronológico de reuniones,
+decisiones tomadas y avances sobre la tarea. Es el lugar para "qué pasó y
+cuándo", separado de la descripción (que explica el objetivo/alcance,
+estable en el tiempo) y de las subtareas (que son trabajo pendiente o
+hecho, no bitácora).
+
 **Criterio:** cualquier desarrollador debe poder entender la tarea sin
 necesidad de buscar el correo o mensaje original que la originó.
 
@@ -120,6 +142,20 @@ necesidad de buscar el correo o mensaje original que la originó.
 - Las etiquetas son funcionales/técnicas — nunca proyectos ni personas.
 - Cada tarea contiene suficiente contexto para retomarse meses después sin depender de memoria o correos externos.
 - La estructura prioriza mantenibilidad, visibilidad del trabajo pendiente y reutilización del conocimiento — no uniformidad forzada entre proyectos distintos.
+
+## 8. Metodología de ejecución
+
+Toda la carga en Kanboard (creación de proyectos, columnas, miembros,
+tareas, usuarios) se realiza **manualmente por el usuario en la interfaz
+web de Kanboard**. No se crean estas entidades vía API, CLI ni acceso
+directo a la base de datos como parte de la migración.
+
+Claude Code participa únicamente en: documentación del proceso,
+normalización de títulos/descripciones a partir del contenido de origen
+en Planner, análisis del tipo de trabajo de cada proyecto para proponer su
+flujo, y mantenimiento de esta carpeta de conocimiento (`bitacora.md`,
+`README.md`, este estándar). El usuario confirma cada paso ya ejecutado
+en Kanboard antes de que la documentación se dé por actualizada.
 
 ## Por qué se abandonó el enfoque de "un solo proyecto con tags"
 

@@ -156,3 +156,19 @@ Fase de aplicación de la auditoría. Se corrigieron todos los errores objetivos
 
 **Resumen:**
 Segunda generación de documentación técnica, a partir de la reunión donde se incorporó CAR1 (Carpinelli) como segundo miembro del cluster. Los hallazgos más relevantes: el túnel de datos nativo de OVN no funciona entre sitios en Capa 3 separada (confirmado por segunda vez, tras un intento fallido el año anterior) y se resolvió con una malla WireGuard como underlay; se adoptó el modelo de proyectos LXD para multi-tenancy de cara a futuros equipos; se documentó el incidente real de bloqueo del cluster por desincronización de reloj entre Carpinelli y Fernando. Persisten pendientes de validación: persistencia de la IP de WireGuard en `netplan`, alta de servicio del puerto 8444 de CAR1, y confirmación de la directiva de reenvío `rsyslog` → Loki.
+
+---
+
+### 2026-07-26 (séptima entrada)
+
+**Fuente:** Migración manual de Microsoft Planner ("Proyectos OSS") a Kanboard — trabajo iterativo en `laboratorio/2026-07-25_migracion-planner-a-kanboard/`.
+
+**Documentos creados:**
+- `laboratorio/2026-07-25_migracion-planner-a-kanboard/estandar-organizacion-kanboard.md` — estándar de organización consolidado para toda migración futura a Kanboard: un proyecto por sistema/producto, flujo de columnas definido por tipo de proyecto (no por proyecto individual), convención de nombres de tarea `<Módulo> - <Funcionalidad>`, tags reservados a clasificación funcional/técnica, subtareas solo para acciones concretas de trabajo, comentarios para reuniones/decisiones/avances cronológicos, y metodología de ejecución (carga 100% manual del usuario en la interfaz de Kanboard).
+
+**Archivos actualizados:**
+- `laboratorio/2026-07-25_migracion-planner-a-kanboard/README.md` — mapeo de conceptos y progreso actualizados al nuevo estándar
+- `laboratorio/2026-07-25_migracion-planner-a-kanboard/bitacora.md` — INFRAWORK y ADM-TECH registrados como migrados
+
+**Resumen:**
+Tras un primer enfoque descartado (un único proyecto "Proyectos OSS" con tags por etiqueta de Planner), se adoptó un modelo de un proyecto de Kanboard por sistema. INFRAWORK se migró como piloto y quedó como plantilla de referencia para todo proyecto de tipo Desarrollo (flujo de 5 columnas: Pendiente de Análisis → Listo para Desarrollo → En Curso → En Revisión → Realizados). ADM-TECH se migró en segundo lugar con la misma metodología, confirmando el estándar entre proyectos del mismo tipo. Quedan pendientes: VulnApp, Portal OSS, SOC, y la decisión sobre a qué proyecto nuevo mapear las etiquetas pequeñas de Planner sin destino asignado (NCE, NCE-FAN, ODCIMLISY, Video Wall, OSS, TEMBIAPO-SIGAT, Tembiapo OS, y las tareas sin etiqueta) — aplazada explícitamente por el usuario.

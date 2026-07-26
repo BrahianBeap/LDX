@@ -81,12 +81,11 @@ inventar a qué proyecto nuevo corresponde cada tarea vieja.
 
 ## Proyecto: INFRAWORK (8 tareas) — piloto del estándar
 
-**Estado: 🟡 En progreso**
+**Estado: ✅ Completado (2026-07-26)** — se toma como referencia metodológica para el resto de los proyectos.
 
 - [x] Proyecto creado (nombre `INFRAWORK`, identificador `INFRAWORK`)
 - [x] Flujo de columnas definido: `Pendiente de Análisis` → `Listo para Desarrollo` → `En Curso` → `En Revisión` → `Realizados`
-- [x] Usuarios creados (globalmente, ver Paso 1)
-- [🟡] Usuarios agregados como miembros de este proyecto — en progreso (se detectó que hay que agregarlos proyecto por proyecto, no es automático)
+- [x] Usuarios agregados como miembros de este proyecto (los 9 usuarios del Paso 1, no solo creados globalmente)
 - [x] Primeras tareas migradas desde Planner
 - [x] Descripciones estandarizadas (Objetivo/Alcance/Resultado esperado)
 - [x] Subtareas documentadas
@@ -105,9 +104,70 @@ inventar a qué proyecto nuevo corresponde cada tarea vieja.
 
 ---
 
-## Proyecto: ADM-TECH (4 tareas del Planner) — 🔴 Pendiente crear
+## Proyecto: ADM-TECH — segundo proyecto de referencia
 
-Corresponde a la etiqueta `adm-tech` de Planner.
+**Estado: ✅ Completado (2026-07-26)** — migrado con la misma metodología que INFRAWORK.
+
+Corresponde a la etiqueta `adm-tech` de Planner (4 tareas).
+
+### Análisis del tipo de trabajo (antes de definir el flujo)
+
+Las 4 tareas de origen, según `planner-data.json`:
+
+| Tarea (título original Planner) | Bucket origen | Vencimiento | Asignados | Naturaleza |
+|---|---|---|---|---|
+| ADM-TECH - Actualizaciones administrativas | BackLog | 5 jul 2026 | Elías Alfonzo | Permitir edición de datos en estados posteriores + auditoría |
+| ADM-TECH - Update masivo | BackLog | 31 dic 2026 | Elías Alfonzo | Edición masiva de campos + auditoría |
+| ADM-TECH - Devoluciones pendientes | BackLog | 31 dic 2026 | Elías Alfonzo | Vista de control (materiales pendientes de devolución, alertas por correo) |
+| ADM-TECH - Línea Capex (CTO) | En Curso | 31 jul 2026 | Elías Alfonzo, Daniel Medina, Marcos Casco | Importante — en curso, con imagen adjunta (`linea_capex_2.png`) |
+
+🟡 **Inferencia razonable:** las 4 tareas son mejoras/funcionalidades nuevas
+sobre un sistema administrativo ya existente (probablemente el mismo
+sistema de gestión de reservas/materiales que aparece en varias tareas de
+INFRAWORK) — no son incidentes ni soporte reactivo. Por naturaleza es un
+proyecto de **desarrollo**, igual que INFRAWORK, pero con un volumen mucho
+menor (4 tareas vs. 8) y sin evidencia de una etapa formal de análisis
+separada del desarrollo en el uso real que se le daba en Planner (todas
+nacían directo en BackLog o En Curso).
+
+⚠️ Los textos de descripción capturados están **truncados a 200
+caracteres** por la herramienta de extracción — antes de escribir la
+descripción estandarizada final de cada tarea hay que abrir la tarea real
+en Planner y copiar el contenido completo (mismo cuidado que ya se tomó
+con el campo `checklist`, que tampoco es confiable).
+
+### Flujo confirmado para ADM-TECH (2026-07-26)
+
+Decisión del usuario: aunque ADM-TECH tiene menos tareas que INFRAWORK,
+ambos son proyectos de tipo **Desarrollo** y deben mantener el mismo
+estándar de flujo entre sí (ver
+[`estandar-organizacion-kanboard.md`](estandar-organizacion-kanboard.md),
+punto 2 — INFRAWORK como plantilla para todo proyecto de tipo Desarrollo).
+Se descarta la propuesta de flujo corto de 4 columnas evaluada antes.
+
+1. `Pendiente de Análisis`
+2. `Listo para Desarrollo`
+3. `En Curso`
+4. `En Revisión`
+5. `Realizados`
+
+Miembros: los mismos 9 usuarios que en INFRAWORK (no solo los 3 asignados
+en las tareas de origen), por el mismo criterio ya aplicado ahí.
+
+### Carga finalizada (2026-07-26)
+
+Realizado íntegramente de forma manual por el usuario en la interfaz web
+de Kanboard — Claude Code no ejecutó ninguna acción sobre Kanboard (ni
+API, ni CLI, ni base de datos), solo documentó el proceso.
+
+- [x] Proyecto `ADM-TECH` creado
+- [x] Flujo de columnas configurado (5 columnas, igual que INFRAWORK)
+- [x] Miembros agregados (mismos 9 usuarios que en INFRAWORK)
+- [x] Tareas migradas con título `<Módulo> - <Funcionalidad>`
+- [x] Descripciones mejoradas (Objetivo/Alcance/Resultado esperado)
+- [x] Subtareas agregadas donde correspondía a una acción concreta de trabajo
+- [x] Reuniones, decisiones y avances registrados como comentarios en cada tarea (uso nuevo, ver punto 5 del estándar)
+- [x] Etiquetas funcionales/técnicas asignadas
 
 ## Proyecto: SOC (6 tareas del Planner) — 🔴 Pendiente crear
 

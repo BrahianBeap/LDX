@@ -78,8 +78,8 @@ para el criterio de organización vigente.
 | Paso | Estado |
 |---|---|
 | 1 — Usuarios locales | ✅ Completado |
-| 2 — Proyecto piloto INFRAWORK creado, con flujo propio de 5 columnas | ✅ Completado |
-| 3 — Usuarios agregados como miembros del proyecto INFRAWORK | 🟡 En progreso |
-| 4 — Carga de tareas (título estandarizado, descripción, subtareas) | 🟡 En progreso |
-| 5 — Repetir para el resto de los proyectos (ADM-TECH, VulnApp, Portal OSS, SOC, ...) | 🔴 Pendiente |
+| 2 — Proyecto piloto INFRAWORK (flujo de 5 columnas, miembros, tareas, descripciones, subtareas, etiquetas) | ✅ Completado — tomado como referencia metodológica |
+| 3 — Proyecto ADM-TECH (mismo flujo y criterio de miembros que INFRAWORK, por ser también tipo Desarrollo) | ✅ Completado (2026-07-26) — migrado manualmente por el usuario en Kanboard |
+| 4 — Resto de los proyectos (VulnApp, Portal OSS, SOC, ...) | 🔴 Pendiente — no se empieza hasta cerrar ADM-TECH |
+| 5 — Mapeo de etiquetas Planner pequeñas/sin etiqueta (NCE, NCE-FAN, ODCIMLISY, Video Wall, OSS, TEMBIAPO-SIGAT, Tembiapo OS, sin etiqueta) | 🔴 Pendiente — decisión aplazada explícitamente por el usuario, no migrar aún |
 | 6 — Verificación visual final vs Planner | 🔴 Pendiente |
