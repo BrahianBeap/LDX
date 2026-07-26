@@ -1,7 +1,7 @@
 # Plugin "TeamWorkload" — vista de carga de trabajo por persona
 
 > **Fecha de inicio:** 2026-07-26
-> **Estado:** ✅ Fase 1 implementada y probada en `PFR-KANBOARD-TEST`.
+> **Estado:** ✅ Fase 1 y v1.1 implementadas y probadas en `PFR-KANBOARD-TEST`.
 
 ## Objetivo
 
@@ -25,6 +25,13 @@ identificada al migrar de Microsoft Planner (un solo plan) a Kanboard
   hallazgos durante las pruebas (`ENABLE_URL_REWRITE=false` en esta
   instancia, traducciones al español pendientes de resolver) y
   procedimiento de rollback.
+- [`diseno-v1.1.md`](diseno-v1.1.md) — diseño de la versión 1.1 (modo
+  "👥 Todos", columna de responsable, resumen superior), con el análisis
+  previo de reutilización del Core y el camino documentado (sin
+  implementar) para futuros modos de agrupación.
+- [`v1.1-implementacion.md`](v1.1-implementacion.md) — resultado real de
+  la v1.1: archivos modificados, pruebas realizadas, y el hallazgo de que
+  `Request::getIntegerParam()` del Core no puede leer valores negativos.
 - [`src/TeamWorkload/`](src/TeamWorkload/) — código fuente del plugin,
   desplegado tal cual a `plugins/TeamWorkload/` en el contenedor.
 
@@ -46,4 +53,19 @@ identificada al migrar de Microsoft Planner (un solo plan) a Kanboard
 | Análisis de reutilización del Core | ✅ Completado |
 | Diseño técnico de la Fase 1 | ✅ Aprobado |
 | Implementación de la Fase 1 | ✅ Completada — 9/10 pruebas pasaron, 1 pendiente por falta de una cuenta Standard en el entorno |
-| Fase 2 (filtros, prioridad ya incluida, tags/categoría) | 🔴 No iniciada |
+| Diseño técnico de v1.1 (modo "Todos", responsable, resumen) | ✅ Aprobado |
+| Implementación de v1.1 | ✅ Completada — 8/8 pruebas pasaron |
+| Fase 2 / v1.2 (filtros, agrupar por persona/prioridad/fecha, tags/categoría) | 🔴 No iniciada — camino de extensión ya documentado en `diseno-v1.1.md` |
+
+## Pendientes conocidos (no bloquean lo ya entregado)
+
+1. Investigar y corregir la carga de las traducciones al español del
+   plugin (las cadenas propias del plugin se muestran en inglés).
+2. Probar el rechazo de acceso con una cuenta `Standard` (no existe
+   ninguna en este entorno — todos los usuarios reales quedaron con rol
+   `app-admin`, ver el informe de investigación, sección 10.1).
+3. Corregir los roles `app-admin` de los usuarios migrados.
+4. Completar la asignación individual de las tareas que todavía tienen
+   `owner_id = 0` en Kanboard (13 de 18 al momento de esta versión).
+5. Evaluar la Fase 2 / v1.2 (filtros, agrupar por persona/prioridad/fecha,
+   tags/categoría) en una tarea o sesión separada.
