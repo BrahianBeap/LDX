@@ -129,3 +129,25 @@ cualquier otro contenedor del proyecto.
 - No se configuró ningún reenvío (DNAT) en `PFR-OSS-GW-SRV`.
 - No se movió ningún contenedor.
 - No se tocó la base de datos de Kanboard ni la de LXD/OVN.
+
+---
+
+## 8. Actualización — implementación temporal para la demo (2026-07-27, más tarde el mismo día)
+
+🟢 A diferencia de lo registrado en la sección 7 (que describía el
+estado en el momento de esta exploración de solo lectura), **más tarde
+el mismo día sí se aplicó un cambio real**, con aprobación explícita del
+usuario y ejecutado fase por fase con validación en cada paso: se
+habilitó el acceso a Kanboard desde 6 IPs puntuales (4 ya inventariadas
+para administración del cluster — Norberto, Rocío, Daniel, Elías — y 2
+nuevas, exclusivas para esta demo — Fernando Fleitas, Andrés Semidei),
+hacia el puerto 8080, explícitamente como medida **temporal** para la
+demo interna del 2026-07-28.
+
+No se implementó la vía definitiva (`PFR-OSS-GW-SRV`) descrita en las
+secciones 4-6 de este documento — ese trámite formal con
+Norberto/Seguridad sigue pendiente.
+
+Procedimiento completo, con cada comando real ejecutado, su salida real,
+validación y rollback específico:
+[`SOP-acceso-temporal-demo-kanboard.md`](SOP-acceso-temporal-demo-kanboard.md).
