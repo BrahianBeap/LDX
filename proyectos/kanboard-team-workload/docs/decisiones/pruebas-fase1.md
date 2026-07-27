@@ -4,7 +4,7 @@
 > **Estado:** ✅ Fase 1 completa y probada en `PFR-KANBOARD-TEST`
 > **Entorno:** contenedor LXD `PFR-KANBOARD-TEST` (proyecto `default`, host
 > `pfr-oss`), Kanboard v1.2.46, PHP 8.5.4 — ver
-> [`../2026-07-24_kanboard-contenedor-prueba/README.md`](../2026-07-24_kanboard-contenedor-prueba/README.md).
+> [`laboratorio/2026-07-24_kanboard-contenedor-prueba/README.md`](../../../../laboratorio/2026-07-24_kanboard-contenedor-prueba/README.md).
 > No se instaló nada en producción, no se modificó ningún archivo del
 > Core, no se ejecutó ningún `INSERT`/`UPDATE`/`DELETE`/`ALTER` sobre la
 > base de datos. Toda validación de datos fue de solo lectura, autorizada

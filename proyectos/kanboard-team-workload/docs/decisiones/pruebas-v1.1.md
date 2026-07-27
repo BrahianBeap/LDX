@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-07-26
 > **Estado:** ✅ Implementada y probada en `PFR-KANBOARD-TEST`
-> **Base:** [`fase1-implementacion.md`](fase1-implementacion.md) — mismas
+> **Base:** [`pruebas-fase1.md`](pruebas-fase1.md) — mismas
 > condiciones: no se modificó el Core, no se tocó la base de datos, no se
 > desplegó nada en producción.
 
@@ -74,8 +74,8 @@ Id  | Columna                  | Título                                      | 
 ## 5. Instalación y rollback
 
 Sin cambios respecto a la Fase 1 — ver
-[`fase1-implementacion.md`](fase1-implementacion.md#3-despliegue) y
-[`fase1-implementacion.md`](fase1-implementacion.md#8-procedimiento-de-rollback).
+[`pruebas-fase1.md`](pruebas-fase1.md#3-despliegue) y
+[`pruebas-fase1.md`](pruebas-fase1.md#8-procedimiento-de-rollback).
 Los mismos 5 archivos, el mismo procedimiento de `pscp` + `lxc file push`,
 y el mismo rollback (renombrar/quitar la carpeta `plugins/TeamWorkload/`).
 

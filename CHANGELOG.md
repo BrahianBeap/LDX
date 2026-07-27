@@ -175,17 +175,8 @@ Tras un primer enfoque descartado (un único proyecto "Proyectos OSS" con tags p
 
 ---
 
-### 2026-07-26 (octava entrada)
-
-**Fuente:** Investigación, diseño e implementación del plugin propio de Kanboard "TeamWorkload" — trabajo en `laboratorio/2026-07-26_investigacion-vista-global-tareas-kanboard/` y `laboratorio/2026-07-26_plugin-team-workload/`.
-
-**Necesidad de origen:** al migrar a un proyecto de Kanboard por sistema (entrada anterior), una persona dejó de tener un solo lugar donde ver todo lo que tiene asignado — sus tareas quedan repartidas entre proyectos independientes.
-
-**Documentos creados:**
-- `laboratorio/2026-07-26_investigacion-vista-global-tareas-kanboard/informe.md` — investigación exhaustiva de soluciones existentes (ningún plugin de terceros resuelve la necesidad; el Core tiene una página oculta y no documentada, `ProjectUserOverviewController`, que resuelve gran parte del problema), validación en vivo contra `PFR-KANBOARD-TEST`, y análisis de reutilización del Core.
-- `laboratorio/2026-07-26_plugin-team-workload/diseno-fase1.md` y `fase1-implementacion.md` — diseño y resultado de la Fase 1: plugin `TeamWorkload`, vista de solo lectura de las tareas abiertas de una persona elegida en todos sus proyectos, restringida a administradores, reutilizando modelos del Core sin tocarlo.
-- `laboratorio/2026-07-26_plugin-team-workload/diseno-v1.1.md` y `v1.1-implementacion.md` — diseño y resultado de la v1.1: modo "👥 Todos" (todas las personas a la vez), columna de responsable, resumen numérico superior, y el camino documentado (sin implementar) para futuros modos de agrupación (por persona, prioridad, vencimiento).
-- `laboratorio/2026-07-26_plugin-team-workload/src/TeamWorkload/` — código fuente completo del plugin.
-
-**Resumen:**
-Se determinó que ningún plugin comunitario ni oficial de Kanboard resuelve "ver la carga de trabajo de una persona en todos sus proyectos", pero que el propio Core ya contiene, sin documentar, casi toda la lógica necesaria (`TaskFinderModel::getProjectUserOverviewQuery()`, ya sin filtro de propietario y con el nombre del responsable ya incluido). Se desarrolló un plugin propio y liviano (`TeamWorkload`) que envuelve y completa esa lógica en vez de reescribirla: Fase 1 resolvió la vista individual, y la v1.1 la extendió a una vista de equipo completa (todas las personas, tareas sin asignar visibles, resumen), sin necesidad de ninguna consulta SQL nueva. Ambas versiones fueron probadas en vivo contra el contenedor de prueba, incluyendo el procedimiento de rollback. Quedan pendientes, documentados y sin bloquear el cierre de esta iteración: la carga de traducciones al español del plugin, la corrección de los roles `app-admin` de los usuarios migrados, completar la asignación individual de tareas sin responsable, y evaluar una siguiente versión con filtros y nuevos modos de agrupación.
+> **Nota (2026-07-27):** este archivo quedó reservado exclusivamente
+> para cambios del proyecto LDX (cluster LXD). El trabajo sobre el
+> plugin propio de Kanboard "TeamWorkload" (investigación, Fase 1, v1.1)
+> tenía una entrada acá que se retiró — su historial completo vive ahora
+> en [`proyectos/kanboard-team-workload/CHANGELOG.md`](proyectos/kanboard-team-workload/CHANGELOG.md).

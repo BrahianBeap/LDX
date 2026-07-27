@@ -45,6 +45,8 @@ LDX/
 │
 ├── laboratorio/            ← experimentos y pruebas previas a documentación oficial
 │
+├── proyectos/              ← software propio desarrollado y mantenido por el equipo (con su propia documentación e historial)
+│
 ├── recursos/               ← plantillas y materiales de apoyo
 │
 ├── diagramas/              ← diagramas de arquitectura y flujo
@@ -134,4 +136,5 @@ El conocimiento debe permanecer en la documentación, no en la memoria de quiene
 - [Reuniones procesadas](reunion/README.md)
 - [Fuentes externas sanitizadas (OneNote)](onenote/README.md)
 - [Laboratorio de experimentos](laboratorio/README.md)
+- [Proyectos propios (software mantenido por el equipo)](proyectos/)
 - [Plantilla de análisis de reunión](recursos/prompt_analisis_reunion.md)

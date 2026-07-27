@@ -3,7 +3,7 @@
 > **Estado:** 🟡 Propuesta — pendiente de aprobación. No se escribió ningún
 > archivo PHP todavía.
 > **Documento de arquitectura de referencia:**
-> [`../2026-07-26_investigacion-vista-global-tareas-kanboard/informe.md`](../2026-07-26_investigacion-vista-global-tareas-kanboard/informe.md)
+> [`../01_Investigacion.md`](../01_Investigacion.md)
 > (investigación + validación en vivo + análisis de reutilización del Core).
 > **Principios que gobiernan este diseño** (confirmados por el usuario):
 > reutilizar siempre el Core antes de escribir código nuevo, no duplicar

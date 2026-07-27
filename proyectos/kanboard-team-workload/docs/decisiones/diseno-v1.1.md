@@ -1,7 +1,7 @@
 # Diseño técnico — Plugin "TeamWorkload", versión 1.1
 
 > **Estado:** ✅ Implementada y probada en `PFR-KANBOARD-TEST` — ver
-> [`v1.1-implementacion.md`](v1.1-implementacion.md).
+> [`pruebas-v1.1.md`](pruebas-v1.1.md).
 > **Base:** [`diseno-fase1.md`](diseno-fase1.md) — esta versión no cambia
 > la arquitectura general (Controller único, sin Model propio, mismo
 > permiso, misma ruta, mismo hook), solo la extiende.
@@ -156,7 +156,7 @@ datos ni agregar una consulta por modo.
 
 ## Compatibilidad (verificada, no solo esperada)
 
-Ver [`v1.1-implementacion.md`](v1.1-implementacion.md) para el detalle de
+Ver [`pruebas-v1.1.md`](pruebas-v1.1.md) para el detalle de
 pruebas — se confirmó que el modo individual, el orden de tareas, el
 permiso de administrador y el mecanismo de instalación/rollback siguen
 funcionando exactamente igual que en la Fase 1.

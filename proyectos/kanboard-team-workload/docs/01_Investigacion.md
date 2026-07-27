@@ -6,7 +6,7 @@
 > tareas abiertas en todos los proyectos de Kanboard a los que pertenece —
 > y si no existe, diseñar una arquitectura de plugin propio.
 > **Contexto de uso real:** ~15 usuarios, ~25 proyectos, volumen moderado de
-> tareas activas (ver [`estandar-organizacion-kanboard.md`](../2026-07-25_migracion-planner-a-kanboard/estandar-organizacion-kanboard.md)).
+> tareas activas (ver [`estandar-organizacion-kanboard.md`](../../../laboratorio/2026-07-25_migracion-planner-a-kanboard/estandar-organizacion-kanboard.md)).
 > No se instaló ni modificó nada en Kanboard, no se tocó ninguna base de
 > datos y no se clonó código de terceros a este repositorio.
 
@@ -23,7 +23,7 @@ prueba manual en el Kanboard real del equipo).
 El equipo migró su gestión de tareas desde Microsoft Planner a Kanboard
 usando el modelo **un proyecto de Kanboard por sistema/producto**
 (INFRAWORK, ADM-TECH, VulnApp, Portal OSS, SOC — ver
-[`bitacora.md`](../2026-07-25_migracion-planner-a-kanboard/bitacora.md)).
+[`bitacora.md`](../../../laboratorio/2026-07-25_migracion-planner-a-kanboard/bitacora.md)).
 Ese modelo resuelve la organización del trabajo por sistema, pero introduce
 un problema nuevo que Planner no tenía: **una persona ya no tiene un solo
 lugar donde ver todo lo que tiene asignado** — sus tareas están repartidas
@@ -559,7 +559,7 @@ preocupación real al tamaño actual ni al previsible a mediano plazo.
 
 > Prueba de **solo lectura** contra `PFR-KANBOARD-TEST` (proyecto LXD
 > `default`, host `pfr-oss`, ver
-> [`laboratorio/2026-07-24_kanboard-contenedor-prueba/README.md`](../2026-07-24_kanboard-contenedor-prueba/README.md)).
+> [`laboratorio/2026-07-24_kanboard-contenedor-prueba/README.md`](../../../laboratorio/2026-07-24_kanboard-contenedor-prueba/README.md)).
 > El usuario autorizó explícitamente, solo para esta tarea, consultas
 > `SELECT` directas contra el SQLite y un login programático de solo
 > lectura contra el propio Kanboard. No se ejecutó ningún `INSERT`,
@@ -577,7 +577,7 @@ Antes de probar la vista, se relevó el estado real de la base (consultas
   `daniel.medina`, `marcos.casco`, `norberto.nunez`, `andres.semidei`,
   `fernando.fleitas`) tienen **rol `app-admin`**, igual que `admin`. 🔴
   **Esto contradice lo documentado en
-  [`bitacora.md`](../2026-07-25_migracion-planner-a-kanboard/bitacora.md)**,
+  [`bitacora.md`](../../../laboratorio/2026-07-25_migracion-planner-a-kanboard/bitacora.md)**,
   que registra "rol Standard" para estos usuarios. Es un hallazgo real
   que conviene corregir antes de pasar a producción: hoy, cualquier
   persona del equipo tiene permisos de administrador completo sobre
@@ -608,7 +608,7 @@ Antes de probar la vista, se relevó el estado real de la base (consultas
   directo a datos. Nota aparte sin relación con esta investigación: se
   detectó que la tarea "Notas de Acceso - Refactorización Backend" en
   INFRAWORK usa la etiqueta `Infrawork`, lo que contradice la propia regla
-  del [estándar de organización](../2026-07-25_migracion-planner-a-kanboard/estandar-organizacion-kanboard.md#4-uso-de-etiquetas-tags)
+  del [estándar de organización](../../../laboratorio/2026-07-25_migracion-planner-a-kanboard/estandar-organizacion-kanboard.md#4-uso-de-etiquetas-tags)
   de no usar el nombre del proyecto como etiqueta dentro de sí mismo — se
   menciona solo como dato observado, a corregir aparte, no es parte del
   alcance de este informe.
