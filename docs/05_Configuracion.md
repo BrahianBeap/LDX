@@ -230,6 +230,110 @@ Si falta la rich rule para la IP de un operador, ese operador no puede acceder a
 
 ---
 
+## Reenvío de puertos del gateway hacia el balanceador (firewalld)
+
+### ¿Qué controla?
+Cómo el contenedor gateway de servicios reenvía el tráfico entrante hacia el contenedor balanceador (tráfico web) o directamente hacia un contenedor de destino (protocolos no-web). Ver el modelo completo en [02_Arquitectura.md](02_Arquitectura.md) y la decisión en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+### Zonas de firewalld dentro del contenedor gateway
+
+| Zona (nombre de uso interno del equipo) | Interfaz | Función |
+|---|---|---|
+| `external` | `eth1` (`ipvlan` sobre `nicsrv1`) | Tráfico hacia/desde la red del sitio (norte-sur) |
+| `internal` | `eth0` (`OVN_1`) | Tráfico hacia/desde otros contenedores del cluster (este-oeste) |
+
+### Reenviar un puerto a otro contenedor (`--add-forward-port`)
+
+```bash
+# Reenviar el puerto 80 del gateway al balanceador (mismo puerto de destino)
+firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toaddr=IP_BALANCEADOR --permanent
+
+# Reenviar un puerto dedicado directamente a un contenedor no-web (ej. base de datos), sin pasar por el balanceador
+firewall-cmd --zone=external --add-forward-port=port=5432:proto=tcp:toaddr=IP_CONTENEDOR_BD --permanent
+
+firewall-cmd --reload
+```
+
+| Parámetro | Descripción |
+|---|---|
+| `port` | Puerto de entrada, tal como llega al gateway |
+| `proto` | Protocolo (`tcp` o `udp`) |
+| `toaddr` | IP interna (en `OVN_1`) del contenedor destino |
+| `toport` | (Opcional) Puerto de destino, si es distinto al de entrada — por defecto usa el mismo |
+
+> 🔴 **Pendiente de validación:** la sintaxis completa exacta usada en la demostración no quedó del todo clara en el audio de la reunión — confirmar el comando definitivo (incluyendo si hace falta `masquerade` en la zona) en la próxima sesión antes de replicarlo en otros sitios. Ver [ADR-0008 — Riesgos](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+### Por qué la zona `drop` para interfaces sin puertos abiertos
+
+`firewalld` incluye una zona predefinida llamada `drop` con el comportamiento más restrictivo posible: no responde ping y, para cualquier puerto no explícitamente abierto, **descarta el paquete en silencio** (no hay respuesta de ningún tipo) — a diferencia de zonas como `external` o `work`, donde un puerto cerrado sí genera una respuesta de rechazo (ej. TCP reset) que confirma al que escanea que el host existe. Práctica del equipo: usar `drop` como zona por defecto en los contenedores gateway/balanceador para minimizar la información que un escaneo externo puede obtener sobre puertos no publicados deliberadamente.
+
+```bash
+firewall-cmd --permanent --set-default-zone drop
+```
+
+### Cómo verificar
+
+```bash
+firewall-cmd --zone=external --list-forward-ports
+# Debe listar los reenvíos configurados (puerto, protocolo, IP destino)
+```
+
+---
+
+## Contenedor balanceador (Apache como proxy reverso)
+
+### ¿Qué controla?
+El enrutamiento por URL/path de los servicios web publicados detrás del gateway de un sitio, y la centralización del certificado TLS. Ver la ficha completa del componente en [03_Componentes.md](03_Componentes.md) y la decisión en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+### Instalación básica
+
+```bash
+apt-get update
+apt-get install apache2
+```
+
+### Ejemplo de ruteo por URL/path
+
+```apache
+# /etc/apache2/sites-available/000-default.conf
+ProxyPass /kanboard http://IP_CONTENEDOR_KANBOARD:80/
+ProxyPassReverse /kanboard http://IP_CONTENEDOR_KANBOARD:80/
+```
+
+> **Nota:** Requiere habilitar el módulo `proxy_http` de Apache (`a2enmod proxy proxy_http`) para que las directivas `ProxyPass`/`ProxyPassReverse` funcionen.
+
+### Requisito de ruta por defecto en cloud-init/netplan
+
+El contenedor balanceador, igual que cualquier contenedor con IP fija en `OVN_1`, necesita una ruta por defecto explícita en su configuración de red — sin ella, el contenedor no responde a peticiones que lleguen desde fuera de su propia subred, aunque el firewall esté correctamente configurado (ver [TRB-011 en 07_Troubleshooting.md](07_Troubleshooting.md#trb-011)):
+
+```yaml
+cloud-init.network-config: |
+  #cloud-config
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      addresses:
+        - 192.168.0.11/24
+      routes:
+        - to: default
+          via: 192.168.0.254
+```
+
+> **Advertencia:** El indentado de este bloque YAML es estrictamente significativo — un espacio de más o de menos hace que una línea se interprete como parte de otro grupo distinto, sin generar un error explícito. Revisar la alineación cuidadosamente antes de aplicar.
+
+### Cómo verificar
+
+```bash
+lxc exec CONTENEDOR-LB -- ip route
+# Debe mostrar una entrada "default via ..."
+
+lxc exec CONTENEDOR-LB -- ss -ntlp
+# Debe mostrar el puerto 80/443 escuchando (Apache)
+```
+
+---
+
 ## Interfaz de red del contenedor "gateway de servicios" (driver IPVLAN)
 
 ### ¿Qué es?

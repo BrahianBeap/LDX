@@ -100,6 +100,7 @@ Los proyectos LXD son la única alternativa evaluada que resuelve simultáneamen
 ### Riesgos
 - 🔴 **Pendiente de validación:** no existe todavía una política escrita de límites "estándar" por tamaño de equipo/proyecto — los límites se definieron ad-hoc para el primer proyecto de ejemplo durante la reunión.
 - Si se crea un proyecto sin definir límites explícitos, hereda el comportamiento sin restricciones (mismo riesgo que la Opción A) — debe ser una verificación obligatoria al dar de alta un proyecto nuevo.
+- ✅ **Confirmado (reunión `LXD - Configuración FDO.vtt`):** los dispositivos de tipo `proxy` solo están permitidos en el proyecto `default` — un contenedor con dispositivos `proxy` no puede migrarse directamente a otro proyecto (falla con `can not receive local origin for clone local container`), y tampoco puede migrarse desde un snapshot entre proyectos. El procedimiento de migración (copiar sin snapshot, quitar los dispositivos proxy, luego migrar la copia) queda documentado en [06_Operacion.md — Migrar un contenedor entre proyectos LXD](../06_Operacion.md) y [LL-016 en 12_Lecciones_Aprendidas.md](../12_Lecciones_Aprendidas.md#ll-016--los-proxy-devices-de-lxd-no-son-migrables-fuera-del-proyecto-default).
 
 ---
 

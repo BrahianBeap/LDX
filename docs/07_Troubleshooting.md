@@ -154,6 +154,35 @@ config:
 
 ---
 
+## TRB-011 — Contenedor sin ruta por defecto (conectividad entrante rota)
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Un contenedor con IP fija (ej. el balanceador, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md)) no responde a peticiones externas, aunque el firewall esté correctamente configurado |
+| **Síntomas** | `curl`/petición desde otro contenedor o desde el gateway no obtiene respuesta ni error explícito — simplemente no hay conectividad. El servicio (ej. Apache) está corriendo y escuchando en el puerto esperado |
+| **Causa** | Falta la ruta por defecto (`default gateway`) en la configuración de red del contenedor (`cloud-init.network-config` / Netplan). Puede deberse a haberla omitido al escribir la configuración, o a un error de indentación en el YAML de Netplan — Ubuntu exige alineación estricta de bloques; una línea mal alineada se interpreta silenciosamente como parte de otro grupo, sin generar un error visible |
+| **Diagnóstico** | `lxc exec CONTENEDOR -- ip route` — si no aparece ninguna línea `default via ...`, esta es la causa |
+| **Solución** | Temporal (no persiste un reinicio): `lxc exec CONTENEDOR -- ip route add default via IP_GATEWAY`. Definitiva: agregar el bloque `routes: - to: default via: IP_GATEWAY` dentro de `cloud-init.network-config` en el perfil, y recrear el contenedor (cloud-init solo corre en el primer arranque, ver [LL-003](12_Lecciones_Aprendidas.md#ll-003--cloud-init-se-ejecuta-solo-al-primer-arranque)) |
+| **Prevención** | Incluir siempre la ruta por defecto al definir `cloud-init.network-config` de un contenedor con IP fija. Validar la indentación del YAML con cuidado antes de aplicar — un editor con resaltado de sintaxis YAML ayuda a detectar desalineaciones |
+
+### Configuración correcta
+
+```yaml
+cloud-init.network-config: |
+  #cloud-config
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      addresses:
+        - 192.168.0.11/24
+      routes:
+        - to: default
+          via: 192.168.0.254
+```
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash

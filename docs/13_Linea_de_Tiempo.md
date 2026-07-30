@@ -55,6 +55,23 @@
 
 ---
 
+### Tercera reunión — Arquitectura de exposición de servicios (gateway + balanceador)
+**Fecha:** 2026-07-28
+**Referencia:** [`reunion/LXD - Configuración FDO.vtt`](../reunion/LXD%20-%20Configuración%20FDO.vtt)
+
+| Hito | Estado |
+|---|---|
+| Decisión: modelo de gateway + balanceador en dos etapas para exponer servicios (reemplaza la redirección directa a nivel de host) | ✅ Completado — ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
+| Primer contenedor balanceador creado (`PFR-LB`, Apache, IP fija `192.168.0.11`) | ✅ Completado (demostración) |
+| Aclaración sobre responsabilidad de replicación de bases de datos (no la gestiona LXD) | ✅ Completado — ver [09_FAQ.md](09_FAQ.md) |
+| Exploración de CockroachDB como alternativa a Postgres distribuido | 🟡 Solo exploratorio — sin decisión ni responsable asignado |
+| Procedimiento de migración de contenedores entre proyectos LXD (workaround de proxy devices/snapshots) | ✅ Documentado — ver [06_Operacion.md](06_Operacion.md) y [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
+| Diagnóstico de contenedor sin ruta por defecto (balanceador) | ✅ Resuelto en vivo — ver [TRB-011](07_Troubleshooting.md#trb-011) |
+
+> **Nota:** la sintaxis exacta de la regla de firewalld para el reenvío de puertos del gateway hacia el balanceador no quedó completamente confirmada en el audio — ver el pendiente en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+---
+
 ## Hitos pendientes (próximos pasos)
 
 ### Corto plazo — Tercer miembro del cluster (Fernando / FDO1)
@@ -80,6 +97,10 @@
 | Gestionar alta de servicio del puerto 8444 (gestión LXD) para CAR1 | Marcos Casco | 🔴 Pendiente — ver [RIE-009 en 11_Riesgos.md](11_Riesgos.md) |
 | Enviar diagrama de red a Roberto de Paula / equipo SVA para apoyo de diseño | Marcos Casco | 🔴 Pendiente |
 | Definir política estándar de límites de recursos por proyecto LXD | Equipo técnico | 🔴 Pendiente — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
+| Continuar la sesión de arquitectura de exposición de servicios (esbozar versión práctica) | Norberto Núñez | 🔴 Pendiente — acordado para el día siguiente de la reunión, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
+| Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto | Elías Alfonzo / equipo | 🔴 Pendiente |
+| Retirar la redirección directa a nivel de host (esquema inicial de Kanboard) una vez migrado al modelo gateway + balanceador | Elías Alfonzo | 🔴 Pendiente — ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
+| Investigar opciones de base de datos con alta disponibilidad/replicación nativa (incluye CockroachDB) | Sin asignar | 🟡 Solo sugerido, sin dueño ni fecha |
 
 ---
 
@@ -147,3 +168,4 @@ Proyecto LXD con límites definidos ──► Onboarding de equipos adicionales 
 | Decisión sobre OVN vs alternativas | [10_Decisiones.md](10_Decisiones.md) |
 | Decisión sobre WireGuard como underlay | [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
 | Decisión sobre proyectos LXD | [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
+| Decisión sobre gateway + balanceador | [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |

@@ -138,6 +138,18 @@ Es un riesgo menor gracias a la naturaleza distribuida del cluster: como la base
 
 ---
 
+## Sobre exposición de servicios y bases de datos
+
+### ¿Por qué usar un gateway + un balanceador en vez de redirigir el puerto directamente al contenedor?
+
+El esquema de redirección directa (firewall del host apuntando a un único contenedor) es válido y se usó como primera prueba, pero solo es apropiado para un solo servidor sin alta disponibilidad. El modelo de gateway + balanceador permite alojar varios servicios web detrás de un mismo punto de entrada (enrutando por URL/path), centralizar el certificado TLS en un solo lugar, y preparar el camino para escalar a múltiples réplicas del mismo servicio. Ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) y [02_Arquitectura.md](02_Arquitectura.md).
+
+### ¿Quién es responsable de la replicación de una base de datos en este cluster?
+
+LXD **no gestiona la replicación de datos** de las aplicaciones que corren dentro de los contenedores — eso es responsabilidad de quien diseña cada servicio, según la tecnología de base de datos elegida. Lo que LXD provee es gestión unificada de los recursos (contenedores, redes, storage), no replicación a nivel de aplicación. Patrones comunes: activo-standby (escritura en el maestro, lectura desde el standby) o multimaestro, según lo que soporte la base de datos elegida — ver [08_Glosario.md](08_Glosario.md#replicación-activo-standby). La recomendación del equipo es justificar cualquier esquema de alta disponibilidad por la criticidad real del servicio, no aplicarlo de forma general a todos los servicios.
+
+---
+
 ## Documentos relacionados
 
 | Tema | Documento |

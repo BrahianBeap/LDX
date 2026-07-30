@@ -344,3 +344,30 @@ confirmado arriba. No deberían ejecutarse sin que Norberto los revise.
    para este puerto/IP, en paralelo a la implementación técnica (mismo
    circuito ya usado para PFR1, CAR1 y FDO1 — `docs/11_Riesgos.md`
    RIE-009).
+
+---
+
+## 8. Addendum (2026-07-30) — Norberto respondió el punto 1 en la reunión del 2026-07-28
+
+La reunión `reunion/LXD - Configuración FDO.vtt` (2026-07-28), procesada
+el 2026-07-30, responde directamente el punto 1 de la lista anterior
+("¿el mecanismo pensado era realmente `forward-port`/DNAT de firewalld?").
+Respuesta de Norberto: sí, pero **no es un DNAT directo del gateway hacia
+Kanboard** como asumía la inferencia de la sección 7 — es un modelo de
+**dos etapas**: el gateway reenvía (`firewall-cmd --add-forward-port`)
+hacia un contenedor **balanceador** dedicado (Apache como proxy reverso),
+y es ese balanceador quien enruta por URL/path hacia el contenedor de
+Kanboard. El balanceador también centraliza el certificado TLS.
+
+Queda documentado como decisión oficial en
+[`docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md`](../../docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md),
+con el diagrama en
+[`docs/02_Arquitectura.md`](../../docs/02_Arquitectura.md) y los comandos
+de referencia en
+[`docs/05_Configuracion.md`](../../docs/05_Configuracion.md).
+
+🔴 La sintaxis exacta del `--add-forward-port` usada en la demostración no
+quedó del todo clara en el audio — sigue pendiente confirmarla antes de
+aplicar el mecanismo real a `PFR-OSS-GW-SRV` para publicar Kanboard (ver
+el pendiente en el propio ADR-0008). Los puntos 2 a 5 de la lista
+anterior **siguen sin respuesta** — no se tocaron en esa reunión.

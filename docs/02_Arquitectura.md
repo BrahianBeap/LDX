@@ -123,7 +123,8 @@ El sistema es un **cluster LXD distribuido en 3 sitios geográficos**. Cada siti
 |---|---|---|
 | `.1` – `.5` | Fija | Gateways de servicio por proyecto (`PFR-OSS-GW-SRV`, `CAR-OSS-GW-SRV`, y reservadas para `CDE`, `FDO`, `IT` cuando se incorporen) |
 | `.6` – `.10` | Fija | Gateways de operación y mantenimiento por sitio (proyecto `default`: `PFR-GW-OAM`, `CAR-GW-OAM`, y reservadas para `CDE`, `FDO`, `IT`) |
-| `.11` – `.99` | Fija (reservado) | Sin asignar todavía |
+| `.11` | Fija | Primer contenedor balanceador (`PFR-LB`) — ver [Patrón gateway + balanceador](#patrón-de-exposición-de-servicios-gateway--balanceador-en-dos-etapas) y [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
+| `.12` – `.99` | Fija (reservado) | Sin asignar todavía |
 | `.100` – `.253` | DHCP | Contenedores de aplicación (asignación dinámica vía OVN) |
 | `.254` | Fija | Gateway de la red (`OVN_1.ipv4.address`) |
 
@@ -146,6 +147,42 @@ Cada sitio/proyecto tiene un contenedor dedicado que actúa como **router/gatewa
 - Se configura como **router**: firewall habilitado, SSH deshabilitado (la administración se hace exclusivamente vía `lxc exec`, nunca por SSH directo, para reducir superficie de movimiento lateral), y límites de `journald` bajos (100 MB) porque no aloja aplicaciones ni genera logs significativos.
 
 Ver la configuración completa del perfil en [05_Configuracion.md](05_Configuracion.md).
+
+### Patrón de exposición de servicios: gateway + balanceador en dos etapas
+
+A partir de esta reunión, la forma estándar de publicar un servicio web detrás del contenedor gateway de un sitio/proyecto es en **dos etapas**, reemplazando la redirección directa a nivel de host/VM que se había usado como prueba inicial. Ver la decisión completa, alternativas evaluadas y consecuencias en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+```
+   Petición externa (LAN corporativa)
+            │
+   ┌──────────────────────┐
+   │  Contenedor GATEWAY   │  reglas de firewall (forwarder entrante + NAT saliente)
+   │  (ver patrón arriba)  │  — misma función de siempre, ahora reenvía en 2 destinos
+   └──────────────────────┘
+            │
+            ├── puerto 80/443 ──► ┌─────────────────────────┐
+            │                     │  Contenedor BALANCEADOR │  Apache (proxy reverso)
+            │                     │  IP fija (ej. .11)      │  TLS centralizado aquí
+            │                     └─────────────────────────┘
+            │                                  │
+            │                     ruteo por URL/path (ej. /kanboard)
+            │                                  ▼
+            │                     Contenedor de SERVICIO (ej. Kanboard)
+            │
+            └── puerto dedicado (ej. 5432) ──► Contenedor de BASE DE DATOS
+                                                (directo, sin pasar por el balanceador)
+```
+
+**Por qué dos etapas y no redirección directa:**
+
+- El **balanceador** centraliza el certificado TLS de todos los servicios web de ese sitio en un solo lugar, en vez de instalarlo en cada contenedor de aplicación.
+- Un mismo balanceador puede alojar múltiples servicios, enrutando por URL/path — no hace falta abrir un puerto nuevo en el gateway por cada aplicación web nueva.
+- El **gateway** sigue concentrando exclusivamente el reenvío de tráfico y el NAT — no aloja aplicaciones ni lógica de ruteo por URL, manteniendo la separación de responsabilidades ya establecida.
+- Servicios no-web (ej. una base de datos accedida directamente por su protocolo) pueden seguir recibiendo un puerto dedicado del gateway sin pasar por el balanceador — el modelo no obliga a todo el tráfico a ser HTTP.
+
+> **Cuándo la redirección directa (sin balanceador) sigue siendo válida:** Norberto Núñez fue explícito en que el esquema anterior (firewall del host/VM redirigiendo directo a un contenedor) "es totalmente válido" y lo implementó varias veces — es más apropiado cuando hay **un solo servidor sin alta disponibilidad ni distribución por el cluster**. El modelo de dos etapas se adopta como estándar porque este cluster está pensado justamente para múltiples nodos y servicios distribuidos.
+
+Ver la configuración del contenedor balanceador (perfil, firewall del gateway, Apache) en [05_Configuracion.md](05_Configuracion.md) y la ficha del componente en [03_Componentes.md](03_Componentes.md).
 
 ### Modelo de multi-tenancy (proyectos LXD)
 

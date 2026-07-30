@@ -188,6 +188,29 @@ Ver el procedimiento completo de SSSD/LDAP en [`onenote/Clúster-OSS/Clúster/SS
 
 ---
 
+## LL-016 — Los "proxy devices" de LXD no son migrables fuera del proyecto `default`
+
+**¿Qué pasó?**
+Durante la reunión, al intentar migrar un contenedor de prueba desde el proyecto `default` hacia `PRJ-OSS` (o un proyecto equivalente), la operación falló con el error `can not receive local origin for clone local container`. Norberto Núñez explicó la causa: LXD restringe los dispositivos de tipo `proxy` (los mismos usados para exponer servicios o dar salida a internet antes de que OVN esté disponible, ver [05_Configuracion.md](05_Configuracion.md)) exclusivamente al proyecto `default`, por diseño de seguridad — se asume que los usuarios de proyectos no-`default` no deberían poder modificar reglas a nivel de sistema operativo del host. Además, intentar migrar directamente desde un **snapshot** entre proyectos tampoco funciona: los snapshots no son migrables entre proyectos.
+
+**Lección:**
+Antes de migrar un contenedor de un proyecto a otro, si tiene dispositivos `proxy` configurados, hay que quitarlos primero. El procedimiento que funcionó: hacer una **copia normal del contenedor** (no un snapshot), quitar los dispositivos `proxy` de esa copia, y recién entonces migrar la copia limpia al proyecto de destino. Ver el procedimiento completo en [06_Operacion.md — Migrar un contenedor entre proyectos LXD](06_Operacion.md) y la ampliación de este límite en [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md).
+
+---
+
+## LL-017 — Snapshot antes de cualquier cambio riesgoso, y reglas de firewall primero en runtime
+
+**¿Qué pasó?**
+Norberto Núñez recomendó, antes de aplicar cambios de configuración de los que no se está completamente seguro, tomar un snapshot del contenedor para poder revertir rápidamente si algo sale mal. En la misma línea, contó una anécdota personal: hace aproximadamente 8 años perdió reglas de firewall completas al reiniciar un servicio, porque las había probado únicamente en runtime (`firewall-cmd` sin `--permanent`) y nunca las promovió a la configuración persistente.
+
+**Lección:**
+1. **Tomar un snapshot del contenedor** (`lxc snapshot`) antes de cualquier cambio de configuración incierto — es una operación rápida, distinta de publicar una imagen completa (`lxc publish`, ver [LL-004](12_Lecciones_Aprendidas.md#ll-004--las-imágenes-cacheadas-hacen-el-despliegue-instantáneo)). El snapshot es por contenedor: si un servicio tiene frontend y base de datos en contenedores separados, cada uno necesita su propio snapshot.
+2. **Probar siempre las reglas de firewall primero en runtime, confirmarlas, y recién después persistirlas** con `--permanent` o `--runtime-to-permanent` (ver [05_Configuracion.md](05_Configuracion.md)). Aplicar una regla directamente como `--permanent` sin haberla probado antes es la forma más común de terminar con una regla incorrecta persistida — o, peor, de perder reglas al reiniciar si nunca se promovieron desde runtime.
+
+Ver el comando de snapshot en [06_Operacion.md](06_Operacion.md).
+
+---
+
 ## Documentos relacionados
 
 | Tema | Documento |

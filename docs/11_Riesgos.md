@@ -156,6 +156,20 @@
 
 ---
 
+## RIE-010 — Arranque más lento en Ubuntu 26.04 LTS por causa no identificada
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | Durante la reunión, Norberto Núñez notó que un contenedor con Ubuntu 26.04 LTS tardaba más en completar su arranque/`cloud-init` que uno equivalente en Ubuntu 24.04 LTS |
+| **Causa** | 🔴 **No identificada con precisión.** Norberto mencionó al pasar un servicio nuevo relacionado con "console" como posible responsable, pero explícitamente no supo confirmar cuál era exactamente ("no sé cuál es exactamente") |
+| **Impacto** | Contenedores creados desde imágenes de Ubuntu 26.04 LTS pueden tardar más de lo esperado en estar listos — riesgo de falsos negativos si se verifica `cloud-init status` demasiado pronto |
+| **Severidad** | Baja — no bloquea el trabajo, pero puede generar confusión operativa si no se conoce de antemano |
+| **Mitigación actual** | Usar `cloud-init status --wait` en lugar de una sola verificación puntual, para no asumir una falla antes de que el arranque termine |
+| **Acción requerida** | Investigar la causa raíz exacta (posible candidato: un servicio systemd nuevo en 26.04 relacionado con la consola) la próxima vez que se cree un contenedor con esta versión |
+| **Responsable** | Norberto Núñez |
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
@@ -163,7 +177,7 @@
 | **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-002 (2/3 nodos), RIE-006 (sin backup) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN) |
-| **Baja** | RIE-009 (alta de servicio CAR1) |
+| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 
 ---

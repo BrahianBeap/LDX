@@ -261,6 +261,31 @@ Ver la configuración completa del perfil en [05_Configuracion.md](05_Configurac
 
 ---
 
+## Contenedor "balanceador"
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | Contenedor balanceador (patrón, no un paquete instalable) — primer ejemplo: `PFR-LB` |
+| **Función** | Recibir el tráfico web reenviado por el contenedor gateway de servicios y enrutarlo, por URL/path, hacia el contenedor de aplicación correspondiente |
+| **Responsabilidad** | Centralizar el certificado TLS de todos los servicios web de un sitio en un único lugar; actuar como proxy reverso HTTP(S) |
+| **Dependencias** | Contenedor gateway de servicios del mismo sitio (le reenvía el tráfico); Apache (u otro servidor web) instalado dentro |
+| **Entradas** | Tráfico HTTP/HTTPS reenviado desde el contenedor gateway (ej. puerto 80/443) |
+| **Salidas** | Tráfico enrutado hacia el contenedor de servicio correspondiente, según URL/path |
+| **Impacto si falla** | Todos los servicios web publicados a través de este balanceador quedan inalcanzables desde afuera, aunque los contenedores de aplicación sigan corriendo — es un punto único de falla por sitio si no tiene réplicas |
+| **Cómo verificar** | `lxc exec CONTENEDOR -- ss -ntlp` (debe mostrar el puerto 80/443 escuchando); `curl` contra la IP del balanceador |
+| **IP fija** | Sí — requiere IP fija en `OVN_1` porque el gateway apunta directamente a él (ej. `.11` para `PFR-LB` en Franco, ver [02_Arquitectura.md](02_Arquitectura.md)) |
+
+### Buenas prácticas
+
+- Un balanceador por sitio, no compartido entre sitios (mismo criterio que el contenedor gateway de servicios).
+- Instalar el certificado TLS únicamente en este contenedor — los contenedores de aplicación detrás del balanceador no necesitan certificado propio.
+- No alojar aplicaciones dentro de este contenedor — su única función es enrutar, igual que el gateway no aloja aplicaciones (ver [Contenedor "gateway de servicios"](#contenedor-gateway-de-servicios) arriba).
+- Servicios no-web (ej. bases de datos) no pasan por este contenedor — el gateway los redirige directamente. Ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+Ver la decisión completa en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md), el diagrama en [02_Arquitectura.md](02_Arquitectura.md) y la configuración del perfil/Apache en [05_Configuracion.md](05_Configuracion.md).
+
+---
+
 ## Proyectos LXD (multi-tenancy)
 
 | Campo | Valor |

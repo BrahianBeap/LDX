@@ -161,6 +161,62 @@ lxc cluster list
 
 ---
 
+## Migrar un contenedor entre proyectos LXD
+
+### Objetivo
+Mover un contenedor del proyecto `default` a otro proyecto (o viceversa) — por ejemplo, para pasar un contenedor de prueba a su proyecto definitivo. Ver la restricción que motiva este procedimiento en [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) y [LL-016 en 12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md#ll-016--los-proxy-devices-de-lxd-no-son-migrables-fuera-del-proyecto-default).
+
+### Por qué no alcanza con mover el contenedor directamente
+Los dispositivos de tipo `proxy` solo están permitidos en el proyecto `default` — si el contenedor los tiene, la migración falla con `can not receive local origin for clone local container`. Lo mismo ocurre si se intenta migrar directamente desde un **snapshot**: los snapshots no son migrables entre proyectos.
+
+### Procedimiento
+
+```bash
+# 1. Crear una copia normal del contenedor (no un snapshot) en el mismo proyecto
+lxc copy CONTENEDOR_ORIGEN CONTENEDOR_COPIA --project PROYECTO_ORIGEN
+
+# 2. Quitar los dispositivos proxy de la copia (repetir por cada dispositivo proxy que tenga)
+lxc config device remove CONTENEDOR_COPIA NOMBRE_DISPOSITIVO_PROXY --project PROYECTO_ORIGEN
+
+# 3. Migrar la copia limpia al proyecto de destino
+lxc move CONTENEDOR_COPIA --project PROYECTO_ORIGEN --target-project PROYECTO_DESTINO
+```
+
+### Verificación
+
+```bash
+lxc list --project PROYECTO_DESTINO
+# El contenedor debe aparecer en el proyecto de destino
+
+lxc config device show CONTENEDOR_COPIA --project PROYECTO_DESTINO
+# No debe listar ningún dispositivo de tipo proxy
+```
+
+---
+
+## Tomar un snapshot de un contenedor (antes de cambios riesgosos)
+
+### Objetivo
+Poder revertir rápidamente un contenedor a su estado anterior si un cambio de configuración sale mal — distinto de publicar una imagen completa (ver [Crear un contenedor desde una imagen personalizada](#crear-un-contenedor-desde-una-imagen-personalizada-clon) arriba). Ver [LL-017 en 12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md#ll-017--snapshot-antes-de-cualquier-cambio-riesgoso-y-reglas-de-firewall-primero-en-runtime).
+
+```bash
+# Crear un snapshot antes de un cambio incierto:
+lxc snapshot NOMBRE_CONTENEDOR NOMBRE_SNAPSHOT
+
+# Listar snapshots existentes:
+lxc info NOMBRE_CONTENEDOR
+
+# Revertir el contenedor a un snapshot:
+lxc restore NOMBRE_CONTENEDOR NOMBRE_SNAPSHOT
+
+# Eliminar un snapshot que ya no se necesita:
+lxc delete NOMBRE_CONTENEDOR/NOMBRE_SNAPSHOT
+```
+
+> **Nota:** El snapshot es **por contenedor** — si un servicio tiene el frontend y la base de datos en contenedores separados (ver [LL-006](12_Lecciones_Aprendidas.md#ll-006--separar-la-base-de-datos-del-frontend-en-contenedores-distintos)), cada uno necesita su propio snapshot independiente antes de un cambio que los afecte a ambos.
+
+---
+
 ## Gestión de imágenes
 
 ```bash

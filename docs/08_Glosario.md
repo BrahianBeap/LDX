@@ -17,6 +17,9 @@ Documento que registra una decisión técnica importante: qué se decidió, por 
 
 ## B
 
+### balanceador (contenedor)
+Patrón de diseño: contenedor que recibe el tráfico web reenviado por el [gateway de servicios](#gateway-de-servicios-contenedor) y lo enruta, por URL/path, hacia el contenedor de aplicación correspondiente, usando Apache (u otro servidor web) como proxy reverso. Centraliza el certificado TLS de todos los servicios web de un sitio en un único lugar. Ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) y [03_Componentes.md](03_Componentes.md).
+
 ### bootstrap
 Proceso de inicialización de un componente que no tiene dependencias previas. En MicroOVN, `microovn cluster bootstrap` configura el primer nodo OVN del cluster. Solo se ejecuta una vez, en el primer nodo.
 
@@ -45,6 +48,9 @@ Tipo especial de dispositivo LXD que crea un socket de red que traduce tráfico 
 
 ### Dqlite
 Base de datos distribuida basada en SQLite que LXD usa internamente para almacenar el estado del cluster: qué contenedores existen, sus configuraciones, perfiles, redes e imágenes. Dqlite requiere **quórum** para operaciones de escritura. Con 1 solo nodo activo (estado actual del cluster), la pérdida de ese nodo implica pérdida del estado completo del cluster. La corrupción de Dqlite es el escenario de recuperación más complejo del sistema.
+
+### drop (zona de firewalld)
+Zona predefinida de `firewalld` con el comportamiento más restrictivo: no responde ping y descarta en silencio cualquier paquete a un puerto no explícitamente abierto (sin enviar rechazo TCP), a diferencia de zonas como `external`/`work`. Usada como zona por defecto en los contenedores gateway y balanceador para minimizar la información visible ante un escaneo externo. Ver [05_Configuracion.md](05_Configuracion.md).
 
 ---
 
@@ -171,6 +177,9 @@ Número mínimo de nodos que deben estar disponibles para que el cluster pueda r
 
 ## R
 
+### replicación activo-standby / multimaestro
+Patrones de replicación de bases de datos: en **activo-standby**, las escrituras van únicamente al nodo maestro y las lecturas pueden distribuirse hacia uno o más nodos standby (solo lectura), evitando cuello de botella entre lectura y escritura; el failover (promover un standby a maestro) es una maniobra planificada, típicamente usada durante mantenimiento del nodo activo. En **multimaestro**, más de un nodo acepta escrituras simultáneamente. LXD no gestiona ni provee replicación de datos de aplicación — es responsabilidad de quien diseña cada servicio, según lo que soporte la base de datos elegida. Ver [09_FAQ.md](09_FAQ.md).
+
 ### rich rule (firewalld)
 Regla de firewall avanzada en firewalld que permite especificar origen, destino, protocolo, puerto y acción. Más expresiva que las reglas simples.
 
@@ -198,6 +207,9 @@ Servicio que permite a los hosts Linux del cluster autenticar usuarios contra un
 
 ### snap
 Gestor de paquetes universal de Canonical para Linux. LXD y MicroOVN se instalan como snaps. Los snaps son autocontenidos y **actualizan automáticamente por defecto** (una revisión diaria). Ver `snap refresh --hold` en [04_Instalacion.md](04_Instalacion.md) — necesario para evitar desincronización de versiones entre nodos del cluster.
+
+### snapshot (LXD)
+Captura instantánea del estado de un contenedor en un momento dado, usada como punto de restauración rápido antes de un cambio riesgoso. Es por contenedor (si un servicio tiene frontend y base de datos en contenedores separados, cada uno necesita su propio snapshot) y, a diferencia de publicar una [imagen](#lxd) (`lxc publish`), no crea un artefacto reutilizable para clonar otros contenedores — solo permite revertir (`lxc restore`) el mismo contenedor a ese estado. Los snapshots **no son migrables entre proyectos LXD**. Ver [06_Operacion.md](06_Operacion.md) y [12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md).
 
 ### split-brain
 Condición de error en un cluster distribuido donde dos o más grupos de nodos quedan aislados entre sí (por corte de red) y cada grupo cree ser el único activo, tomando decisiones conflictivas sobre el mismo estado. En un cluster LXD de 3 nodos en 3 sitios distintos, un corte de enlace puede provocar que el nodo aislado y los otros dos intenten mantener el liderazgo simultáneamente. Dqlite mitiga esto mediante quórum, pero el riesgo no desaparece completamente. Ver también: [quórum](#quórum), [Dqlite](#dqlite).
