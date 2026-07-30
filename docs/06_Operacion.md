@@ -269,6 +269,22 @@ acá, ese detalle está en el documento enlazado — esta checklist es la
 En **`fdo-oss`** (el nuevo host). Detalle completo, parámetros y errores
 frecuentes de cada comando: [04_Instalacion.md — Pasos 0, 1, 1.5 y 3](04_Instalacion.md).
 
+> ⚠️ **Antes de instalar cualquier snap, configurar el proxy — si no, el
+> siguiente paso falla con `error: unable to contact snap store`.** `snap`
+> **no** usa `/etc/apt/apt.conf.d/` ni las variables `http_proxy`/`https_proxy`
+> del shell — tiene su propio mecanismo:
+> ```bash
+> snap set system proxy.http=http://10.150.32.100:3128
+> snap set system proxy.https=http://10.150.32.100:3128
+> ```
+> Si después de configurar esto `snap install` sigue fallando con
+> `connect: no route to host` (proxy bien configurado pero inalcanzable),
+> el host probablemente **no está autorizado todavía** para salir por ese
+> proxy — hace falta pedir el alta de servicio al equipo de seguridad/red
+> (mismo trámite que se hizo para PFR1 y CAR1). Diagnóstico paso a paso
+> (sin depender de `ping`/`iptables`, que pueden no estar instalados) en
+> [`laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md`](../laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md).
+
 ```bash
 # Paso 0 — Renombrar interfaces (mismo nombre lógico que los demás nodos)
 # Editar /etc/netplan/*.yaml: nic_oam y nic_srv1, match por MAC + set-name
