@@ -27,6 +27,7 @@ Este directorio contiene la documentación técnica oficial del proyecto LXD.
 | 14 | [`14_Manual_Operativo.md`](14_Manual_Operativo.md) | Checklist de salud, monitoreo, escalamiento | ✅ Completo |
 | 15 | [`15_Revision_Arquitectonica.md`](15_Revision_Arquitectonica.md) | Auditoría técnica independiente — crítica, riesgos, recomendaciones priorizadas | ✅ Completo |
 | 16 | [`16_Auditoria_Knowledge_Base.md`](16_Auditoria_Knowledge_Base.md) | Auditoría de calidad del KB — duplicaciones, inconsistencias, plan de mejora | ✅ Completo |
+| 17 | [`17_Avance_Presentacion.md`](17_Avance_Presentacion.md) | Línea de tiempo de avance, antes/ahora y decisiones clave — insumo para presentación a dirección | ✅ Completo |
 
 ---
 
@@ -47,6 +48,7 @@ docs/adr/
 | [`ADR-0005-arquitectura-microservicios.md`](adr/ADR-0005-arquitectura-microservicios.md) | Arquitectura: un servicio por contenedor | Aceptado |
 | [`ADR-0006-wireguard-underlay-ovn-multisitio.md`](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) | WireGuard como transporte underlay para OVN entre sitios en Capa 3 | Aceptado |
 | [`ADR-0007-proyectos-lxd-multitenancy.md`](adr/ADR-0007-proyectos-lxd-multitenancy.md) | Proyectos LXD como modelo de aislamiento multi-tenant | Aceptado |
+| [`ADR-0008-gateway-balanceador-dos-etapas.md`](adr/ADR-0008-gateway-balanceador-dos-etapas.md) | Exposición de servicios: gateway + balanceador en dos etapas | Aceptado |
 
 ---
 
