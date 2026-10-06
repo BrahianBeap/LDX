@@ -45,5 +45,5 @@ Usar guiones medios (`-`) en lugar de espacios. Evitar caracteres especiales.
 
 | Archivo | Fecha | Participantes | Estado |
 |---|---|---|---|
-| `Llamada con Daniel y 3 personas más.vtt` | 🔴 Pendiente de validación | Norberto Núñez, Marcos Casco, Daniel Medina, Elías Alfonzo, Rocío Duarte | ✅ Analizada — documentación en [`docs/`](../docs/) |
+| `Llamada con Daniel y 3 personas más.vtt` | ✅ 2026-06-25 (confirmada por nombre de archivo de la grabación: `...-20260625_105957-...`) | Norberto Núñez, Marcos Casco, Daniel Medina, Elías Alfonzo, Rocío Duarte | ✅ Analizada — documentación en [`docs/`](../docs/). Grabación (`.mp4`) revisada visualmente además de la transcripción — ver notas "obtenido visualmente del video" en [`04_Instalacion.md`](../docs/04_Instalacion.md) y [`05_Configuracion.md`](../docs/05_Configuracion.md) |
 | `segunda_reunion LXD _ Implementacion.vtt` | 🔴 Pendiente de validación | Norberto Núñez, Marcos Casco, Elías Alfonzo, Rocío Duarte, Daniel Medina, Andrés Semidei, Fernando Fleitas | ✅ Analizada — documentación en [`docs/`](../docs/) |

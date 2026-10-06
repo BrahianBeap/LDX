@@ -14,10 +14,12 @@ El proxy HTTP que LXD usa para comunicarse con internet: descargar imágenes de 
 
 ✅ Confirmado (fuente: [`onenote/Clúster-OSS/Clúster/Proxy.md`](../onenote/Clúster-OSS/Clúster/Proxy.md)) — el proxy corporativo (alias interno "SDI") es `10.150.32.100:3128`.
 
+> **Corrección de nombre de parámetro** — ✅ confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~01:23, output real de `lxc config show`) y contrastado con la documentación oficial de LXD (página "Server configuration" abierta en pantalla durante la reunión): el nombre correcto de la clave es `core.proxy_http` / `core.proxy_https` (proxy primero, protocolo después) — **no** `core.http_proxy`/`core.https_proxy` como figuraba antes en este documento. Con el nombre incorrecto, `lxc config set` crea una clave de configuración nueva e inerte en lugar de fallar con error, por lo que el proxy queda sin efecto de forma silenciosa.
+
 | Parámetro | Archivo/Comando | Función | Valor |
 |---|---|---|---|
-| `core.http_proxy` | `lxc config set` | Proxy para tráfico HTTP de LXD | `http://10.150.32.100:3128` |
-| `core.https_proxy` | `lxc config set` | Proxy para tráfico HTTPS de LXD | `http://10.150.32.100:3128` |
+| `core.proxy_http` | `lxc config set` | Proxy para tráfico HTTP de LXD | `http://10.150.32.100:3128` |
+| `core.proxy_https` | `lxc config set` | Proxy para tráfico HTTPS de LXD | `http://10.150.32.100:3128` |
 | `core.proxy_ignore_hosts` | `lxc config set` | Hosts/redes sin proxy (acceso directo) | `10.0.0.0/8,192.168.0.0/16,172.16.0.0/12,169.254.0.0/16` |
 
 ### Configuración completa en el host (APT, snap y LXD)
@@ -44,6 +46,8 @@ lxc config set core.proxy_https $proxy_sdi
 lxc config set core.proxy_ignore_hosts $no_proxy
 ```
 
+> **Nota:** en el video de la reunión, el primer intento se hizo con `lxc config set core.proxy_http=http://...` (signo `=`) y no tuvo efecto — hubo que repetirlo con espacio en lugar de `=` (`lxc config set core.proxy_http http://...`) para que la clave se aplicara correctamente.
+
 > **Nota:** `no_proxy`/`core.proxy_ignore_hosts` excluye todo el rango de redes privadas RFC1918 y el rango link-local (usado por WireGuard, ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)) para que el tráfico interno del cluster no intente salir por el proxy corporativo.
 
 ### Ver la configuración actual
@@ -54,6 +58,35 @@ lxc config show
 
 ### Impacto de configuración incorrecta
 Sin el proxy configurado correctamente en las tres capas, LXD no puede descargar imágenes de contenedores, `apt`/`snap` no pueden instalar o actualizar paquetes, y el cloud-init de los contenedores (que replica esta misma configuración vía `apt.http_proxy`/`apt.https_proxy` en su `user-data`) no puede completar su primer arranque.
+
+---
+
+## Endpoint de métricas Prometheus de LXD
+
+### ¿Qué controla?
+El puerto y la autenticación del endpoint HTTPS donde LXD expone sus métricas en formato Prometheus (uso de CPU, memoria, red y disco por instancia, entre otras).
+
+✅ Confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:07 y ~01:23 con `lxc config show`). No estaba documentado previamente.
+
+### Parámetros
+
+| Parámetro | Función | Valor confirmado |
+|---|---|---|
+| `core.metrics_address` | IP:puerto donde LXD expone las métricas (HTTPS) | `10.143.11.228:8555` |
+| `core.metrics_authentication` | Si exige certificado cliente para leer el endpoint de métricas | `false` |
+
+```bash
+lxc config set core.metrics_address 10.143.11.228:8555
+lxc config set core.metrics_authentication false
+```
+
+> **Advertencia:** con `core.metrics_authentication false`, cualquier cliente que alcance el puerto 8555 por red puede leer las métricas sin autenticarse. Este puerto debe estar protegido por firewall (ver [Configuración de firewall](#configuración-de-firewall-firewalld) más abajo) y accesible solo desde el servidor de observabilidad (SVATOOL, `10.150.31.68`, que también recibe los logs vía syslog — ver [Reenvío de logs del host a Loki](#reenvío-de-logs-del-host-a-loki-rsyslog)).
+
+### Cómo verificar
+```bash
+curl -sk https://10.143.11.228:8555/1.0/metrics | head
+# Debe devolver métricas en formato texto plano de Prometheus
+```
 
 ---
 
@@ -730,6 +763,72 @@ lxc copy PFR-OSS-GW-SRV CAR-OSS-GW-SRV --profile PRF-CAR-OSS-GW-SRV --target car
 ```
 
 > **Nota:** la ruta `via: 192.168.0.6` en `eth0` apunta al contenedor `PFR-GW-OAM`/`CAR-GW-OAM` (gateway de operación y mantenimiento) — es cómo el gateway de servicios sale a internet a través del proxy corporativo sin tener él mismo una salida directa. Ver la sección anterior.
+
+---
+
+## Buckets de almacenamiento S3 (backend de Loki/Mimir)
+
+### ¿Qué controla?
+LXD puede exponer un *storage pool* como servidor de objetos compatible con S3. El equipo lo usa para dar almacenamiento de objetos a las herramientas de observabilidad (Loki para logs, Mimir para métricas de largo plazo) sin depender de un servicio S3 externo al cluster.
+
+✅ Confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:28). No estaba documentado previamente.
+
+### Comandos
+
+```bash
+# Crear un bucket en un storage pool existente
+lxc storage bucket create POOL NOMBRE_BUCKET [size=TAMAÑO]
+
+# Ejemplos reales observados:
+lxc storage bucket create local:svatool-lxc-storage-1 mimir-vol1 --project default
+lxc storage bucket create pool_lvm loki-svatool
+lxc storage bucket set pool_lvm loki-svatool size=1TiB
+```
+
+| Parámetro | Descripción |
+|---|---|
+| `POOL` | Storage pool de LXD donde vive el bucket (ej. `local`, `pool_lvm`) |
+| `NOMBRE_BUCKET` | Nombre del bucket S3 (ej. `loki-svatool`, `mimir-vol1`) |
+| `size` | Cuota del bucket (se puede fijar en la creación o después con `lxc storage bucket set`) |
+
+Al crear el bucket, LXD genera automáticamente una clave de acceso (`access key`) y una clave secreta (`secret key`) de administrador para ese bucket.
+
+> **Advertencia de seguridad:** las claves de acceso S3 son credenciales — **no** deben copiarse a este repositorio ni a ningún documento en texto plano. Se muestran una sola vez en la salida del comando (`lxc storage bucket create` no las reimprime después); guardarlas en el gestor de credenciales del equipo (ver [`recursos/`](../recursos/) o el proceso interno de gestión de secretos). Si una clave quedó expuesta en una grabación de pantalla, rotarla (`lxc storage bucket key delete` / recrear la key) apenas sea posible.
+
+### Cómo verificar
+```bash
+lxc storage bucket list POOL
+lxc storage bucket show POOL NOMBRE_BUCKET
+```
+
+---
+
+## MTU de dispositivos de red por contenedor
+
+### ¿Qué controla?
+El tamaño máximo de paquete (MTU) de una interfaz de red específica de un contenedor, que sobrescribe el valor heredado del perfil o de la red.
+
+✅ Confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:28). No estaba documentado previamente.
+
+### Comando
+
+```bash
+lxc config device set NOMBRE_CONTENEDOR eth0 mtu 9216 --project NOMBRE_PROYECTO
+
+# Ejemplo real observado:
+lxc config device set C-SyslogDist-h1 eth0 mtu 9216 --project IAAS-Logs
+```
+
+### Explicación
+Se usó para el contenedor distribuidor de syslog (`C-SyslogDist-h1`, proyecto `IAAS-Logs`), donde un MTU de jumbo frame (9216) reduce la fragmentación de paquetes al reenviar grandes volúmenes de líneas de log hacia el destino centralizado.
+
+> 🔴 **Pendiente de validación:** no quedó claro en la reunión si el MTU de 9216 requiere que la red/switch físico subyacente también tenga jumbo frames habilitados extremo a extremo — confirmar antes de replicar este ajuste en otro sitio, ya que un MTU mayor al soportado por la red causa fragmentación silenciosa o pérdida de paquetes grandes.
+
+### Cómo verificar
+```bash
+lxc exec NOMBRE_CONTENEDOR -- ip link show eth0
+# El campo "mtu" debe mostrar el valor configurado
+```
 
 ---
 

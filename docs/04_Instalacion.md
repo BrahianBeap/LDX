@@ -59,6 +59,8 @@ ip link
 
 > **Nota:** Este mismo criterio aplica a la interfaz de gestión (ej. `ns192`).
 
+> **Ejemplo real (PFR1)** — ✅ confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:14, `ip -4 addr`): la interfaz de gestión de PFR1 es `ens192` (altname `enp11s0`), con IP `10.143.11.228/29` (broadcast `10.143.11.231`).
+
 ---
 
 ## Paso 1: Instalar LXD
@@ -166,6 +168,8 @@ lxd init
 | Admin port | 8444 | Puerto de administración local |
 | Cluster port | 8443 | Puerto de comunicación entre nodos y acceso a Web UI |
 
+> **Ejemplo real de verificación del disco antes de correr el wizard** — ✅ confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:07), disco de PFR1: `fdisk -l /dev/sda` mostró un disco de 500 GiB (GPT) con 6 particiones (`/dev/sda1`…`/dev/sda6`); la partición vacía de 328 GiB (`/dev/sda6`) fue la indicada al wizard como "existing empty block device". Sirve como referencia de qué esperar al identificar el disco/partición dedicados en un nodo nuevo.
+
 ### Para nodos adicionales (CAR1, FDO1)
 
 Al seleccionar "Join existing cluster", el wizard pedirá un **join token**. Este token se genera desde un nodo que ya sea miembro funcional del cluster (ej. PFR1):
@@ -216,6 +220,46 @@ lxc cluster list
 |---|---|---|
 | `ZFS pool already exists` | El disco ya fue usado por ZFS antes | `zpool destroy NOMBRE_POOL` y volver a intentar |
 | `Cannot connect to cluster` | Firewall bloqueando puerto 8443 | Ver Paso 5 (configuración de firewall) |
+
+---
+
+## Paso 2.1: Configurar puerto de administración y puerto de métricas (post-init)
+
+### Objetivo
+Separar el puerto de la API de administración/Web UI (`8444`) del puerto de comunicación interna del cluster (`8443`, fijado automáticamente por `lxd init` en `cluster.https_address`), y habilitar el endpoint de métricas Prometheus.
+
+✅ Confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:07–00:21 y ~01:22 con el `lxc config show` final). El wizard de `lxd init` **no pregunta** por un puerto de administración separado — solo fija `core.https_address` con el mismo valor que la dirección de gestión (puerto 8443 por defecto). El puerto 8444 se configura en un paso manual posterior, y **requiere reiniciar el daemon** para tomar efecto:
+
+### Comando
+
+```bash
+# Puerto de gestión (Web UI / API administrativa)
+lxc config set core.https_address 10.143.11.228:8444
+snap restart lxd
+
+# Puerto de métricas (Prometheus)
+lxc config set core.metrics_address 10.143.11.228:8555
+lxc config set core.metrics_authentication false
+```
+
+### Explicación
+
+| Parámetro | Descripción |
+|---|---|
+| `core.https_address` | Puerto de la API REST/Web UI de administración. Se corrige de 8443 (valor que dejó `lxd init`) a 8444, dejando 8443 exclusivo para `cluster.https_address` (comunicación entre nodos). |
+| `core.metrics_address` | Puerto donde LXD expone métricas en formato Prometheus. |
+| `core.metrics_authentication` | Si es `false`, el endpoint de métricas no exige autenticación por certificado cliente — usar solo si el acceso a este puerto ya está restringido por firewall (ver Paso 6). |
+
+> **Advertencia:** `snap restart lxd` es obligatorio después de cambiar `core.https_address` — sin el reinicio, LXD sigue escuchando en el puerto anterior y la Web UI/API no responde en el puerto nuevo hasta el próximo reinicio del servicio (por cualquier motivo).
+
+### Cómo verificar
+```bash
+lxc config show
+# Debe mostrar core.https_address, cluster.https_address, core.metrics_address y core.metrics_authentication
+
+ss -lntp | grep lxd
+# Debe mostrar el proceso lxd escuchando en :8443, :8444 y :8555
+```
 
 ---
 
@@ -423,6 +467,8 @@ Además, la regla de firewall base incluye: `--set-default-zone trusted`, remuev
 
 > **Nota — CAR1 (Carpinelli):** el puerto de gestión de LXD (8444) para este nodo aún debe darse de alta formalmente como "alta de servicio" ante el equipo de seguridad, además de estar inventariado. La VPN corporativa ya reconoce el servidor, pero el puerto específico de LXD todavía no. Ver [11_Riesgos.md](11_Riesgos.md).
 
+> 🔴 **Pendiente de validación:** en la grabación de la reunión (min ~00:32, `firewall-cmd --info-zone work`) se observó la zona `work` de PFR1 con 5 rich rules activas: 4 reglas SSH desde `10.150.48.68/32`, `10.150.31.133/32`, `10.150.48.79/32` y `10.150.60.92/32` (esta última coincide con Norberto Núñez en la tabla de arriba), más una regla para el puerto 9100/tcp (Prometheus node_exporter, scraping del servidor de observabilidad SVATOOL) desde `10.150.31.68/32`. Las otras tres IPs SSH no pudieron identificarse con certeza contra la tabla de operadores de arriba — confirmar a quién corresponde cada una antes de asumir que la tabla está completa/actualizada.
+
 ### Cómo verificar
 ```bash
 firewall-cmd --list-rich-rules
@@ -446,24 +492,24 @@ Permitir que LXD (y los contenedores) descarguen imágenes y paquetes a través 
 ### Comandos
 
 ```bash
-lxc config set core.http_proxy http://10.150.32.100:3128
-lxc config set core.https_proxy http://10.150.32.100:3128
+lxc config set core.proxy_http http://10.150.32.100:3128
+lxc config set core.proxy_https http://10.150.32.100:3128
 lxc config set core.proxy_ignore_hosts 10.0.0.0/8,192.168.0.0/16,172.16.0.0/12,169.254.0.0/16
 ```
 
-> **Nota:** IP del proxy confirmada (`10.150.32.100:3128`, alias interno "SDI"). Ver el detalle completo de las tres capas de proxy que hay que configurar (APT, snap y LXD) en [05_Configuracion.md](05_Configuracion.md).
+> **Nota:** IP del proxy confirmada (`10.150.32.100:3128`, alias interno "SDI"). Ver el detalle completo de las tres capas de proxy que hay que configurar (APT, snap y LXD), incluida una corrección de nombre de parámetro confirmada por video, en [05_Configuracion.md](05_Configuracion.md).
 
 ### Explicación
 
 | Parámetro | Descripción |
 |---|---|
-| `core.http_proxy` | Proxy para tráfico HTTP saliente de LXD |
-| `core.https_proxy` | Proxy para tráfico HTTPS saliente de LXD |
+| `core.proxy_http` | Proxy para tráfico HTTP saliente de LXD |
+| `core.proxy_https` | Proxy para tráfico HTTPS saliente de LXD |
 | `core.proxy_ignore_hosts` | Hosts que LXD debe acceder directamente sin proxy |
 
 ### Cómo verificar
 ```bash
-lxc config get core.http_proxy
+lxc config get core.proxy_http
 # Debe mostrar la URL del proxy
 ```
 
@@ -512,15 +558,25 @@ Que cada operador pueda acceder a la Web UI de LXD desde su navegador.
 
 ### Cómo generar un token para un nuevo usuario
 
-Desde la Web UI o CLI:
+✅ Corregido — confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~01:18). LXD 5.21 usa **auth de grano fino** (`lxc auth`), no el comando `lxc config trust add` legacy documentado anteriormente en esta sección:
 
 ```bash
-lxc config trust add NOMBRE_USUARIO
-# LXD muestra el token. Compartirlo de forma segura con el usuario.
+lxc auth identity create tls/NOMBRE_USUARIO --group admins
+# LXD muestra un identity token pendiente, de un solo uso.
+# Compartirlo de forma segura con el usuario (no guardarlo en texto plano en ningún documento).
 ```
+
+`--group admins` asigna la identidad al grupo `admins` (grupo de auth preexistente en el cluster — ver `lxc auth group list`). Para usuarios sin permisos de administrador completo, crear o usar un grupo con permisos más acotados (ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) y la sección de proyectos en [05_Configuracion.md](05_Configuracion.md)).
+
+> 🔴 **Pendiente de validación:** confirmar si `lxc config trust add` sigue funcionando como alias/compatibilidad hacia atrás en esta versión, o si quedó completamente reemplazado por `lxc auth identity create`.
 
 ### Verificación
 El usuario debe poder ver el dashboard del cluster al ingresar el token.
+
+```bash
+lxc auth identity list
+# Debe aparecer la identidad "tls/NOMBRE_USUARIO" con su grupo asignado
+```
 
 ---
 
@@ -567,6 +623,7 @@ Paso 0:  Renombrar interfaces de red con netplan (nombres iguales en todo el clu
 Paso 1:  snap install lxd
 Paso 1.5: snap refresh --hold (congelar actualizaciones automáticas)
 Paso 2:  lxd init (wizard — responder según tabla; join token para nodos adicionales)
+Paso 2.1: Configurar puerto de administración (8444) y puerto de métricas (8555) + snap restart lxd
 Paso 3:  snap install microovn
 Paso 4:  Configurar WireGuard como transporte underlay entre sitios (nodos en Capa 3 separada)
 Paso 5:  microovn cluster bootstrap / cluster add + cluster join
