@@ -2,7 +2,7 @@
 
 > **Fecha de inicio:** 2026-07-25
 > **Ejecutor:** Elías Alfonzo (comandos corridos por él mismo, guiado)
-> **Estado:** 🔴 Bloqueado — `fdo-oss1` no tiene salida autorizada al proxy corporativo (ver Fase 1 en [`bitacora.md`](bitacora.md))
+> **Estado:** 🔴 Bloqueado — Fases 1-3 completadas (LXD unido al cluster), pero la interfaz OVN no levanta en `fdo-oss1` (causa raíz sin identificar, ver Fase 4 en [`bitacora.md`](bitacora.md))
 
 ---
 
@@ -37,10 +37,10 @@ Ver [`bitacora.md`](bitacora.md) para el detalle fase por fase. Resumen:
 | Fase | Estado |
 |---|---|
 | Fase 0 — Prerrequisitos | ✅ Completada |
-| Fase 1 — SO, LXD y MicroOVN | 🔴 Bloqueada (Paso 0 hecho; proxy configurado pero sin salida autorizada a internet — pendiente de red/seguridad) |
-| Fase 2 — Malla WireGuard | 🔴 Pendiente |
-| Fase 3 — Unir a LXD | 🔴 Pendiente |
-| Fase 4 — Unir a OVN | 🔴 Pendiente |
-| Fase 5 — Firewall, proxy, NTP, usuarios | 🔴 Pendiente |
-| Fase 6 — Gateways del sitio | 🔴 Pendiente |
-| Fase 7 — Verificación end-to-end | 🔴 Pendiente |
+| Fase 1 — SO, LXD y MicroOVN | ✅ Completada (desbloqueada con puente NAT temporal por el gateway de Franco, mientras se tramita el alta propia de `fdo-oss1`) |
+| Fase 2 — Malla WireGuard | ✅ Completada |
+| Fase 3 — Unir a LXD | ✅ Completada |
+| Fase 4 — Unir a OVN | 🔴 Bloqueada — interfaz OVN no levanta, causa raíz sin identificar |
+| Fase 5 — Firewall, proxy, NTP, usuarios | 🟡 Parcialmente completada |
+| Fase 6 — Gateways del sitio | 🔴 Pendiente (depende de la Fase 4) |
+| Fase 7 — Verificación end-to-end | 🔴 Pendiente (depende de la Fase 4) |

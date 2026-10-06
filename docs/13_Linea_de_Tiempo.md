@@ -72,19 +72,40 @@
 
 ---
 
+### Cuarta ronda — Incorporación de Fernando (FDO1) y observabilidad de aplicación (agosto)
+**Fecha:** 🔴 Pendiente de validación (archivos VTT sin fecha exacta en el nombre; procesados 2026-08-20). Orden reconstruido por contenido: puente proxy → join WireGuard/LXD/OVN → demostración OSS.
+**Referencias:** [`reunion/Llamada con Daniel y 3 personas más_agosto_v1.vtt`](../reunion/Llamada%20con%20Daniel%20y%203%20personas%20más_agosto_v1.vtt), [`_agosto_v2.vtt`](../reunion/Llamada%20con%20Daniel%20y%203%20personas%20más_agosto_v2.vtt), [`Reunión en OSS_agosto_v3.vtt`](../reunion/Reunión%20en%20OSS_agosto_v3.vtt)
+
+| Hito | Estado |
+|---|---|
+| Puente NAT temporal hacia el proxy SDI para Fernando (mientras se tramita su alta propia) | ✅ Completado — ver [05_Configuracion.md](05_Configuracion.md#puente-nat-temporal-hacia-el-proxy-sdi-para-sitios-sin-autorización-propia) |
+| Instalación de LXD/MicroOVN en Fernando (`fdo-oss1`) | ✅ Completado |
+| Malla WireGuard extendida a los 3 sitios (Franco, Carpinelli, Fernando) | ✅ Completado — con error de configuración encontrado y corregido en el proceso, ver [TRB-013](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios) |
+| Fernando unido al cluster LXD (tercer miembro) | ✅ Completado |
+| Fernando unido al cluster OVN | 🔴 Bloqueado — interfaz OVN no levanta, ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-activo) |
+| Hardening de `core.https_address` (IP de gestión específica, no `0.0.0.0`) en los 3 nodos | ✅ Completado — ver [05_Configuracion.md](05_Configuracion.md#dirección-de-escucha-de-la-api-de-lxd-corehttps_address) |
+| Servicio NTF (mensajería SMS/email) desplegado en Fernando y Franco, con balanceador embebido en el gateway | ✅ Completado — ver [ADR-0008 — Variante confirmada](adr/ADR-0008-gateway-balanceador-dos-etapas.md#variante-confirmada-balanceador-embebido-en-el-gateway) |
+| Bug de migración entre sitios por WireGuard mal configurado (claves invertidas, `allowed-ips` amplio) | 🟡 Corregido en Fernando, pendiente aplicar en Franco |
+| Esquema de inventario de servicios acordado con el equipo | ✅ Completado — ver [06_Operacion.md](06_Operacion.md#inventario-de-servicios-alta-de-un-servicio-nuevo) |
+| Loki + MinIO propio del proyecto para logs de aplicación | 🟡 Planificado, no desplegado — ver [14_Manual_Operativo.md](14_Manual_Operativo.md#logs-de-aplicación-loki--minio-propio-del-proyecto) |
+
+---
+
 ## Hitos pendientes (próximos pasos)
 
 ### Corto plazo — Tercer miembro del cluster (Fernando / FDO1)
 
-> Referencia: [04_Instalacion.md](04_Instalacion.md) — seguir el mismo procedimiento que PFR1/CAR1, incluyendo la configuración de WireGuard hacia los sitios existentes.
+> Referencia: [04_Instalacion.md](04_Instalacion.md) y bitácora real de ejecución en [`laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md`](../laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md).
 
 | Acción | Nodo | Estado |
 |---|---|---|
-| Solicitar/confirmar interfaz de red dedicada a servicio en FDO1 | FDO1 | 🔴 Pendiente |
-| Configurar malla WireGuard entre FDO1 y los sitios existentes | FDO1 | 🔴 Pendiente |
-| Instalar LXD y MicroOVN en Fernando | FDO1 | 🔴 Pendiente |
-| Unir FDO1 al cluster (join token) — completaría el quórum de HA de la base de datos | FDO1 | 🔴 Pendiente |
-| Crear contenedor gateway de servicios en FDO1 (interfaz de servicio `FDO-SS-gateway-servicio`) | FDO1 | 🔴 Pendiente |
+| Solicitar/confirmar interfaz de red dedicada a servicio en FDO1 | FDO1 | ✅ Completado |
+| Configurar malla WireGuard entre FDO1 y los sitios existentes | FDO1 | ✅ Completado (con corrección de configuración en el camino, ver [TRB-013](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios)) |
+| Instalar LXD y MicroOVN en Fernando | FDO1 | ✅ Completado |
+| Unir FDO1 al cluster LXD (join token) | FDO1 | ✅ Completado |
+| Unir FDO1 al cluster OVN — completaría el quórum de HA de la base de datos | FDO1 | 🔴 Bloqueado — ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-activo) |
+| Aplicar en Franco la misma corrección de WireGuard ya aplicada en Fernando | Franco | 🔴 Pendiente |
+| Crear contenedor gateway de servicios en FDO1 | FDO1 | 🔴 Pendiente — depende de resolver el join a OVN |
 
 ---
 
@@ -98,7 +119,7 @@
 | Enviar diagrama de red a Roberto de Paula / equipo SVA para apoyo de diseño | Marcos Casco | 🔴 Pendiente |
 | Definir política estándar de límites de recursos por proyecto LXD | Equipo técnico | 🔴 Pendiente — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 | Continuar la sesión de arquitectura de exposición de servicios (esbozar versión práctica) | Norberto Núñez | 🔴 Pendiente — acordado para el día siguiente de la reunión, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
-| Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto | Elías Alfonzo / equipo | 🔴 Pendiente |
+| Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto (esquema ya acordado, ver [06_Operacion.md](06_Operacion.md#inventario-de-servicios-alta-de-un-servicio-nuevo)) | Elías Alfonzo / equipo | 🔴 Pendiente — carga de datos en curso |
 | Retirar la redirección directa a nivel de host (esquema inicial de Kanboard) una vez migrado al modelo gateway + balanceador | Elías Alfonzo | 🔴 Pendiente — ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
 | Investigar opciones de base de datos con alta disponibilidad/replicación nativa (incluye CockroachDB) | Sin asignar | 🟡 Solo sugerido, sin dueño ni fecha |
 

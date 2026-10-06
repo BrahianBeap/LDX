@@ -187,53 +187,131 @@ que se hizo para PFR1 y CAR1 al incorporarlos — se resuelve pidiendo al
 equipo de seguridad/red que habilite el acceso desde esta IP al proxy
 `10.150.32.100:3128`, no desde la terminal del host.
 
-**🔴 Bloqueante activo — 2026-07-25.** Responsable: equipo de seguridad/red
-(mismo circuito que habilitó el proxy para PFR1/CAR1). El resto de la
-Fase 1 (`snap install lxd`, `snap install microovn`) queda en pausa hasta
-que se resuelva esto.
+**Estado al 2026-07-25:** 🔴 Bloqueante activo. Responsable: equipo de
+seguridad/red (mismo circuito que habilitó el proxy para PFR1/CAR1). El
+resto de la Fase 1 (`snap install lxd`, `snap install microovn`) queda en
+pausa hasta que se resuelva esto.
+
+#### Continuación (agosto) — Puente NAT temporal vía gateway existente
+
+**Estado: 🟡 Mitigado con workaround — el trámite de alta formal ante
+seguridad sigue en curso**
+
+En una sesión posterior (agosto, con Norberto Núñez, Marcos Casco, Elías
+Alfonzo, Rocío Duarte y Daniel Medina), en vez de esperar el alta formal
+de `fdo-oss1` ante el equipo de seguridad, se implementó un puente NAT
+temporal reutilizando la infraestructura de gateway **ya existente en
+Franco (PFR1)**, documentada en [05_Configuracion.md — Puente NAT temporal
+hacia el proxy SDI](../../docs/05_Configuracion.md#puente-nat-temporal-hacia-el-proxy-sdi-para-sitios-sin-autorización-propia).
+
+**Mecanismo (🟡 inferencia razonable a partir del audio de la reunión —
+la sintaxis exacta de los comandos no se transcribió con claridad, ver
+detalle de confianza en 05_Configuracion.md):**
+
+1. El tráfico al puerto 3128 originado en `fdo-oss1` (`10.150.32.101`) se
+   dirige al mismo contenedor **gateway de servicios** que Franco ya usa
+   para publicar servicios hacia adentro del cluster (`PFR-OSS-GW-SRV`,
+   ver [02_Arquitectura.md](../../docs/02_Arquitectura.md)).
+2. Ese contenedor reenvía (`--add-forward-port`) el tráfico hacia el
+   contenedor **gateway de operación y mantenimiento** (`PFR-GW-OAM`),
+   que es el único con salida autorizada hacia SDI a través de la
+   interfaz de gestión del host Franco.
+3. `PFR-GW-OAM` sale a `10.150.32.100:3128` (el proxy real) con la IP de
+   gestión de Franco, que ya tiene el permiso otorgado por seguridad —
+   efectivamente un "rodeo" (vuelta en U) que le presta a Fernando el
+   permiso de Franco mientras el suyo propio no está listo.
+4. La regla se restringió a la IP de origen `10.150.32.101` (solo
+   Fernando) y se dejó **sin persistir** (`--runtime-to-permanent` NO
+   ejecutado) deliberadamente, para que quede claro que es temporal y no
+   sobreviva un reinicio del contenedor gateway por accidente.
+
+**Validado:** `curl`/`apt-get` desde `fdo-oss1` a través de este puente
+llegan a internet correctamente.
+
+**Pendiente:** confirmar con Nicolás (seguridad) si/cuándo se otorga el
+permiso definitivo y propio para `fdo-oss1` — en ese momento este puente
+debe desmontarse (ver [RIE-003 en 11_Riesgos.md](../../docs/11_Riesgos.md)).
+
+Con este puente activo, el resto de la Fase 1 (`snap install lxd`,
+`snap refresh --hold`, `snap install microovn`) quedó desbloqueado y se
+completó en la sesión de agosto (ver Fase 2 en adelante, abajo).
 
 ---
 
 ## Fase 2 — Conectar a la malla WireGuard
 
-**Estado: 🔴 Pendiente**
+**Estado: ✅ Completada** (sesión de agosto)
 
-Verificado 2026-07-25: no está instalado `wireguard-tools`, no existe
-`/etc/wireguard/`. El bloque `tunnels: wg0` del netplan está comentado tal
-cual quedó en la reunión cortada.
+Se generó el par de claves de `fdo-oss1` y se configuró `wg0` en su
+`netplan`, con un peer hacia cada sitio existente (PFR1, CAR1). En
+paralelo, se editó el `netplan` de **PFR1 y CAR1** para agregar a Fernando
+como peer nuevo (sin reemplazar los peers ya existentes). `wg show`
+confirmó *handshake* reciente en los tres nodos. Procedimiento completo y
+genérico: [04_Instalacion.md — Paso 4](../../docs/04_Instalacion.md#paso-4-configurar-wireguard-como-transporte-underlay-entre-sitios).
 
-⚠️ Esta fase también requiere editar el `netplan` de **PFR1 y CAR1**
-(agregar a FDO como peer nuevo) — se acordó explícitamente hacer esto como
-un paso aparte, después de terminar el resto de la Fase 1 en `fdo-oss1`.
-
-_(Completar esta sección cuando se ejecuten los comandos.)_
+⚠️ Durante la edición del `netplan` se encontró un problema de sintaxis
+YAML (indentación/salto de línea) al agregar el bloque de rutas — se
+corrigió ajustando la alineación. Mismo tipo de error de fondo que
+[TRB-011 en 07_Troubleshooting.md](../../docs/07_Troubleshooting.md#trb-011).
 
 ---
 
 ## Fase 3 — Unir el nuevo nodo al cluster LXD
 
-**Estado: 🔴 Pendiente** — no se puede empezar hasta cerrar la Fase 2.
+**Estado: ✅ Completada** (sesión de agosto)
+
+Token generado en Franco (`lxc cluster add fdo.1`), `lxd init` en
+`fdo-oss1` con join al cluster existente. Storage: se usó la variante LVM
+(ver [04_Instalacion.md — Paso 2, nota LVM](../../docs/04_Instalacion.md#paso-2-inicializar-lxd-lxd-init)) — el volumen lógico coincidió en
+nombre con el de Carpinelli, lo que simplificó la selección en el wizard.
+`lxc cluster list` confirmó `fdo.1` como `ONLINE`.
 
 ---
 
 ## Fase 4 — Unir el nuevo nodo al cluster OVN
 
-**Estado: 🔴 Pendiente** — no se puede empezar hasta cerrar la Fase 2.
+**Estado: 🔴 Bloqueada — activa** (sesión de agosto, sin resolver al cierre)
+
+`microovn cluster add fdo-oss` / `microovn cluster join TOKEN` se
+ejecutaron sin errores visibles, y `microovn.chassis` / `snap services
+microovn` muestran todos los servicios en `running`. Sin embargo, la
+interfaz de red `OVN_1` **no levanta** en `fdo-oss1` — el Open vSwitch se
+crea, pero no la interfaz OVN. Se revisó el puerto 6081 (Geneve, tráfico
+entre chassis OVN) en el firewall de los tres nodos sin encontrar la
+causa. Ficha completa de diagnóstico:
+[TRB-012 en 07_Troubleshooting.md](../../docs/07_Troubleshooting.md#trb-012)
+y riesgo asociado: [RIE-013 en 11_Riesgos.md](../../docs/11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-activo).
+
+**Hipótesis sin confirmar:** estado inconsistente en la base de datos de
+OVN, arrastrado de un primer intento de join fallido en este mismo nodo
+(antes de esta sesión). **Próximo paso:** confirmar la hipótesis y, de
+ser así, remover a `fdo-oss1` del cluster OVN y reintentar el join desde
+cero.
 
 ---
 
 ## Fase 5 — Firewall, proxy, NTP y usuarios
 
-**Estado: 🔴 Pendiente**
+**Estado: 🟡 Parcialmente completada** (sesión de agosto) — regla de
+firewall del puerto 6081 actualizada en los tres nodos para incluir la IP
+de Fernando; usuarios de equipo creados con acceso `sudo`. Pendiente
+confirmar el resto de los puntos de esta fase una vez resuelto el
+bloqueo de la Fase 4.
+
+Adicionalmente, en esta sesión se aplicó el hardening de
+`core.https_address` (IP de gestión específica en vez de `0.0.0.0`) en
+los tres nodos del cluster — ver [05_Configuracion.md](../../docs/05_Configuracion.md#dirección-de-escucha-de-la-api-de-lxd-corehttps_address).
 
 ---
 
 ## Fase 6 — Crear los contenedores gateway del nuevo sitio
 
-**Estado: 🔴 Pendiente**
+**Estado: 🔴 Pendiente** — no se puede completar hasta resolver el
+bloqueo de la Fase 4 (los contenedores gateway del sitio necesitan la red
+OVN funcional).
 
 ---
 
 ## Fase 7 — Verificación end-to-end
 
-**Estado: 🔴 Pendiente**
+**Estado: 🔴 Pendiente** — no se puede empezar hasta cerrar la Fase 4.

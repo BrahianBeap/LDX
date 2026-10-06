@@ -123,6 +123,18 @@ El modelo de dos etapas es la opción que resuelve simultáneamente los cuatro r
 
 ---
 
+## Variante confirmada: balanceador embebido en el gateway
+
+**Fecha:** Reunión OSS (agosto) — `reunion/Reunión en OSS_agosto_v3.vtt`
+
+Al implementar el servicio **NTF** (mensajería SMS/email vía SMPP), surgió un caso que el modelo de dos etapas descrito arriba no resuelve directamente: el servicio necesita aplicar reglas de control de acceso (ACL) según la **IP real del cliente externo** que hace la petición (ej. restringir el endpoint `/ntf` a un conjunto conocido de IPs).
+
+Con el balanceador en un contenedor separado (modelo estándar de este ADR), el balanceador solo ve la IP del contenedor gateway como origen — la IP real del cliente se pierde en el primer salto. Por eso, para este servicio, Norberto Núñez embebió la funcionalidad de balanceador (Apache + `mod_proxy_balancer`) **dentro del mismo contenedor gateway**, en lugar de crear un contenedor balanceador aparte. Así el balanceador ve la IP real de origen y puede aplicar la regla ACL antes de reenviar el tráfico a los contenedores de aplicación (`WS1` en Fernando y Franco).
+
+**Esto no reemplaza la decisión de este ADR.** El modelo de dos etapas (gateway y balanceador en contenedores separados) sigue siendo el default. La variante embebida es una excepción deliberada, a usar únicamente cuando el servicio necesita ACLs por IP de origen real — ver el detalle de configuración en [05_Configuracion.md — ACL por IP de origen en el balanceador](../05_Configuracion.md#acl-por-ip-de-origen-en-el-balanceador) y la ficha del componente en [03_Componentes.md](../03_Componentes.md#variante-balanceador-embebido-en-el-gateway-cuando-se-necesita-la-ip-real-de-origen).
+
+---
+
 ## Pendientes de seguimiento
 
 - [ ] Confirmar y documentar la sintaxis exacta de la regla de firewalld de reenvío de puerto (gateway → balanceador) — pendiente de la siguiente sesión con Norberto.

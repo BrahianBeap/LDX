@@ -211,6 +211,43 @@ Ver el comando de snapshot en [06_Operacion.md](06_Operacion.md).
 
 ---
 
+## LL-018 — Las credenciales administrativas se comparten en una carpeta de equipo, nunca de forma individual
+
+**¿Qué pasó?**
+Al generar la contraseña root de un host nuevo, el equipo la guardó en un gestor de contraseñas, en una carpeta compartida accesible para todo el equipo — no como una credencial personal de quien la generó.
+
+**Lección:**
+Nunca compartir una credencial administrativa (root, admin) como si fuera personal de quien la creó. Guardarla siempre en una carpeta de equipo del gestor de contraseñas. Razón explícita: si la cuenta personal de esa persona se ve comprometida, un atacante heredaría también el acceso administrativo si la credencial vivía ahí — separar ambas cosas limita el radio de impacto de una cuenta personal comprometida.
+
+**Regla:** credencial de servicio/infraestructura → carpeta de equipo, no bandeja personal.
+
+---
+
+## LL-019 — Nunca dejar un socket escuchando en `0.0.0.0`
+
+**¿Qué pasó?**
+Norberto Núñez notó, releyendo la guía oficial de hardening de LXD, que el equipo venía configurando `core.https_address` en `0.0.0.0` (todas las interfaces) en lugar de la IP de gestión específica de cada nodo.
+
+**Lección:**
+Al configurar cualquier socket de escucha (no solo `core.https_address` de LXD), especificar siempre la IP exacta donde el servicio debe escuchar. Dejarlo en `0.0.0.0` hace que escuche en **todas** las interfaces del host, incluidas las de servicio — ampliando la superficie expuesta sin necesidad. Ver el procedimiento de corrección en [05_Configuracion.md — Dirección de escucha de la API de LXD](05_Configuracion.md#dirección-de-escucha-de-la-api-de-lxd-corehttps_address).
+
+**Regla general:** "todo en cero" = expuesto en todas partes. Preferir siempre la IP específica.
+
+---
+
+## LL-020 — En WireGuard, `allowed-ips` va la IP puntual del peer, nunca un rango amplio
+
+**¿Qué pasó?**
+En la configuración de WireGuard entre los tres sitios, un peer tenía `allowed-ips: [.../0]` en vez de la IP interna puntual (`/32`) de ese peer, y además las claves públicas de dos peers estaban invertidas entre sí. El resultado: rutas OVN entre sitios específicos fallaban de forma silenciosa. Ver el diagnóstico completo en [TRB-013 — 07_Troubleshooting.md](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios).
+
+**Lección:**
+1. `allowed-ips` de cada peer debe ser la IP interna **puntual** de ese peer (`/32`), no un rango — un rango amplio como `/0` mete todas las rutas hacia esa dirección dentro de la misma interfaz del túnel, rompiendo el enrutamiento cuando hay más de dos sitios en la malla.
+2. Verificar siempre que la clave pública configurada para un peer corresponda efectivamente a **ese** peer — con 3 o más sitios es fácil invertir dos entradas al copiar/pegar.
+
+Esto confirma en la práctica un riesgo que ya se había anticipado al decidir WireGuard como underlay — ver [ADR-0006 — Riesgos](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md#riesgos): *"un error en la clave pública, el endpoint o las rutas de un peer WireGuard produce fallas de conectividad silenciosas."*
+
+---
+
 ## Documentos relacionados
 
 | Tema | Documento |

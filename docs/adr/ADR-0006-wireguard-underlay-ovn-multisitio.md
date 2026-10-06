@@ -153,12 +153,15 @@ Esta aclaración es importante porque desacopla la conectividad entre sitios (re
 - A medida que se agreguen más sitios (Fernando/FDO1, y potencialmente IT y Ciudad del Este), la configuración manual de la malla WireGuard crece de forma cuadrática (cada nuevo nodo debe agregarse como *peer* en todos los nodos existentes). Sin automatización, esto es propenso a errores de configuración a mediano plazo.
 - Un error en la clave pública, el endpoint o las rutas de un peer WireGuard produce fallas de conectividad silenciosas (el túnel no reporta error explícito; simplemente no hay tráfico), similar a como se manifestó originalmente el problema que motivó este ADR.
 
+  > ✅ **Riesgo materializado (reunión OSS, agosto):** al incorporar el tercer sitio (Fernando), se encontraron claves públicas de peers invertidas y un `allowed-ips` con rango demasiado amplio (`/0` en vez de la IP puntual del peer), bloqueando rutas entre sitios de forma silenciosa — exactamente el modo de falla anticipado en este riesgo. Corregido en Fernando; pendiente replicar la corrección en Franco. Ver [TRB-013](../07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios) y [LL-020](../12_Lecciones_Aprendidas.md#ll-020--en-wireguard-allowed-ips-va-la-ip-puntual-del-peer-nunca-un-rango-amplio).
+
 ---
 
 ## Pendientes de seguimiento
 
 - [ ] Persistir la configuración de IP de la interfaz WireGuard en `netplan` en Franco y Carpinelli, para que sobreviva reinicios.
-- [ ] Repetir el procedimiento de configuración de WireGuard + OVN al incorporar Fernando (FDO1) como tercer miembro del cluster.
+- [x] Repetir el procedimiento de configuración de WireGuard + OVN al incorporar Fernando (FDO1) como tercer miembro del cluster — ✅ malla WireGuard establecida (reunión de agosto), aunque se encontró y corrigió un error de configuración en el proceso (ver nota de riesgo materializado arriba). El join a OVN en sí quedó bloqueado por una causa distinta aún sin confirmar — ver [RIE-013 en 11_Riesgos.md](../11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-activo).
+- [ ] Aplicar en Franco la misma corrección de `netplan` (claves de peer y `allowed-ips`) ya aplicada en Fernando.
 - [ ] Evaluar automatización (script o herramienta de gestión de configuración) para la generación y distribución de claves/peers de WireGuard antes de escalar a más de 3-4 sitios.
 - [ ] Documentar el esquema de direccionamiento interno de la malla WireGuard (rango no enrutable usado, asignación numérica por sitio) de forma centralizada.
 

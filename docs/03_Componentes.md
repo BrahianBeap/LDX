@@ -284,6 +284,16 @@ Ver la configuración completa del perfil en [05_Configuracion.md](05_Configurac
 
 Ver la decisión completa en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md), el diagrama en [02_Arquitectura.md](02_Arquitectura.md) y la configuración del perfil/Apache en [05_Configuracion.md](05_Configuracion.md).
 
+### Variante: balanceador embebido en el gateway (cuando se necesita la IP real de origen)
+
+✅ Confirmado — implementado en el servicio **NTF** (gateway de mensajería SMS/email vía SMPP, contenedores `WS1` en Fernando y Franco).
+
+Si el balanceador vive en un contenedor **separado** del gateway (el modelo estándar de arriba), solo ve la IP del propio gateway como origen de cada petición — no la IP real del cliente externo. Eso hace imposible aplicar reglas de control de acceso por IP de origen (ACLs) a nivel del balanceador. Cuando un servicio necesita ese control (ej. restringir un endpoint a un conjunto de IPs conocidas), la solución aplicada fue **embeber la funcionalidad de balanceador dentro del propio contenedor gateway**, en lugar de crear un contenedor balanceador aparte — así el balanceador ve directamente la IP de origen real y puede filtrar por ella antes de reenviar al contenedor de aplicación.
+
+Ver el patrón de configuración (regla ACL por `path` + balanceo hacia los miembros) en [05_Configuracion.md — ACL por IP de origen en el balanceador](05_Configuracion.md#acl-por-ip-de-origen-en-el-balanceador). Ver el addendum a la decisión en [ADR-0008 — Variante confirmada](adr/ADR-0008-gateway-balanceador-dos-etapas.md#variante-confirmada-balanceador-embebido-en-el-gateway).
+
+> **Cuándo usar cada variante:** modelo estándar (gateway y balanceador separados) por defecto; variante embebida solo cuando el servicio necesita reglas de acceso basadas en la IP real del cliente.
+
 ---
 
 ## Proyectos LXD (multi-tenancy)

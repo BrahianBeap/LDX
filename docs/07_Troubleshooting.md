@@ -183,6 +183,39 @@ cloud-init.network-config: |
 
 ---
 
+## TRB-012 — La interfaz OVN no levanta en un nodo nuevo aunque los servicios de MicroOVN estén "running" *(🔴 sin resolver)*
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Después de unir un nuevo nodo al cluster OVN (`microovn cluster join`), el Open vSwitch se crea correctamente, pero la interfaz de red de OVN (`OVN_1`) no llega a levantarse en ese nodo |
+| **Síntomas** | `ip -4 addr show` no muestra la interfaz OVN activa en el nodo nuevo. `microovn.chassis` y `snap services microovn` muestran todos los servicios como `running`/`active` — no hay ningún servicio caído que explique el fallo. Migrar o crear un contenedor con destino a ese nodo falla |
+| **Causa** | 🔴 **No identificada.** Se descartó que fuera un servicio detenido (todo aparece corriendo). Se revisó el puerto 6081 (Geneve, tráfico de datos entre chassis OVN — ver [Paso 6 en 04_Instalacion.md](04_Instalacion.md#paso-6-configurar-firewall-firewalld)) sin encontrar la causa raíz antes de que se cortara la sesión |
+| **Diagnóstico realizado hasta el momento** | `journalctl -xe` en el nodo nuevo; `microovn.chassis` (estado del chasis OVN); `ip -4 addr show` (confirma que el Open vSwitch existe pero la interfaz OVN no aparece); revisión de la rich-rule de firewall para el puerto 6081 UDP entre los miembros del cluster |
+| **Hipótesis sin confirmar** | Estado inconsistente en la base de datos de OVN, posiblemente arrastrado de un primer intento de `microovn cluster join` fallido en el mismo nodo (join, error, y reintento sin limpiar el estado anterior) |
+| **Solución** | 🔴 Pendiente. Próximo paso propuesto por Norberto Núñez: si se confirma la hipótesis de estado inconsistente, remover las referencias de ese miembro en la base de datos de OVN y volver a unirlo al cluster desde cero (`microovn cluster remove` + `microovn cluster add`/`join` nuevamente) |
+| **Prevención** | Sin definir todavía — depende de identificar la causa raíz |
+
+Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Fernando): [`laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md`](../laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md).
+
+> 🟡 **Actualización (reunión OSS, agosto):** en una sesión posterior se encontró y corrigió un error de configuración de WireGuard (ver [TRB-013](#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios) abajo) que produce exactamente este síntoma: rutas OVN entre sitios que no funcionan pese a que los servicios muestran `running`. Es una **hipótesis razonable, no confirmada**, de que sea la misma causa raíz de este TRB-012 en Fernando — hace falta revisar la configuración de WireGuard de `fdo-oss1` con el mismo criterio (claves de cada peer, `allowed-ips` específico) antes de reintentar el join.
+
+---
+
+## TRB-013 — Peer de WireGuard mal configurado (claves invertidas o `AllowedIPs` demasiado amplio) bloquea rutas entre sitios
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Un contenedor no puede migrarse ni comunicarse a nivel de OVN con contenedores de otro sitio del cluster, aunque la malla WireGuard aparente estar activa |
+| **Síntomas** | `wg show` puede mostrar el túnel activo, pero el tráfico OVN entre sitios específicos falla o se "tranca" de forma silenciosa (sin error explícito) al intentar una operación entre esos dos sitios en particular |
+| **Causa** | Dos errores de configuración encontrados juntos en el mismo `netplan`: (1) las claves públicas de los peers estaban **invertidas** — la clave configurada para un peer en realidad correspondía a otro; (2) el campo `allowed-ips` de un peer tenía un rango demasiado amplio (`/0` en vez de la IP puntual `/32` de ese peer), lo que mete **todas** las rutas hacia esa IP dentro de la misma interfaz del túnel, en vez de solo la ruta específica hacia ese peer — confundiendo el enrutamiento cuando hay más de dos sitios en la malla |
+| **Diagnóstico** | Revisar con `cat /etc/netplan/*.yaml` que: (a) cada `peers.keys.public` corresponda efectivamente a la clave pública del peer remoto correcto (no a otro peer de la lista); (b) cada `peers.allowed-ips` sea la IP interna puntual de ESE peer (`/32`), nunca un rango amplio como `/0` |
+| **Solución** | Corregir el `netplan`: asignar cada clave pública al peer correcto, y dejar `allowed-ips` como la IP `/32` puntual de cada peer. Aplicar con `netplan try`/`netplan apply` y verificar con `wg show` que el *handshake* siga vigente tras el cambio |
+| **Prevención** | Al agregar un nuevo peer (ver [04_Instalacion.md — Paso 4](04_Instalacion.md#paso-4-configurar-wireguard-como-transporte-underlay-entre-sitios)), revisar explícitamente que la clave pública y el `allowed-ips` copiados correspondan al peer correcto — con 3+ sitios es fácil copiar/pegar la entrada equivocada. Ver [LL-020 en 12_Lecciones_Aprendidas.md](12_Lecciones_Aprendidas.md#ll-020--en-wireguard-allowed-ips-va-la-ip-puntual-del-peer-nunca-un-rango-amplio) |
+
+**Estado al cierre de la reunión:** ✅ Corregido en el `netplan` de Fernando (en vivo, durante la demostración). 🔴 **Pendiente aplicar la misma corrección en Franco** — quedó como tarea explícita para el equipo. También quedaron entradas de rutas locales obsoletas por limpiar en los tres nodos (`allowed-ips` residual con `/0`).
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash

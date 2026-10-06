@@ -340,6 +340,11 @@ frecuentes de cada comando: [04_Instalacion.md — Pasos 0, 1, 1.5 y 3](04_Insta
 > (mismo trámite que se hizo para PFR1 y CAR1). Diagnóstico paso a paso
 > (sin depender de `ping`/`iptables`, que pueden no estar instalados) en
 > [`laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md`](../laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md).
+>
+> **Mientras se tramita ese alta**, no hace falta parar el resto de la
+> incorporación: se puede desbloquear temporalmente con un puente NAT que
+> reutiliza el permiso ya otorgado a un sitio existente — ver
+> [05_Configuracion.md — Puente NAT temporal hacia el proxy SDI](05_Configuracion.md#puente-nat-temporal-hacia-el-proxy-sdi-para-sitios-sin-autorización-propia).
 
 ```bash
 # Paso 0 — Renombrar interfaces (mismo nombre lógico que los demás nodos)
@@ -669,6 +674,33 @@ lxc exec NOMBRE_CONTENEDOR -- journalctl -xe
 # Log de LXD (en el host):
 snap logs lxd
 ```
+
+---
+
+## Desplegar configuración a varios contenedores sin SSH
+
+Para aplicar el mismo archivo de configuración a uno o varios contenedores (ej. un `VirtualHost` de Apache) sin abrir SSH, usando `lxc file push` + `lxc exec`: ver el procedimiento completo en [05_Configuracion.md — Despliegue de configuración a varios contenedores sin SSH](05_Configuracion.md#despliegue-de-configuración-a-varios-contenedores-sin-ssh).
+
+---
+
+## Inventario de servicios (alta de un servicio nuevo)
+
+### Objetivo
+Registrar cada servicio nuevo expuesto en el cluster, para que el equipo tenga trazabilidad de qué corre dónde — complementa (no reemplaza) el ticket ITSM de alta de servidor.
+
+### Esquema mínimo
+
+✅ Confirmado — esquema acordado con Marcos Casco y Daniel Medina, documentado como página aparte ("Inventario") dentro del documento de proyecto del equipo (no en esta base de conocimiento — es un registro operativo vivo, propiedad del equipo, distinto de la documentación técnica de referencia):
+
+| Campo | Descripción |
+|---|---|
+| Nombre del servicio | Identificador del servicio (ej. NTF) |
+| IP | IP interna del contenedor de aplicación |
+| Puerto | Puerto en el que escucha |
+| VM / nodo | Host del cluster donde corre |
+| Número de ticket | Referencia al ticket ITSM de alta de servidor asociado |
+
+> **Nota:** este inventario es un registro operativo del equipo (vive en su documento de proyecto compartido), distinto de la documentación de referencia en `docs/` — ver la distinción de carpetas en el [README.md](../README.md) del repositorio.
 
 ---
 

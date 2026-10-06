@@ -207,6 +207,53 @@ devices:
 
 ---
 
+## Dirección de escucha de la API de LXD (`core.https_address`)
+
+### ¿Qué controla?
+La IP y el puerto en los que el daemon LXD escucha conexiones a su API HTTPS (Web UI, `lxc` remoto, comunicación entre miembros del cluster).
+
+### Parámetros
+
+| Parámetro | Función | Valor recomendado | Impacto de configuración incorrecta |
+|---|---|---|---|
+| `core.https_address` | IP:puerto donde escucha el socket HTTPS de LXD | La IP de gestión específica del nodo (ej. `10.150.32.101:8443`), **nunca** `0.0.0.0` | Con `0.0.0.0`, el socket escucha en **todas** las interfaces de red del host — incluida cualquier interfaz de servicio o futura, no solo la de gestión — ampliando innecesariamente la superficie expuesta a intentos de acceso no autorizado |
+
+✅ Confirmado — recomendación explícita de la guía oficial de hardening de LXD (citada por Norberto Núñez durante la reunión): *"siempre que vayas a configurar un socket, nunca dejes en todo en cero. [...] Cuando volvés a poner todo cero, significa que va a escuchar ese socket en todas las interfaces. Y eso se presta a dejar puertas abiertas o exposiciones."*
+
+### Comando
+
+```bash
+lxc config set core.https_address IP_DE_GESTION:8443
+systemctl restart snap.lxd.daemon
+```
+
+### Cómo verificar
+
+```bash
+lxc config get core.https_address
+# Debe mostrar la IP de gestión específica del nodo, no 0.0.0.0
+
+ss -ntlp | grep 8443
+# Debe mostrar el socket escuchando solo en la IP de gestión, no en 0.0.0.0
+```
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| Tras el cambio, otros nodos del cluster o la Web UI dejan de responder | Se usó la IP incorrecta (ej. la de servicio en vez de la de gestión), o no se reinició el daemon | Confirmar la IP de gestión correcta con `ip -4 addr show` y reiniciar `snap.lxd.daemon` |
+
+### Rollback
+
+```bash
+lxc config set core.https_address 0.0.0.0:8443
+systemctl restart snap.lxd.daemon
+```
+
+> **Advertencia:** este rollback reabre el socket en todas las interfaces — usar solo como último recurso si el nodo queda inaccesible tras el cambio.
+
+---
+
 ## Configuración de firewall (firewalld)
 
 ### Rich rules para acceso a Web UI
@@ -262,6 +309,86 @@ firewall-cmd --reload
 | `toport` | (Opcional) Puerto de destino, si es distinto al de entrada — por defecto usa el mismo |
 
 > 🔴 **Pendiente de validación:** la sintaxis completa exacta usada en la demostración no quedó del todo clara en el audio de la reunión — confirmar el comando definitivo (incluyendo si hace falta `masquerade` en la zona) en la próxima sesión antes de replicarlo en otros sitios. Ver [ADR-0008 — Riesgos](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+## Puente NAT temporal hacia el proxy SDI (para sitios sin autorización propia)
+
+### Objetivo
+Dar salida a internet a un host nuevo del cluster (ej. un sitio recién incorporado) que **todavía no tiene autorización propia** para salir por el proxy corporativo SDI (`10.150.32.100:3128`), reutilizando el permiso que ya tiene un host existente — sin esperar a que el equipo de seguridad complete el trámite de alta para el host nuevo. Ver el caso real aplicado a la incorporación de FDO1 en [`laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md`](../laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md).
+
+> 🟡 **Inferencia razonable:** el mecanismo general (reutilizar el gateway de servicios existente como puente de dos saltos hacia el gateway de OAM, que sí tiene salida autorizada) está confirmado por la reunión. La sintaxis exacta y completa de los comandos `firewall-cmd` usados no se transcribió con suficiente claridad en el audio — la reconstrucción de abajo sigue el mismo patrón ya documentado en [Reenvío de puertos del gateway hacia el balanceador](#reenvío-de-puertos-del-gateway-hacia-el-balanceador-firewalld) de esta misma página. 🔴 **Pendiente de validación:** confirmar la sintaxis exacta (en particular si hace falta `masquerade`) en la próxima sesión con el equipo antes de reutilizar este procedimiento en otro sitio.
+
+### Concepto — "vuelta en U" a través de dos contenedores gateway existentes
+
+El puente no crea infraestructura nueva: reutiliza los dos contenedores gateway que ya existen en un sitio con acceso ya autorizado (ej. Franco/PFR1) — ver [Perfil del contenedor "gateway de servicios"](#perfil-del-contenedor-gateway-de-servicios) y [Perfil y contenedor "gateway de operación y mantenimiento"](#perfil-y-contenedor-gateway-de-operación-y-mantenimiento-prf-gw-oam) más arriba.
+
+```
+Host nuevo (sin permiso propio)
+        │  petición al puerto 3128
+        ▼
+PFR-OSS-GW-SRV  (gateway de servicios de Franco — ya expuesto al exterior)
+        │  forward-port 3128 → gateway de OAM
+        ▼
+PFR-GW-OAM      (gateway de OAM de Franco — sale por la IP de gestión
+        │        del host Franco, que SÍ tiene permiso con SDI)
+        ▼
+Proxy SDI (10.150.32.100:3128)
+```
+
+### Comando (reconstrucción — ver advertencia de confianza arriba)
+
+```bash
+# En PFR-OSS-GW-SRV: aceptar tráfico al 3128 solo desde la IP del host nuevo
+firewall-cmd --zone=external --add-rich-rule='rule family=ipv4 source address=IP_HOST_NUEVO port port=3128 protocol=tcp accept'
+
+# Reenviar ese tráfico hacia PFR-GW-OAM
+firewall-cmd --zone=external --add-forward-port=port=3128:proto=tcp:toaddr=IP_PFR-GW-OAM
+
+# (sin --permanent / sin --runtime-to-permanent: la regla se pierde
+#  intencionalmente al reiniciar el contenedor — ver "Rollback" abajo)
+```
+
+### Explicación
+La regla `source address` limita qué host puede usar el puente — sin ella, cualquier host de la red podría usar `PFR-OSS-GW-SRV` como proxy abierto hacia SDI. El `forward-port` reenvía el tráfico hacia `PFR-GW-OAM`, que ya tiene, por su propia configuración de red (ver sección de arriba), una ruta de salida hacia el proxy real usando la IP de gestión de Franco.
+
+### Parámetros
+
+| Parámetro | Tipo | Descripción | Valor por defecto |
+|---|---|---|---|
+| `source address` | IP | Único host autorizado a usar el puente | — (obligatorio, sin default) |
+| `port` | entero | Puerto del proxy SDI | `3128` |
+| `toaddr` | IP | IP interna (en `OVN_1`) de `PFR-GW-OAM` | — |
+
+### Resultado esperado
+Desde el host nuevo, una petición HTTP/HTTPS a través de `http://IP_PFR-OSS-GW-SRV:3128` llega a internet como si el host nuevo tuviera su propio permiso con SDI.
+
+### Cómo verificar
+
+```bash
+# Desde el host nuevo:
+curl -x http://IP_PFR-OSS-GW-SRV:3128 https://archive.ubuntu.com -I
+# Resultado esperado: HTTP/1.1 200 OK (o redirección), no "connection refused" ni "no route to host"
+```
+
+✅ Confirmado en la incorporación de FDO1: `curl` y `apt-get` desde `fdo-oss1` funcionaron correctamente a través de este puente.
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| `no route to host` | El host nuevo no está en la `source address` permitida | Verificar la IP exacta del host nuevo con `ip -4 addr show` y corregir la rich-rule |
+| El puente deja de funcionar tras reiniciar el contenedor gateway | La regla no se persistió deliberadamente (ver diseño temporal) | Volver a aplicar el comando — es el comportamiento esperado, no un bug |
+
+### Rollback
+Al confirmarse el alta formal y definitiva del host nuevo con SDI, eliminar la rich-rule y el forward-port en `PFR-OSS-GW-SRV`:
+
+```bash
+firewall-cmd --zone=external --remove-rich-rule='rule family=ipv4 source address=IP_HOST_NUEVO port port=3128 protocol=tcp accept'
+firewall-cmd --zone=external --remove-forward-port=port=3128:proto=tcp:toaddr=IP_PFR-GW-OAM
+```
+
+Como la regla nunca se persistió (`--permanent`), un simple reinicio del contenedor `PFR-OSS-GW-SRV` también la elimina — pero es preferible el rollback explícito para no depender de un reinicio no planificado.
+
+---
 
 ### Por qué la zona `drop` para interfaces sin puertos abiertos
 
@@ -331,6 +458,95 @@ lxc exec CONTENEDOR-LB -- ip route
 lxc exec CONTENEDOR-LB -- ss -ntlp
 # Debe mostrar el puerto 80/443 escuchando (Apache)
 ```
+
+---
+
+## ACL por IP de origen en el balanceador
+
+### ¿Qué controla?
+Restringir el acceso a una ruta específica (ej. un servicio de mensajería) solo a un conjunto conocido de IPs de origen, en el escenario donde el balanceador está embebido en el mismo contenedor gateway (ver [ADR-0008 — Variante confirmada](adr/ADR-0008-gateway-balanceador-dos-etapas.md#variante-confirmada-balanceador-embebido-en-el-gateway) y [03_Componentes.md](03_Componentes.md#variante-balanceador-embebido-en-el-gateway-cuando-se-necesita-la-ip-real-de-origen)) y por lo tanto ve la IP real del cliente.
+
+### Comando (configuración Apache — `mod_proxy_balancer`)
+
+```apache
+# /etc/apache2/sites-available/000-default.conf
+<Location /ntf>
+    Require ip 10.150.60.92
+    Require ip 10.150.60.85
+    ProxyPass "balancer://ntf-cluster/"
+    ProxyPassReverse "balancer://ntf-cluster/"
+</Location>
+
+<Proxy "balancer://ntf-cluster">
+    BalancerMember "http://IP_WS1_FERNANDO:8000"
+    BalancerMember "http://IP_WS1_FRANCO:8000"
+</Proxy>
+```
+
+### Explicación
+`Require ip` limita el acceso a la ruta `/ntf` a las IPs listadas — cualquier otra IP recibe `403 Forbidden`. El bloque `<Proxy "balancer://...">` define los miembros del balanceo (uno por sitio, ambos corriendo el mismo servicio `WS1`/NTF en el puerto `8000`). Requiere los módulos `proxy`, `proxy_http`, `proxy_balancer` y `lbmethod_byrequests` habilitados (`a2enmod`).
+
+### Parámetros
+
+| Parámetro | Descripción |
+|---|---|
+| `Require ip` | Una entrada por IP (o rango) autorizada a acceder a la ruta |
+| `ProxyPass "balancer://NOMBRE/"` | Redirige el tráfico que matchea el `<Location>` hacia el grupo de balanceo `NOMBRE` |
+| `BalancerMember` | Un miembro del grupo de balanceo — un `BalancerMember` por contenedor de aplicación que sirve el mismo servicio |
+
+### Resultado esperado
+Una petición desde una IP no listada en `Require ip` recibe `403 Forbidden`. Una petición desde una IP autorizada se reparte entre los `BalancerMember` configurados.
+
+### Cómo verificar
+
+```bash
+curl -I http://IP_GATEWAY/ntf   # desde una IP no autorizada -> 403
+curl -I http://IP_GATEWAY/ntf   # desde una IP autorizada -> 200/502 según estado del backend
+```
+
+---
+
+## Despliegue de configuración a varios contenedores sin SSH
+
+### Objetivo
+Aplicar el mismo archivo de configuración (ej. un `VirtualHost` de Apache, un archivo de `rsyslog`) a varios contenedores del cluster, sin necesidad de conectarse por SSH ni copiar archivos por FTP — usando exclusivamente la API de LXD.
+
+### Comando
+
+```bash
+# 1. Enviar el archivo local al contenedor (modo 640 por defecto):
+lxc file push ARCHIVO_LOCAL NOMBRE_CONTENEDOR/RUTA/DESTINO --project NOMBRE_PROYECTO
+
+# 2. Ejecutar los comandos necesarios dentro del contenedor:
+lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests
+lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- a2dissite 000-default
+lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- a2ensite NOMBRE_SITIO_NUEVO
+lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- systemctl restart apache2
+```
+
+Para aplicar el mismo cambio a varios contenedores (ej. todos los gateways del mismo servicio), repetir los dos pasos en un loop, uno por contenedor destino.
+
+### Explicación
+`lxc file push` usa la API de LXD para escribir un archivo dentro del filesystem del contenedor, sin abrir ningún puerto de red adicional (SSH, FTP) en el contenedor de destino — coherente con la práctica de mantener SSH deshabilitado en los contenedores de infraestructura (ver [LL-013](12_Lecciones_Aprendidas.md#ll-013--deshabilitar-ssh-en-los-contenedores-de-infraestructura-reduce-el-riesgo-de-movimiento-lateral)). `lxc exec` ejecuta comandos dentro del contenedor de la misma forma.
+
+### Parámetros
+
+| Parámetro | Descripción |
+|---|---|
+| `--project` | Proyecto LXD al que pertenece el contenedor (omitir si es `default`) |
+| Modo del archivo (`file push`) | 640 por defecto — ajustable con `--mode` si el archivo necesita otro permiso |
+
+### Cómo verificar
+
+```bash
+lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- cat RUTA/DESTINO
+# Debe mostrar el contenido del archivo enviado
+
+lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- systemctl status apache2
+# Debe mostrar "active (running)"
+```
+
+> **Buena práctica:** si el archivo local es temporal (solo para el push), eliminarlo después de enviarlo a todos los contenedores destino, para no dejar residuos de configuración en la máquina desde la que se ejecuta el despliegue.
 
 ---
 

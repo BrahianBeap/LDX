@@ -89,6 +89,38 @@ Para ver dashboards: Grafana Labs provee dashboards de LXD importables por ID (�
 
 ---
 
+## Logs de aplicación: Loki + MinIO propio del proyecto
+
+> **Estado:** 🟡 En planificación — anunciado y en construcción durante la reunión OSS (agosto), todavía no desplegado al momento de escribir esto.
+
+### Por qué un segundo Loki, además del de SVATOOL
+
+Ya existe un servidor Loki **externo** al cluster (alojado en SVATOOL/SBA, ver [Reenvío de logs del host a Loki en 05_Configuracion.md](05_Configuracion.md#reenvío-de-logs-del-host-a-loki-rsyslog)) — recibe los logs del **sistema operativo de cada host** del cluster. Ese Loki no es propiedad del equipo LXD ni está pensado para logs de aplicación.
+
+La idea anunciada es un Loki **adicional, propio del proyecto** (ej. `PRJ-OSS`), corriendo dentro del propio cluster LXD, dedicado a los **logs de aplicación** de los contenedores de servicio (ej. logs de Apache y del servicio NTF) — no reemplaza al Loki de SVATOOL, es una capa complementaria bajo control del equipo, sin depender de otra infraestructura para ver sus propios logs de aplicación.
+
+```
+Logs de sistema operativo (todos los hosts)  ──rsyslog──►  Loki externo (SVATOOL/SBA)
+Logs de aplicación (contenedores del proyecto) ──rsyslog──►  Loki propio del proyecto (en LXD, planificado)
+```
+
+### Arquitectura planificada
+
+- Uno o dos contenedores **Loki** (a definir si uno solo o distribuido).
+- Dos o más contenedores **MinIO** (servidor S3 compatible) como backend de almacenamiento de Loki — 🟡 Loki, en su diseño de microservicios, guarda sus datos en un backend tipo objeto (S3); MinIO es la implementación open-source de ese protocolo.
+- 🔴 **Pendiente de validar:** si MinIO soporta replicación entre sus instancias — mencionado como algo a investigar, sin experiencia previa del equipo en esa configuración.
+- Los contenedores de aplicación envían sus logs a este Loki propio vía `rsyslog`, con un archivo de configuración (ej. `tu-loki.conf`) desplegado con el patrón `lxc file push` + `lxc exec` (ver [06_Operacion.md](06_Operacion.md#desplegar-configuración-a-varios-contenedores-sin-ssh)).
+- Grafana consulta este Loki propio para mostrar los logs de aplicación de todos los servicios del proyecto, en el mismo dashboard donde ya se ven las métricas de Prometheus.
+
+### Próximos pasos
+
+- [ ] Crear el/los contenedor(es) Loki dedicados al proyecto.
+- [ ] Crear los contenedores MinIO (mínimo 2, si se confirma que soportan replicación).
+- [ ] Configurar `rsyslog` en los contenedores de aplicación existentes (Apache, NTF) apuntando a este Loki.
+- [ ] Confirmar en Grafana la visibilidad de logs de aplicación junto a las métricas de Prometheus.
+
+---
+
 ## Qué hacer si un nodo está OFFLINE
 
 ### Paso 1: Verificar conectividad

@@ -68,8 +68,8 @@
 | **Causa** | En sitios sin OVN funcional se sigue usando el dispositivo proxy LXD por contenedor como workaround. En PFR1 y CAR1 (con OVN ya funcional) el workaround se reemplazó por un contenedor gateway dedicado de operación y mantenimiento — ver [05_Configuracion.md](05_Configuracion.md) — pero la dependencia del proxy corporativo en sí sigue existiendo |
 | **Impacto** | Si el equipo de seguridad deshabilita el proxy, los contenedores pierden acceso a internet (no pueden instalar paquetes). La duración del permiso no fue confirmada |
 | **Severidad** | Media |
-| **Mitigación actual** | Nicolás (seguridad) habilitó el proxy. Marcos debe confirmar si es permanente |
-| **Acción requerida** | Confirmar con Nicolás la permanencia del acceso al proxy. Repetir el patrón de gateway de operación y mantenimiento en FDO1 cuando se incorpore |
+| **Mitigación actual** | Nicolás (seguridad) habilitó el proxy en PFR1/CAR1. Marcos debe confirmar si es permanente. Para FDO1, mientras no tiene autorización propia, se implementó un puente NAT temporal que reutiliza el permiso de Franco — ver [05_Configuracion.md — Puente NAT temporal hacia el proxy SDI](05_Configuracion.md#puente-nat-temporal-hacia-el-proxy-sdi-para-sitios-sin-autorización-propia) |
+| **Acción requerida** | Confirmar con Nicolás la permanencia del acceso al proxy para PFR1/CAR1, y tramitar el alta propia de FDO1 para poder desmontar el puente NAT temporal (ver rollback en 05_Configuracion.md). Repetir el patrón de gateway de operación y mantenimiento en FDO1 cuando se incorpore |
 | **Responsable** | Marcos Casco → Nicolás |
 
 ---
@@ -170,13 +170,71 @@
 
 ---
 
+## RIE-011 — Sesiones del balanceador sin replicar (failover puede desloguear usuarios)
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | El estado de sesión de los servicios web publicados detrás del contenedor balanceador (Apache, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md)) se guarda en archivos temporales locales del contenedor, no en un almacén compartido |
+| **Causa** | Todavía no se implementó un mecanismo de sesiones compartidas/replicadas entre las instancias balanceadas |
+| **Impacto** | Si ocurre un failover (el balanceador redirige tráfico a otra instancia, o el contenedor se reinicia), los usuarios con sesión activa quedan deslogueados |
+| **Severidad** | Media — no bloquea la operación normal, pero degrada la experiencia en cada evento de failover |
+| **Mitigación actual** | Ninguna |
+| **Acción requerida** | Evaluar un mecanismo de sesiones compartidas (ej. almacén de sesiones centralizado) para los servicios detrás del balanceador. Identificado explícitamente por el equipo como "desafiante" — 🔴 sin propuesta técnica concreta todavía |
+| **Responsable** | Pendiente de asignar |
+
+---
+
+## RIE-012 — Sin estrategia definida de réplica/centralización de base de datos entre los 3 sitios
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | No hay una decisión tomada sobre cómo replicar o centralizar las bases de datos de aplicación (no la base de datos interna del cluster LXD/Dqlite, que ya se replica — ver RIE-002) entre los servicios de los 3 sitios |
+| **Causa** | Tema identificado como pendiente de investigación durante una reunión de trabajo, sin desarrollo posterior. La responsabilidad de la replicación es de quien diseña cada servicio, no de LXD — ver [09_FAQ.md](09_FAQ.md#sobre-exposición-de-servicios-y-bases-de-datos) — pero falta la definición concreta para los servicios que sí requieran alta disponibilidad multi-sitio |
+| **Impacto** | Sin definición, cada servicio nuevo puede terminar con una estrategia de datos distinta e inconsistente entre sitios, dificultando la alta disponibilidad real a nivel de aplicación |
+| **Severidad** | Media — no bloquea el trabajo actual, pero condiciona el diseño de cualquier servicio con estado que se despliegue en más de un sitio |
+| **Mitigación actual** | Ninguna |
+| **Acción requerida** | Investigar y definir una estrategia (ej. réplica maestro-réplica, centralización en un único sitio) antes de desplegar el primer servicio con datos que requiera alta disponibilidad multi-sitio |
+| **Responsable** | Pendiente de asignar |
+
+---
+
+## RIE-013 — Interfaz OVN bloqueada en Fernando, causa raíz no identificada *(🔴 activo)*
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | Tras unir Fernando (FDO1) al cluster OVN, la interfaz `OVN_1` no levanta en ese nodo, aunque todos los servicios de MicroOVN aparecen `running`. Ver diagnóstico completo en [TRB-012 en 07_Troubleshooting.md](07_Troubleshooting.md#trb-012) |
+| **Causa** | 🔴 No identificada. Hipótesis sin confirmar: estado inconsistente en la base de datos de OVN, posiblemente de un primer intento de join fallido |
+| **Impacto** | Fernando no puede alojar contenedores conectados a la red OVN del cluster — bloquea completar la incorporación del tercer sitio y, con ella, el quórum pleno de alta disponibilidad (ver [RIE-002](#rie-002--dos-de-tres-nodos-activos-alta-disponibilidad-de-base-de-datos-incompleta)) |
+| **Severidad** | Alta — bloqueante activo para completar la incorporación de FDO1 |
+| **Mitigación actual** | Ninguna. Franco y Carpinelli siguen operando con OVN funcional entre ambos |
+| **Acción requerida** | Continuar el diagnóstico (sesión siguiente): confirmar o descartar la hipótesis de estado inconsistente; si se confirma, remover a Fernando del cluster OVN y volver a unirlo desde cero |
+| **Responsable** | Norberto Núñez |
+
+> 🟡 **Actualización (reunión OSS, agosto):** se encontró y corrigió un error de configuración de WireGuard en Fernando (claves de peer invertidas, `allowed-ips` demasiado amplio — ver [TRB-013](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios)) que produce exactamente el síntoma de este riesgo. Es una hipótesis razonable, no confirmada, que sea la misma causa raíz — falta re-verificar si la interfaz OVN de Fernando levanta correctamente ahora que ese error de WireGuard está corregido.
+
+---
+
+## RIE-014 — Overcommit de memoria sin alerta entre perfiles LXD
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | LXD permite que la suma de `limits.memory` de todos los perfiles/instancias de un nodo supere la memoria RAM física del host, sin advertencia — ej. un servidor con 16 GB físicos con 20 instancias a 2 GB cada una (40 GB asignados) |
+| **Causa** | Comportamiento por diseño de LXD: los límites de un perfil son un techo por instancia, no una reserva garantizada ni una validación contra la capacidad total del host |
+| **Impacto** | Mientras el uso real de memoria de las instancias esté por debajo de la capacidad física, no hay problema. Si el uso real se acerca o supera la RAM física del host, puede degradar el rendimiento del nodo o forzar al kernel a matar procesos (OOM) de forma impredecible |
+| **Severidad** | Media — no es un problema activo, pero crece con cada instancia nueva sin que LXD avise |
+| **Mitigación actual** | Ninguna automática. Revisión manual de la suma de `limits.memory` de los perfiles activos en cada nodo |
+| **Acción requerida** | Antes de asignar un perfil nuevo, verificar manualmente que la suma de memoria de todos los perfiles activos en ese nodo no supere la RAM física disponible. Evaluar a futuro alguna forma de alerta o límite agregado por nodo |
+| **Responsable** | Equipo técnico |
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
 |---|---|
-| **Alta** | RIE-004 (CentOS 7 EOL) |
+| **Alta** | RIE-004 (CentOS 7 EOL), RIE-013 (interfaz OVN bloqueada en Fernando) |
 | **Media-Alta** | RIE-002 (2/3 nodos), RIE-006 (sin backup) |
-| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN) |
+| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria) |
 | **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 

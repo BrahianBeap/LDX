@@ -166,6 +166,8 @@ lxd init
 | Admin port | 8444 | Puerto de administración local |
 | Cluster port | 8443 | Puerto de comunicación entre nodos y acceso a Web UI |
 
+> ⚠️ **Hardening posterior al wizard:** por defecto `lxd init` deja `core.https_address` escuchando en `0.0.0.0` (todas las interfaces). La guía oficial de hardening de LXD recomienda restringirlo a la IP de gestión específica del nodo — ver el procedimiento completo en [05_Configuracion.md — Dirección de escucha de la API de LXD](05_Configuracion.md#dirección-de-escucha-de-la-api-de-lxd-corehttps_address).
+
 ### Para nodos adicionales (CAR1, FDO1)
 
 Al seleccionar "Join existing cluster", el wizard pedirá un **join token**. Este token se genera desde un nodo que ya sea miembro funcional del cluster (ej. PFR1):
