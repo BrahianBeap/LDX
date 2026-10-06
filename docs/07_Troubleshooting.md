@@ -183,7 +183,7 @@ cloud-init.network-config: |
 
 ---
 
-## TRB-012 — La interfaz OVN no levanta en un nodo nuevo aunque los servicios de MicroOVN estén "running" *(🔴 sin resolver)*
+## TRB-012 — La interfaz OVN no levanta en un nodo nuevo aunque los servicios de MicroOVN estén "running" *(🟡 posiblemente resuelto)*
 
 | Campo | Contenido |
 |---|---|
@@ -198,6 +198,8 @@ cloud-init.network-config: |
 Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Fernando): [`laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md`](../laboratorio/2026-07-25_incorporacion-sitio-fdo1/bitacora.md).
 
 > 🟡 **Actualización (reunión OSS, agosto):** en una sesión posterior se encontró y corrigió un error de configuración de WireGuard (ver [TRB-013](#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios) abajo) que produce exactamente este síntoma: rutas OVN entre sitios que no funcionan pese a que los servicios muestran `running`. Es una **hipótesis razonable, no confirmada**, de que sea la misma causa raíz de este TRB-012 en Fernando — hace falta revisar la configuración de WireGuard de `fdo-oss1` con el mismo criterio (claves de cada peer, `allowed-ips` específico) antes de reintentar el join.
+
+> **Actualización 2026-10-06 (verificación en vivo, solo lectura):** ✅ Se observó el contenedor `FDO-WS-1` corriendo en `fdo.1` con IP en la red `OVN_1` — la interfaz OVN de Fernando parece estar operativa, consistente con la hipótesis de la nota anterior (la corrección de TRB-013 también habría resuelto este bloqueo). 🔴 Pero sigue sin confirmarse explícitamente: no se pudo correr `microovn status` sin contraseña de `sudo`, y nadie del equipo lo validó formalmente. Ver [RIE-013 en 11_Riesgos.md](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-posiblemente-resuelto) y [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/).
 
 ---
 

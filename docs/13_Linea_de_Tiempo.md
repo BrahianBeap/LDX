@@ -82,12 +82,29 @@
 | Instalación de LXD/MicroOVN en Fernando (`fdo-oss1`) | ✅ Completado |
 | Malla WireGuard extendida a los 3 sitios (Franco, Carpinelli, Fernando) | ✅ Completado — con error de configuración encontrado y corregido en el proceso, ver [TRB-013](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios) |
 | Fernando unido al cluster LXD (tercer miembro) | ✅ Completado |
-| Fernando unido al cluster OVN | 🔴 Bloqueado — interfaz OVN no levanta, ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-activo) |
+| Fernando unido al cluster OVN | 🟡 Probablemente completado — ver verificación en vivo del 2026-10-06 abajo. Originalmente 🔴 bloqueado, ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-posiblemente-resuelto) |
 | Hardening de `core.https_address` (IP de gestión específica, no `0.0.0.0`) en los 3 nodos | ✅ Completado — ver [05_Configuracion.md](05_Configuracion.md#dirección-de-escucha-de-la-api-de-lxd-corehttps_address) |
 | Servicio NTF (mensajería SMS/email) desplegado en Fernando y Franco, con balanceador embebido en el gateway | ✅ Completado — ver [ADR-0008 — Variante confirmada](adr/ADR-0008-gateway-balanceador-dos-etapas.md#variante-confirmada-balanceador-embebido-en-el-gateway) |
 | Bug de migración entre sitios por WireGuard mal configurado (claves invertidas, `allowed-ips` amplio) | 🟡 Corregido en Fernando, pendiente aplicar en Franco |
 | Esquema de inventario de servicios acordado con el equipo | ✅ Completado — ver [06_Operacion.md](06_Operacion.md#inventario-de-servicios-alta-de-un-servicio-nuevo) |
-| Loki + MinIO propio del proyecto para logs de aplicación | 🟡 Planificado, no desplegado — ver [14_Manual_Operativo.md](14_Manual_Operativo.md#logs-de-aplicación-loki--minio-propio-del-proyecto) |
+| Loki + MinIO propio del proyecto para logs de aplicación | 🟡 En progreso — contenedores creados (`C-Loki-1`, `Minio-1`, `C-Grafana-1`, `C-Colector-1`), ver verificación en vivo del 2026-10-06 abajo. Originalmente planificado, no desplegado — ver [14_Manual_Operativo.md](14_Manual_Operativo.md#logs-de-aplicación-loki--minio-propio-del-proyecto) |
+
+---
+
+### Verificación en vivo del cluster, solo lectura (2026-10-06)
+
+**Qué fue:** no una reunión — un relevamiento por SSH, en modo solo lectura, a los 3 hosts (`pfr-oss`, `car-oss`, `fdo-oss`), a pedido de Elías Alfonzo, para confirmar el estado real del cluster contra lo documentado hasta ahora.
+**Referencia:** [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/).
+
+| Hallazgo | Estado |
+|---|---|
+| Los 3 nodos (`pfr.1`, `car.1`, `fdo.1`) están `ONLINE` en `lxc cluster list` | ✅ Confirmado — ver [RIE-002](11_Riesgos.md#rie-002--dos-de-tres-nodos-activos-alta-disponibilidad-de-base-de-datos-incompleta-posiblemente-resuelto) |
+| Contenedor `FDO-WS-1` (NTF) corriendo en `fdo.1` con IP en la red `OVN_1` | ✅ Confirmado — ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-posiblemente-resuelto) |
+| Causa raíz original del bloqueo de OVN en Fernando (TRB-012) | 🔴 Aún sin confirmar — no se pudo validar el estado interno de MicroOVN (requería password de `sudo`) |
+| Contenedores del stack de observabilidad propio (`C-Loki-1`, `Minio-1`, `C-Grafana-1`, `C-Mimir-1`, `C-Colector-1`) creados en `PRJ-OSS` | 🟡 Avance parcial — Loki y el colector están `RUNNING`; Grafana, MinIO y Mimir están `STOPPED`. `Mimir` no estaba documentado en el plan original (solo se mencionaba Loki + MinIO) |
+| Contenedor `CAR-KANBOARD` (`STOPPED`, en `car.1`, proyecto `PRJ-OSS`) | 🔴 Sin documentar — no se sabe aún si es un segundo intento de migrar Kanboard al modelo definitivo (gateway + balanceador) o algo distinto. Pendiente de validación con el equipo |
+
+> **Nota:** esta verificación es evidencia directa de comandos (`lxc cluster list`, `lxc list`, etc.), no un relato de reunión — pero no reemplaza la confirmación del equipo sobre *cómo y cuándo* se resolvieron RIE-002/RIE-013, ni sobre qué es `CAR-KANBOARD`.
 
 ---
 
@@ -103,9 +120,9 @@
 | Configurar malla WireGuard entre FDO1 y los sitios existentes | FDO1 | ✅ Completado (con corrección de configuración en el camino, ver [TRB-013](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios)) |
 | Instalar LXD y MicroOVN en Fernando | FDO1 | ✅ Completado |
 | Unir FDO1 al cluster LXD (join token) | FDO1 | ✅ Completado |
-| Unir FDO1 al cluster OVN — completaría el quórum de HA de la base de datos | FDO1 | 🔴 Bloqueado — ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-activo) |
+| Unir FDO1 al cluster OVN — completaría el quórum de HA de la base de datos | FDO1 | 🟡 Probablemente completado — ver [verificación en vivo del 2026-10-06](#verificación-en-vivo-del-cluster-solo-lectura-2026-10-06). Originalmente 🔴 bloqueado, ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-posiblemente-resuelto) |
 | Aplicar en Franco la misma corrección de WireGuard ya aplicada en Fernando | Franco | 🔴 Pendiente |
-| Crear contenedor gateway de servicios en FDO1 | FDO1 | 🔴 Pendiente — depende de resolver el join a OVN |
+| Crear contenedor gateway de servicios en FDO1 | FDO1 | ✅ Completado — `FDO-GW-SRV` visto `RUNNING` en la [verificación en vivo del 2026-10-06](#verificación-en-vivo-del-cluster-solo-lectura-2026-10-06) |
 
 ---
 

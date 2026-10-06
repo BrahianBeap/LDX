@@ -72,9 +72,9 @@ Ver el detalle completo en [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
 
 ## Estado actual del proyecto
 
-🟡 El cluster está en **fase de implementación activa**, con 2 de 3 sitios iniciales instalados y unidos (PFR1 y CAR1). Falta FDO1 (Fernando) para completar el quórum de alta disponibilidad de la base de datos distribuida.
+🟡 El cluster está en **fase de implementación activa**, con los 3 sitios iniciales (PFR1, CAR1 y FDO1) instalados y unidos al cluster LXD — ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md). El quórum de alta disponibilidad de la base de datos distribuida parece estar completo (3/3 nodos `ONLINE`), confirmado por una verificación en vivo del 2026-10-06, pero no formalmente con el equipo — ver [RIE-002](11_Riesgos.md#rie-002--dos-de-tres-nodos-activos-alta-disponibilidad-de-base-de-datos-incompleta-posiblemente-resuelto).
 
-La red de contenedores (OVN) **es funcional entre PFR1 y CAR1**, corriendo sobre una malla WireGuard cifrada que sirve de transporte entre sitios geográficamente separados en Capa 3 (ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)). El dispositivo de proxy reverso sobre la interfaz de gestión, usado como solución temporal en la primera reunión, sigue vigente únicamente en sitios donde OVN todavía no está disponible.
+La red de contenedores (OVN) **es funcional entre PFR1 y CAR1**, corriendo sobre una malla WireGuard cifrada que sirve de transporte entre sitios geográficamente separados en Capa 3 (ver [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md)). 🟡 También parece funcional en FDO1 (Fernando) — ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-posiblemente-resuelto) — aunque la causa del bloqueo original nunca se confirmó. El dispositivo de proxy reverso sobre la interfaz de gestión, usado como solución temporal en la primera reunión, sigue vigente únicamente en sitios donde OVN todavía no está disponible.
 
 ---
 

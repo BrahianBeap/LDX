@@ -57,7 +57,7 @@
 | **Salidas** | Red virtual que conecta contenedores entre sitios |
 | **Impacto si falla** | Los contenedores existentes pueden seguir corriendo, pero pierden conectividad de red entre sitios |
 | **Cómo verificar** | `snap services microovn`, `microovn cluster list` |
-| **Estado actual** | ✅ Instalado, bootstrapped y funcional entre PFR1 y CAR1 (sobre WireGuard). 🔴 Pendiente extender a FDO1 |
+| **Estado actual** | ✅ Instalado, bootstrapped y funcional entre PFR1 y CAR1 (sobre WireGuard). 🟡 Probablemente extendido también a FDO1 — verificación en vivo del 2026-10-06 encontró un contenedor (`FDO-WS-1`) corriendo sobre `OVN_1` en `fdo.1`, pero la causa raíz del bloqueo original ([TRB-012](07_Troubleshooting.md#trb-012)) no fue confirmada. Ver [RIE-013](11_Riesgos.md#rie-013--interfaz-ovn-bloqueada-en-fernando-causa-raíz-no-identificada-posiblemente-resuelto) y [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/) |
 
 ### Base de datos distribuida de MicroOVN
 
@@ -204,6 +204,8 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 | **Impacto si falla** | Solo afecta la observabilidad, no la operación |
 | **Cómo verificar** | 🔴 Endpoint y configuración Prometheus externos: Pendiente de validación |
 
+> **Actualización 2026-10-06 (verificación en vivo):** 🔴 Se encontró un contenedor `C-Mimir-1` (`STOPPED`, en `fdo.1`, proyecto `PRJ-OSS`) que no está documentado en ningún lado. Mimir es un backend de métricas compatible con Prometheus (de Grafana Labs) — es una hipótesis razonable que sea el componente elegido para esta función, pero no está confirmado. Pendiente de validación con el equipo.
+
 ---
 
 ## Grafana
@@ -217,6 +219,8 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 | **Configuración** | 🟡 Dashboards importados desde Grafana Labs por ID |
 | **Impacto si falla** | Solo afecta la visibilidad, no la operación del cluster |
 | **Estado** | 🔴 Detalles de configuración: Pendiente de validación |
+
+> **Actualización 2026-10-06 (verificación en vivo):** ✅ Existe un contenedor `C-Grafana-1` en `car.1` (proyecto `PRJ-OSS`), pero está `STOPPED` — todavía no desplegado en producción.
 
 ---
 

@@ -114,10 +114,12 @@ Logs de aplicación (contenedores del proyecto) ──rsyslog──►  Loki pro
 
 ### Próximos pasos
 
-- [ ] Crear el/los contenedor(es) Loki dedicados al proyecto.
-- [ ] Crear los contenedores MinIO (mínimo 2, si se confirma que soportan replicación).
+- [x] Crear el/los contenedor(es) Loki dedicados al proyecto. — ✅ `C-Loki-1` existe en `pfr.1` y está `RUNNING` (verificación en vivo 2026-10-06, ver [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/))
+- [ ] Crear los contenedores MinIO (mínimo 2, si se confirma que soportan replicación). — 🟡 Existe `Minio-1` en `car.1`, pero está `STOPPED` y es un solo contenedor (no dos)
 - [ ] Configurar `rsyslog` en los contenedores de aplicación existentes (Apache, NTF) apuntando a este Loki.
-- [ ] Confirmar en Grafana la visibilidad de logs de aplicación junto a las métricas de Prometheus.
+- [ ] Confirmar en Grafana la visibilidad de logs de aplicación junto a las métricas de Prometheus. — 🟡 Existe `C-Grafana-1` en `car.1`, pero está `STOPPED`
+
+> 🔴 **Hallazgo sin documentar (verificación en vivo 2026-10-06):** también existe un contenedor `C-Mimir-1` (`STOPPED`, en `fdo.1`), no mencionado en ningún plan — ver la nota en [03_Componentes.md — Prometheus](03_Componentes.md#prometheus-métricas-lxd). Pendiente de validación con el equipo.
 
 ---
 

@@ -46,7 +46,7 @@
 
 ---
 
-## RIE-002 — Dos de tres nodos activos (alta disponibilidad de base de datos incompleta)
+## RIE-002 — Dos de tres nodos activos (alta disponibilidad de base de datos incompleta) *(🟡 posiblemente resuelto)*
 
 | Campo | Detalle |
 |---|---|
@@ -57,6 +57,8 @@
 | **Mitigación actual** | Backup de VM en VMware (solicitar a SBA/AIT); gestión posible desde cualquiera de los dos nodos activos gracias a la base de datos replicada |
 | **Acción requerida** | Instalar LXD en FDO1 y agregarlo al cluster. Ver [04_Instalacion.md](04_Instalacion.md) |
 | **Responsable** | Norberto Núñez + equipo técnico |
+
+> **Actualización 2026-10-06 (verificación en vivo, solo lectura, por SSH a los 3 hosts):** ✅ `lxc cluster list` muestra los 3 miembros (`pfr.1` database-leader, `car.1` y `fdo.1` database) en estado `ONLINE` — el tercer miembro del quórum ya está incorporado. 🟡 Esto sugiere que este riesgo está resuelto, pero no fue confirmado formalmente con el equipo/Norberto Núñez (quién lo completó, cuándo). Ver el detalle de la verificación en [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/).
 
 ---
 
@@ -198,7 +200,7 @@
 
 ---
 
-## RIE-013 — Interfaz OVN bloqueada en Fernando, causa raíz no identificada *(🔴 activo)*
+## RIE-013 — Interfaz OVN bloqueada en Fernando, causa raíz no identificada *(🟡 posiblemente resuelto)*
 
 | Campo | Detalle |
 |---|---|
@@ -211,6 +213,8 @@
 | **Responsable** | Norberto Núñez |
 
 > 🟡 **Actualización (reunión OSS, agosto):** se encontró y corrigió un error de configuración de WireGuard en Fernando (claves de peer invertidas, `allowed-ips` demasiado amplio — ver [TRB-013](07_Troubleshooting.md#trb-013--peer-de-wireguard-mal-configurado-claves-invertidas-o-allowed-ips-demasiado-amplio-bloquea-rutas-entre-sitios)) que produce exactamente el síntoma de este riesgo. Es una hipótesis razonable, no confirmada, que sea la misma causa raíz — falta re-verificar si la interfaz OVN de Fernando levanta correctamente ahora que ese error de WireGuard está corregido.
+
+> **Actualización 2026-10-06 (verificación en vivo, solo lectura, por SSH a los 3 hosts):** ✅ Se observó el contenedor de aplicación `FDO-WS-1` **corriendo en `fdo.1`** con IP `192.168.0.110` en la red `OVN_1` (proyecto `PRJ-OSS`) — evidencia directa de que Fernando sí puede alojar contenedores conectados a OVN. 🟡 Esto es consistente con la hipótesis de la nota anterior: lo más probable es que la corrección del bug de WireGuard (TRB-013) haya resuelto también este bloqueo de OVN, ya que ambos dependen del mismo transporte underlay entre sitios. 🔴 Pero esto sigue sin confirmarse explícitamente — no se pudo revisar el estado interno de MicroOVN (`microovn status` requirió una contraseña de `sudo` que la cuenta de la verificación no tiene), y nadie del equipo lo validó formalmente. Pendiente de confirmar con Norberto Núñez antes de cerrar este riesgo y [TRB-012](07_Troubleshooting.md#trb-012) como resueltos. Ver el detalle completo en [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/).
 
 ---
 
@@ -232,11 +236,12 @@
 
 | Severidad | Riesgos |
 |---|---|
-| **Alta** | RIE-004 (CentOS 7 EOL), RIE-013 (interfaz OVN bloqueada en Fernando) |
-| **Media-Alta** | RIE-002 (2/3 nodos), RIE-006 (sin backup) |
+| **Alta** | RIE-004 (CentOS 7 EOL) |
+| **Media-Alta** | RIE-006 (sin backup) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria) |
 | **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
+| **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |
 
 ---
 

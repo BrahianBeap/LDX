@@ -180,3 +180,24 @@ Tras un primer enfoque descartado (un único proyecto "Proyectos OSS" con tags p
 > plugin propio de Kanboard "TeamWorkload" (investigación, Fase 1, v1.1)
 > tenía una entrada acá que se retiró — su historial completo vive ahora
 > en [`proyectos/kanboard-team-workload/CHANGELOG.md`](proyectos/kanboard-team-workload/CHANGELOG.md).
+
+---
+
+### 2026-10-06 (octava entrada)
+
+**Fuente:** Verificación en vivo del cluster (solo lectura, SSH a `pfr-oss`, `car-oss` y `fdo-oss`) — `laboratorio/2026-10-06_verificacion-viva-cluster/`, a pedido de Elías Alfonzo, para confirmar el estado real del cluster contra lo documentado desde la incorporación de FDO1 en agosto.
+
+**Documentos creados:**
+- `laboratorio/2026-10-06_verificacion-viva-cluster/README.md` — objetivo, método (SSH + `paramiko`, estrictamente solo lectura) y resumen de hallazgos
+- `laboratorio/2026-10-06_verificacion-viva-cluster/bitacora.md` — salida completa de los comandos ejecutados en los 3 hosts
+
+**Documentos actualizados:**
+- `docs/11_Riesgos.md` — RIE-002 (3/3 nodos `ONLINE`) y RIE-013 (OVN en Fernando) marcados 🟡 posiblemente resueltos, con nota de verificación; movidos en la tabla resumen de severidad
+- `docs/07_Troubleshooting.md` — TRB-012 marcado 🟡 posiblemente resuelto, causa raíz original aún sin confirmar
+- `docs/13_Linea_de_Tiempo.md` — nueva sección "Verificación en vivo del cluster"; filas de FDO1/OVN y Loki+MinIO actualizadas
+- `docs/03_Componentes.md` — estado de MicroOVN actualizado; notas sobre contenedores encontrados sin documentar (`C-Mimir-1`) en Prometheus y Grafana
+- `docs/14_Manual_Operativo.md` — checklist de "Loki + MinIO propio del proyecto" actualizado con el estado real de los contenedores
+- `docs/00_Resumen_Ejecutivo.md` — corregido "2 de 3 sitios" (desactualizado desde antes de esta verificación) a 3 sitios, con el calificador 🟡 correspondiente
+
+**Resumen:**
+Relevamiento de solo lectura que encontró evidencia directa de que el cluster tiene sus 3 nodos (`pfr.1`, `car.1`, `fdo.1`) `ONLINE` y que Fernando (FDO1) ya aloja un contenedor (`FDO-WS-1`) conectado a la red OVN — contradiciendo el estado "bloqueado" documentado desde agosto (RIE-013/TRB-012). También se encontraron dos elementos sin documentar previamente: un contenedor `C-Mimir-1` (observabilidad, propósito no confirmado) y un contenedor `CAR-KANBOARD` detenido (posible segundo intento de migrar Kanboard al modelo definitivo). Ningún hallazgo fue confirmado formalmente con el equipo/Norberto Núñez — todos quedan marcados 🟡 o 🔴 según corresponda, con la verificación formal como pendiente explícito.
