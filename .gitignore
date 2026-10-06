@@ -6,3 +6,10 @@
 scripts/onenote-scraper/node_modules/
 scripts/onenote-scraper/edge-profile/
 scripts/onenote-scraper/output/
+
+# Grabaciones de video de reuniones (pesan cientos de MB/GB) — se usan
+# localmente para extraer contexto visual adicional, pero no se versionan.
+# La transcripción (.vtt) sí se commitea; el .mp4 queda solo en disco local.
+reunion/*.mp4
+reunion/*.mkv
+reunion/*.mov
