@@ -135,12 +135,26 @@ Con el balanceador en un contenedor separado (modelo estándar de este ADR), el 
 
 ---
 
+## Actualización — migración de Kanboard (2026-10-08)
+
+**Fecha:** 2026-10-08. **Referencia:** [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/).
+
+Al retirar el acceso temporal de Kanboard (pendiente abajo), se encontró que `PFR-GW-SRV` **ya tenía Apache embebido corriendo** desde el **2026-09-18**, sirviendo Loki y NTF — trabajo hecho entre reuniones, nunca documentado en este repositorio. 🟡 Se asume que lo hizo Norberto Núñez (confirmado verbalmente por el usuario), pero no está confirmado formalmente por él. El mismo archivo tenía además una línea sin terminar para Kanboard, apuntando a un hostname inexistente (`CAR-kanboard-1`).
+
+🟡 **Observación que ameritaría revisar el "modelo estándar" de este ADR:** en la práctica, **los 3 servicios reales del cluster (Loki, NTF y ahora Kanboard) usan la variante embebida**, no un balanceador separado — el contenedor `PFR-LB` mencionado como "primer ejemplo" en la Decisión de este ADR nunca llegó a crearse de forma persistente (fue una demostración en vivo durante la reunión de julio). Esto no invalida la decisión original, pero sugiere que, en la práctica, el equipo prefirió reutilizar el gateway ya existente antes que mantener un contenedor adicional por sitio. Queda pendiente confirmar con el equipo si esto debería formalizarse como el nuevo default, o si sigue siendo deuda técnica a resolver (crear los balanceadores separados).
+
+Kanboard se migró usando esta misma variante embebida, con una particularidad: no necesitaba ACL por IP (a diferencia de NTF), se usó por pragmatismo, reutilizando la infraestructura ya existente. Además, Kanboard no soporta ejecutarse bajo un subpath (no tiene opción de "base URL" configurable) — el `ProxyPass /kanboard` con el prefijo pelado rompía la navegación interna. La solución aplicada fue servir Kanboard en la **raíz** del `VirtualHost` del gateway, con `/kanboard` y `/kamboard` como alias de redirección (no de proxy) hacia la raíz. Ver el diagnóstico completo en la bitácora del laboratorio referenciado arriba, y el patrón general documentado en [05_Configuracion.md — Apps sin soporte de subpath detrás del balanceador](../05_Configuracion.md#apps-sin-soporte-de-subpath-detrás-del-balanceador).
+
+---
+
 ## Pendientes de seguimiento
 
-- [ ] Confirmar y documentar la sintaxis exacta de la regla de firewalld de reenvío de puerto (gateway → balanceador) — pendiente de la siguiente sesión con Norberto.
-- [ ] Migrar la exposición real de Kanboard desde el acceso temporal por firewall (ver [`laboratorio/2026-07-27_exploracion-rutas-firewall-pfr-oss/SOP-acceso-temporal-demo-kanboard.md`](../../laboratorio/2026-07-27_exploracion-rutas-firewall-pfr-oss/SOP-acceso-temporal-demo-kanboard.md)) hacia este modelo definitivo, y retirar el acceso temporal.
+- [ ] Confirmar y documentar la sintaxis exacta de la regla de firewalld de reenvío de puerto (gateway → balanceador) — pendiente de la siguiente sesión con Norberto. 🟡 Parcialmente confirmado: el `forward-port` funciona correctamente a nivel de firewalld/kernel (probado con Kanboard, ver actualización arriba), pero el tráfico externo real fue bloqueado por un firewall corporativo intermedio — sigue sin resolverse el trámite de alta de servicio para puertos no estándar.
+- [x] Migrar la exposición real de Kanboard desde el acceso temporal por firewall hacia este modelo definitivo, y retirar el acceso temporal — ✅ Completado 2026-10-08, ver actualización arriba.
 - [ ] Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto por este mecanismo (pedido explícito de Marcos Casco).
 - [ ] Evaluar si corresponde balanceo activo entre réplicas del mismo servicio, o si el balanceador solo hace ruteo 1:1 por URL.
+- [ ] Confirmar con Norberto Núñez el trabajo del 2026-09-18 en `LB.conf` (Loki, NTF, y el intento inconcluso de Kanboard) y qué es `CAR-kanboard-1`/`CAR-KANBOARD`.
+- [ ] Decidir si el "modelo estándar" de este ADR debería actualizarse para reflejar que, en la práctica, se usa la variante embebida en los 3 casos reales existentes.
 
 ---
 

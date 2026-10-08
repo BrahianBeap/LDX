@@ -456,11 +456,13 @@ apt-get install apache2
 
 ```apache
 # /etc/apache2/sites-available/000-default.conf
-ProxyPass /kanboard http://IP_CONTENEDOR_KANBOARD:80/
-ProxyPassReverse /kanboard http://IP_CONTENEDOR_KANBOARD:80/
+ProxyPass /loki http://IP_CONTENEDOR_LOKI:3100/
+ProxyPassReverse /loki http://IP_CONTENEDOR_LOKI:3100/
 ```
 
 > **Nota:** Requiere habilitar el módulo `proxy_http` de Apache (`a2enmod proxy proxy_http`) para que las directivas `ProxyPass`/`ProxyPassReverse` funcionen.
+
+> ⚠️ **Este patrón no sirve para cualquier aplicación.** Funciona bien para servicios tipo API (como Loki) que no generan sus propias URLs. Para aplicaciones web con interfaz (como Kanboard) que no soportan ejecutarse bajo un subpath, este `ProxyPass` con prefijo rompe la navegación — ver [Apps sin soporte de subpath detrás del balanceador](#apps-sin-soporte-de-subpath-detrás-del-balanceador) más abajo.
 
 ### Requisito de ruta por defecto en cloud-init/netplan
 
@@ -491,6 +493,63 @@ lxc exec CONTENEDOR-LB -- ip route
 lxc exec CONTENEDOR-LB -- ss -ntlp
 # Debe mostrar el puerto 80/443 escuchando (Apache)
 ```
+
+---
+
+## Apps sin soporte de subpath detrás del balanceador
+
+### Objetivo
+Publicar, por el balanceador, una aplicación web que **no soporta ejecutarse bajo un subpath** (genera sus propias URLs, redirecciones y links internos como rutas absolutas desde `/`, sin ninguna opción de configuración tipo "base URL"). Un `ProxyPass /app` convencional (ver [Ejemplo de ruteo por URL/path](#ejemplo-de-ruteo-por-urlpath) arriba) rompe la navegación en estos casos: el primer pedido puede andar, pero cualquier link interno que el usuario clickee pierde el prefijo y termina en una ruta que no existe en el backend. Confirmado con Kanboard — ver [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/).
+
+### Comando
+```apache
+# Dentro del VirtualHost correspondiente, dos partes:
+
+# 1. La app vive en la RAÍZ del VirtualHost (no bajo un subpath)
+ProxyPass / http://IP_CONTENEDOR_APP:80/
+ProxyPassReverse / http://IP_CONTENEDOR_APP:80/
+
+# 2. Alias de conveniencia (ej. para quien escribe /app por costumbre):
+#    se EXCLUYEN del proxy y se resuelven como un redirect simple de Apache
+ProxyPass /app !
+Redirect /app /
+```
+
+### Explicación
+La única forma confiable de que una aplicación sin soporte de subpath funcione correctamente es que **viva en la raíz** del `VirtualHost` que la sirve — así es indistinguible, desde el punto de vista del backend, de estar expuesta directamente (sin proxy de por medio), que es la situación para la que sí fue diseñada. El `ProxyPass /app !` (el `!` es una exclusión) es necesario porque, sin él, cualquier `ProxyPass /` definido antes en el mismo `VirtualHost` intercepta también los pedidos a `/app` (por ser un prefijo de `/`), y el `Redirect` nunca llega a ejecutarse — Apache prioriza el `ProxyPass` sobre el `Redirect` de `mod_alias` cuando ambos podrían aplicar.
+
+### Parámetros
+
+| Parámetro | Tipo | Descripción | Valor por defecto |
+|---|---|---|---|
+| `ProxyPass / http://IP:80/` | directiva | Enruta toda la raíz del `VirtualHost` hacia la app | — |
+| `ProxyPass /app !` | directiva | Excluye `/app` (y todo lo que empiece así) de cualquier `ProxyPass` más general ya definido | — (requiere ir **antes** del `ProxyPass /` en el archivo, o Apache puede no aplicar la exclusión) |
+| `Redirect /app /` | directiva (`mod_alias`) | Redirección HTTP simple (302) de `/app` hacia la raíz — no es un proxy, el navegador hace un segundo pedido | — |
+
+### Resultado esperado
+Un pedido a la raíz del `VirtualHost` sirve la aplicación completa, con toda su navegación interna funcionando (nada se "pierde"). Un pedido al alias (`/app`) responde con un `302 Found` simple de Apache (sin las cabeceras propias de la aplicación) y `Location` apuntando a la raíz.
+
+### Cómo verificar
+```bash
+lxc exec CONTENEDOR-LB -- curl -sI http://localhost/
+# Debe responder directamente con contenido/redirect de la aplicación
+
+lxc exec CONTENEDOR-LB -- curl -sI http://localhost/app
+# Debe responder "302 Found" con Location apuntando a "/" — SIN cabeceras propias de la
+# aplicación (ej. cookies de sesión). Si aparecen esas cabeceras, la exclusión no se aplicó
+# y el pedido se está proxeando igual — revisar el orden de las directivas en el archivo.
+```
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| `/app` devuelve contenido de la aplicación (con sus propias cookies) en vez de un `302` simple | El `ProxyPass /app !` está después del `ProxyPass /` en el archivo, o falta directamente | Mover la línea de exclusión antes del `ProxyPass /`, o agregarla si no existe |
+| Navegar dentro de la app (clickear links) termina en una página en blanco o de error | La aplicación se sigue sirviendo bajo un subpath con el prefijo pelado (`ProxyPass /app http://IP/`, sin la raíz) | Pasar la app a la raíz del `VirtualHost`, no a un subpath — ver "Comando" arriba |
+| El `Redirect` no tiene efecto, siempre gana el proxy | Falta la exclusión (`ProxyPass /app !`) — sin ella, `mod_proxy` siempre tiene prioridad sobre `mod_alias` en este escenario | Agregar la línea de exclusión |
+
+### Rollback
+Sacar las 3 líneas agregadas (`ProxyPass /`, `ProxyPass /app !`, `Redirect /app /`) del `VirtualHost` y recargar Apache (`systemctl reload apache2`) — no afecta otras rutas definidas en el mismo archivo (ej. otros servicios por `/otra-ruta`), siempre que estén en `Location` blocks o `ProxyPass` con prefijos distintos y más específicos.
 
 ---
 

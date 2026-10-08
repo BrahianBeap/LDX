@@ -1,5 +1,14 @@
 # Habilitación temporal de acceso a Kanboard - Demo
 
+> 🔴 **SUPERADO (2026-10-08):** este acceso temporal fue retirado por completo
+> (dispositivo `web-lan` eliminado, reglas de firewall del host removidas).
+> Kanboard ya se migró al modelo definitivo de gateway + balanceador — ver
+> [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../2026-10-08_migracion-kanboard-gateway-balanceador/)
+> y [ADR-0008](../../docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+> El acceso vigente es `http://10.143.11.8/`. Este documento se conserva
+> como registro histórico del procedimiento original, no como referencia
+> operativa vigente.
+>
 > **Estado:** 🟢 Implementado y validado (técnica y funcionalmente) —
 > ver "Estado final" y "Criterios de aceptación" al pie del documento.
 > **Fecha:** 2026-07-27 (implementación) — demo prevista 2026-07-28.

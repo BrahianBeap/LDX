@@ -298,6 +298,8 @@ Ver el patrón de configuración (regla ACL por `path` + balanceo hacia los miem
 
 > **Cuándo usar cada variante:** modelo estándar (gateway y balanceador separados) por defecto; variante embebida solo cuando el servicio necesita reglas de acceso basadas en la IP real del cliente.
 
+> 🟡 **Actualización 2026-10-08:** en la práctica, `PFR-GW-SRV` (gateway de Franco) ya corre Apache embebido sirviendo **tres** servicios, no solo NTF: **Loki** (`/loki/loki/api/v1`, restringido por IP — trabajo de Norberto Núñez, sin fecha de reunión asociada, encontrado sin documentar) y **Kanboard** (sin restricción de IP, migrado del acceso temporal por firewall — ver [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/)). Ningún balanceador *separado* (ej. `PFR-LB`) llegó a crearse de forma persistente. Esto sugiere que la variante embebida se volvió el patrón real usado por el equipo, no la excepción — pendiente de confirmar formalmente si el ADR-0008 debería actualizar su modelo por defecto.
+
 ---
 
 ## Proyectos LXD (multi-tenancy)

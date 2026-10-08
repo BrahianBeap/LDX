@@ -106,6 +106,25 @@
 
 > **Nota:** esta verificación es evidencia directa de comandos (`lxc cluster list`, `lxc list`, etc.), no un relato de reunión — pero no reemplaza la confirmación del equipo sobre *cómo y cuándo* se resolvieron RIE-002/RIE-013, ni sobre qué es `CAR-KANBOARD`.
 
+> **Actualización 2026-10-08:** `CAR-KANBOARD` queda parcialmente aclarado — el usuario confirmó que se creó para un segundo intento de migrar Kanboard, pero "no tiene nada ahora, lo dejamos nada más así por el momento". Sigue sin uso. Ver la migración real de Kanboard (por un camino distinto) en la sección siguiente.
+
+---
+
+### Migración de Kanboard al modelo gateway + balanceador (2026-10-08)
+
+**Qué fue:** trabajo de infraestructura en vivo, a pedido de Elías Alfonzo, para cerrar el pendiente del [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) y retirar el acceso temporal de Kanboard.
+**Referencia:** [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/).
+
+| Hito | Estado |
+|---|---|
+| Hallazgo: `PFR-GW-SRV` ya tenía Apache embebido sirviendo Loki y NTF desde el 2026-09-18, sin documentar | ✅ Confirmado — ver [ADR-0008 — Actualización](adr/ADR-0008-gateway-balanceador-dos-etapas.md#actualización--migración-de-kanboard-2026-10-08) |
+| Intento de ruteo por path (`/kanboard`) | 🔴 Falló — Kanboard no soporta subpath, redirige todo a `/`. Patrón documentado en [05_Configuracion.md](05_Configuracion.md#apps-sin-soporte-de-subpath-detrás-del-balanceador) |
+| Intento de puerto dedicado (8080 vía forward-port) | 🔴 Bloqueado — funciona a nivel del gateway, pero un firewall corporativo intermedio no deja pasar el puerto desde la red del usuario |
+| Solución final: Kanboard en la raíz del gateway (`http://10.143.11.8/`), con `/kanboard` y `/kamboard` como alias de redirect | ✅ Completado y validado por el usuario |
+| Retiro del acceso temporal (`10.143.11.228:8080`) — dispositivo `web-lan` | ✅ Completado |
+| Retiro del acceso temporal — reglas de firewall del host (zona `work`) | 🟡 Reportado como aplicado por el usuario, no verificado de forma independiente (requiere root, cuenta sin privilegio) |
+| Loki y NTF verificados sin verse afectados | ✅ Confirmado |
+
 ---
 
 ## Hitos pendientes (próximos pasos)
@@ -137,7 +156,7 @@
 | Definir política estándar de límites de recursos por proyecto LXD | Equipo técnico | 🔴 Pendiente — ver [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 | Continuar la sesión de arquitectura de exposición de servicios (esbozar versión práctica) | Norberto Núñez | 🔴 Pendiente — acordado para el día siguiente de la reunión, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
 | Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto (esquema ya acordado, ver [06_Operacion.md](06_Operacion.md#inventario-de-servicios-alta-de-un-servicio-nuevo)) | Elías Alfonzo / equipo | 🔴 Pendiente — carga de datos en curso |
-| Retirar la redirección directa a nivel de host (esquema inicial de Kanboard) una vez migrado al modelo gateway + balanceador | Elías Alfonzo | 🔴 Pendiente — ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
+| Retirar la redirección directa a nivel de host (esquema inicial de Kanboard) una vez migrado al modelo gateway + balanceador | Elías Alfonzo | ✅ Completado 2026-10-08 — ver [ADR-0008 — Actualización](adr/ADR-0008-gateway-balanceador-dos-etapas.md#actualización--migración-de-kanboard-2026-10-08) y [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/) |
 | Investigar opciones de base de datos con alta disponibilidad/replicación nativa (incluye CockroachDB) | Sin asignar | 🟡 Solo sugerido, sin dueño ni fecha |
 
 ---

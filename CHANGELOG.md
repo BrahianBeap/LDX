@@ -201,3 +201,23 @@ Tras un primer enfoque descartado (un único proyecto "Proyectos OSS" con tags p
 
 **Resumen:**
 Relevamiento de solo lectura que encontró evidencia directa de que el cluster tiene sus 3 nodos (`pfr.1`, `car.1`, `fdo.1`) `ONLINE` y que Fernando (FDO1) ya aloja un contenedor (`FDO-WS-1`) conectado a la red OVN — contradiciendo el estado "bloqueado" documentado desde agosto (RIE-013/TRB-012). También se encontraron dos elementos sin documentar previamente: un contenedor `C-Mimir-1` (observabilidad, propósito no confirmado) y un contenedor `CAR-KANBOARD` detenido (posible segundo intento de migrar Kanboard al modelo definitivo). Ningún hallazgo fue confirmado formalmente con el equipo/Norberto Núñez — todos quedan marcados 🟡 o 🔴 según corresponda, con la verificación formal como pendiente explícito.
+
+---
+
+### 2026-10-08 (novena entrada)
+
+**Fuente:** Migración de Kanboard al modelo gateway + balanceador (trabajo de infraestructura en vivo, comandos ejecutados por Elías Alfonzo vía SSH) — `laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`, para cerrar el pendiente explícito del ADR-0008 y retirar el acceso temporal de Kanboard habilitado en julio.
+
+**Documentos creados:**
+- `laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/README.md` — objetivo, hallazgos y resultado final
+- `laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/bitacora.md` — cada paso con comandos y salidas reales, incluyendo los dos intentos fallidos antes de la solución final
+
+**Documentos actualizados:**
+- `docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md` — pendiente de migración de Kanboard cerrado; nueva sección documentando el hallazgo de trabajo sin registrar (Apache embebido en `PFR-GW-SRV` desde el 2026-09-18, atribuido tentativamente a Norberto Núñez) y la observación de que el "modelo estándar" del ADR (balanceador separado) nunca se usó en la práctica — los 3 servicios reales (Loki, NTF, Kanboard) usan la variante embebida
+- `docs/05_Configuracion.md` — nuevo patrón documentado: "Apps sin soporte de subpath detrás del balanceador" (con el caso de Kanboard como ejemplo), siguiendo el estándar de documentación de comandos; corregido el ejemplo de ruteo por URL/path que usaba a Kanboard como caso (reemplazado por Loki, que sí soporta el patrón)
+- `docs/03_Componentes.md` — sección de "balanceador embebido" actualizada con los casos de Loki y Kanboard, además de NTF
+- `docs/13_Linea_de_Tiempo.md` — hito cerrado en la tabla de pendientes; nueva sección narrativa con el detalle del trabajo; aclaración parcial sobre `CAR-KANBOARD` (confirmado por el usuario como intento abandonado, sin contenido)
+- `laboratorio/2026-07-27_exploracion-rutas-firewall-pfr-oss/SOP-acceso-temporal-demo-kanboard.md` — marcado como superado, con referencia al reemplazo definitivo
+
+**Resumen:**
+Antes de crear infraestructura nueva, se encontró que `PFR-GW-SRV` ya tenía un balanceador Apache embebido (no documentado, con fecha de modificación del 18 de septiembre) sirviendo Loki y NTF, con un intento inconcluso de Kanboard apuntando a un hostname inexistente. Se reutilizó esa infraestructura en vez de crear el contenedor balanceador separado que proponía originalmente el ADR-0008. El primer intento de ruteo por path (`/kanboard`) falló porque Kanboard no soporta subpath (sin opción de "base URL" en su configuración) — se probó también un puerto dedicado (8080) vía `forward-port`, que funcionó correctamente a nivel de firewalld pero quedó bloqueado por un firewall corporativo externo a mitad de camino. La solución final fue servir Kanboard directamente en la raíz del `VirtualHost` del gateway, con `/kanboard` y `/kamboard` como alias de redirección simple (usando una exclusión `ProxyPass ... !` para que el redirect tuviera prioridad sobre el proxy). Se validó que Loki y NTF siguen funcionando sin cambios, se retiró el acceso temporal (dispositivo LXD confirmado eliminado; reglas de firewall del host reportadas como eliminadas por el usuario, sin verificación independiente posible por falta de privilegios root en esa cuenta), y se avisó al equipo del nuevo acceso.
