@@ -221,3 +221,19 @@ Relevamiento de solo lectura que encontró evidencia directa de que el cluster t
 
 **Resumen:**
 Antes de crear infraestructura nueva, se encontró que `PFR-GW-SRV` ya tenía un balanceador Apache embebido (no documentado, con fecha de modificación del 18 de septiembre) sirviendo Loki y NTF, con un intento inconcluso de Kanboard apuntando a un hostname inexistente. Se reutilizó esa infraestructura en vez de crear el contenedor balanceador separado que proponía originalmente el ADR-0008. El primer intento de ruteo por path (`/kanboard`) falló porque Kanboard no soporta subpath (sin opción de "base URL" en su configuración) — se probó también un puerto dedicado (8080) vía `forward-port`, que funcionó correctamente a nivel de firewalld pero quedó bloqueado por un firewall corporativo externo a mitad de camino. La solución final fue servir Kanboard directamente en la raíz del `VirtualHost` del gateway, con `/kanboard` y `/kamboard` como alias de redirección simple (usando una exclusión `ProxyPass ... !` para que el redirect tuviera prioridad sobre el proxy). Se validó que Loki y NTF siguen funcionando sin cambios, se retiró el acceso temporal (dispositivo LXD confirmado eliminado; reglas de firewall del host reportadas como eliminadas por el usuario, sin verificación independiente posible por falta de privilegios root en esa cuenta), y se avisó al equipo del nuevo acceso.
+
+---
+
+### 2026-10-08 (décima entrada)
+
+**Fuente:** Backup y recuperación ante desastre (DR) para Kanboard — `laboratorio/2026-10-08_backup-dr-kanboard/`, trabajo de infraestructura en vivo a continuación de la migración de acceso del mismo día.
+
+**Documentos creados:**
+- `laboratorio/2026-10-08_backup-dr-kanboard/README.md` — por qué se descartó la replicación completa (frontend x3 + Postgres) a favor de snapshot + copia cruzada, y el procedimiento de recuperación real
+- `laboratorio/2026-10-08_backup-dr-kanboard/bitacora.md` — cada paso con comandos y salidas reales, incluyendo el intento de automatización que quedó bloqueado
+
+**Documentos actualizados:**
+- `docs/11_Riesgos.md` — RIE-006 (sin política de backup) actualizado: primer caso concreto resuelto para Kanboard, con la aclaración explícita de que el riesgo general del cluster sigue abierto
+
+**Resumen:**
+Se evaluó y descartó explícitamente la replicación completa de Kanboard (frontend en los 3 sitios + Postgres centralizado) por sobredimensionada para un servicio de ~5-6 usuarios — decisión de costo/beneficio ya registrada en el ADR-0008. En su lugar, se armó snapshot automático nativo de LXD (cada 6h, expira a los 7 días) sobre `PFR-KANBOARD-TEST`, más un script que sincroniza una copia fría a `car.1` (otro sitio), probado de punta a punta: se arrancó la copia, se confirmó que Kanboard carga igual, y se verificó (comparando hashes) que el snapshot efectivamente congela un punto en el tiempo distinto del original en evolución. Se armó también la ruta de respaldo en el gateway de Carpinelli (apuntando por nombre, no IP, a la copia), validando que no rompe Loki. La automatización de la sincronización periódica quedó bloqueada: el host no tiene `cron` instalado y la alternativa de `systemd --user` tampoco sirve sin habilitar "linger" — ambas soluciones requieren una acción puntual de alguien con acceso root, pendiente.

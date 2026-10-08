@@ -114,6 +114,8 @@
 | **Severidad** | Media-Alta |
 | **Mitigación actual** | Norberto sugirió: (1) exportar imágenes localmente, (2) pedir backup de VM a SBA/AIT |
 | **Acción requerida** | Solicitar formalmente backup de VMs a SBA/AIT. Definir frecuencia y retención. Ver [06_Operacion.md](06_Operacion.md). |
+
+> **Actualización 2026-10-08:** ✅ Primer caso concreto resuelto — Kanboard tiene ahora snapshot automático (LXD nativo, cada 6h, expiración 7 días) + copia cruzada a otro sitio (`car.1`), probado de punta a punta incluyendo arranque de la copia y verificación de que sirve la aplicación correctamente. Ver [`laboratorio/2026-10-08_backup-dr-kanboard/`](../laboratorio/2026-10-08_backup-dr-kanboard/). 🔴 **Sigue pendiente:** este riesgo es a nivel de todo el cluster (VMs, otros contenedores) — Kanboard es solo el primer servicio cubierto, no una solución general. Además, la automatización de la copia cruzada para Kanboard específicamente quedó bloqueada por falta de `cron`/`Linger` en el host `pfr-oss` — requiere una acción puntual de alguien con acceso root (`apt-get install cron` o `loginctl enable-linger`).
 | **Responsable** | Marcos Casco → SBA/AIT |
 
 ---
