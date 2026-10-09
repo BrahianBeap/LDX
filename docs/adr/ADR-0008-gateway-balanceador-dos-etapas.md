@@ -145,6 +145,22 @@ Al retirar el acceso temporal de Kanboard (pendiente abajo), se encontró que `P
 
 Kanboard se migró usando esta misma variante embebida, con una particularidad: no necesitaba ACL por IP (a diferencia de NTF), se usó por pragmatismo, reutilizando la infraestructura ya existente. Además, Kanboard no soporta ejecutarse bajo un subpath (no tiene opción de "base URL" configurable) — el `ProxyPass /kanboard` con el prefijo pelado rompía la navegación interna. La solución aplicada fue servir Kanboard en la **raíz** del `VirtualHost` del gateway, con `/kanboard` y `/kamboard` como alias de redirección (no de proxy) hacia la raíz. Ver el diagnóstico completo en la bitácora del laboratorio referenciado arriba, y el patrón general documentado en [05_Configuracion.md — Apps sin soporte de subpath detrás del balanceador](../05_Configuracion.md#apps-sin-soporte-de-subpath-detrás-del-balanceador).
 
+---
+
+## Actualización — HTTPS para Kanboard con el certificado compartido, sin pedir uno nuevo (2026-10-09)
+
+**Fecha:** 2026-10-09. **Referencia:** [`laboratorio/2026-10-09_https-kanboard-certificado-compartido/`](../../laboratorio/2026-10-09_https-kanboard-certificado-compartido/).
+
+Antes de pedir certificados nuevos para los 3 gateways del cluster, se investigó el estado actual: **no hay DNS configurado para ninguna de las 3 IPs de servicio** (`10.143.11.8`, `192.168.91.117`, `10.11.11.12`), ni siquiera para el nombre que ya tiene el certificado existente (`oss.personal.com.py`, todo `NXDOMAIN`). Pero **el certificado ya existe** — es el mismo archivo, con el mismo hash, desplegado idéntico en los 3 gateways (junto con el `LB.conf` del 18-09 mencionado arriba), para `CN=oss.personal.com.py`, sin SAN, emitido por la CA interna `AutoridadOSS`.
+
+**Hallazgo clave:** `SSLVerifyClient require` (la exigencia de certificado de cliente que protege a NTF) es una directiva de Apache independiente del certificado de servidor — no hace falta un certificado nuevo para que Kanboard tenga HTTPS, solo una configuración de Apache que permita que ambos servicios convivan en el mismo `VirtualHost *:443` con requisitos distintos.
+
+🔴 **Error descartado, documentado para no repetirlo:** intentar "relajar" `SSLVerifyClient` de `require` (a nivel de vhost) a `none` (en un `<Location>` específico) tiene sintaxis válida pero **no funciona en tiempo real** — el servidor sigue pidiendo certificado. La dirección que sí funciona es la inversa: vhost en `SSLVerifyClient optional`, con `require` explícito solo en el `<Location '/ntf'>`. Ver el patrón completo, con los dos intentos (el que falló y el que funcionó), en [05_Configuracion.md — mTLS opcional por defecto, obligatorio solo en rutas específicas](../05_Configuracion.md#mtls-opcional-por-defecto-obligatorio-solo-en-rutas-específicas).
+
+**Resultado:** Kanboard accesible por `https://10.143.11.8/` sin certificado de cliente; `http://10.143.11.8/` redirige automáticamente a HTTPS; Loki (que solo vive en el puerto 80) sin cambios; NTF verificado sin cambios, sigue exigiendo certificado de cliente. Validado con los 4 casos probados explícitamente (Loki HTTP, Kanboard HTTP→redirect, Kanboard HTTPS, NTF HTTPS sin cert).
+
+Pendiente: DNS para el nombre del certificado (o uno nuevo por sitio, lo que requeriría un certificado con SAN), confirmar que las PCs del equipo confían en `AutoridadOSS`, y replicar el mismo cambio en `CAR-GW-SRV`/`FDO-GW-SRV` si se decide exponer algo por HTTPS ahí también.
+
 ✅ **Justificación explícita del usuario (Elías Alfonzo) para no crear un balanceador separado en este caso puntual:** Kanboard es un servicio chico, usado por ~5-6 personas del equipo — no justifica el costo de mantener un contenedor adicional solo por alta disponibilidad del balanceador. Es una decisión consciente de costo/beneficio para este servicio en particular, no una limitación técnica ni un descuido. 🟡 Esto no resuelve la pregunta más amplia de si el modelo embebido debería ser el default general del ADR para *todo* servicio nuevo — esa decisión sigue pendiente de conversar con el equipo, especialmente para servicios con más usuarios o mayor criticidad que sí podrían justificar un balanceador separado con alta disponibilidad propia.
 
 ---

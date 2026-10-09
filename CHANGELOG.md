@@ -237,3 +237,21 @@ Antes de crear infraestructura nueva, se encontró que `PFR-GW-SRV` ya tenía un
 
 **Resumen:**
 Se evaluó y descartó explícitamente la replicación completa de Kanboard (frontend en los 3 sitios + Postgres centralizado) por sobredimensionada para un servicio de ~5-6 usuarios — decisión de costo/beneficio ya registrada en el ADR-0008. En su lugar, se armó snapshot automático nativo de LXD (cada 6h, expira a los 7 días) sobre `PFR-KANBOARD-TEST`, más un script que sincroniza una copia fría a `car.1` (otro sitio), probado de punta a punta: se arrancó la copia, se confirmó que Kanboard carga igual, y se verificó (comparando hashes) que el snapshot efectivamente congela un punto en el tiempo distinto del original en evolución. Se armó también la ruta de respaldo en el gateway de Carpinelli (apuntando por nombre, no IP, a la copia), validando que no rompe Loki. La automatización de la sincronización periódica quedó bloqueada: el host no tiene `cron` instalado y la alternativa de `systemd --user` tampoco sirve sin habilitar "linger" — ambas soluciones requieren una acción puntual de alguien con acceso root, pendiente.
+
+---
+
+### 2026-10-09 (undécima entrada)
+
+**Fuente:** HTTPS para Kanboard reusando el certificado compartido (trabajo de infraestructura en vivo, comandos ejecutados por Elías Alfonzo vía SSH) — `laboratorio/2026-10-09_https-kanboard-certificado-compartido/`, continuación directa de la migración del día anterior.
+
+**Documentos creados:**
+- `laboratorio/2026-10-09_https-kanboard-certificado-compartido/README.md` — por qué no hacía falta pedir un certificado nuevo, y el resultado final validado en 4 casos
+- `laboratorio/2026-10-09_https-kanboard-certificado-compartido/bitacora.md` — cada paso con comandos y salidas reales, incluyendo el intento que falló en tiempo real (sintaxis válida, comportamiento incorrecto) antes de llegar al fix
+
+**Documentos actualizados:**
+- `docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md` — nueva sección documentando el hallazgo (no hace falta certificado nuevo, el existente ya sirve) y el error descartado
+- `docs/05_Configuracion.md` — nuevo patrón reutilizable: "mTLS opcional por defecto, obligatorio solo en rutas específicas" (con el intento fallido explícitamente documentado para no repetirlo), siguiendo el estándar de documentación de comandos
+- `docs/13_Linea_de_Tiempo.md` — nueva sección narrativa con el detalle del trabajo
+
+**Resumen:**
+Antes de pedir certificados nuevos para los 3 gateways, se investigó el estado actual: no hay DNS configurado para ninguna de las 3 IPs de servicio (ni para el nombre que ya tiene el certificado existente), pero el certificado sí existe — el mismo archivo, idéntico, ya desplegado en los 3 gateways desde el 3 de septiembre, sin SAN. Se confirmó que la exigencia de certificado de cliente (mTLS) que protege a NTF es una directiva de Apache independiente del certificado de servidor, lo que permitió reusar el mismo certificado para Kanboard sin pedir uno nuevo. El primer intento (relajar `SSLVerifyClient` de `require` a `none` por `<Location>`) tuvo sintaxis válida pero falló en tiempo real — la dirección correcta fue la inversa: vhost en `optional`, con `require` explícito solo en la ruta de NTF. Validado en los 4 casos relevantes (Loki HTTP sin cambios, Kanboard HTTP redirige a HTTPS, Kanboard HTTPS funciona sin certificado, NTF HTTPS sigue exigiendo certificado) y confirmado desde el navegador real del usuario. Queda pendiente el DNS y confirmar que las PCs del equipo confían en la CA interna.

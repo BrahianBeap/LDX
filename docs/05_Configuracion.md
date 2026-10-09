@@ -598,6 +598,75 @@ curl -I http://IP_GATEWAY/ntf   # desde una IP autorizada -> 200/502 según esta
 
 ---
 
+## mTLS opcional por defecto, obligatorio solo en rutas específicas
+
+### Objetivo
+Publicar un servicio **sin certificado de cliente** (ej. una app web normal, como Kanboard) por HTTPS, en el **mismo puerto 443 y el mismo `VirtualHost`** donde otro servicio (ej. NTF) exige certificado de cliente (mTLS, `SSLVerifyClient require`) — reusando el mismo certificado de servidor, sin crear un `VirtualHost` aparte y sin debilitar la exigencia de certificado del servicio que sí lo necesita. Confirmado con Kanboard — ver [`laboratorio/2026-10-09_https-kanboard-certificado-compartido/`](../laboratorio/2026-10-09_https-kanboard-certificado-compartido/).
+
+### ⚠️ Lo que NO funciona (probado y descartado)
+
+Dejar `SSLVerifyClient require` a nivel del `VirtualHost` y tratar de "relajarlo" a `none` dentro de un `<Location>` específico **no funciona de forma confiable** — la sintaxis es válida (`apache2ctl configtest` no detecta nada), pero en tiempo real el servidor sigue exigiendo certificado para todas las rutas, incluida la que se quiso relajar. La causa: `SSLVerifyClient` se evalúa mayormente durante el saludo inicial de TLS, antes de que Apache sepa qué URL se está pidiendo — "bajar" la exigencia después no es una operación bien soportada, mucho menos con TLS 1.3 (sin renegociación clásica).
+
+### Comando
+
+```apache
+<VirtualHost *:443>
+    SSLEngine on
+    SSLCertificateFile      /etc/ssl/certs/server.crt
+    SSLCertificateKeyFile   /etc/ssl/certs/server.key
+    SSLCACertificateFile    /etc/ssl/certs/ca.crt
+
+    # A nivel de vhost: OPCIONAL, no OBLIGATORIO
+    SSLVerifyClient optional
+    SSLVerifyDepth 1
+
+    # Servicio SIN certificado de cliente — no necesita ningún override,
+    # "optional" a nivel de vhost ya es suficientemente permisivo
+    ProxyPass /kanboard !
+    ProxyPass / http://IP_CONTENEDOR_APP:80/
+    ProxyPassReverse / http://IP_CONTENEDOR_APP:80/
+
+    # Servicio que SÍ necesita mTLS: sube la exigencia explícitamente en su propia ruta
+    <Location '/ntf'>
+      SSLVerifyClient require
+      ProxyPass balancer://NTF
+      Require ip 10.150.60.92
+    </Location>
+</VirtualHost>
+```
+
+### Explicación
+La dirección que **sí** funciona de forma confiable es la opuesta a la que falla: dejar el `VirtualHost` en `SSLVerifyClient optional` (pide el certificado durante el saludo TLS, pero no lo exige para que la conexión continúe) y **subir** la exigencia a `require` únicamente dentro del `<Location>` del servicio que lo necesita. Esa dirección (de permisivo a estricto) sí está bien soportada por el mecanismo de autenticación posterior al saludo de TLS 1.3 (`post-handshake auth`), incluso en versiones recientes de OpenSSL/Apache.
+
+### Parámetros
+
+| Parámetro | Descripción |
+|---|---|
+| `SSLVerifyClient optional` (a nivel de `VirtualHost`) | Pide certificado de cliente pero no lo exige — la conexión sigue aunque el cliente no tenga uno |
+| `SSLVerifyClient require` (dentro de un `<Location>` específico) | Sube la exigencia solo para esa ruta — el cliente debe presentar certificado válido o recibe error de TLS |
+
+### Resultado esperado
+Una petición a una ruta sin override (ej. `/`) funciona sin certificado de cliente. Una petición a la ruta protegida (ej. `/ntf`) sin certificado falla con `403 Forbidden` o error de TLS (`alert certificate required`), igual que antes del cambio.
+
+### Cómo verificar
+
+```bash
+curl -k -I https://IP_GATEWAY/          # sin certificado -> debe responder normal (200/301/302)
+curl -k -I https://IP_GATEWAY/ntf       # sin certificado -> debe seguir rechazando (403, o error de TLS)
+```
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| El servicio nuevo sigue pidiendo certificado aunque la sintaxis esté OK | Se dejó `SSLVerifyClient require` a nivel de `VirtualHost` y se intentó relajar con `none` en un `<Location>` — dirección no soportada | Invertir: vhost en `optional`, servicio protegido en `require` dentro de su propia ruta |
+| `AH00526: ProxyPass\|ProxyPassMatch can not have a path when defined in a location` | Se puso un `ProxyPass` con path explícito (ej. `ProxyPass /kanboard !`) **dentro** de un bloque `<Location>` | Los `ProxyPass`/`Redirect` con path explícito van a nivel de `VirtualHost`, no dentro de `<Location>`. Dentro de `<Location>`, `ProxyPass` va sin path (el path ya lo da el propio `<Location>`) |
+
+### Rollback
+Volver `SSLVerifyClient` a `require` a nivel de `VirtualHost` y sacar el override dentro del `<Location>` del servicio protegido — vuelve al estado donde todo el vhost exige certificado de cliente.
+
+---
+
 ## Despliegue de configuración a varios contenedores sin SSH
 
 ### Objetivo

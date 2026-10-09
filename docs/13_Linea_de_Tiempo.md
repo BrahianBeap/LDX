@@ -127,6 +127,21 @@
 
 ---
 
+### HTTPS para Kanboard con el certificado compartido (2026-10-09)
+
+**Qué fue:** trabajo de infraestructura en vivo, continuación directa de la migración del día anterior, para exponer Kanboard por HTTPS sin pedir un certificado nuevo.
+**Referencia:** [`laboratorio/2026-10-09_https-kanboard-certificado-compartido/`](../laboratorio/2026-10-09_https-kanboard-certificado-compartido/).
+
+| Hito | Estado |
+|---|---|
+| Verificación: no hay DNS configurado para ninguna de las 3 IPs de servicio de los gateways, ni para el nombre del certificado existente | ✅ Confirmado (`NXDOMAIN` en los 4 casos) |
+| Verificación: certificado ya existe, idéntico (mismo hash) en los 3 gateways, sin SAN | ✅ Confirmado |
+| Primer intento (`SSLVerifyClient none` dentro de `<Location>`, relajando el default `require` del vhost) | 🔴 Falló en tiempo real (sintaxis válida, pero sigue pidiendo certificado) — documentado en [05_Configuracion.md](05_Configuracion.md#mtls-opcional-por-defecto-obligatorio-solo-en-rutas-específicas) |
+| Fix: vhost en `SSLVerifyClient optional`, `/ntf` sube a `require` explícito | ✅ Completado y validado — Kanboard HTTPS sin certificado, NTF sigue protegido |
+| Puerto 80 redirige a HTTPS para Kanboard (Loki queda intacto en HTTP) | ✅ Completado y validado |
+
+---
+
 ## Hitos pendientes (próximos pasos)
 
 ### Corto plazo — Tercer miembro del cluster (Fernando / FDO1)
