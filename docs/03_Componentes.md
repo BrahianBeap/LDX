@@ -266,8 +266,12 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 | Aplicación | Kanboard **v1.2.46** (junio 2025) — en `/var/www/kanboard` |
 | Plugins instalados | `Calendar`, `Customizer`, `Essential`, `Subtaskdescription`, `TeamWorkload`, `Telegram` |
 | Autenticación | Local (usuario/clave) — `LDAP_AUTH` y `REVERSE_PROXY_AUTH` desactivados en `config.php` |
-| Snapshot | `0 */6 * * *`, retiene 7 días — mismo patrón que Kanboard le dio después a VulnApp NG, ver [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/) |
-| Recursos | 🔴 Sin `limits.cpu`/`limits.memory` explícitos en el perfil — corre sin techo propio, usa lo que el nodo `pfr.1` tenga disponible en cada momento |
+| Snapshot | `0 */6 * * *`, retiene 7 días — mismo patrón que Kanboard le dio después a VulnApp NG, ver [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/). 9 snapshots activos al momento de esta verificación |
+| Disco | 🟡 Único límite de recursos que sí tiene: `size: 5GiB` en el dispositivo `root` del perfil. Uso real (`df -h` adentro del contenedor): 520 MB usados de 5.2 GB (10%) |
+| Memoria | 🔴 Sin `limits.cpu`/`limits.memory` explícitos en el perfil — corre sin techo propio, usa lo que el nodo `pfr.1` tenga disponible en cada momento. Uso real ahora (medido por LXD vía cgroups, `lxc info PFR-KANBOARD-TEST --resources`): 271 MB — muy por debajo del uso típico que tendría un límite puesto; el riesgo es que nada lo frena si algún día sube |
+| **Pendiente de corregir** | 🔴 Ponerle `limits.cpu`/`limits.memory` al perfil, con el mismo criterio ya aplicado a VulnApp NG (2 vCPU / 2 GiB) — pendiente, sin fecha |
+
+> **Contexto del host (`pfr.1`), 2026-10-10:** RAM total 15 GiB (5.7 GiB usados, 9.4 GiB disponibles); *storage pool* ZFS `local` (compartido por todos los contenedores del sitio) con 326 GB totales, 5.58 GB usados, 320 GB libres. Con estos márgenes, el consumo actual de Kanboard no es un problema — el límite ausente es un riesgo latente, no uno activo.
 
 > **Nota sobre el nombre del contenedor:** se llama `PFR-KANBOARD-TEST` pero es, en los hechos, la instancia real que usa el equipo — nombre heredado de cuando se desplegó como prueba. El contenedor `CAR-KANBOARD` (distinto, detenido) fue un segundo intento de migración que no se usó — ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
 
