@@ -241,6 +241,40 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 
 ---
 
+## Kanboard (gestión de tareas)
+
+| Campo | Valor |
+|---|---|
+| **Nombre** | Kanboard |
+| **Función** | Gestión de tareas del equipo (tableros kanban) — reemplazo de Microsoft Planner |
+| **Responsabilidad** | Seguimiento del trabajo del equipo: proyectos, columnas, tareas, comentarios |
+| **Dependencias** | PHP vía `mod_php` de Apache; base de datos SQLite propia (sin motor externo) |
+| **Entradas** | Peticiones HTTP/HTTPS reenviadas por el gateway de Franco (`PFR-GW-SRV`, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md)) |
+| **Salidas** | Interfaz web y API JSON-RPC (`/jsonrpc.php`) |
+| **Impacto si falla** | El equipo pierde acceso al tablero de tareas; no afecta al resto del cluster |
+| **Cómo verificar** | `lxc exec PFR-KANBOARD-TEST -- systemctl status apache2`; `curl -sk https://10.143.11.8/kanboard` |
+
+### Stack real (✅ verificado en vivo, 2026-10-10 — no estaba documentado antes)
+
+| Capa | Detalle |
+|---|---|
+| Contenedor | `PFR-KANBOARD-TEST`, proyecto `default`, sitio Franco (`pfr.1`), IP `192.168.0.106` (DHCP, `OVN_1`) |
+| Sistema operativo | Ubuntu 26.04 LTS (`resolute`) |
+| Servidor web | Apache 2.4.66, con `libapache2-mod-php` (PHP embebido en Apache, no PHP-FPM) |
+| Runtime | PHP 8.5.4, con OPcache activo |
+| Base de datos | SQLite (`DB_DRIVER=sqlite` en `config.php`) — un único archivo, `/var/www/kanboard/data/db.sqlite` (~2 MB). No usa MySQL/MariaDB ni PostgreSQL, aunque Kanboard los soporta |
+| Aplicación | Kanboard **v1.2.46** (junio 2025) — en `/var/www/kanboard` |
+| Plugins instalados | `Calendar`, `Customizer`, `Essential`, `Subtaskdescription`, `TeamWorkload`, `Telegram` |
+| Autenticación | Local (usuario/clave) — `LDAP_AUTH` y `REVERSE_PROXY_AUTH` desactivados en `config.php` |
+| Snapshot | `0 */6 * * *`, retiene 7 días — mismo patrón que Kanboard le dio después a VulnApp NG, ver [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/) |
+| Recursos | 🔴 Sin `limits.cpu`/`limits.memory` explícitos en el perfil — corre sin techo propio, usa lo que el nodo `pfr.1` tenga disponible en cada momento |
+
+> **Nota sobre el nombre del contenedor:** se llama `PFR-KANBOARD-TEST` pero es, en los hechos, la instancia real que usa el equipo — nombre heredado de cuando se desplegó como prueba. El contenedor `CAR-KANBOARD` (distinto, detenido) fue un segundo intento de migración que no se usó — ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md).
+
+Ver la publicación HTTPS por el gateway en [ADR-0008 — Actualización](adr/ADR-0008-gateway-balanceador-dos-etapas.md#actualización--https-para-kanboard-con-el-certificado-compartido-sin-pedir-uno-nuevo-2026-10-09) y el detalle completo de la migración en [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/).
+
+---
+
 ## Contenedor "gateway de servicios"
 
 | Campo | Valor |

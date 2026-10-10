@@ -312,3 +312,15 @@ Al explicar en detalle, para alguien nuevo en el equipo, cómo se crearon los co
 
 **Resumen:**
 Se procesó el resto de la reunión que el mismo día ya había aportado la confirmación de autoría de Norberto Núñez sobre `LB.conf`. Encontró tres cosas que ameritaban corregir documentación existente: el diseño de DNS compartido entre los 3 sitios (round-robin, no un balanceador de DNS centralizado) estaba acordado de palabra pero nunca escrito; el backend de almacenamiento del Loki propio del proyecto resultó ser un servicio S3 externo administrado por Norberto Núñez desde hace tiempo (reutilizado de un trabajo anterior con métricas), no el `MinIO` propio que el plan documentado en el repositorio todavía describía como pendiente; y un acceso temporal por IP para el escáner de vulnerabilidades del equipo de seguridad, sin fecha de retiro acordada, que se agregó como riesgo nuevo. También quedó registrada, sin tarea concreta, una idea de Marcos Casco (usar Loki para monitorear los propios balanceadores). La llamada se superpone, a partir del minuto ~4, con una conversación no relacionada sobre un corte de energía en terreno — se identificó y se descartó a propósito, igual que en análisis anteriores de este tipo de transcripciones.
+
+---
+
+### 2026-10-10 (decimoquinta entrada)
+
+**Fuente:** Verificación en vivo del contenedor de Kanboard (`PFR-KANBOARD-TEST`), a pedido explícito del usuario — el stack real de la aplicación no estaba documentado en el repositorio.
+
+**Documentos actualizados:**
+- `docs/03_Componentes.md` — ficha nueva "Kanboard (gestión de tareas)": la ficha estándar del componente más una tabla de stack verificada en vivo (sistema operativo, servidor web, runtime de PHP, motor de base de datos, versión de la aplicación, plugins instalados, snapshot, recursos)
+
+**Resumen:**
+Kanboard nunca había tenido su propia ficha en `03_Componentes.md` — solo se lo mencionaba de paso en la nota de "balanceador embebido". Se conectó al contenedor real y se relevó el stack completo: Ubuntu 26.04, Apache 2.4.66 con `mod_php` (no PHP-FPM), PHP 8.5.4, base de datos **SQLite** (un solo archivo de ~2 MB, no MySQL ni PostgreSQL aunque Kanboard los soporta), versión de la aplicación **1.2.46** (junio 2025), con 6 plugins instalados (incluido `TeamWorkload`, ya registrado como tarea completada en Kanboard). Se encontró además que el contenedor no tiene límites explícitos de CPU/memoria en su perfil — corre sin techo propio sobre los recursos libres del nodo `pfr.1` — y se dejó anotado como hallazgo, sin crear todavía un riesgo formal en `11_Riesgos.md` a la espera de confirmar si amerita uno.
