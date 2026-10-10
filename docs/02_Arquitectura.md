@@ -115,18 +115,19 @@ El sistema es un **cluster LXD distribuido en 3 sitios geográficos**. Cada siti
 
 ### Direccionamiento IP confirmado
 
-✅ Confirmado (fuente: [`onenote/Clúster-OSS/Planning/`](../onenote/Clúster-OSS/Planning/)).
+✅ Confirmado (fuente original: [`onenote/Clúster-OSS/Planning/`](../onenote/Clúster-OSS/Planning/); re-verificado en vivo el 2026-10-10 contra el cluster real — ver nota debajo de la tabla).
 
 **Red OVN_1 (`192.168.0.0/24`)** — red virtualizada este-oeste entre contenedores:
 
 | Rango/IP | Asignación | Uso |
 |---|---|---|
-| `.1` – `.5` | Fija | Gateways de servicio por proyecto (`PFR-OSS-GW-SRV`, `CAR-OSS-GW-SRV`, y reservadas para `CDE`, `FDO`, `IT` cuando se incorporen) |
-| `.6` – `.10` | Fija | Gateways de operación y mantenimiento por sitio (proyecto `default`: `PFR-GW-OAM`, `CAR-GW-OAM`, y reservadas para `CDE`, `FDO`, `IT`) |
-| `.11` | Fija | Primer contenedor balanceador (`PFR-LB`) — ver [Patrón gateway + balanceador](#patrón-de-exposición-de-servicios-gateway--balanceador-en-dos-etapas) y [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
-| `.12` – `.99` | Fija (reservado) | Sin asignar todavía |
-| `.100` – `.253` | DHCP | Contenedores de aplicación (asignación dinámica vía OVN) |
+| `.1` – `.5` | Fija | Gateways de servicio por proyecto. ✅ Asignadas hoy: `.1` `PFR-GW-SRV`, `.2` `CAR-GW-SRV`, `.4` `FDO-GW-SRV`. Libres: `.3`, `.5` (reservadas para `CDE`, `IT` cuando se incorporen) |
+| `.6` – `.10` | Fija | Gateways de operación y mantenimiento por sitio (proyecto `default`). ✅ Asignadas hoy: `.6` `PFR-GW-OAM`, `.8` `CAR-GW-OAM`, `.9` `FDO-GW-OAM`. Libres: `.7`, `.10` (reservadas para `CDE`, `IT`) |
+| `.11` – `.99` | Fija | Contenedores de infraestructura con IP fija, asignados según necesidad — no reservado por rol fijo. ✅ Asignadas hoy: `.11` `C-Colector-1`, `.12` `C-Loki-1`, `.13` `PFR-VULNAPP-DB`, `.14` `PFR-VULNAPP-APP`. El resto (`.15`–`.99`) sigue libre |
+| `.100` – `.253` | DHCP | Contenedores de aplicación (asignación dinámica vía OVN). Ej.: `.106` Kanboard, `.110`/`.111` `FDO-WS-1`/`PFR-WS-1` (NTF) |
 | `.254` | Fija | Gateway de la red (`OVN_1.ipv4.address`) |
+
+> 🟡 **Actualización 2026-10-10 (re-verificación en vivo):** esta tabla decía que `.11` era fija para "el primer contenedor balanceador (`PFR-LB`)" y que `.12`–`.99` estaba "sin asignar todavía". Eso describía un plan que no se sostuvo: `PFR-LB` se creó una sola vez, como demostración en una reunión (ver [13_Linea_de_Tiempo.md](13_Linea_de_Tiempo.md)), pero nunca quedó persistente — esa IP terminó reasignada a `C-Colector-1`. Verificado contra el cluster real (`lxc list --all-projects`) al dar de alta VulnApp NG: `.11` y `.12` ya estaban en uso (Colector y Loki) y `.13`/`.14` se asignaron recién ese día a VulnApp NG. 🔴 No está confirmado si existe algún criterio formal para asignar IPs dentro de `.11`–`.99` (por ejemplo, orden de creación) más allá de "la siguiente libre" — vale la pena preguntarlo antes de asumir un patrón. También se actualizó la fila `.1`–`.10`: Fernando (FDO) ya está incorporado con ambos gateways corriendo, por lo que ya no aplica como "reservado pendiente de incorporar" — solo quedan libres los lugares de `CDE` e `IT`.
 
 **IPs y VLANs por host** (interfaz `nic_srv1`, red de servicio del proyecto `PRJ-OSS`):
 

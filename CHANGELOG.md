@@ -255,3 +255,39 @@ Se evaluó y descartó explícitamente la replicación completa de Kanboard (fro
 
 **Resumen:**
 Antes de pedir certificados nuevos para los 3 gateways, se investigó el estado actual: no hay DNS configurado para ninguna de las 3 IPs de servicio (ni para el nombre que ya tiene el certificado existente), pero el certificado sí existe — el mismo archivo, idéntico, ya desplegado en los 3 gateways desde el 3 de septiembre, sin SAN. Se confirmó que la exigencia de certificado de cliente (mTLS) que protege a NTF es una directiva de Apache independiente del certificado de servidor, lo que permitió reusar el mismo certificado para Kanboard sin pedir uno nuevo. El primer intento (relajar `SSLVerifyClient` de `require` a `none` por `<Location>`) tuvo sintaxis válida pero falló en tiempo real — la dirección correcta fue la inversa: vhost en `optional`, con `require` explícito solo en la ruta de NTF. Validado en los 4 casos relevantes (Loki HTTP sin cambios, Kanboard HTTP redirige a HTTPS, Kanboard HTTPS funciona sin certificado, NTF HTTPS sigue exigiendo certificado) y confirmado desde el navegador real del usuario. Queda pendiente el DNS y confirmar que las PCs del equipo confían en la CA interna.
+
+---
+
+### 2026-10-09 (duodécima entrada)
+
+**Fuente:** Alta de VulnApp NG en PRJ-OSS — instalación de plataforma y de aplicación en vivo (comandos ejecutados por Elías Alfonzo vía SSH), precedida por una investigación de factibilidad solo lectura — `laboratorio/2026-10-09_alta-vulnapp-ng/`.
+
+**Documentos creados:**
+- `laboratorio/2026-10-09_alta-vulnapp-ng/README.md` — qué se creó en la plataforma, resultado final y qué quedó pendiente
+- `laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md` — cada paso con comandos y salidas reales, incluidos los dos intentos fallidos antes de llegar a un paquete corregido, y la verificación de alcance hacia SDI/SMS
+
+**Documentos actualizados:**
+- `docs/05_Configuracion.md` — nueva sección "Firewall de la red OVN_1 (`lxc network acl`)": se documenta por primera vez `ACL-OVN-1` completa (reglas preexistentes, encontradas sin registro en este repositorio, más las 4 nuevas de este alta)
+- `docs/03_Componentes.md` — nota de "balanceador embebido" actualizada: VulnApp NG es el cuarto servicio en usar ese patrón en `PFR-GW-SRV`
+- `docs/07_Troubleshooting.md` — TRB-014 (PostgreSQL: no se puede reasignar el dueño de una secuencia vinculada a una columna), TRB-015 (`mod_headers` no habilitado bloquea `RequestHeader`), TRB-016 (`PermissionError` al crear una carpeta propia de la app en un árbol de solo lectura para su grupo)
+- `docs/11_Riesgos.md` — RIE-015 nuevo: conectividad de VulnApp NG hacia la API de SDI bloqueada fuera de este cluster, pendiente de Seguridad/Redes; tabla de severidades actualizada
+- `docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md` — nueva sección de actualización (cuarto caso de la variante embebida) y dos pendientes nuevos en la lista de seguimiento
+- `docs/13_Linea_de_Tiempo.md` — nueva sección narrativa con el detalle del trabajo
+
+**Resumen:**
+Se alojó VulnApp NG (reemplazo de un sistema legacy, decisión tomada en el repositorio de la propia aplicación) en dos contenedores en Franco, sin alta disponibilidad. El paquete de instalación falló dos veces en su primera corrida contra datos reales — exactamente como anticipaba su propio README ("los scripts no se probaron todavía en LXD"): una secuencia de PostgreSQL vinculada a una columna no admite reasignación de dueño por separado, y la aplicación no podía crear su propia carpeta de `uploads/` por permisos de grupo. Ambos se reportaron completos sin editar nada, y se corrigieron del lado de la aplicación. Al publicar en el gateway, `mod_headers` no estaba habilitado en `PFR-GW-SRV` — se restauró el backup automáticamente antes de que el error llegara a afectar a Kanboard/Loki/NTF, se habilitó el módulo y se reintentó con éxito, validado tanto en loopback como desde afuera del contenedor. Se aprovechó la investigación para documentar por primera vez `ACL-OVN-1`, el firewall de la red `OVN_1`, que ya existía sin ningún registro en este repositorio. Quedó pendiente, fuera del alcance de este cluster, la conectividad hacia la API de SDI: la ACL y el ruteo de LXD están correctos, pero el tráfico se pierde después del primer salto del contenedor — se avisó como un riesgo nuevo para que Seguridad/Redes lo resuelva antes de activar la carga diaria de datos.
+
+---
+
+### 2026-10-10 (decimotercera entrada)
+
+**Fuente:** Re-verificación de la documentación existente contra el estado real del cluster, a pedido explícito del usuario, al volver a explicar el alta de VulnApp NG con más detalle para el equipo.
+
+**Documentos actualizados:**
+- `docs/02_Arquitectura.md` — tabla de direccionamiento IP de `OVN_1` corregida: `.11` ya no es "primer balanceador (`PFR-LB`)" (nunca quedó persistente, esa IP se reasignó a `C-Colector-1`), y `.12`–`.99` ya no es "sin asignar" (`.12` `C-Loki-1`, `.13`/`.14` VulnApp NG) — verificado con `lxc list --all-projects` contra los 3 sitios
+- `docs/07_Troubleshooting.md` — TRB-017 nuevo: `lxc launch`/`lxc init` se cuelgan sin error al ejecutarse por SSH sin terminal (stdin sin cerrar), encontrado automatizando la creación de los contenedores de VulnApp NG
+- `laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md` — se completó con el paso 0 (creación de perfiles, contenedores, ACL y snapshot), que había quedado afuera porque se hizo en la sesión anterior a la que registró el resto de la bitácora; reconstruido a partir del estado real del cluster, no de memoria
+- `laboratorio/2026-10-09_alta-vulnapp-ng/README.md` — enlace nuevo al paso 0 de la bitácora
+
+**Resumen:**
+Al explicar en detalle, para alguien nuevo en el equipo, cómo se crearon los contenedores de VulnApp NG (perfiles, `lxc launch`, reglas de ACL), se terminó reconstruyendo esa parte directamente desde el cluster real (`lxc profile show`, `lxc config show`, `lxc network acl show`) en vez de confiar en la memoria de la sesión anterior — ese ejercicio encontró que la tabla de IPs de `OVN_1` en `02_Arquitectura.md` ya no describía la realidad: dos de los rangos que decía "reservado" o "primer balanceador" ya tenían contenedores reales adentro desde hacía tiempo. Se corrigió la tabla con lo verificado en vivo, y se dejó una nota explícita de que no está confirmado si existe un criterio formal de asignación dentro de ese rango más allá de "la siguiente IP libre". De paso, se terminó de registrar en la bitácora el paso de plataforma (perfiles, contenedores, ACL, snapshot) que había quedado sin documentar en este repositorio porque se hizo antes de que se resumiera la conversación de esa sesión — y se documentó, como hallazgo aparte y reutilizable, el bug de `lxc launch`/`lxc init` colgándose cuando se ejecutan por SSH sin terminal.

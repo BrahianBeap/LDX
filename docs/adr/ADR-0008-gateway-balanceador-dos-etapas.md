@@ -165,6 +165,21 @@ Pendiente: DNS para el nombre del certificado (o uno nuevo por sitio, lo que req
 
 ---
 
+## Actualización — alta de VulnApp NG, cuarto caso de la variante embebida (2026-10-09)
+
+**Fecha:** 2026-10-09. **Referencia:** [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../../laboratorio/2026-10-09_alta-vulnapp-ng/).
+
+Se alojó **VulnApp NG** (reemplazo de una aplicación legacy, decisión tomada en el repositorio de la propia aplicación — DEC-042, fuera de este repositorio) en `pfr.1`, sin alta disponibilidad, publicada por `PFR-GW-SRV` bajo `/vulnapp`. Es el **cuarto** servicio en usar la variante embebida de este mismo gateway (después de Loki, NTF y Kanboard) — a diferencia de Kanboard, VulnApp NG sí soporta ejecutarse bajo un prefijo de path (`SCRIPT_NAME`), así que el bloque de Apache es el más simple de los cuatro: un `ProxyPass /vulnapp` directo, sin los alias de redirección que necesitó Kanboard.
+
+Dos hallazgos nuevos durante esta alta:
+
+- **`mod_headers` no estaba habilitado** en `PFR-GW-SRV` — necesario para `RequestHeader set X-Forwarded-Proto`, que esta aplicación sí usa (a diferencia de Loki, NTF y Kanboard). El primer intento de despliegue abortó solo (`apache2ctl configtest` lo rechazó) sin llegar a afectar los otros tres servicios; se habilitó el módulo y se reintentó con éxito. Ver [TRB-015](../07_Troubleshooting.md#trb-015--requestheader-falla-con-invalid-command-porque-mod_headers-no-está-habilitado).
+- Se usó por primera vez `lxc network acl` de forma documentada — la ACL (`ACL-OVN-1`) ya existía, aplicada a `OVN_1`, sin ningún registro en este repositorio. Se documentó completa (reglas preexistentes y las 4 nuevas de este alta) en [05_Configuracion.md — Firewall de la red OVN_1](../05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl).
+
+**Pendiente, fuera del alcance de este cluster:** la conectividad hacia la API de SDI (`10.150.58.116:443`) está bloqueada después del primer salto del contenedor — ver [RIE-015](../11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada). Mientras no se resuelva, la carga diaria de datos de la aplicación no se instaló ni se activó.
+
+---
+
 ## Pendientes de seguimiento
 
 - [ ] Confirmar y documentar la sintaxis exacta de la regla de firewalld de reenvío de puerto (gateway → balanceador) — pendiente de la siguiente sesión con Norberto. 🟡 Parcialmente confirmado: el `forward-port` funciona correctamente a nivel de firewalld/kernel (probado con Kanboard, ver actualización arriba), pero el tráfico externo real fue bloqueado por un firewall corporativo intermedio — sigue sin resolverse el trámite de alta de servicio para puertos no estándar.
@@ -172,7 +187,8 @@ Pendiente: DNS para el nombre del certificado (o uno nuevo por sitio, lo que req
 - [ ] Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto por este mecanismo (pedido explícito de Marcos Casco).
 - [ ] Evaluar si corresponde balanceo activo entre réplicas del mismo servicio, o si el balanceador solo hace ruteo 1:1 por URL.
 - [ ] Confirmar con Norberto Núñez el trabajo del 2026-09-18 en `LB.conf` (Loki, NTF, y el intento inconcluso de Kanboard) y qué es `CAR-kanboard-1`/`CAR-KANBOARD`.
-- [ ] Decidir si el "modelo estándar" de este ADR debería actualizarse para reflejar que, en la práctica, se usa la variante embebida en los 3 casos reales existentes.
+- [ ] Decidir si el "modelo estándar" de este ADR debería actualizarse para reflejar que, en la práctica, se usa la variante embebida en los 4 casos reales existentes (Loki, NTF, Kanboard, VulnApp NG).
+- [ ] Pedir a Seguridad/Redes que habilite la conectividad de `PFR-VULNAPP-APP` hacia `10.150.58.116:443` (API de SDI) — ver [RIE-015 en 11_Riesgos.md](../11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada).
 
 ---
 

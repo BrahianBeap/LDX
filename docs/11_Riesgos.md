@@ -234,12 +234,28 @@
 
 ---
 
+## RIE-015 — Conectividad de VulnApp NG hacia la API de SDI bloqueada
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | El contenedor `PFR-VULNAPP-APP` (`192.168.0.14`) no puede alcanzar `10.150.58.116:443` (API de SDI, de donde la aplicación debe traer datos todos los días) |
+| **Causa** | 🔴 No identificada con certeza. Se descartó que sea un problema de este cluster: la ruta existe (`ip route get 10.150.58.116` devuelve una ruta válida vía `192.168.0.6`) y la regla de `ACL-OVN-1` que permite ese tráfico está `enabled` (ver [05_Configuracion.md — Firewall de la red OVN_1](05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl)). El fallo (`No route to host`) ocurre después de `192.168.0.6`, fuera de lo administrado por este cluster — hipótesis más probable: la IP con la que el cluster sale hacia esa red todavía no está habilitada del lado de Seguridad/Redes para ese destino puntual, mientras que sí lo está para la pasarela de SMS (`10.150.31.68:80`, que conecta sin problema desde el mismo contenedor) |
+| **Impacto** | VulnApp NG no puede ejecutar su carga diaria de datos desde SDI — queda instalada y accesible, pero sin la función que la hace útil día a día |
+| **Severidad** | Media-Alta — bloquea una función ya planificada y pendiente de activar, no una falla de algo que ya funcionaba |
+| **Mitigación actual** | Ninguna. El servicio de carga (`vulnapp-sdi.service`/`.timer`) no se instaló ni se activó a propósito, para no insistir contra un destino que todavía rechaza la conexión |
+| **Acción requerida** | Pedir a Seguridad/Redes que confirme qué IP ven en el destino `10.150.58.116:443` cuando el tráfico sale de este cluster, y que habiliten esa IP si todavía no lo está. Una vez confirmado, repetir la prueba de conectividad desde `PFR-VULNAPP-APP` antes de instalar el servicio de carga |
+| **Responsable** | Pendiente de asignar (Seguridad/Redes) |
+
+Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md`](../laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md#7-alcance-hacia-sdi-y-hacia-la-pasarela-de-sms-sin-ejecutar-03_instalar_cargash).
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
 |---|---|
 | **Alta** | RIE-004 (CentOS 7 EOL) |
-| **Media-Alta** | RIE-006 (sin backup) |
+| **Media-Alta** | RIE-006 (sin backup), RIE-015 (conectividad SDI de VulnApp NG bloqueada) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria) |
 | **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |

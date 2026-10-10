@@ -142,6 +142,23 @@
 
 ---
 
+### Alta de VulnApp NG en PRJ-OSS (2026-10-09)
+
+**Qué fue:** instalación de una aplicación nueva (reemplazo de un sistema legacy de inventario de hosts/vulnerabilidades) en dos contenedores en Franco, sin alta disponibilidad (decisión tomada en el repositorio de la aplicación, no en este). Precedida por una investigación de factibilidad solo lectura (10 y luego 19 preguntas puntuales sobre el estado del cluster, sin crear nada).
+**Referencia:** [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/).
+
+| Hito | Estado |
+|---|---|
+| Perfiles, contenedores (`PFR-VULNAPP-DB`, `PFR-VULNAPP-APP`) y 4 reglas nuevas en `ACL-OVN-1` | ✅ Completado |
+| Instalación de PostgreSQL 18 y restauración del dump de producción | 🔴 Falló la primera vez (secuencia vinculada a columna, ver [TRB-014](07_Troubleshooting.md#trb-014--no-se-puede-reasignar-el-dueño-de-una-secuencia-vinculada-a-una-columna-serial-o-identity)) → ✅ Corregido por el equipo de la aplicación y validado ("19 tablas coinciden con produccion") |
+| Instalación de la aplicación (Gunicorn) | 🔴 Falló la primera vez (permisos en `uploads/`, ver [TRB-016](07_Troubleshooting.md#trb-016--permissionerror-al-crear-una-carpeta-propia-de-la-aplicación-dentro-de-un-árbol-de-solo-lectura-para-su-grupo)) → ✅ Corregido y validado |
+| Publicación en `PFR-GW-SRV` (`/vulnapp`) | 🔴 Primer intento rechazado por Apache (`mod_headers` no habilitado, ver [TRB-015](07_Troubleshooting.md#trb-015--requestheader-falla-con-invalid-command-porque-mod_headers-no-está-habilitado)) → ✅ Habilitado el módulo, validado en loopback y desde afuera del contenedor; Kanboard/Loki/NTF sin cambios |
+| Snapshot programado de `PFR-VULNAPP-DB` (mismo patrón que Kanboard: cada 6h, retiene 7 días) | ✅ Completado |
+| Carga diaria de datos desde la API de SDI | 🔴 Pendiente — conectividad bloqueada fuera de este cluster, ver [RIE-015 en 11_Riesgos.md](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) |
+| Documentación de `ACL-OVN-1` (previamente no documentada en este repositorio) | ✅ Completado — ver [05_Configuracion.md](05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl) |
+
+---
+
 ## Hitos pendientes (próximos pasos)
 
 ### Corto plazo — Tercer miembro del cluster (Fernando / FDO1)

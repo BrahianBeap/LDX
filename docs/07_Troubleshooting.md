@@ -218,6 +218,66 @@ Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Ferna
 
 ---
 
+## TRB-014 — No se puede reasignar el dueño de una secuencia vinculada a una columna (`SERIAL` o `IDENTITY`)
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Un script que reasigna el dueño de todos los objetos de un esquema después de restaurar un dump (`pg_restore --no-owner`) falla al llegar a una secuencia |
+| **Síntomas** | `ERROR: cannot change owner of sequence "<nombre>_id_seq"` / `DETAIL: Sequence "<nombre>_id_seq" is linked to table "<tabla>"`, dentro de un bloque `DO $$ ... $$` que recorre `pg_class` reasignando dueños con `ALTER ... OWNER TO` |
+| **Causa** | PostgreSQL vincula automáticamente una secuencia a la columna que la usa cuando esa columna es `SERIAL`, `BIGSERIAL` o `GENERATED ... AS IDENTITY`. Una secuencia así vinculada **no admite** `ALTER SEQUENCE ... OWNER TO` por separado — hereda el dueño de su tabla automáticamente en el momento en que se cambia el dueño de la tabla con `ALTER TABLE ... OWNER TO` |
+| **Diagnóstico** | `SELECT d.deptype FROM pg_depend d WHERE d.objid = '<secuencia>'::regclass AND d.refclassid = 'pg_class'::regclass;` — `deptype = 'a'` (auto) o `'i'` (identidad) confirma que está vinculada a una columna |
+| **Solución** | Excluir del `ALTER SEQUENCE ... OWNER TO` explícito a las secuencias con `pg_depend.deptype IN ('a', 'i')` hacia su tabla — esas ya quedan con el dueño correcto en el mismo momento en que se reasigna la tabla. Al final, validar con una consulta que no quede ningún objeto (`relkind IN ('r','S','v','m')`) con un dueño distinto del esperado, en vez de asumir que el bucle cubrió todo |
+| **Prevención** | Si un dump se restauró con `pg_restore --no-owner`, probar primero la reasignación de dueños contra una copia de desarrollo con datos reales — una base vacía o con pocas tablas puede no tener ninguna secuencia vinculada que dispare el error |
+
+**Contexto:** encontrado al instalar VulnApp NG ([`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/)) — bug del script de instalación de la aplicación (repositorio `DockerLab/vulnapp-ng`), no de la plataforma LXD. Se documenta acá porque es un error genérico de PostgreSQL, reutilizable para cualquier otra aplicación que restaure dumps de la misma forma. ✅ Corregido por el equipo de la aplicación el mismo día.
+
+---
+
+## TRB-015 — `RequestHeader` falla con "Invalid command" porque `mod_headers` no está habilitado
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | `apache2ctl configtest` rechaza un `VirtualHost` que usa la directiva `RequestHeader` |
+| **Síntomas** | `AH00526: Syntax error on line N of <archivo>: Invalid command 'RequestHeader', perhaps misspelled or defined by a module not included in the server configuration` |
+| **Causa** | `RequestHeader` la provee `mod_headers`, que no viene habilitado por defecto en una instalación nueva de Apache en Ubuntu — está disponible en `mods-available/` pero no enlazado en `mods-enabled/` |
+| **Diagnóstico** | `ls /etc/apache2/mods-enabled/ \| grep headers` — si no devuelve nada, el módulo no está habilitado |
+| **Solución** | `a2enmod headers` y recargar Apache (`systemctl reload apache2` alcanza para que cargue el módulo nuevo, sin necesidad de `restart` completo) |
+| **Prevención** | Antes de agregar cualquier directiva nueva a un `VirtualHost` existente, correr `apache2ctl configtest` contra un archivo de prueba aparte primero si el módulo que la provee no se usó antes en ese gateway — no asumir que todos los gateways del cluster tienen los mismos módulos habilitados, aunque usen la misma versión de Apache |
+
+**Contexto:** encontrado al publicar VulnApp NG en `PFR-GW-SRV` ([`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/)), que hasta ese momento nunca había necesitado agregar cabeceras con Apache (Loki, NTF y Kanboard no las usan). Antes de habilitar el módulo, el despliegue se abortó solo (`configtest` falló, no se llegó a recargar Apache) y se restauró el backup de `LB.conf` — Kanboard, Loki y NTF no se vieron afectados en ningún momento.
+
+---
+
+## TRB-016 — `PermissionError` al crear una carpeta propia de la aplicación dentro de un árbol de solo lectura para su grupo
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Un servicio systemd que corre una aplicación Python/Gunicorn no arranca ningún worker |
+| **Síntomas** | `systemctl status <servicio>` muestra `Main process exited, code=exited, status=1/FAILURE`; en `journalctl -u <servicio>`, cada worker termina con `gunicorn.errors.HaltServer: <HaltServer 'Worker failed to boot.' 3>` — ese mensaje por sí solo **no** muestra la causa real, hay que mirar más arriba en el mismo log para encontrar el traceback de Python |
+| **Causa** | El código de la aplicación crea una subcarpeta propia (ej. `uploads/`) con `os.makedirs()` la primera vez que se importa, pero el directorio donde intenta crearla tiene el grupo con el que corre el servicio (`www-data`) en modo lectura/ejecución únicamente (`g=rX`), sin permiso de escritura |
+| **Diagnóstico** | `journalctl -u <servicio> -n 150 --no-pager` (no el corte de 30 líneas que suelen mostrar los scripts de instalación por defecto) — buscar el `Traceback` que termina en `PermissionError: [Errno 13] Permission denied: '<ruta>'` |
+| **Solución** | Crear la carpeta de antemano, como parte de la instalación, con el dueño/grupo y permiso de escritura que la aplicación necesita (ej. `install -d -o root -g www-data -m 770 <ruta>/uploads`), en vez de dejar que la aplicación la cree sola al arrancar |
+| **Prevención** | Antes de activar un servicio nuevo por primera vez, importar la aplicación manualmente con el mismo usuario con el que va a correr (ej. `runuser -u www-data -- python3 -c 'import app'`) — expone este tipo de error sin generar 3 intentos fallidos de arranque en el log |
+
+**Contexto:** encontrado al instalar VulnApp NG ([`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/)) — bug del script de instalación de la aplicación (repositorio `DockerLab/vulnapp-ng`), no de la plataforma LXD. ✅ Corregido por el equipo de la aplicación el mismo día: el paquete corregido crea la carpeta de antemano y, antes de activar el servicio, importa la aplicación una vez con el usuario `www-data` para que un error de este tipo se vea completo en el momento de instalar, no recién al arrancar el servicio.
+
+---
+
+## TRB-017 — `lxc launch`/`lxc init` se cuelgan sin error al ejecutarse por SSH sin terminal
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Un `lxc launch` o `lxc init` enviado como comando remoto por SSH (por ejemplo, con una librería como Paramiko, o cualquier automatización que no abra una terminal interactiva) se queda colgado indefinidamente — no termina, no da error, no crea ninguna operación del lado del servidor |
+| **Síntomas** | El comando nunca retorna. `lxc operation list` en el servidor no muestra ninguna operación en curso relacionada — es como si el comando nunca hubiera llegado a ejecutarse de verdad |
+| **Causa** | `lxc launch`/`lxc init` pueden leer configuración adicional desde la entrada estándar (stdin) si detectan que no hay una terminal interactiva (TTY) asociada. Una sesión SSH abierta mandando un único comando remoto dura dejar el stdin del lado del cliente abierto — nadie lo cierra nunca — entonces el comando se queda esperando para siempre a que termine una entrada que no va a llegar |
+| **Diagnóstico** | Si el comando viene de un script que ejecuta comandos remotos por SSH (no de una sesión interactiva a mano) y el comando es justo `lxc launch`, `lxc init`, o `lxc exec` sin asignación de TTY, sospechar esto antes que un problema de red o del cluster |
+| **Solución** | Cerrar explícitamente la escritura del stdin del lado de quien ejecuta el comando apenas se lanza (en Paramiko: `stdin.channel.shutdown_write()` inmediatamente después de `exec_command()`), o agregar `< /dev/null` al final del comando remoto |
+| **Prevención** | Para cualquier automatización que dispare `lxc launch`/`lxc init`/`lxc exec` por SSH sin terminal, aplicar el cierre de stdin (o `< /dev/null`) de entrada, no solo cuando aparece el problema |
+
+**Contexto:** encontrado automatizando la creación de los contenedores de VulnApp NG (`PFR-VULNAPP-DB`, `PFR-VULNAPP-APP`) por SSH — ver [`laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md`](../laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md#0-creación-de-la-plataforma-perfiles-contenedores-acl-snapshot). Se había sospechado primero de la imagen usada (un alias remoto que necesita internet) — se descartó esa hipótesis al ver el mismo cuelgue con una imagen local ya cacheada; la causa real era esta, ajena a qué imagen se use.
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash

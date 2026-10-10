@@ -865,6 +865,81 @@ lxc network list
 
 ---
 
+## Firewall de la red `OVN_1` (`lxc network acl`)
+
+### ¿Qué controla?
+`ACL-OVN-1` es una lista de permisos (allow-list) de LXD aplicada a la red `OVN_1` — sin ella, cualquier contenedor conectado a esa red podría iniciar conexiones hacia cualquier destino. 🟡 No está confirmado cuándo ni quién la creó originalmente (no hay registro de reunión ni de ADR); se encontró ya aplicada a `OVN_1` al investigar la factibilidad de alojar VulnApp NG (2026-10-09) y se documenta recién en ese momento.
+
+> **Importante — modelo "default deny":** LXD aplica `action: reject` a cualquier tráfico que no coincida con ninguna regla de la ACL. Por eso cada servicio nuevo que necesite salir hacia una red fuera de `OVN_1`, o recibir conexiones de otro contenedor, necesita su propia regla explícita — agregar un contenedor a `OVN_1` no le da conectividad por sí solo.
+
+### Ver las reglas actuales
+```bash
+lxc network acl show ACL-OVN-1 --project default
+```
+`ACL-OVN-1` se crea una sola vez en el proyecto `default` (igual que las redes, ver [arriba](#creación-de-redes-lxd-ovn_1-y-bridges-de-gestión)) y se aplica a `OVN_1`, que los demás proyectos (ej. `PRJ-OSS`) comparten — no hace falta repetir `--project PRJ-OSS`.
+
+### Reglas confirmadas (✅, verificado en vivo 2026-10-09)
+
+| Origen | Destino | Protocolo/Puerto | Para qué |
+|---|---|---|---|
+| `192.168.0.1,192.168.0.2,192.168.0.4` | `192.168.0.0/24` | tcp 80,8080,8000-8999 | Desde los gateways/balanceadores hacia los servicios web internos |
+| (cualquiera en `OVN_1`) | `192.168.0.1,192.168.0.2,192.168.0.4` | tcp 80,443 | Hacia los gateways/balanceadores |
+| `192.168.0.0/24` | `10.150.32.100` | tcp 3128 | Proxy de apt (descarga de paquetes) |
+| `192.168.0.0/24` | `10.150.30.18` | tcp 5016 | SMPP, envío de SMS con remitente "0" |
+| `192.168.0.0/24` | `10.150.48.230` | tcp 8060 | SMPP, envío de SMS con remitente "277" |
+| `192.168.0.0/24` | `10.12.151.202` | tcp (todos) | Comap del sitio 00HIP |
+| `192.168.0.0/24` | `10.12.151.202` | udp 161-162 | SNMP |
+| (cualquiera en `OVN_1`) | `10.150.58.126` | tcp 80 | Salida hacia NAS S3 `teccdr-db1` |
+| (cualquiera en `OVN_1`) | `10.150.31.68` | tcp 3128 | SVATOOL |
+| (cualquiera en `OVN_1`) | `192.168.0.12` | tcp 3100 | Loki1 |
+| (cualquiera en `OVN_1`) | `192.168.0.11` | tcp 1514 | Grafana-Alloy |
+| `192.168.0.14` | `192.168.0.13` | tcp 5432 | VulnApp NG: app → PostgreSQL *(agregada 2026-10-09)* |
+| `192.168.0.1` | `192.168.0.14` | tcp 5000 | VulnApp NG: balanceador de Franco → Gunicorn *(agregada 2026-10-09)* |
+| `192.168.0.14` | `10.150.58.116` | tcp 443 | VulnApp NG: app → API de SDI *(agregada 2026-10-09, ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) — permitida acá, pero bloqueada más allá de este cluster)* |
+| `192.168.0.14` | `10.150.31.68` | tcp 80 | VulnApp NG: app → pasarela de SMS *(agregada 2026-10-09)* |
+
+### Agregar una regla nueva
+```bash
+lxc network acl rule add ACL-OVN-1 ingress \
+    action=allow \
+    source=192.168.0.14 \
+    destination=192.168.0.13 \
+    protocol=tcp \
+    destination_port=5432 \
+    "description=vulnapp-app hacia Postgres de vulnapp-db"
+```
+
+### Parámetros más usados
+
+| Parámetro | Descripción |
+|---|---|
+| `source` | IP o rango origen. Sin especificar, aplica a cualquier origen dentro de `OVN_1` |
+| `destination` | IP, rango o lista de IPs separadas por coma |
+| `protocol` | `tcp`, `udp`, `icmp4` |
+| `destination_port` | Puerto único, lista (`80,443`) o rango (`8000-8999`) |
+| `description` | Texto libre — usarlo siempre: es la única forma de saber para qué sirve cada regla sin tener que preguntar |
+
+### Buenas prácticas
+
+- **Una regla por par origen→destino→servicio**, con `source` puntual (la IP del contenedor, no `192.168.0.0/24` entero) cuando el origen es un solo contenedor conocido — así una regla de más no habilita accesos no previstos. Es el criterio que se usó para las 4 reglas de VulnApp NG.
+- Escribir siempre `description`: varias de las reglas preexistentes (SMPP, Comap, SNMP) no tenían el contenedor de origen identificable sin esa descripción.
+- Antes de dar de alta un contenedor nuevo con salida a una red fuera de `OVN_1`, verificar primero con `lxc network acl show ACL-OVN-1` si el destino ya tiene una regla — puede ahorrar una regla duplicada.
+
+### Cómo verificar que una regla específica permite el tráfico esperado
+```bash
+lxc network acl show ACL-OVN-1 --project default | grep -A5 "<ip-destino>"
+```
+Confirma la regla a nivel de LXD/OVN. **No confirma** que el tráfico llegue de punta a punta — una regla puede estar `enabled` y el tráfico seguir bloqueado por un firewall fuera del cluster (ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) como ejemplo real de esto).
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| El contenedor no alcanza un destino aunque la ACL lo permita | El bloqueo está en un firewall fuera de este cluster (red del sitio, firewall corporativo) | Confirmar con `ip route get <destino>` que la ruta sale por la interfaz esperada; si la ACL ya permite el tráfico y sigue sin responder, es un tema para el equipo de Redes/Seguridad, no de LXD |
+| Una regla nueva no tiene efecto | `ACL-OVN-1` se edita en el proyecto `default`, pero se probó el cambio apuntando a `--project PRJ-OSS` u otro proyecto | Editar siempre con `--project default` (o sin `--project`, que es el default de `lxc`) |
+
+---
+
 ## Perfil y contenedor "gateway de operación y mantenimiento" (`PRF-GW-OAM`)
 
 ### ¿Qué controla?

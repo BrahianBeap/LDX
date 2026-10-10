@@ -300,6 +300,8 @@ Ver el patrón de configuración (regla ACL por `path` + balanceo hacia los miem
 
 > 🟡 **Actualización 2026-10-08:** en la práctica, `PFR-GW-SRV` (gateway de Franco) ya corre Apache embebido sirviendo **tres** servicios, no solo NTF: **Loki** (`/loki/loki/api/v1`, restringido por IP — trabajo de Norberto Núñez, sin fecha de reunión asociada, encontrado sin documentar) y **Kanboard** (sin restricción de IP, migrado del acceso temporal por firewall — ver [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/)). Ningún balanceador *separado* (ej. `PFR-LB`) llegó a crearse de forma persistente. Esto sugiere que la variante embebida se volvió el patrón real usado por el equipo, no la excepción — pendiente de confirmar formalmente si el ADR-0008 debería actualizar su modelo por defecto.
 
+> ✅ **Actualización 2026-10-09:** se agregó un **cuarto** servicio al mismo gateway embebido: **VulnApp NG** (`/vulnapp`, sin restricción de IP, `ProxyPass` hacia un contenedor de aplicación en otro puerto — no un balanceo entre réplicas, porque no tiene). A diferencia de Kanboard, este bloque sí usa un prefijo de path real (la aplicación soporta `SCRIPT_NAME`/`APPLICATION_ROOT`, a diferencia de Kanboard). Detalle completo en [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/).
+
 ---
 
 ## Proyectos LXD (multi-tenancy)
