@@ -264,6 +264,20 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 
 ---
 
+## RIE-017 — 3 contenedores con `limits.memory` de 1 GiB ya usaron swap
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | Al verificar la capacidad del cluster (ver [`laboratorio/2026-10-10_capacidad-cluster/`](../laboratorio/2026-10-10_capacidad-cluster/)), 3 contenedores con `limits.memory: 1GiB` mostraron uso de swap distinto de cero en `lxc info --resources`: `CAR-GW-OAM` (71.18 MiB), `FDO-GW-SRV` (24.48 MiB), `FDO-WS-1` (24.53 MiB) |
+| **Causa** | Distinto del overcommit de [RIE-014](#rie-014--overcommit-de-memoria-sin-alerta-entre-perfiles-lxd) (que es sobre la suma entre contenedores superando la RAM del host): acá el límite **individual** de cada uno de estos 3 contenedores parece quedar justo para su carga real, al punto de haber usado swap en algún momento |
+| **Impacto** | Ninguno activo todavía — los 3 contenedores siguen `RUNNING` y respondiendo. Si la carga sigue creciendo, el swap degrada el rendimiento (es mucho más lento que la RAM) antes de que el límite llegue a bloquear al contenedor |
+| **Severidad** | Baja — señal temprana, no una falla |
+| **Mitigación actual** | Ninguna |
+| **Acción requerida** | Subir `limits.memory` de estos 3 contenedores (ej. de 1 GiB a 2 GiB) antes de agregarles más carga o de migrar sistemas nuevos a los mismos sitios (Carpinelli, Fernando) |
+| **Responsable** | Pendiente de asignar |
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
@@ -271,7 +285,7 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 | **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-006 (sin backup), RIE-015 (conectividad SDI de VulnApp NG bloqueada) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria) |
-| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades) |
+| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades), RIE-017 (3 contenedores con límite de memoria ajustado) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 | **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |
 

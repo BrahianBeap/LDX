@@ -661,6 +661,77 @@ lxc list
 
 ---
 
+## Verificar la capacidad disponible del cluster (CPU, RAM, disco)
+
+### Objetivo
+Saber, antes de migrar o dar de alta un sistema nuevo, cuánta CPU/RAM/disco queda libre en cada sitio y qué está corriendo hoy — para elegir en qué sitio alojarlo y detectar contenedores que ya están ajustados de recursos.
+
+Estos comandos se corren **desde cualquier miembro del cluster** (no hace falta entrar a cada sitio por separado): LXD enruta la consulta al servidor físico correcto aunque el contenedor o el nodo esté en otro sitio.
+
+### 1. Capacidad física de cada sitio
+
+```bash
+lxc cluster list
+# Confirma los nombres de los miembros (ej. pfr.1, car.1, fdo.1) y que esten ONLINE
+
+lxc info --target NOMBRE_MIEMBRO --resources | grep -A3 "^Memory:"
+# RAM física total/usada/libre de ESE servidor (no de un contenedor)
+
+lxc info --target NOMBRE_MIEMBRO --resources | grep -c "online: true"
+# Cantidad de hilos de CPU de ese servidor
+
+lxc query "/1.0/storage-pools/NOMBRE_POOL/resources?target=NOMBRE_MIEMBRO"
+# Capacidad del storage pool (ej. "local") en ese sitio puntual, en bytes (space.total / space.used)
+```
+
+> **Por qué `--target` y no entrar a cada sitio por SSH:** el storage y la RAM/CPU son por servidor físico, no compartidos entre sitios — por eso cada consulta pide `--target` con el nombre del miembro. Sin `--target`, varios de estos comandos devuelven los datos del miembro al que está conectado el cliente `lxc`, no de todo el cluster.
+
+### 2. Qué está corriendo en cada sitio
+
+```bash
+lxc list --all-projects -c ns4tL --format csv
+# Todos los contenedores de todos los proyectos, con estado, IP y SITIO (columna L)
+```
+
+### 3. Uso real de cada contenedor (no lo que ve `free`/`df` adentro)
+
+```bash
+lxc info NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO --resources | grep -A2 "Memory usage"
+lxc info NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO --resources | grep -A2 "Disk usage"
+```
+
+> **Por qué no usar `free -h` ni `df -h` ejecutados adentro del contenedor:** si el contenedor no tiene `limits.memory`, `free` adentro muestra la RAM del **host entero**, no la del contenedor — no sirve para saber cuánto usa realmente. `lxc info --resources` sí mide el uso real, vía los *cgroups* que LXD aplica a cada contenedor (tenga límite puesto o no).
+
+### 4. Límites configurados de cada contenedor (si tiene)
+
+```bash
+lxc config show NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO --expanded | grep -E "limits.cpu|limits.memory"
+# Si no devuelve nada, el contenedor no tiene techo propio de CPU/memoria — ver RIE-014 en 11_Riesgos.md
+
+lxc config show NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO --expanded
+# Config completa — el tamaño del disco asignado está en devices.root.size (si no aparece, usa el default del storage pool, sin tope propio)
+```
+
+### Cómo interpretar los resultados
+
+| Señal | Qué significa |
+|---|---|
+| `Swap (current)` mayor a `0` en `lxc info --resources` | El contenedor llegó a necesitar más RAM de la que tenía libre en algún momento — aunque esté dentro de su límite, es señal de que ese límite queda justo |
+| Memoria usada cerca del límite configurado (`limits.memory`) | Candidato a que se le suba el límite antes de agregarle más carga |
+| Sin fila de `limits.cpu`/`limits.memory` | El contenedor no tiene techo — puede crecer hasta agotar lo que el servidor físico tenga libre en ese momento, afectando a los demás contenedores del mismo sitio |
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| `Error: Instance not found` | El contenedor existe en otro proyecto (ej. `PRJ-OSS` en vez de `default`) | Agregar `--project NOMBRE_PROYECTO` correcto — confirmar con `lxc list --all-projects` |
+| `Error: unknown flag: --target` en `lxc storage list` | `--target` no es válido para ese subcomando puntual | Usar `lxc query "/1.0/storage-pools/POOL/resources?target=MIEMBRO"` en su lugar, que sí acepta el parámetro |
+| Los números de memoria no coinciden con lo que muestra `free` adentro del contenedor | Esperado si el contenedor no tiene `limits.memory` — `free` adentro ve la RAM del host, no la propia | Usar siempre `lxc info --resources` desde afuera, nunca `free`/`df` de adentro, para medir contenedores sin límite |
+
+Ver el detalle completo de una verificación real en [`laboratorio/2026-10-10_capacidad-cluster/`](../laboratorio/2026-10-10_capacidad-cluster/).
+
+---
+
 ## Ver logs de un contenedor
 
 ```bash

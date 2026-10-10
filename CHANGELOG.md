@@ -326,3 +326,20 @@ Se procesó el resto de la reunión que el mismo día ya había aportado la conf
 Kanboard nunca había tenido su propia ficha en `03_Componentes.md` — solo se lo mencionaba de paso en la nota de "balanceador embebido". Se conectó al contenedor real y se relevó el stack completo: Ubuntu 26.04, Apache 2.4.66 con `mod_php` (no PHP-FPM), PHP 8.5.4, base de datos **SQLite** (un solo archivo de ~2 MB, no MySQL ni PostgreSQL aunque Kanboard los soporta), versión de la aplicación **1.2.46** (junio 2025), con 6 plugins instalados (incluido `TeamWorkload`, ya registrado como tarea completada en Kanboard). Se encontró además que el contenedor no tiene límites explícitos de CPU/memoria en su perfil — corre sin techo propio sobre los recursos libres del nodo `pfr.1` — y se dejó anotado como hallazgo, sin crear todavía un riesgo formal en `11_Riesgos.md` a la espera de confirmar si amerita uno.
 
 **Actualización (mismo día):** se agregaron los números reales de uso — disco (520 MB de 5 GB asignados, único límite que el contenedor sí tiene) y memoria (271 MB en uso, medido por LXD vía cgroups, sin ningún límite puesto), más el contexto del host (`pfr.1`: 15 GiB de RAM con 9.4 GiB disponibles; *pool* ZFS `local` con 320 GB libres de 326 GB). Con ese margen, el límite de memoria ausente es un riesgo latente, no uno activo hoy — queda marcado en la ficha como pendiente de corregir, con el mismo criterio que ya se usó en VulnApp NG (2 vCPU / 2 GiB).
+
+---
+
+### 2026-10-10 (decimosexta entrada)
+
+**Fuente:** Verificación en vivo de capacidad en los 3 sitios del cluster, a pedido del usuario — necesitaba datos precisos antes de empezar a migrar otros sistemas al cluster.
+
+**Documentos creados:**
+- `laboratorio/2026-10-10_capacidad-cluster/README.md` — resumen por sitio (CPU, RAM, disco libres) y hallazgos para la planificación
+- `laboratorio/2026-10-10_capacidad-cluster/bitacora.md` — comandos exactos y salidas reales contra los 3 miembros del cluster, inventario completo de los 13 contenedores corriendo con su stack, uso real y límites
+
+**Documentos actualizados:**
+- `docs/06_Operacion.md` — nueva sección reutilizable "Verificar la capacidad disponible del cluster (CPU, RAM, disco)", con los comandos exactos (incluido por qué `--target`, por qué no usar `free`/`df` de adentro del contenedor cuando no tiene límite, y los errores frecuentes encontrados al armar este mismo relevamiento)
+- `docs/11_Riesgos.md` — RIE-017 nuevo: 3 contenedores con `limits.memory` de 1 GiB que ya mostraron uso de swap
+
+**Resumen:**
+Se midió en vivo, sin necesidad de abrir sesión SSH a cada sitio por separado (LXD enruta las consultas con `--target` y con `lxc info`/`lxc exec` normales), la capacidad real de los 3 miembros del cluster. Disco no es una restricción en ningún sitio (entre 310 y 378 GiB libres); Franco tiene el triple de CPU que Carpinelli o Fernando; RAM es el recurso más parejo, ninguno en estado crítico. El hallazgo más accionable: 3 contenedores (`CAR-GW-OAM`, `FDO-GW-SRV`, `FDO-WS-1`) ya usaron swap dentro de su límite de 1 GiB — señal de que ese límite les queda justo, antes incluso de sumarles más carga. Se documentó también el procedimiento completo como referencia reutilizable, ya que el usuario pidió explícitamente los comandos exactos para poder repetir este tipo de verificación por su cuenta.
