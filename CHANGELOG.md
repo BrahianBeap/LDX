@@ -291,3 +291,24 @@ Se alojó VulnApp NG (reemplazo de un sistema legacy, decisión tomada en el rep
 
 **Resumen:**
 Al explicar en detalle, para alguien nuevo en el equipo, cómo se crearon los contenedores de VulnApp NG (perfiles, `lxc launch`, reglas de ACL), se terminó reconstruyendo esa parte directamente desde el cluster real (`lxc profile show`, `lxc config show`, `lxc network acl show`) en vez de confiar en la memoria de la sesión anterior — ese ejercicio encontró que la tabla de IPs de `OVN_1` en `02_Arquitectura.md` ya no describía la realidad: dos de los rangos que decía "reservado" o "primer balanceador" ya tenían contenedores reales adentro desde hacía tiempo. Se corrigió la tabla con lo verificado en vivo, y se dejó una nota explícita de que no está confirmado si existe un criterio formal de asignación dentro de ese rango más allá de "la siguiente IP libre". De paso, se terminó de registrar en la bitácora el paso de plataforma (perfiles, contenedores, ACL, snapshot) que había quedado sin documentar en este repositorio porque se hizo antes de que se resumiera la conversación de esa sesión — y se documentó, como hallazgo aparte y reutilizable, el bug de `lxc launch`/`lxc init` colgándose cuando se ejecutan por SSH sin terminal.
+
+---
+
+### 2026-10-10 (decimocuarta entrada)
+
+**Fuente:** Análisis completo (Fases 1-4 de `CLAUDE.md`) de la parte técnica de `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt` — transcripción encontrada en la carpeta de Descargas del usuario, no versionada hasta ahora. Un fragmento puntual ya se había usado el mismo día para confirmar la autoría de Norberto Núñez del `LB.conf` (ver la entrada anterior); esta vez se procesó el resto del contenido relevante a LXD.
+
+**Documentos creados:**
+- `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt` — copiado a este repositorio con la convención de nombres de `reunion/`
+
+**Documentos actualizados:**
+- `docs/02_Arquitectura.md` — nueva sección "Nombre de dominio compartido entre sitios (FQDN + DNS round-robin)": el diseño acordado para el DNS pendiente (un mismo FQDN resolviendo, por round-robin, a las 3 IPs de servicio)
+- `docs/14_Manual_Operativo.md` — corrección importante en "Logs de aplicación: Loki + MinIO propio del proyecto": `C-Loki-1` ya está desplegado y en uso (no solo planificado), pero su backend real es un servicio S3 externo al cluster (infraestructura de IT), no `MinIO` propio como decía el plan — ese plan queda marcado como probablemente superado
+- `docs/05_Configuracion.md` — nota de actualización en "Buckets de almacenamiento S3": aclara que Loki, en la práctica, no usa esta capacidad propia de LXD
+- `docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md` — enlace cruzado hacia el nuevo diseño de FQDN
+- `docs/11_Riesgos.md` — RIE-016 nuevo: acceso temporal del escáner de vulnerabilidades por lista de IPs, sin fecha de retiro acordada
+- `docs/13_Linea_de_Tiempo.md` — nueva idea sin asignar: usar Loki para monitorear los balanceadores
+- `reunion/README.md` — la reunión pasa de "no analizada" a "analizada completa", con la llamada superpuesta sobre un corte de energía en terreno descartada explícitamente por no ser contenido de LXD
+
+**Resumen:**
+Se procesó el resto de la reunión que el mismo día ya había aportado la confirmación de autoría de Norberto Núñez sobre `LB.conf`. Encontró tres cosas que ameritaban corregir documentación existente: el diseño de DNS compartido entre los 3 sitios (round-robin, no un balanceador de DNS centralizado) estaba acordado de palabra pero nunca escrito; el backend de almacenamiento del Loki propio del proyecto resultó ser un servicio S3 externo administrado por Norberto Núñez desde hace tiempo (reutilizado de un trabajo anterior con métricas), no el `MinIO` propio que el plan documentado en el repositorio todavía describía como pendiente; y un acceso temporal por IP para el escáner de vulnerabilidades del equipo de seguridad, sin fecha de retiro acordada, que se agregó como riesgo nuevo. También quedó registrada, sin tarea concreta, una idea de Marcos Casco (usar Loki para monitorear los propios balanceadores). La llamada se superpone, a partir del minuto ~4, con una conversación no relacionada sobre un corte de energía en terreno — se identificó y se descartó a propósito, igual que en análisis anteriores de este tipo de transcripciones.

@@ -185,6 +185,31 @@ A partir de esta reunión, la forma estándar de publicar un servicio web detrá
 
 Ver la configuración del contenedor balanceador (perfil, firewall del gateway, Apache) en [05_Configuracion.md](05_Configuracion.md) y la ficha del componente en [03_Componentes.md](03_Componentes.md).
 
+### Nombre de dominio compartido entre sitios (FQDN + DNS round-robin)
+
+🟡 Diseño explicado por Norberto Núñez en `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt` (min. ~1:44-3:20 y ~21:50-23:50) — no implementado todavía (el DNS sigue sin pedirse, ver [ADR-0008 — Actualización HTTPS](adr/ADR-0008-gateway-balanceador-dos-etapas.md#actualización--https-para-kanboard-con-el-certificado-compartido-sin-pedir-uno-nuevo-2026-10-09)), pero ya es la intención de diseño acordada, no solo una idea suelta.
+
+La idea es que los 3 balanceadores (uno por sitio) **compartan un mismo nombre de dominio** (FQDN), que el DNS resuelve a las 3 IPs de servicio (`10.143.11.8`, `192.168.91.117`, `10.11.11.12`) — en vez de que cada sitio tenga su propio nombre separado.
+
+```
+  usuario.com.py
+       │
+       ▼ consulta DNS
+  oss.personal.com.py  ──► devuelve las 3 IPs, en un orden que rota en cada consulta:
+                           10.143.11.8, 192.168.91.117, 10.11.11.12
+       │
+       ▼
+  El navegador/aplicación del usuario elige una IP (normalmente la primera de la lista)
+  y se conecta directo a ESE balanceador — no hay nada en el medio decidiendo por él.
+```
+
+**Puntos clave del diseño:**
+
+- Es **DNS round-robin**, no un balanceador de carga centralizado: el servidor DNS simplemente **rota el orden** de las 3 IPs en cada respuesta — no sabe ni le importa cuál de los 3 sitios está más cargado o caído.
+- Quien realmente elige a qué IP conectarse es **el cliente** (navegador o aplicación) — normalmente usa la primera IP de la lista que le devolvió el DNS, y si esa falla, el comportamiento de reintentar con la siguiente depende del cliente, no del DNS ni del cluster.
+- No reemplaza al balanceador Apache de cada sitio — este mecanismo decide **a qué sitio** llega el usuario; el balanceador de ese sitio decide luego **a qué contenedor** dentro del sitio.
+- Por eso, pedir el DNS implica dar de alta **las 3 IPs bajo el mismo nombre**, no un nombre por sitio — ver la solicitud pendiente en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
 ### Modelo de multi-tenancy (proyectos LXD)
 
 A partir de esta reunión, el equipo adoptó **proyectos LXD** (`lxc project`) como mecanismo de aislamiento entre equipos/áreas que comparten el cluster: cada proyecto tiene su propio conjunto de contenedores, perfiles, límites de recursos (CPU, memoria, redes, cantidad de instancias) y un grupo de identidad restringido a ese proyecto. Ver la decisión completa en [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) y la configuración en [05_Configuracion.md](05_Configuracion.md).

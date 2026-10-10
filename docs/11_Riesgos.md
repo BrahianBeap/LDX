@@ -250,6 +250,20 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 
 ---
 
+## RIE-016 — Acceso temporal del escáner de vulnerabilidades por lista de IPs, sin fecha de retiro
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | Norberto Núñez habilitó manualmente, por IP de origen, el acceso del escáner de vulnerabilidades del equipo de seguridad (mencionado en la reunión como "Nexus" — 🟡 probablemente Nessus/Tenable Nexus, no confirmado el producto exacto) hacia la infraestructura que administra, mientras el equipo de seguridad completa su propio proceso de inventario y solicitud de permisos |
+| **Causa** | Fuente: `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt` (min. ~42:45-43:25). Es una solución puente: habilitar por IP evita bloquear el escaneo mientras se tramita el acceso "formal" (por VPN) para el equipo de seguridad |
+| **Impacto** | Mientras esta regla exista, un acceso por IP (más amplio o menos trazable que un acceso nominal por VPN) queda abierto indefinidamente si nadie se acuerda de retirarlo — mismo patrón de riesgo que [RIE-003](#rie-003--proxy-http-temporal-con-dependencia-externa-parcialmente-vigente) (accesos "temporales" sin fecha de vencimiento) |
+| **Severidad** | Baja — es un acceso deliberado y acordado, no un hallazgo de seguridad por sí solo, pero sin dueño ni fecha de revisión documentados |
+| **Mitigación actual** | Ninguna más allá de la palabra de Norberto: *"una vez que todo esté resuelto... hay que tratarme desde acá y desde allá y ahí sacamos nomás ya esos filtros"* |
+| **Acción requerida** | Una vez que el equipo de seguridad complete su inventario y tenga acceso por VPN, coordinar con Norberto Núñez el retiro explícito de las reglas de IP temporales para el escáner |
+| **Responsable** | Marcos Casco (seguridad) → Norberto Núñez |
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
@@ -257,7 +271,7 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 | **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-006 (sin backup), RIE-015 (conectividad SDI de VulnApp NG bloqueada) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria) |
-| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04) |
+| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 | **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |
 

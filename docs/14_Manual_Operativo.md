@@ -91,7 +91,9 @@ Para ver dashboards: Grafana Labs provee dashboards de LXD importables por ID (�
 
 ## Logs de aplicación: Loki + MinIO propio del proyecto
 
-> **Estado:** 🟡 En planificación — anunciado y en construcción durante la reunión OSS (agosto), todavía no desplegado al momento de escribir esto.
+> **Estado:** ✅ `C-Loki-1` está desplegado, `RUNNING` y expuesto por el balanceador embebido de `PFR-GW-SRV` (`/loki/loki/api/v1`, ver [03_Componentes.md — balanceador embebido](03_Componentes.md#variante-balanceador-embebido-en-el-gateway-cuando-se-necesita-la-ip-real-de-origen)) — no es solo un plan. 🔴 **Pero el backend de almacenamiento no es el planificado** — ver la actualización debajo.
+>
+> 🔴 **Actualización 2026-10 (`reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt`, min. ~32:30-38:00):** Norberto Núñez explica que este Loki **no guarda sus datos en MinIO ni en ningún backend dentro del cluster** — los guarda en un servicio S3 **externo**, en infraestructura de IT ("un servidor de SBA, que está en infraestructura de IT"), el mismo tipo de recurso que él ya tenía de un trabajo anterior administrando métricas (una VM con Postgres que dejó de usar por ser difícil de mantener, reconvertida a almacenamiento S3). 🟡 No quedó claro en la reunión si es el mismo servicio/bucket que el Loki externo de SVATOOL mencionado más abajo, o uno distinto — ambos son infraestructura S3 externa al cluster, administrada por Norberto. El plan de abajo (contenedores `MinIO` propios como backend) parece **superado en la práctica**: `Minio-1` existe pero está `STOPPED` y nunca llegó a usarse como backend real de `C-Loki-1`.
 
 ### Por qué un segundo Loki, además del de SVATOOL
 
@@ -107,15 +109,15 @@ Logs de aplicación (contenedores del proyecto) ──rsyslog──►  Loki pro
 ### Arquitectura planificada
 
 - Uno o dos contenedores **Loki** (a definir si uno solo o distribuido).
-- Dos o más contenedores **MinIO** (servidor S3 compatible) como backend de almacenamiento de Loki — 🟡 Loki, en su diseño de microservicios, guarda sus datos en un backend tipo objeto (S3); MinIO es la implementación open-source de ese protocolo.
-- 🔴 **Pendiente de validar:** si MinIO soporta replicación entre sus instancias — mencionado como algo a investigar, sin experiencia previa del equipo en esa configuración.
+- Dos o más contenedores **MinIO** (servidor S3 compatible) como backend de almacenamiento de Loki — 🟡 Loki, en su diseño de microservicios, guarda sus datos en un backend tipo objeto (S3); MinIO es la implementación open-source de ese protocolo. 🔴 **En la práctica no se usó**: `C-Loki-1` quedó apuntando a un S3 externo al cluster en su lugar — ver la actualización al inicio de esta sección.
+- 🔴 **Pendiente de validar:** si MinIO soporta replicación entre sus instancias — mencionado como algo a investigar, sin experiencia previa del equipo en esa configuración. Menos urgente ahora que el backend real no es MinIO.
 - Los contenedores de aplicación envían sus logs a este Loki propio vía `rsyslog`, con un archivo de configuración (ej. `tu-loki.conf`) desplegado con el patrón `lxc file push` + `lxc exec` (ver [06_Operacion.md](06_Operacion.md#desplegar-configuración-a-varios-contenedores-sin-ssh)).
 - Grafana consulta este Loki propio para mostrar los logs de aplicación de todos los servicios del proyecto, en el mismo dashboard donde ya se ven las métricas de Prometheus.
 
 ### Próximos pasos
 
-- [x] Crear el/los contenedor(es) Loki dedicados al proyecto. — ✅ `C-Loki-1` existe en `pfr.1` y está `RUNNING` (verificación en vivo 2026-10-06, ver [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/))
-- [ ] Crear los contenedores MinIO (mínimo 2, si se confirma que soportan replicación). — 🟡 Existe `Minio-1` en `car.1`, pero está `STOPPED` y es un solo contenedor (no dos)
+- [x] Crear el/los contenedor(es) Loki dedicados al proyecto. — ✅ `C-Loki-1` existe en `pfr.1`, está `RUNNING` y ya expuesto por el balanceador (verificación en vivo 2026-10-06, ver [`laboratorio/2026-10-06_verificacion-viva-cluster/`](../laboratorio/2026-10-06_verificacion-viva-cluster/))
+- [x] Backend de almacenamiento de Loki. — ✅ Resuelto, pero **no como se planeó**: usa un servicio S3 externo al cluster (infraestructura de IT), no `MinIO` propio. `Minio-1` (`car.1`) sigue `STOPPED`, sin usar — ver la actualización arriba (fuente: reunión de balanceadores). 🔴 Pendiente confirmar formalmente si el plan de `MinIO` propio se abandona del todo o sigue como alternativa futura.
 - [ ] Configurar `rsyslog` en los contenedores de aplicación existentes (Apache, NTF) apuntando a este Loki.
 - [ ] Confirmar en Grafana la visibilidad de logs de aplicación junto a las métricas de Prometheus. — 🟡 Existe `C-Grafana-1` en `car.1`, pero está `STOPPED`
 

@@ -190,6 +190,7 @@
 | Completar el inventario de IP + puerto + servicio para cada servicio nuevo expuesto (esquema ya acordado, ver [06_Operacion.md](06_Operacion.md#inventario-de-servicios-alta-de-un-servicio-nuevo)) | Elías Alfonzo / equipo | 🔴 Pendiente — carga de datos en curso |
 | Retirar la redirección directa a nivel de host (esquema inicial de Kanboard) una vez migrado al modelo gateway + balanceador | Elías Alfonzo | ✅ Completado 2026-10-08 — ver [ADR-0008 — Actualización](adr/ADR-0008-gateway-balanceador-dos-etapas.md#actualización--migración-de-kanboard-2026-10-08) y [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/) |
 | Investigar opciones de base de datos con alta disponibilidad/replicación nativa (incluye CockroachDB) | Sin asignar | 🟡 Solo sugerido, sin dueño ni fecha |
+| Usar Loki también para monitorear los balanceadores (escribiendo su log a syslog y leyéndolo desde Loki) | Sin asignar | 🟡 Idea de Marcos Casco, confirmada como viable por Norberto Núñez en la reunión, sin tarea concreta ni fecha — ver `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt` (min. ~42:19) |
 
 ---
 

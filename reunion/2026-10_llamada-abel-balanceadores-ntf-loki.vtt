@@ -1,0 +1,2894 @@
+WEBVTT
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/7-0
+00:00:03.430 --> 00:00:09.694
+<v Norberto Nu&#241;ez>¿Y a o ese punto personal le puede
+asociar las 3 IPs o tenés 3 nodos, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/6-0
+00:00:09.070 --> 00:00:09.590
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/7-1
+00:00:09.694 --> 00:00:14.030
+<v Norberto Nu&#241;ez>Entonces vamos a hacer uno más para que
+quede no más.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/8-0
+00:00:15.470 --> 00:00:17.670
+<v Norberto Nu&#241;ez>Quito más claro a ver si este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/9-0
+00:00:19.070 --> 00:00:20.950
+<v Norberto Nu&#241;ez>Este puede ser realmente.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/11-0
+00:00:23.550 --> 00:00:24.950
+<v Norberto Nu&#241;ez>Está este está mejor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/12-0
+00:00:32.270 --> 00:00:33.910
+<v Norberto Nu&#241;ez>Yo donde puse ese, acá está.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/13-0
+00:00:37.870 --> 00:00:41.350
+<v Norberto Nu&#241;ez>Sería así, vamos a tener 3 balanceadores.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/15-0
+00:00:47.950 --> 00:00:48.430
+<v Norberto Nu&#241;ez>Yeah.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/16-0
+00:00:48.870 --> 00:00:49.350
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/18-0
+00:00:51.310 --> 00:00:55.150
+<v Elias Alfonzo>Carpinelli, Carl, FLIFD O.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/17-0
+00:00:53.110 --> 00:00:53.390
+<v Norberto Nu&#241;ez>Hmm.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/19-0
+00:00:56.750 --> 00:01:01.563
+<v Norberto Nu&#241;ez>Entonces puedo hacer,
+puedo hacer varias formas,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/19-1
+00:01:01.563 --> 00:01:03.430
+<v Norberto Nu&#241;ez>al insertar formas.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/20-0
+00:01:04.630 --> 00:01:05.710
+<v Norberto Nu&#241;ez>No poner así.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/21-0
+00:01:09.470 --> 00:01:11.190
+<v Norberto Nu&#241;ez>Estamos llevado al fondo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/22-0
+00:01:12.510 --> 00:01:13.830
+<v Norberto Nu&#241;ez>Y atrás.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/23-0
+00:01:14.670 --> 00:01:17.430
+<v Norberto Nu&#241;ez>Y atrás, y atrás.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/24-0
+00:01:23.790 --> 00:01:24.110
+<v Norberto Nu&#241;ez>Ahí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/25-0
+00:01:24.990 --> 00:01:25.070
+<v Elias Alfonzo>Uh-huh.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/26-0
+00:01:25.190 --> 00:01:31.595
+<v Norberto Nu&#241;ez>le damos atrás y vamos a ponerle un
+relleno tu tu tu pa pa pa relleno no este</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/26-1
+00:01:31.595 --> 00:01:37.671
+<v Norberto Nu&#241;ez>es de texto relleno de forma vamos a
+ponerlo suave ahí esto para entender</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/26-2
+00:01:37.671 --> 00:01:42.270
+<v Norberto Nu&#241;ez>nomás que es la capa de balanceadores tus
+balanceadores</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/27-0
+00:01:44.230 --> 00:01:48.678
+<v Norberto Nu&#241;ez>Vos les podría,
+vos le podrías poner varios FQDN, o sea,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/27-1
+00:01:48.678 --> 00:01:54.376
+<v Norberto Nu&#241;ez>no deberías limitarte en eso.
+Vos podrías poner uno de los casos de uso.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/27-2
+00:01:54.376 --> 00:01:59.449
+<v Norberto Nu&#241;ez>Yo creo que el de mayor,
+el de mayor uso va a ser este donde tus</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/27-3
+00:01:59.449 --> 00:02:01.790
+<v Norberto Nu&#241;ez>balanceadores se van a llamar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/28-0
+00:02:02.870 --> 00:02:05.150
+<v Norberto Nu&#241;ez>O sea, tus 3 y pesa a esta IP.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/29-0
+00:02:06.430 --> 00:02:11.390
+<v Norberto Nu&#241;ez>Por donde podemos poner,
+podemos poner esto.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/30-0
+00:02:15.070 --> 00:02:15.470
+<v Norberto Nu&#241;ez>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/31-0
+00:02:17.910 --> 00:02:19.870
+<v Norberto Nu&#241;ez>Bueno un poquitito, me voy a tocar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/33-0
+00:02:29.470 --> 00:02:32.710
+<v Norberto Nu&#241;ez>¿Vos podrías tener en el caso de USS,
+verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/34-0
+00:02:33.870 --> 00:02:39.417
+<v Norberto Nu&#241;ez>Vos podrías, bueno,
+esto de hecho va a ser más o menos ya así</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/34-1
+00:02:39.417 --> 00:02:45.144
+<v Norberto Nu&#241;ez>hablando francamente.
+Ahora un poco control Z, va a ser 10, 11,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/34-2
+00:02:45.144 --> 00:02:50.870
+<v Norberto Nu&#241;ez>11, 12, va a ser, o sea,
+ese FQDM va a apuntar a esas tres IPs.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/35-0
+00:02:51.470 --> 00:02:52.870
+<v Elias Alfonzo>Yeah.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/36-0
+00:02:51.550 --> 00:02:53.990
+<v Norberto Nu&#241;ez>Pero eso este, pero este ya es por DNS.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/39-0
+00:02:54.830 --> 00:03:02.880
+<v Norberto Nu&#241;ez>Esto ya es por DNS, ¿verdad?
+Entonces acá vas a tener 192, 168, 91,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/39-1
+00:03:02.880 --> 00:03:12.350
+<v Norberto Nu&#241;ez>117 creo que es. Y el otro es 143, 118,
+me parece, ¿verdad? No lo así, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/37-0
+00:03:05.230 --> 00:03:05.710
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/38-0
+00:03:10.310 --> 00:03:13.790
+<v Elias Alfonzo>118 ay, cómo no está cola de los 3 los.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/41-0
+00:03:14.590 --> 00:03:21.430
+<v Norberto Nu&#241;ez>Y todo el día estoy con esa,
+eso este sería el FQ en general.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/42-0
+00:03:22.390 --> 00:03:27.230
+<v Norberto Nu&#241;ez>¿Que va a apuntar a los 3 balanceadores?
+Gratito más Julio, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/43-0
+00:03:28.510 --> 00:03:29.390
+<v Norberto Nu&#241;ez>Sí, buen día.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/44-0
+00:03:34.750 --> 00:03:36.030
+<v Norberto Nu&#241;ez>Sí, está todo caído.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/45-0
+00:03:37.550 --> 00:03:43.392
+<v Norberto Nu&#241;ez>Y estuvimos doble apertura ahí por un
+lado, Bolívar, o ya viví, sí,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/45-1
+00:03:43.392 --> 00:03:45.110
+<v Norberto Nu&#241;ez>fibra y del lado de.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/58-0
+00:04:35.710 --> 00:04:40.990
+<v Norberto Nu&#241;ez>Marcos, me pasó, por favor, un título,
+el la URL de los GPS, los supervisores.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/59-0
+00:04:43.910 --> 00:04:44.590
+<v Marcos Casco>Sí te pongo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/60-0
+00:04:43.950 --> 00:04:45.470
+<v Norberto Nu&#241;ez>No sé, dale, dale.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/61-0
+00:04:49.830 --> 00:04:54.056
+<v Norberto Nu&#241;ez>Sí, pues ya están sitio, Julio,
+porque ya estaban en camino y me dijeron</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/61-1
+00:04:54.056 --> 00:04:56.950
+<v Norberto Nu&#241;ez>30 minutos hace rato y ya pasó más de
+media hora.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/62-0
+00:05:02.190 --> 00:05:06.980
+<v Norberto Nu&#241;ez>Sí, no, pero ya están trabajando, Julio.
+O sea, de que están todos movilizados,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/62-1
+00:05:06.980 --> 00:05:11.112
+<v Norberto Nu&#241;ez>tanto movilizados, no hay ningún,
+no sé si me voy a ir, me voy a ir,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/62-2
+00:05:11.112 --> 00:05:12.070
+<v Norberto Nu&#241;ez>no se está todo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/63-0
+00:05:13.070 --> 00:05:14.110
+<v Norberto Nu&#241;ez>¿Dónde movilizaban?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/64-0
+00:05:16.350 --> 00:05:16.430
+<v Norberto Nu&#241;ez>Y.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/65-0
+00:05:25.150 --> 00:05:26.150
+<v Norberto Nu&#241;ez>No puedo entrar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/66-0
+00:05:31.630 --> 00:05:32.710
+<v Norberto Nu&#241;ez>Er.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/67-0
+00:05:33.710 --> 00:05:36.465
+<v Norberto Nu&#241;ez>Bueno,
+yo estoy lolodeado porque yo mantengo mi</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/67-1
+00:05:36.465 --> 00:05:38.990
+<v Norberto Nu&#241;ez>sesión abierta porque todo momento
+adentro.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/68-0
+00:05:53.310 --> 00:05:57.492
+<v Norberto Nu&#241;ez>¿Yo creo que hablando rápido,
+eso le puedo decir un TR de 1 hora Julio</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/68-1
+00:05:57.492 --> 00:05:58.670
+<v Norberto Nu&#241;ez>a comercial, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/69-0
+00:06:00.630 --> 00:06:00.750
+<v Norberto Nu&#241;ez>What?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/70-0
+00:06:04.270 --> 00:06:07.043
+<v Norberto Nu&#241;ez>si, si,
+si le quería responder ya nomás ponerle 1</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/70-1
+00:06:07.043 --> 00:06:11.424
+<v Norberto Nu&#241;ez>hora ahora porque ya estarán en sitio,
+estarán recargando combustible o viendo</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/70-2
+00:06:11.424 --> 00:06:13.310
+<v Norberto Nu&#241;ez>que pasó con instalación eléctrica</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/75-0
+00:06:36.110 --> 00:06:37.870
+<v Norberto Nu&#241;ez>Sí, está todo eso.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/76-0
+00:06:39.510 --> 00:06:40.510
+<v Norberto Nu&#241;ez>That toy song.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/77-0
+00:06:42.510 --> 00:06:43.110
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/78-0
+00:06:44.350 --> 00:06:46.630
+<v Norberto Nu&#241;ez>Impresionante cómo se cómo se abre todo.
+en.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/79-0
+00:06:53.950 --> 00:06:54.270
+<v Norberto Nu&#241;ez>Yes.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/80-0
+00:06:56.910 --> 00:06:57.870
+<v Norberto Nu&#241;ez>Leer it again.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/81-0
+00:06:58.990 --> 00:07:00.590
+<v Norberto Nu&#241;ez>Una zona muy amplia. y.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/82-0
+00:07:07.390 --> 00:07:09.350
+<v Norberto Nu&#241;ez>no, Wayebi.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/83-0
+00:07:12.510 --> 00:07:13.790
+<v Norberto Nu&#241;ez>Entonces levantar 1 hora.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/84-0
+00:07:17.550 --> 00:07:17.990
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/85-0
+00:07:21.550 --> 00:07:26.561
+<v Norberto Nu&#241;ez>Oye, es pura energía y Bolívar,
+capi y barril lo que es por por fila</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/85-1
+00:07:26.561 --> 00:07:27.070
+<v Norberto Nu&#241;ez>óptica.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/86-0
+00:07:34.350 --> 00:07:37.630
+<v Norberto Nu&#241;ez>Santa Rosa también está todo apagado,
+ahora está todo sin energía.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/87-0
+00:07:43.710 --> 00:07:50.670
+<v Norberto Nu&#241;ez>Y eso es lo que yo juro,
+ahora habrán levantado por acá, 020202.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/88-0
+00:07:56.110 --> 00:07:57.390
+<v Norberto Nu&#241;ez>No, sí, yo trabajo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/89-0
+00:08:00.510 --> 00:08:02.590
+<v Norberto Nu&#241;ez>Cero sí, hasta trabajo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/90-0
+00:08:08.110 --> 00:08:11.590
+<v Norberto Nu&#241;ez>A ver, San Pedro, está toca, hijo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/91-0
+00:08:14.430 --> 00:08:17.790
+<v Norberto Nu&#241;ez>Sí, güey, ya ahí está apagado, Julio,
+casi en el lápiz.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/92-0
+00:08:20.270 --> 00:08:22.311
+<v Norberto Nu&#241;ez>Sí, oye,
+ahí está para abajo y ahí lo que están</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/92-1
+00:08:22.311 --> 00:08:23.630
+<v Norberto Nu&#241;ez>trabajando para levantar ahora.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/93-0
+00:08:28.190 --> 00:08:34.923
+<v Norberto Nu&#241;ez>Pasame un poco Marcos porfis,
+la URL donde tenemos la GPS de los</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/93-1
+00:08:34.923 --> 00:08:36.270
+<v Norberto Nu&#241;ez>supervisores.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/94-0
+00:08:36.510 --> 00:08:39.550
+<v Marcos Casco>Ahí te pasé por team.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/95-0
+00:08:40.190 --> 00:08:43.070
+<v Norberto Nu&#241;ez>por ti, perdón, no he visto, gracias.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/96-0
+00:08:45.710 --> 00:08:51.054
+<v Marcos Casco>Ahí ese es, ya está funcionando,
+si la abrimos es un descargas y abrir</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/96-1
+00:08:51.054 --> 00:08:55.270
+<v Marcos Casco>nomás directamente y la contraseña esa
+que te puse ahí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/97-0
+00:08:54.910 --> 00:08:58.830
+<v Norberto Nu&#241;ez>Carlos Fleitas estaba junior.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/98-0
+00:08:59.950 --> 00:09:04.590
+<v Norberto Nu&#241;ez>Estaba son 3 que están en la zona muy
+usándole a la contratista.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/100-0
+00:09:06.510 --> 00:09:07.950
+<v Norberto Nu&#241;ez>Y a la madrugada ya Julio.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/99-0
+00:09:06.670 --> 00:09:07.310
+<v Marcos Casco>Hello!</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/102-0
+00:09:08.830 --> 00:09:11.190
+<v Norberto Nu&#241;ez>Y se le avisó, se le llamó.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/101-0
+00:09:09.070 --> 00:09:09.950
+<v Marcos Casco>That is small.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/105-0
+00:09:13.150 --> 00:09:15.846
+<v Norberto Nu&#241;ez>Etcétera,
+supuestamente no podían trabajar por las</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/103-0
+00:09:15.430 --> 00:09:15.870
+<v Marcos Casco>Bye bye.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/105-1
+00:09:15.846 --> 00:09:19.070
+<v Norberto Nu&#241;ez>condiciones climáticas,
+pero había sido obviamente no tenían</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/104-0
+00:09:17.390 --> 00:09:17.750
+<v Marcos Casco>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/105-2
+00:09:19.070 --> 00:09:20.550
+<v Norberto Nu&#241;ez>móvil uno de los uno de los.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/106-0
+00:09:22.030 --> 00:09:23.310
+<v Norberto Nu&#241;ez>Uno de los, ¿cómo se llamaba?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/107-0
+00:09:27.390 --> 00:09:28.270
+<v Norberto Nu&#241;ez>Descansa.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/108-0
+00:09:37.150 --> 00:09:39.469
+<v Norberto Nu&#241;ez>No me abre este marco,
+¿cómo se abre este marco?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/108-1
+00:09:39.469 --> 00:09:40.510
+<v Norberto Nu&#241;ez>Tengo que descargarme.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/109-0
+00:09:40.350 --> 00:09:44.350
+<v Marcos Casco>A ver, tienes que descargar ese,
+ahí está el que está abierto a ese.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/110-0
+00:09:43.390 --> 00:09:45.670
+<v Norberto Nu&#241;ez>Ahora me va a abrir, ahora me va a abrir.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/111-0
+00:09:46.910 --> 00:09:48.670
+<v Norberto Nu&#241;ez>I have a similarity.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/113-0
+00:09:50.030 --> 00:09:52.595
+<v Marcos Casco>No,
+pero vos estás tratando de abrir desde la</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/113-1
+00:09:52.595 --> 00:09:55.997
+<v Marcos Casco>el que descargaste.
+¿No querés abrir el orden de tu download</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/113-2
+00:09:55.997 --> 00:09:57.670
+<v Marcos Casco>o un HTML local? No más, pues.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/114-0
+00:10:01.310 --> 00:10:01.950
+<v Norberto Nu&#241;ez>Este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/115-0
+00:10:01.790 --> 00:10:02.950
+<v Marcos Casco>Sí, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/116-0
+00:10:05.990 --> 00:10:09.270
+<v Norberto Nu&#241;ez>El internet, ahora es impresionante.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/118-0
+00:10:08.550 --> 00:10:11.910
+<v Marcos Casco>Pero si quieres te digo yo acá sin
+problemas, Carlitos.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/119-0
+00:10:11.430 --> 00:10:14.782
+<v Norberto Nu&#241;ez>Sí, por favor,
+Carlos Feita o el que está en Guaybi,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/119-1
+00:10:14.782 --> 00:10:16.110
+<v Norberto Nu&#241;ez>quién está en Guaybi.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/120-0
+00:10:16.310 --> 00:10:17.030
+<v Marcos Casco>Hey.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/121-0
+00:10:18.750 --> 00:10:19.470
+<v Marcos Casco>Who said?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/122-0
+00:10:18.870 --> 00:10:19.950
+<v Norberto Nu&#241;ez>A Junior, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/123-0
+00:10:20.870 --> 00:10:22.390
+<v Marcos Casco>2026.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/124-0
+00:10:23.990 --> 00:10:24.710
+<v Marcos Casco>LinkedIn.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/125-0
+00:10:25.270 --> 00:10:28.350
+<v Norberto Nu&#241;ez>Y ahora no hay 1 hora, mira.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/126-0
+00:10:29.110 --> 00:10:29.550
+<v Marcos Casco>Yes.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/127-0
+00:10:31.270 --> 00:10:33.110
+<v Marcos Casco>¿Y qué me dijiste?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/128-0
+00:10:35.590 --> 00:10:38.750
+<v Norberto Nu&#241;ez>No, quienes tengo,
+pero ya está Junior me dice.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/129-0
+00:10:40.310 --> 00:10:42.990
+<v Marcos Casco>When they read, when they read,
+when they read, when they read.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/135-0
+00:11:02.150 --> 00:11:04.470
+<v Norberto Nu&#241;ez>No tengo Internet, Marco, es el problema.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/134-0
+00:11:02.350 --> 00:11:02.670
+<v Marcos Casco>Ajá.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/136-0
+00:11:04.950 --> 00:11:05.510
+<v Marcos Casco>Oh.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/139-0
+00:11:07.510 --> 00:11:13.771
+<v Marcos Casco>Yo me tengo que pasarlo con un ratito el
+tema de verificación de perfiles. Sí,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/138-0
+00:11:12.710 --> 00:11:13.470
+<v Norberto Nu&#241;ez>Dale, dale.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/139-1
+00:11:13.771 --> 00:11:16.070
+<v Marcos Casco>ahí veo que se está, veo que.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/140-0
+00:11:18.710 --> 00:11:21.270
+<v Marcos Casco>Creo que en YV está.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/141-0
+00:11:22.470 --> 00:11:23.030
+<v Marcos Casco>Es muy.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/143-0
+00:11:23.590 --> 00:11:26.857
+<v Norberto Nu&#241;ez>Sí, viste, sí, por eso le dije Julio,
+es tan mira,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/143-1
+00:11:26.857 --> 00:11:29.804
+<v Norberto Nu&#241;ez>no ponía bloquear algo de abrazo.
+Qué locura,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/142-0
+00:11:29.750 --> 00:11:30.710
+<v Marcos Casco>This.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/143-2
+00:11:29.804 --> 00:11:31.790
+<v Norberto Nu&#241;ez>me cua cuando más apurado está.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/144-0
+00:11:32.870 --> 00:11:33.910
+<v Elias Alfonzo>I bear.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/146-0
+00:11:34.710 --> 00:11:35.710
+<v Norberto Nu&#241;ez>Impresionante.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/145-0
+00:11:34.790 --> 00:11:35.590
+<v Marcos Casco>Peores.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/147-0
+00:11:41.910 --> 00:11:42.390
+<v Marcos Casco>Hey, son.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/148-0
+00:11:43.750 --> 00:11:45.350
+<v Norberto Nu&#241;ez>Me hago lentísimo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/150-0
+00:11:45.190 --> 00:11:49.599
+<v Marcos Casco>Y pero sin conectar ahí donde dice
+password, tenía que meterle QSAP,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/150-1
+00:11:49.599 --> 00:11:53.369
+<v Marcos Casco>ese que te dije,
+la contraseña que te pasé: 2 puntos tiene</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/149-0
+00:11:52.350 --> 00:11:54.310
+<v Norberto Nu&#241;ez>¿Dónde, dónde es acá?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/150-2
+00:11:53.369 --> 00:11:55.350
+<v Marcos Casco>ahí en la parte izquierda, ahí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/151-0
+00:11:56.510 --> 00:11:59.870
+<v Marcos Casco>Meterle la contraseña,
+esa que te cosa ese con los 2 puntos al</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/153-0
+00:11:59.030 --> 00:12:01.910
+<v Norberto Nu&#241;ez>Ya no puedo ni solucionar esto.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/151-1
+00:11:59.870 --> 00:12:00.190
+<v Marcos Casco>final.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/152-0
+00:12:01.670 --> 00:12:02.150
+<v Marcos Casco>Dish.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/154-0
+00:12:03.350 --> 00:12:05.910
+<v Norberto Nu&#241;ez>no sé creemos alguna verdad andando bien</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/155-0
+00:12:04.430 --> 00:12:07.629
+<v Marcos Casco>Y bueno,
+y hay que hay que romperle la bola de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/157-0
+00:12:07.190 --> 00:12:10.961
+<v Norberto Nu&#241;ez>Se Se me entrecorta toda otra llamada y
+todo se se se me entrecorta. Mira,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/155-1
+00:12:07.629 --> 00:12:08.310
+<v Marcos Casco>seguridad.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/156-0
+00:12:09.430 --> 00:12:09.790
+<v Elias Alfonzo>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/157-1
+00:12:10.961 --> 00:12:12.470
+<v Norberto Nu&#241;ez>a usted le pusieron recortado.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/159-0
+00:12:11.350 --> 00:12:14.333
+<v Elias Alfonzo>Si,
+pues si a vos siendo jefe de necesitar</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/159-1
+00:12:14.333 --> 00:12:16.830
+<v Elias Alfonzo>clases con bus, a nosotros en dicha.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/160-0
+00:12:14.710 --> 00:12:16.550
+<v Marcos Casco>Me mudo al otro reloj que mudo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/161-0
+00:12:16.950 --> 00:12:18.710
+<v Norberto Nu&#241;ez>Dale, gracias.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/162-0
+00:12:21.670 --> 00:12:24.275
+<v Norberto Nu&#241;ez>No,
+pero algo en mi computadora el problema</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/162-1
+00:12:24.275 --> 00:12:24.630
+<v Norberto Nu&#241;ez>no es.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/163-0
+00:12:25.590 --> 00:12:27.190
+<v Norberto Nu&#241;ez>Está compu anda bien.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/164-0
+00:12:28.510 --> 00:12:29.550
+<v Norberto Nu&#241;ez>Ya se cuela todo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/165-0
+00:12:29.990 --> 00:12:32.161
+<v Elias Alfonzo>Sí,
+está corriendo un proceso de ni por</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/165-1
+00:12:32.161 --> 00:12:33.030
+<v Elias Alfonzo>detrás de nuevo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/166-0
+00:12:34.630 --> 00:12:35.590
+<v Norberto Nu&#241;ez>Presionante.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/168-0
+00:12:43.030 --> 00:12:47.190
+<v Elias Alfonzo>No sé si después nomás te consulto otra
+vez, o seguimos igual.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/172-0
+00:12:48.310 --> 00:12:52.590
+<v Norberto Nu&#241;ez>Y depende, yo no tengo problema,
+yo esto ya liquido con este tema porque</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/172-1
+00:12:52.590 --> 00:12:55.990
+<v Norberto Nu&#241;ez>es para saber nomás quién está,
+quién está, porque o sea,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/169-0
+00:12:52.710 --> 00:12:54.950
+<v Elias Alfonzo>Ok, ok, sí, te espero nomás.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/172-2
+00:12:55.990 --> 00:12:59.508
+<v Norberto Nu&#241;ez>de hecho que ya sabía,
+pero para leer información precisa a</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/170-0
+00:12:57.750 --> 00:12:58.270
+<v Elias Alfonzo>Okey.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/172-3
+00:12:59.508 --> 00:13:00.270
+<v Norberto Nu&#241;ez>Julio no más.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/171-0
+00:13:00.670 --> 00:13:01.110
+<v Elias Alfonzo>Bueno.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/173-0
+00:13:02.630 --> 00:13:03.710
+<v Norberto Nu&#241;ez>Este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/174-0
+00:13:05.910 --> 00:13:06.870
+<v Norberto Nu&#241;ez>Acá el tema.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/175-0
+00:13:07.350 --> 00:13:08.350
+<v Elias Alfonzo>Sí, cero cuatro.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/176-0
+00:13:10.470 --> 00:13:12.750
+<v Elias Alfonzo>Ahí varios lo tenés, 3 nomás y acá tú.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/177-0
+00:13:18.550 --> 00:13:20.430
+<v Elias Alfonzo>Y hacer un poco clip para ver quién es.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/178-0
+00:13:27.190 --> 00:13:29.430
+<v Norberto Nu&#241;ez>¿Cómo yo quién es acá este?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/179-0
+00:13:29.910 --> 00:13:30.230
+<v Elias Alfonzo>It.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/180-0
+00:13:31.310 --> 00:13:31.990
+<v Norberto Nu&#241;ez>It's again.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/181-0
+00:13:31.390 --> 00:13:37.150
+<v Elias Alfonzo>Motor of señal vieja hace 5 horas ahí
+rumbo cero.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/183-0
+00:13:36.470 --> 00:13:41.486
+<v Norberto Nu&#241;ez>¿Están sin señal, güey, es de aquí,
+cómo quién es conductor sin identificar</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/182-0
+00:13:38.390 --> 00:13:39.390
+<v Elias Alfonzo>Ah.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/183-1
+00:13:41.486 --> 00:13:41.750
+<v Norberto Nu&#241;ez>esa?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/184-0
+00:13:42.150 --> 00:13:46.221
+<v Elias Alfonzo>Y porque no prendió o no se identificó
+con su GPS del vehículo,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/184-1
+00:13:46.221 --> 00:13:49.910
+<v Elias Alfonzo>pues a ver y su recorrido hoy por lo
+menos si no te tira.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/186-0
+00:13:52.230 --> 00:13:55.771
+<v Elias Alfonzo>Ay, mira ahí tipo,
+tiene el GPS ahí de personal,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/186-1
+00:13:55.771 --> 00:13:59.890
+<v Elias Alfonzo>no tiene el de Tigo,
+pues en teoría su GPS debería estar</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/185-0
+00:13:58.870 --> 00:13:59.790
+<v Norberto Nu&#241;ez>Y por lo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/186-2
+00:13:59.890 --> 00:14:03.070
+<v Elias Alfonzo>preparado para recibir igual Tigo
+personal.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/187-0
+00:14:04.190 --> 00:14:08.895
+<v Norberto Nu&#241;ez>No, y por lo visto que no,
+por eso que todas las operadas están sin</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/187-1
+00:14:08.895 --> 00:14:09.310
+<v Norberto Nu&#241;ez>señal.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/188-0
+00:14:10.070 --> 00:14:10.790
+<v Elias Alfonzo>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/190-0
+00:14:11.390 --> 00:14:17.138
+<v Norberto Nu&#241;ez>¿Viste? Mira, acá tampoco no se lo parece.
+Julio parece que ningún operador no tiene</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/189-0
+00:14:12.390 --> 00:14:12.910
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/190-1
+00:14:17.138 --> 00:14:20.790
+<v Norberto Nu&#241;ez>ni señal porque ni los móviles no podemos
+ver su GPS.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/195-0
+00:14:37.830 --> 00:14:43.110
+<v Norberto Nu&#241;ez>Porque su je ni su GPS no veo, pero bueno,
+estamos están viendo levantado el sitio.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/196-0
+00:14:44.790 --> 00:14:45.190
+<v Norberto Nu&#241;ez>Hmm.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/197-0
+00:14:47.510 --> 00:14:49.950
+<v Norberto Nu&#241;ez>Estamos, Estamos pendientes de eso.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/198-0
+00:14:51.030 --> 00:14:51.710
+<v Norberto Nu&#241;ez>Sí, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/199-0
+00:15:01.030 --> 00:15:01.590
+<v Norberto Nu&#241;ez>Change.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/200-0
+00:15:07.670 --> 00:15:09.110
+<v Norberto Nu&#241;ez>Oye, Bolivar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/201-0
+00:15:14.670 --> 00:15:19.682
+<v Norberto Nu&#241;ez>Pero sí, pero en Bolívar tenemos un corte,
+la Bolívar tenemos un corte y la apertura</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/201-1
+00:15:19.682 --> 00:15:20.390
+<v Norberto Nu&#241;ez>por energía.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/202-0
+00:15:29.590 --> 00:15:32.747
+<v Norberto Nu&#241;ez>Ayer le veo a Aldo,
+también Aldo está llegando también a</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/202-1
+00:15:32.747 --> 00:15:33.190
+<v Norberto Nu&#241;ez>Santani.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/203-0
+00:15:40.310 --> 00:15:44.630
+<v Norberto Nu&#241;ez>Sí, se sí se avisó todo, Julio,
+se avisó en la madrugada a Hansa.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/204-0
+00:15:45.710 --> 00:15:46.590
+<v Norberto Nu&#241;ez>¿Y ahora?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/205-0
+00:15:47.670 --> 00:15:51.630
+<v Norberto Nu&#241;ez>Se cayó todas las 3:00 y algo,
+pero de las 11:00 se le venía avisando.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/206-0
+00:16:00.390 --> 00:16:01.350
+<v Norberto Nu&#241;ez>Me consta.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/207-0
+00:16:11.670 --> 00:16:13.790
+<v Norberto Nu&#241;ez>Sí, todo Julio, o sea.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/208-0
+00:16:16.230 --> 00:16:16.910
+<v Norberto Nu&#241;ez>sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/209-0
+00:16:18.150 --> 00:16:20.790
+<v Norberto Nu&#241;ez>A ver, mind topology.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/210-0
+00:16:22.310 --> 00:16:23.270
+<v Norberto Nu&#241;ez>SNAE.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/212-0
+00:16:31.590 --> 00:16:34.553
+<v Norberto Nu&#241;ez>El problema es que se quedó,
+se quedó aislado, o sea,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/212-1
+00:16:34.553 --> 00:16:35.870
+<v Norberto Nu&#241;ez>ya venía sobre el grupo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/213-0
+00:16:36.870 --> 00:16:38.030
+<v Norberto Nu&#241;ez>Los pasos que hay lado.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/216-0
+00:16:51.590 --> 00:16:53.510
+<v Norberto Nu&#241;ez>Te lo hace.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/217-0
+00:16:54.710 --> 00:17:00.001
+<v Norberto Nu&#241;ez>Ese está arriba, pero hay cortes,
+hay apertura por la energía hacia San</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/217-1
+00:17:00.001 --> 00:17:01.030
+<v Norberto Nu&#241;ez>Pedro Cocuere.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/218-0
+00:17:07.030 --> 00:17:10.390
+<v Norberto Nu&#241;ez>San Pedro.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/219-0
+00:17:22.630 --> 00:17:24.390
+<v Norberto Nu&#241;ez>Cero 2 SPK.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/220-0
+00:17:25.830 --> 00:17:27.070
+<v Norberto Nu&#241;ez>Sí, tiene grupo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/221-0
+00:17:28.630 --> 00:17:29.110
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/222-0
+00:17:31.590 --> 00:17:35.449
+<v Norberto Nu&#241;ez>Está abierto ahí,
+San Pedro Coco le está abajo y ahí se</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/222-1
+00:17:35.449 --> 00:17:38.482
+<v Norberto Nu&#241;ez>quedó,
+ahí lo que también le quedó aislado,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/222-2
+00:17:38.482 --> 00:17:41.790
+<v Norberto Nu&#241;ez>Bolenda, el Rosario, general Aquino,
+todos los.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/223-0
+00:17:44.230 --> 00:17:49.272
+<v Norberto Nu&#241;ez>No tenemos gente ahora por ahí, Julio,
+estamos pensando todo lo que es Guayebi</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/223-1
+00:17:49.272 --> 00:17:49.910
+<v Norberto Nu&#241;ez>Santaní y.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/224-0
+00:17:51.110 --> 00:17:53.670
+<v Norberto Nu&#241;ez>Y la zona céntrica llegamos hacia Santa
+Rosa también.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/225-0
+00:17:56.950 --> 00:17:59.190
+<v Norberto Nu&#241;ez>Está solo el grupo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/226-0
+00:18:04.070 --> 00:18:07.163
+<v Norberto Nu&#241;ez>Dice falla de transferencia,
+no tú ya es viejo,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/226-1
+00:18:07.163 --> 00:18:08.710
+<v Norberto Nu&#241;ez>grupo en marcha tenemos.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/227-0
+00:18:12.950 --> 00:18:15.099
+<v Norberto Nu&#241;ez>No, Santi, no,
+si estoy llegando alarma de vieja,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/227-1
+00:18:15.099 --> 00:18:15.830
+<v Norberto Nu&#241;ez>se quedó aislado.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/228-0
+00:18:18.230 --> 00:18:19.750
+<v Norberto Nu&#241;ez>Igual ya voy a mirar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/229-0
+00:18:22.070 --> 00:18:23.910
+<v Norberto Nu&#241;ez>Current alarm my topology.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/231-0
+00:18:27.430 --> 00:18:28.390
+<v Norberto Nu&#241;ez>So we.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/233-0
+00:18:45.910 --> 00:18:48.270
+<v Norberto Nu&#241;ez>Pues vi tu grupo en marcha.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/234-0
+00:18:50.710 --> 00:18:52.430
+<v Norberto Nu&#241;ez>A las 8:00 de la noche.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/235-0
+00:18:54.710 --> 00:18:55.830
+<v Norberto Nu&#241;ez>Hasta las 9.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/236-0
+00:19:00.470 --> 00:19:01.390
+<v Norberto Nu&#241;ez>Pues.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/237-0
+00:19:02.790 --> 00:19:04.070
+<v Norberto Nu&#241;ez>No tengo otra alarma.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/238-0
+00:19:12.870 --> 00:19:15.670
+<v Norberto Nu&#241;ez>Sí, tenemos falla de grupo a las 11:00,
+Julio.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/239-0
+00:19:18.550 --> 00:19:21.621
+<v Norberto Nu&#241;ez>El de sí,
+y probablemente ahí descargó batería</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/239-1
+00:19:21.621 --> 00:19:23.190
+<v Norberto Nu&#241;ez>hasta las 3 y ahí murió.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/240-0
+00:19:35.750 --> 00:19:37.630
+<v Norberto Nu&#241;ez>Su batería hasta donde aguantó.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/241-0
+00:19:44.790 --> 00:19:45.350
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/242-0
+00:19:47.750 --> 00:19:48.270
+<v Norberto Nu&#241;ez>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/243-0
+00:19:53.990 --> 00:19:57.889
+<v Norberto Nu&#241;ez>Sí, battery. Charlie,
+tenemos desde las 11 justo a la hora que</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/243-1
+00:19:57.889 --> 00:20:01.293
+<v Norberto Nu&#241;ez>cayó el grupo.
+Entró descargar la batería desde las 11</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/243-2
+00:20:01.293 --> 00:20:06.430
+<v Norberto Nu&#241;ez>hasta la 1:44, hice hasta las 3 realmente.
+55 murió. Aguantó muchísimo la batería.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/244-0
+00:20:08.590 --> 00:20:11.950
+<v Norberto Nu&#241;ez>Muchísimo aguanto más, casi más,
+casi 5 horas aguanto.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/248-0
+00:20:28.030 --> 00:20:28.590
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/250-0
+00:20:32.430 --> 00:20:36.070
+<v Norberto Nu&#241;ez>Sí, Aldo estaba llegando a Sant Dani.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/251-0
+00:20:37.950 --> 00:20:40.430
+<v Norberto Nu&#241;ez>El problema no tiene señal,
+seguramente a ver.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/252-0
+00:20:43.870 --> 00:20:47.442
+<v Norberto Nu&#241;ez>Y calo feta también estaba calo feta creo
+que estaba yendo a Santa Rosa,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/252-1
+00:20:47.442 --> 00:20:48.910
+<v Norberto Nu&#241;ez>lo que te iba a confirmar eso.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/253-0
+00:20:51.150 --> 00:20:52.990
+<v Norberto Nu&#241;ez>Santoro San Butu.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/254-0
+00:20:54.350 --> 00:20:58.110
+<v Norberto Nu&#241;ez>Bueno, no me fijo en ningún móvil ahí,
+pero yo creo que es por falta de señal.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/255-0
+00:21:02.910 --> 00:21:04.230
+<v Norberto Nu&#241;ez>cuatro en realidad.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/256-0
+00:21:05.230 --> 00:21:08.284
+<v Norberto Nu&#241;ez>Y eso es lo que no me figura acá es un
+nombre, eso es el móvil,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/256-1
+00:21:08.284 --> 00:21:09.430
+<v Norberto Nu&#241;ez>pues son cuatro móviles.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/257-0
+00:21:11.590 --> 00:21:16.580
+<v Norberto Nu&#241;ez>Pero solamente el de Aldo me figura así
+con nombre y apellido,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/257-1
+00:21:16.580 --> 00:21:19.510
+<v Norberto Nu&#241;ez>después está el otro sin identificar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/258-0
+00:21:20.830 --> 00:21:25.390
+<v Norberto Nu&#241;ez>Hoy le tengo otros sin identificar si los
+otros 3 sin nombre móvil.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/259-0
+00:21:31.310 --> 00:21:34.110
+<v Norberto Nu&#241;ez>Sí, esperamos que ese día levante, oye,
+Julio.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/260-0
+00:21:35.390 --> 00:21:36.550
+<v Norberto Nu&#241;ez>Dale, chao, chao.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/261-0
+00:21:39.470 --> 00:21:40.710
+<v Norberto Nu&#241;ez>Perdón, Elías.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/262-0
+00:21:41.190 --> 00:21:41.870
+<v Elias Alfonzo>Tranqui, tranqui.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/263-0
+00:21:43.790 --> 00:21:45.830
+<v Norberto Nu&#241;ez>Y continuamos, estábamos en.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/264-0
+00:21:47.950 --> 00:21:48.790
+<v Norberto Nu&#241;ez>La cara.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/265-0
+00:21:49.790 --> 00:21:50.150
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/266-0
+00:21:51.150 --> 00:21:54.910
+<v Norberto Nu&#241;ez>¿O vas a tener ese punto personal que por
+DNS?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/267-0
+00:21:55.790 --> 00:21:58.830
+<v Norberto Nu&#241;ez>¿Puedes asociar a estos tres, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/270-0
+00:22:02.350 --> 00:22:03.990
+<v Elias Alfonzo>Ahí te hago una consultora.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/268-0
+00:22:02.510 --> 00:22:03.430
+<v Norberto Nu&#241;ez>Sería as.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/269-0
+00:22:04.270 --> 00:22:04.710
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/271-0
+00:22:05.950 --> 00:22:07.870
+<v Elias Alfonzo>Ese pedido ayer no se hizo todavía.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/275-0
+00:22:09.070 --> 00:22:15.270
+<v Norberto Nu&#241;ez>No, eso todo tienen que hacer, ¿verdad?
+Tienen que pedir el DNS a estos 3.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/272-0
+00:22:11.790 --> 00:22:12.310
+<v Elias Alfonzo>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/274-0
+00:22:14.350 --> 00:22:15.550
+<v Elias Alfonzo>A nombre de esas 3 IP.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/276-0
+00:22:16.270 --> 00:22:20.419
+<v Norberto Nu&#241;ez>A nombre esas tres IP. Ahora después,
+si vos querés,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/276-1
+00:22:20.419 --> 00:22:26.290
+<v Norberto Nu&#241;ez>entonces tu balanceador configuras para
+que apunte a tu contenedor o a tus</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/276-2
+00:22:26.290 --> 00:22:30.830
+<v Norberto Nu&#241;ez>contenedores que vos quieras, por ejemplo,
+de esta forma.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/277-0
+00:22:32.270 --> 00:22:35.270
+<v Norberto Nu&#241;ez>Acá lo que venimos documentando.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/278-0
+00:22:38.910 --> 00:22:41.390
+<v Elias Alfonzo>Ahí te hago una consulta un ratito.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/279-0
+00:22:42.150 --> 00:22:42.630
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/280-0
+00:22:42.350 --> 00:22:44.950
+<v Elias Alfonzo>Sí, yo apunto a hacer DNS barra.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/281-0
+00:22:45.950 --> 00:22:47.710
+<v Elias Alfonzo>O sea, directo sin ningún.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/284-0
+00:22:48.910 --> 00:22:55.369
+<v Elias Alfonzo>Sin ningún barra, qué sé yo, Loki.
+¿Quién resuelve ahí en dónde va a irse?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/282-0
+00:22:52.190 --> 00:22:52.710
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/284-1
+00:22:55.369 --> 00:22:58.470
+<v Elias Alfonzo>Si en Galpinelli, en quién hace ese.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/283-0
+00:22:58.190 --> 00:22:59.030
+<v Norberto Nu&#241;ez>El NS.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/286-0
+00:23:01.310 --> 00:23:06.863
+<v Norberto Nu&#241;ez>El DNS te va a dar, te va a dar 3 IPs, sí,
+pero tu navegador es el que dice a dónde</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/285-0
+00:23:01.630 --> 00:23:04.870
+<v Elias Alfonzo>Pero 3 y pm da, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/286-1
+00:23:06.863 --> 00:23:07.590
+<v Norberto Nu&#241;ez>se va a ir.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/289-0
+00:23:08.470 --> 00:23:12.993
+<v Norberto Nu&#241;ez>Siempre el DNS se va a ir rotando,
+él te va a entregar siempre tres</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/289-1
+00:23:12.993 --> 00:23:17.384
+<v Norberto Nu&#241;ez>respuestas, pero él va a rotar.
+Vamos a suponer que vos haces una</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/287-0
+00:23:14.270 --> 00:23:14.790
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/289-2
+00:23:17.384 --> 00:23:20.909
+<v Norberto Nu&#241;ez>consulta te va a entregar en este orden.
+Después yo,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/289-3
+00:23:20.909 --> 00:23:24.369
+<v Norberto Nu&#241;ez>cuando yo haga la misma consulta,
+yo me va a rotar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/289-4
+00:23:24.369 --> 00:23:29.424
+<v Norberto Nu&#241;ez>Y en la tercera consulta que hace Marcos,
+yo le va a rotar. Y en la cuarta,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/288-0
+00:23:26.190 --> 00:23:26.830
+<v Elias Alfonzo>Okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/289-5
+00:23:29.424 --> 00:23:32.950
+<v Norberto Nu&#241;ez>un X que hace la misma consulta va a
+rotar otra vez.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/290-0
+00:23:32.990 --> 00:23:38.705
+<v Norberto Nu&#241;ez>va rotando el orden de la respuesta,
+pero sin importar ese orden,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/290-1
+00:23:38.705 --> 00:23:43.900
+<v Norberto Nu&#241;ez>tu navegador o tu aplicación puede elegir
+la IP que quiera.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/290-2
+00:23:43.900 --> 00:23:48.230
+<v Norberto Nu&#241;ez>Lo normal es que la aplicación elija la
+primer IP</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/291-0
+00:23:49.470 --> 00:23:51.070
+<v Norberto Nu&#241;ez>¿Que te resuelve el DNS, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/292-0
+00:23:52.350 --> 00:23:53.230
+<v Elias Alfonzo>Ok.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/295-0
+00:23:52.430 --> 00:23:56.471
+<v Norberto Nu&#241;ez>Pero eso ya es un tema de la aplicación.
+Normalmente elige la primera,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/295-1
+00:23:56.471 --> 00:24:01.025
+<v Norberto Nu&#241;ez>pero y dependiendo el algoritmo de tu
+aplicación, si la primera no le responde,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/295-2
+00:24:01.025 --> 00:24:04.156
+<v Norberto Nu&#241;ez>puede intentar la segunda y la tercera y
+así, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/295-3
+00:24:04.156 --> 00:24:07.230
+<v Norberto Nu&#241;ez>Pero eso ya eso es algo del cliente ya
+algo del lado.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/293-0
+00:24:04.190 --> 00:24:04.670
+<v Elias Alfonzo>Rocky.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/294-0
+00:24:06.630 --> 00:24:07.150
+<v Elias Alfonzo>sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/297-0
+00:24:07.950 --> 00:24:12.267
+<v Elias Alfonzo>Y ahí te consulto otra vez para una
+aplicación Camboard.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/297-1
+00:24:12.267 --> 00:24:15.827
+<v Elias Alfonzo>Yo solamente voy a tener en presidente
+Franco,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/296-0
+00:24:14.990 --> 00:24:15.590
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/297-2
+00:24:15.827 --> 00:24:21.887
+<v Elias Alfonzo>yo igual puedo configurar entonces que
+desde si entro por Carpinelli o si entro</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/297-3
+00:24:21.887 --> 00:24:25.598
+<v Elias Alfonzo>por Fernando configuro,
+me llegó esta solicitud,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/297-4
+00:24:25.598 --> 00:24:29.310
+<v Elias Alfonzo>apuntan a Camboard y yo puedo redirigir
+nomás a.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/298-0
+00:24:29.630 --> 00:24:32.990
+<v Elias Alfonzo>A Domingo Sabio, y eso no me voy a hacer,
+sí, okay.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/300-0
+00:24:29.790 --> 00:24:34.439
+<v Norberto Nu&#241;ez>Sí, señor, y acá te voy a mostrar,
+acá te voy a mostrar un ejemplo,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/299-0
+00:24:34.430 --> 00:24:35.230
+<v Elias Alfonzo>Es.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/300-1
+00:24:34.439 --> 00:24:35.670
+<v Norberto Nu&#241;ez>ahora este lb.com.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/303-0
+00:24:36.590 --> 00:24:42.701
+<v Norberto Nu&#241;ez>Es un archivo de apache que yo repliqué
+en los tres apaches. De hecho, mira,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/301-0
+00:24:39.070 --> 00:24:39.550
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/302-0
+00:24:42.350 --> 00:24:43.390
+<v Elias Alfonzo>Igualito están los yo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/303-1
+00:24:42.701 --> 00:24:48.178
+<v Norberto Nu&#241;ez>cada vez que yo modifico esto,
+yo por eso lo puse acá para que todos</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/303-2
+00:24:48.178 --> 00:24:54.527
+<v Norberto Nu&#241;ez>usemos el mismo archivo y todos siempre
+tengamos la última versión actualizada,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/303-3
+00:24:54.527 --> 00:24:56.670
+<v Norberto Nu&#241;ez>lo que se pone acá. Yo puse</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/304-0
+00:24:56.750 --> 00:25:01.070
+<v Norberto Nu&#241;ez>Este archivo leve conf que termina acá en
+el here.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/305-0
+00:25:02.190 --> 00:25:05.110
+<v Norberto Nu&#241;ez>Yo lo que hago es copiar a dónde copio.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/307-0
+00:25:06.190 --> 00:25:07.790
+<v Norberto Nu&#241;ez>¿A los 3 viste?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/306-0
+00:25:07.430 --> 00:25:07.910
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/310-0
+00:25:09.430 --> 00:25:16.000
+<v Norberto Nu&#241;ez>Por cada instancia ejecuto estos comandos
+que básicamente lo que hace es este es un</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/310-1
+00:25:16.000 --> 00:25:21.163
+<v Norberto Nu&#241;ez>cliente del XD que está en mi computadora.
+Entonces yo desde acá,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/308-0
+00:25:18.070 --> 00:25:18.550
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/310-2
+00:25:21.163 --> 00:25:27.186
+<v Norberto Nu&#241;ez>por el protocolo del XD, yo copio,
+ejecuto esta misma secuencia de comandos,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/310-3
+00:25:27.186 --> 00:25:28.750
+<v Norberto Nu&#241;ez>ejecuto en los tres.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/309-0
+00:25:29.150 --> 00:25:29.750
+<v Elias Alfonzo>Ajá.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/311-0
+00:25:29.710 --> 00:25:35.710
+<v Norberto Nu&#241;ez>¿Verdad? ¿Qué es lo que hago? Copio el lv.
+com, copio en este archivo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/313-0
+00:25:36.990 --> 00:25:41.166
+<v Norberto Nu&#241;ez>sites available lb.
+conf proyecto y el modo que se va el</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/313-1
+00:25:41.166 --> 00:25:47.247
+<v Norberto Nu&#241;ez>permiso que se va a escribir verdad todo
+lectura lectura lectura Ok después dentro</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/312-0
+00:25:44.310 --> 00:25:44.790
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/313-2
+00:25:47.247 --> 00:25:53.327
+<v Norberto Nu&#241;ez>del dentro de cada una de esta instancia
+se Ejecutan esta serie de comandos que lo</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/313-3
+00:25:53.327 --> 00:25:57.430
+<v Norberto Nu&#241;ez>que hace es Apache Apache 2 enable module
+Apache module</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/315-0
+00:25:57.710 --> 00:26:02.840
+<v Norberto Nu&#241;ez>disable sitio lo que hacemos Es habilitar
+sitio por defecto lo que hacemos es</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/315-1
+00:26:02.840 --> 00:26:06.458
+<v Norberto Nu&#241;ez>habilitar el lb.
+conf verdad habilitamos el modo ssl y</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/315-2
+00:26:06.458 --> 00:26:11.720
+<v Norberto Nu&#241;ez>hacemos restar el apache porque cada vez
+que hacemos esto pues nosotros estamos</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/315-3
+00:26:11.720 --> 00:26:16.390
+<v Norberto Nu&#241;ez>metiendo una nueva versión del lb.
+conf verdad entonces lo que hago es</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/314-0
+00:26:14.670 --> 00:26:15.070
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/316-0
+00:26:16.470 --> 00:26:20.155
+<v Norberto Nu&#241;ez>Acá tenemos 22 puertos,
+el puerto 80 que prácticamente no se va a</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/316-1
+00:26:20.155 --> 00:26:24.063
+<v Norberto Nu&#241;ez>usar y tenemos el puerto cuatro 3,
+que es lo que vamos a usar por una</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/316-2
+00:26:24.063 --> 00:26:27.190
+<v Norberto Nu&#241;ez>cuestión más de seguridad que por otras
+cosas, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/318-0
+00:26:27.230 --> 00:26:29.390
+<v Elias Alfonzo>¿Y tú lo quieres usa el 80?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/317-0
+00:26:28.750 --> 00:26:29.270
+<v Norberto Nu&#241;ez>Ajá.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/319-0
+00:26:31.070 --> 00:26:34.685
+<v Norberto Nu&#241;ez>Usamos el 80,
+pero en breve vamos a pasar también a acá,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/319-1
+00:26:34.685 --> 00:26:36.270
+<v Norberto Nu&#241;ez>o sea, esto que está acá.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/321-0
+00:26:37.550 --> 00:26:43.853
+<v Norberto Nu&#241;ez>¿Vamos a vamos a deshabilitar acá y vamos
+a dejar solamente acá nomás ya, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/320-0
+00:26:41.310 --> 00:26:42.110
+<v Elias Alfonzo>Okey, okey.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/321-1
+00:26:43.853 --> 00:26:49.310
+<v Norberto Nu&#241;ez>Y vamos a ir por el caso del NTF, ¿verdad?
+Notificaciones que es este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/322-0
+00:26:50.790 --> 00:26:52.270
+<v Norberto Nu&#241;ez>Este está dentro de.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/324-0
+00:26:53.190 --> 00:26:54.710
+<v Norberto Nu&#241;ez>¿443, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/323-0
+00:26:54.790 --> 00:26:55.070
+<v Elias Alfonzo>Mhm.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/325-0
+00:26:56.270 --> 00:26:57.070
+<v Norberto Nu&#241;ez>Entonces.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/326-0
+00:26:58.590 --> 00:27:03.950
+<v Norberto Nu&#241;ez>En cualquiera de los 3 balanceadores yo
+recibo la petición que es barra.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/327-0
+00:27:07.070 --> 00:27:07.710
+<v Norberto Nu&#241;ez>¿Dónde está?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/328-0
+00:27:10.910 --> 00:27:12.350
+<v Norberto Nu&#241;ez>Balancer.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/329-0
+00:27:13.310 --> 00:27:13.750
+<v Norberto Nu&#241;ez>Other.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/330-0
+00:27:15.790 --> 00:27:19.230
+<v Norberto Nu&#241;ez>Este acá va a confundir.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/331-0
+00:27:25.150 --> 00:27:28.230
+<v Norberto Nu&#241;ez>Voy a poner otro lado,
+este es el camboard así no confunde.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/334-0
+00:27:35.070 --> 00:27:41.243
+<v Norberto Nu&#241;ez>acá ahora vamos a concentrarnos en este
+llega un barra barra se llega un osc.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/334-1
+00:27:41.243 --> 00:27:42.430
+<v Norberto Nu&#241;ez>personal.com.py</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/337-0
+00:27:43.870 --> 00:27:49.345
+<v Norberto Nu&#241;ez>Él va a recibir un barra en ETF.
+Entonces le va a hacer caso a este</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/337-1
+00:27:49.345 --> 00:27:54.015
+<v Norberto Nu&#241;ez>location, ¿verdad?
+En este location que lo que hacemos es</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/335-0
+00:27:51.350 --> 00:27:51.790
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/337-2
+00:27:54.015 --> 00:27:59.731
+<v Norberto Nu&#241;ez>condicionar que solamente estas dos IPs
+puedan acceder a barra en ETF.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/336-0
+00:27:58.270 --> 00:27:58.910
+<v Elias Alfonzo>Exceder.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/337-3
+00:27:59.731 --> 00:28:02.630
+<v Norberto Nu&#241;ez>Cualquier otra IP que no sean estas.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/338-0
+00:28:02.750 --> 00:28:04.390
+<v Norberto Nu&#241;ez>Le va a retar no al 503.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/339-0
+00:28:06.350 --> 00:28:10.423
+<v Norberto Nu&#241;ez>¿Verdad?
+Porque no está de no está habilitado,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/339-1
+00:28:10.423 --> 00:28:13.110
+<v Norberto Nu&#241;ez>entonces si una de estas 2 IPs.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/340-0
+00:28:14.590 --> 00:28:20.212
+<v Norberto Nu&#241;ez>Accede a barra NTF en cualquiera de los
+tres balanceadores. ¿Qué va a hacer?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/340-1
+00:28:20.212 --> 00:28:24.228
+<v Norberto Nu&#241;ez>Lo va a hacer un proxy hacia balancer
+barra barra NTF,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/340-2
+00:28:24.228 --> 00:28:28.755
+<v Norberto Nu&#241;ez>que es esta configuración. O sea,
+esto es una etiqueta nomás.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/340-3
+00:28:28.755 --> 00:28:32.990
+<v Norberto Nu&#241;ez>Esto está acá que lo que hace es llama a
+este. Y en este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/341-0
+00:28:33.470 --> 00:28:39.510
+<v Norberto Nu&#241;ez>Yo tengo 2 instancias de NTF,
+uno está en FD O y el otro está en Franco.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/343-0
+00:28:40.270 --> 00:28:45.927
+<v Norberto Nu&#241;ez>Sí, no importa por donde entre,
+siempre el balanceador entre por donde</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/343-1
+00:28:45.927 --> 00:28:52.301
+<v Norberto Nu&#241;ez>entre, le va a tirar a uno de estos dos.
+Uno está en FDO y otro está en Franco.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/343-2
+00:28:52.301 --> 00:28:58.835
+<v Norberto Nu&#241;ez>Pero vos podés tener uno no más. O sea,
+vos podés borrar este y ese es el caso de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/343-3
+00:28:58.835 --> 00:29:00.030
+<v Norberto Nu&#241;ez>Loki. Está acá.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/344-0
+00:29:01.150 --> 00:29:06.070
+<v Norberto Nu&#241;ez>Cuando viene una petición barra loki
+barra loki barra API barra B uno.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/345-0
+00:29:07.310 --> 00:29:12.670
+<v Norberto Nu&#241;ez>¿Él observa que solamente sean una de
+estas 2 IPs y a dónde le tira?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/347-0
+00:29:13.710 --> 00:29:18.104
+<v Norberto Nu&#241;ez>le tira a este balancer que es barra Loki
+que una etiqueta nomás,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/347-1
+00:29:18.104 --> 00:29:23.164
+<v Norberto Nu&#241;ez>yo le puedo poner barra pepito, verdad?
+Acá va, este tiene un solo miembro,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/346-0
+00:29:19.790 --> 00:29:20.310
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/347-2
+00:29:23.164 --> 00:29:23.630
+<v Norberto Nu&#241;ez>¿viste?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/348-0
+00:29:24.990 --> 00:29:29.291
+<v Norberto Nu&#241;ez>Y ese un solo miembro puede estar en
+cualquier parte ahora mismo dónde está</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/348-1
+00:29:29.291 --> 00:29:30.310
+<v Norberto Nu&#241;ez>ese loki está por.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/349-0
+00:29:31.470 --> 00:29:32.030
+<v Norberto Nu&#241;ez>Or.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/350-0
+00:29:35.790 --> 00:29:35.870
+<v Norberto Nu&#241;ez>Y.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/351-0
+00:29:41.710 --> 00:29:43.150
+<v Norberto Nu&#241;ez>Loki está en franco, viste.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/352-0
+00:29:43.590 --> 00:29:43.870
+<v Elias Alfonzo>It.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/353-0
+00:29:44.510 --> 00:29:47.171
+<v Norberto Nu&#241;ez>Pero yo puedo pagarlo y puedo migrar a
+Carpinelli,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/353-1
+00:29:47.171 --> 00:29:50.510
+<v Norberto Nu&#241;ez>puedo migrar a Fernando y él siempre va a
+mantener la misma IP.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/354-0
+00:29:52.510 --> 00:29:55.423
+<v Norberto Nu&#241;ez>Porque ya está configurado para que
+mantenga esa IP,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/354-1
+00:29:55.423 --> 00:29:59.710
+<v Norberto Nu&#241;ez>entonces siempre cualquier balanceador
+siempre le va a ver a este donde esté.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/355-0
+00:30:00.430 --> 00:30:01.670
+<v Elias Alfonzo>mira vos.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/356-0
+00:30:00.830 --> 00:30:02.270
+<v Norberto Nu&#241;ez>Eso es lo que se logra.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/357-0
+00:30:03.350 --> 00:30:04.190
+<v Norberto Nu&#241;ez>¿Cómo se logra?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/358-0
+00:30:05.390 --> 00:30:07.670
+<v Norberto Nu&#241;ez>Se logra con esto.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/359-0
+00:30:08.030 --> 00:30:08.190
+<v Elias Alfonzo>T.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/360-0
+00:30:25.750 --> 00:30:26.190
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/361-0
+00:30:26.430 --> 00:30:28.990
+<v Norberto Nu&#241;ez>Acá yo no le puse mal.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/363-0
+00:30:30.270 --> 00:30:34.395
+<v Norberto Nu&#241;ez>Independientemente,
+esto ya es independiente de la M, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/363-1
+00:30:34.395 --> 00:30:38.651
+<v Norberto Nu&#241;ez>Siempre siempre se le va a ver donde esté,
+donde esté. Entonces,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/363-2
+00:30:38.651 --> 00:30:43.824
+<v Norberto Nu&#241;ez>de la misma forma podrías arquitecturar,
+diseñar tu arquitectura. De cómo vas,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/363-3
+00:30:43.824 --> 00:30:48.146
+<v Norberto Nu&#241;ez>en dónde vas a poner tu contenedor,
+pues está en cualquier parte.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/363-4
+00:30:48.146 --> 00:30:50.110
+<v Norberto Nu&#241;ez>Donde vos a vos más te cierre.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/364-0
+00:30:50.390 --> 00:30:56.046
+<v Norberto Nu&#241;ez>¿Y cuando hagas tu directiva de producir,
+sencillamente apuntas a la IP o como en</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/364-1
+00:30:56.046 --> 00:30:59.150
+<v Norberto Nu&#241;ez>este caso, al nombre del contenedor,
+verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/366-0
+00:30:59.310 --> 00:31:02.698
+<v Elias Alfonzo>Sí,
+ahí te puedo hacer una consulta otra vez</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/365-0
+00:31:01.550 --> 00:31:03.350
+<v Norberto Nu&#241;ez>Ya está, sí, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/366-1
+00:31:02.698 --> 00:31:03.150
+<v Elias Alfonzo>a ver.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/370-0
+00:31:06.270 --> 00:31:09.264
+<v Elias Alfonzo>Ahora mismo,
+como manejamos solamente 5 personas,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/370-1
+00:31:09.264 --> 00:31:13.634
+<v Elias Alfonzo>no quería hacer la prueba ya de separar
+servicio y base de datos. O sea,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/370-2
+00:31:13.634 --> 00:31:18.305
+<v Elias Alfonzo>yo puedo repartir el servicio en los 3
+lugares y mi base de datos va a seguir</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/368-0
+00:31:15.150 --> 00:31:15.630
+<v Norberto Nu&#241;ez>Chin.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/370-3
+00:31:18.305 --> 00:31:21.897
+<v Elias Alfonzo>estando en uno nomás o hacer el espejado
+que esté en los 3,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/369-0
+00:31:20.590 --> 00:31:21.070
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/370-4
+00:31:21.897 --> 00:31:25.310
+<v Elias Alfonzo>que cuando se escriba en uno escriba de
+vuelta en los 3.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/372-0
+00:31:25.710 --> 00:31:30.911
+<v Elias Alfonzo>Entonces esa prueba no quería aplicarlo
+todavía, ¿verdad? Porque, o sea,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/372-1
+00:31:30.911 --> 00:31:35.401
+<v Elias Alfonzo>creo que este es el primero que maneja
+estados, ¿verdad? Loki,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/372-2
+00:31:35.401 --> 00:31:40.460
+<v Elias Alfonzo>eso no maneja ningún estado, o sea,
+no es que alguien entra y escribe,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/372-3
+00:31:40.460 --> 00:31:45.590
+<v Elias Alfonzo>sino que son servicios que se prestan más
+para hacer ciertas funciones.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/373-0
+00:31:46.110 --> 00:31:48.550
+<v Elias Alfonzo>O sea,
+que por eso hoy en día están en los 3.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/371-0
+00:31:46.670 --> 00:31:47.350
+<v Norberto Nu&#241;ez>Y el.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/374-0
+00:31:49.870 --> 00:31:51.390
+<v Norberto Nu&#241;ez>Sí, el caso del Loki.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/375-0
+00:31:50.270 --> 00:31:51.230
+<v Marcos Casco>Cancel the note.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/376-0
+00:31:54.270 --> 00:31:54.830
+<v Norberto Nu&#241;ez>Um.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/379-0
+00:31:55.870 --> 00:32:00.830
+<v Norberto Nu&#241;ez>El caso de Loki sigue otra lógica.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/377-0
+00:31:57.390 --> 00:31:58.510
+<v Marcos Casco>That's it.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/378-0
+00:31:59.510 --> 00:31:59.950
+<v Marcos Casco>No.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/380-0
+00:32:02.190 --> 00:32:07.894
+<v Norberto Nu&#241;ez>Vamos a suponer que es así, ¿verdad?
+Viene una petición por el gateway,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/380-1
+00:32:07.894 --> 00:32:13.281
+<v Norberto Nu&#241;ez>que también es un contenedor.
+Esa petición va al balancer, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/380-2
+00:32:13.281 --> 00:32:18.271
+<v Norberto Nu&#241;ez>Cuando yo cuando yo digo algo,
+la IP barra Loki viene por acá,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/380-3
+00:32:18.271 --> 00:32:22.470
+<v Norberto Nu&#241;ez>viene por acá.
+Este barra Loki lo que hace es decir.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/383-0
+00:32:22.590 --> 00:32:27.073
+<v Norberto Nu&#241;ez>¿El servidor de Loki está acá, es este,
+verdad? No importa dónde,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/381-0
+00:32:25.670 --> 00:32:26.030
+<v Elias Alfonzo>T.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/383-1
+00:32:27.073 --> 00:32:29.790
+<v Norberto Nu&#241;ez>en qué lugar esté. Bueno, Loki a su vez.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/382-0
+00:32:27.390 --> 00:32:27.950
+<v Elias Alfonzo>Claro.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/384-0
+00:32:32.590 --> 00:32:33.590
+<v Norberto Nu&#241;ez>Es un motor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/385-0
+00:32:34.750 --> 00:32:41.202
+<v Norberto Nu&#241;ez>Verdad ahora dónde guardar los datos
+puede guardar dentro del mismo dentro del</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/385-1
+00:32:41.202 --> 00:32:47.655
+<v Norberto Nu&#241;ez>mismo server vamos a decir o el mismo
+contenedor como un sistema archivo local</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/385-2
+00:32:47.655 --> 00:32:50.350
+<v Norberto Nu&#241;ez>o bien puede guardar sus archivos</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/386-0
+00:32:51.550 --> 00:32:55.070
+<v Norberto Nu&#241;ez>Su base de datos guarda en un ser en un.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/387-0
+00:32:56.510 --> 00:32:58.750
+<v Norberto Nu&#241;ez>¿En un servicio S 3 verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/388-0
+00:33:00.510 --> 00:33:04.075
+<v Norberto Nu&#241;ez>S3 Amazon, Amazon S3.
+¿Y cómo funciona en este caso?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/388-1
+00:33:04.075 --> 00:33:09.590
+<v Norberto Nu&#241;ez>Esto también tengo que dibujar, ¿verdad?
+Viene la petición para Loki, llega Loki.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/389-0
+00:33:10.750 --> 00:33:16.004
+<v Norberto Nu&#241;ez>Loki hace su lógica,
+su motor de su lógica de motor de base de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/389-1
+00:33:16.004 --> 00:33:20.590
+<v Norberto Nu&#241;ez>datos de logs.
+¿Pero los logs dónde guarda? No guarda,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/389-2
+00:33:20.590 --> 00:33:24.510
+<v Norberto Nu&#241;ez>no guarda localmente,
+guarda en otro servidor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/390-0
+00:33:26.510 --> 00:33:28.510
+<v Norberto Nu&#241;ez>¿Que es un repositorio S3?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/391-0
+00:33:30.070 --> 00:33:31.910
+<v Norberto Nu&#241;ez>Es un serio, ese 3 es este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/392-0
+00:33:35.070 --> 00:33:37.190
+<v Norberto Nu&#241;ez>DCDR acá.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/393-0
+00:33:41.630 --> 00:33:43.430
+<v Elias Alfonzo>O sea, centralizado ahí nomás ya.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/395-0
+00:33:43.710 --> 00:33:47.990
+<v Norberto Nu&#241;ez>Está centralizado, así es, está centrale,
+o sea.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/394-0
+00:33:46.230 --> 00:33:47.150
+<v Elias Alfonzo>Yes.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/396-0
+00:33:49.070 --> 00:33:53.990
+<v Norberto Nu&#241;ez>A ver, viene, viene aquí, viene aquí,
+viene aquí. Llega hasta Loki,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/396-1
+00:33:53.990 --> 00:33:59.056
+<v Norberto Nu&#241;ez>pero cuando él necesita guardar sus
+archivos o necesita consultar sus</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/396-2
+00:33:59.056 --> 00:34:01.950
+<v Norberto Nu&#241;ez>archivos, va por S3, va y busca de este.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/397-0
+00:34:03.310 --> 00:34:04.270
+<v Norberto Nu&#241;ez>De este Loki.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/399-0
+00:34:06.190 --> 00:34:10.077
+<v Norberto Nu&#241;ez>Está en otro lugar, está en otro servidor.
+¿Por qué? ¿Por qué así?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/398-0
+00:34:06.630 --> 00:34:08.030
+<v Elias Alfonzo>Mi nuevo, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/399-1
+00:34:10.077 --> 00:34:11.470
+<v Norberto Nu&#241;ez>Porque en este servidor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/401-0
+00:34:12.910 --> 00:34:19.970
+<v Norberto Nu&#241;ez>No tenemos el servicio C3.
+Este servidor tiene mucho disco. Entonces,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/401-1
+00:34:19.970 --> 00:34:24.508
+<v Norberto Nu&#241;ez>a ver, nos vamos a pools. Fíjate.
+¿Entendés?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/400-0
+00:34:23.550 --> 00:34:24.270
+<v Elias Alfonzo>Ay, que.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/401-2
+00:34:24.508 --> 00:34:32.778
+<v Norberto Nu&#241;ez>Entonces lo que hacemos es la parte ya de
+donde se guarda propiamente el archivo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/401-3
+00:34:32.778 --> 00:34:34.190
+<v Norberto Nu&#241;ez>Es este lugar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/404-0
+00:34:34.470 --> 00:34:40.690
+<v Norberto Nu&#241;ez>centralizado fuera del cluster entendés
+Pero digamos todo el motor de la base de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/402-0
+00:34:35.950 --> 00:34:36.710
+<v Elias Alfonzo>Ah.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/404-1
+00:34:40.690 --> 00:34:46.987
+<v Norberto Nu&#241;ez>datos la lógica y las consultas están en
+loki verdad solamente bueno ya necesitas</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/403-0
+00:34:46.750 --> 00:34:47.270
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/404-2
+00:34:46.987 --> 00:34:50.750
+<v Norberto Nu&#241;ez>ya escribir escribir ya el archivo ahí
+manda acá</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/405-0
+00:34:51.790 --> 00:34:54.110
+<v Elias Alfonzo>Y ahí te hago una consulta entonces otra
+vez.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/406-0
+00:34:55.150 --> 00:35:01.659
+<v Elias Alfonzo>Yo pensé que íbamos a, o sea,
+siguiendo toda esta idea acá de Canonical,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/406-1
+00:35:01.659 --> 00:35:08.258
+<v Elias Alfonzo>pensé que ahí íbamos a tener también
+nuestro front y nuestro backend ahí,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/407-0
+00:35:08.030 --> 00:35:13.805
+<v Norberto Nu&#241;ez>¿No, eso es pendejo, eso es pendejo,
+si vos querés, si vos querés tener acá,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/406-2
+00:35:08.258 --> 00:35:09.150
+<v Elias Alfonzo>o sea, yo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/407-1
+00:35:13.805 --> 00:35:15.230
+<v Norberto Nu&#241;ez>metele acá, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/408-0
+00:35:14.670 --> 00:35:17.823
+<v Elias Alfonzo>No, pero tipo no me conviene, o sea,
+a mí me conviene hacer como vos estás</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/408-1
+00:35:17.823 --> 00:35:20.430
+<v Elias Alfonzo>haciendo también centralizo en un solo
+lugar y ahí tiro todo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/409-0
+00:35:21.150 --> 00:35:21.750
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/410-0
+00:35:22.990 --> 00:35:25.470
+<v Norberto Nu&#241;ez>¿So un tema ya de diseño, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/412-0
+00:35:26.510 --> 00:35:32.034
+<v Elias Alfonzo>porque entonces a mí me va a ser mucho
+más fácil ya prácticamente uno lo tener</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/412-1
+00:35:32.034 --> 00:35:37.627
+<v Elias Alfonzo>alta disponibilidad y otro que si quiero
+bajar cualquiera de los tres igual los</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/412-2
+00:35:37.627 --> 00:35:43.291
+<v Elias Alfonzo>otros dos funcionan no voy a tener que
+estar haciendo este tema del espejado que</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/411-0
+00:35:38.190 --> 00:35:38.670
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/412-3
+00:35:43.291 --> 00:35:44.270
+<v Elias Alfonzo>si en los tres</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/413-0
+00:35:44.990 --> 00:35:48.973
+<v Elias Alfonzo>Si guardo en los 3 pues prácticamente
+tienen el mismo peso los 3. En cambio,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/413-1
+00:35:48.973 --> 00:35:50.990
+<v Elias Alfonzo>si tengo en un solo lugar así como vos.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/414-0
+00:35:54.030 --> 00:35:59.111
+<v Elias Alfonzo>O podríamos aplicar opción app, o sea,
+probar opciones para cada tipo de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/414-1
+00:35:59.111 --> 00:36:00.990
+<v Elias Alfonzo>servicio que vaya metiendo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/415-0
+00:36:00.990 --> 00:36:04.590
+<v Norberto Nu&#241;ez>Exacto, pues cada caso va a ser un diseño.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/417-0
+00:36:06.270 --> 00:36:10.728
+<v Norberto Nu&#241;ez>Va a ser un diseño independiente, ¿verdad?
+Lo que la plataforma te permite es la</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/417-1
+00:36:10.728 --> 00:36:15.352
+<v Norberto Nu&#241;ez>flexibilidad de hacer lo que vos quieras,
+¿verdad? Según el caso o vas a decir, no,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/416-0
+00:36:13.790 --> 00:36:14.270
+<v Elias Alfonzo>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/417-2
+00:36:15.352 --> 00:36:19.150
+<v Norberto Nu&#241;ez>este caso es mejor hacer así,
+este caso es mejor hacer así, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/418-0
+00:36:20.110 --> 00:36:21.950
+<v Elias Alfonzo>¿Y hay consultos graves?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/419-0
+00:36:20.750 --> 00:36:22.790
+<v Norberto Nu&#241;ez>Es el es el tema, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/420-0
+00:36:24.150 --> 00:36:27.390
+<v Elias Alfonzo>¿A este TCDR,
+esto es algo propio de ustedes?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/421-0
+00:36:27.790 --> 00:36:31.390
+<v Norberto Nu&#241;ez>No, este este es una,
+es un servidor de SBA.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/422-0
+00:36:32.430 --> 00:36:34.990
+<v Norberto Nu&#241;ez>¿Que está en infraestructura de IT?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/423-0
+00:36:36.070 --> 00:36:37.390
+<v Elias Alfonzo>You know so.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/425-0
+00:36:36.590 --> 00:36:40.986
+<v Norberto Nu&#241;ez>Cuando yo administra,
+cuando yo administraba el servicio de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/425-1
+00:36:40.986 --> 00:36:45.894
+<v Norberto Nu&#241;ez>métricas basal C de Rs,
+yo había pedido este un servicio S3 en IT.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/425-2
+00:36:45.894 --> 00:36:50.290
+<v Norberto Nu&#241;ez>Pero como en ese momento no había lo que
+me dijeron, bueno,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/425-3
+00:36:50.290 --> 00:36:56.077
+<v Norberto Nu&#241;ez>te vamos a proveer una máquina virtual
+con suficiente espacio y montado ahí tu</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/425-4
+00:36:56.077 --> 00:36:56.590
+<v Norberto Nu&#241;ez>propio.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/426-0
+00:36:56.670 --> 00:37:01.092
+<v Norberto Nu&#241;ez>¿S 3, verdad?
+Mi esperanza en ese momento es que alguno</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/424-0
+00:36:57.790 --> 00:36:57.870
+<v Elias Alfonzo>Uh-huh.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/426-1
+00:37:01.092 --> 00:37:07.410
+<v Norberto Nu&#241;ez>de los storage que tiene IT para todos
+sus operaciones ya tengan el servicio de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/426-2
+00:37:07.410 --> 00:37:11.437
+<v Norberto Nu&#241;ez>S 3, ¿verdad?
+Porque últimamente todos los storage</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/426-3
+00:37:11.437 --> 00:37:11.990
+<v Norberto Nu&#241;ez>nuevos.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/428-0
+00:37:12.830 --> 00:37:20.344
+<v Norberto Nu&#241;ez>ya vienen con s3 también es como es como
+un ftp es como un ftp por por http verdad</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/427-0
+00:37:17.070 --> 00:37:17.550
+<v Elias Alfonzo>Hey.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/428-1
+00:37:20.344 --> 00:37:27.135
+<v Norberto Nu&#241;ez>Amazon etcétera y el famoso object
+storage y y hablamos hablamos y me dijo</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/428-2
+00:37:27.135 --> 00:37:31.390
+<v Norberto Nu&#241;ez>como nosotros ya teníamos Ya una esta
+misma BM</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/429-0
+00:37:32.270 --> 00:37:33.990
+<v Norberto Nu&#241;ez>Era una BM Postgres.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/430-0
+00:37:35.030 --> 00:37:41.414
+<v Norberto Nu&#241;ez>con mucho espacio pero ya no le ya no le
+daba el cuero al Postgres además también</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/430-1
+00:37:41.414 --> 00:37:47.876
+<v Norberto Nu&#241;ez>era complicado mantener entonces yo hice
+un cambio de paradigma y dije bueno vamos</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/430-2
+00:37:47.876 --> 00:37:53.559
+<v Norberto Nu&#241;ez>a salir ya de Postgres porque siempre
+tenés que estar con el tema de las</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/430-3
+00:37:53.559 --> 00:37:58.230
+<v Norberto Nu&#241;ez>actualizaciones mantener el sistema de
+archivo mantener las</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/433-0
+00:37:58.310 --> 00:38:01.135
+<v Norberto Nu&#241;ez>Tabla,
+aunque en gran parte de haya se encargado</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/431-0
+00:38:00.430 --> 00:38:01.430
+<v Marcos Casco>Anterias.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/433-1
+00:38:01.135 --> 00:38:04.190
+<v Norberto Nu&#241;ez>también de eso,
+pero igual era conflictivo, ¿verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/432-0
+00:38:02.510 --> 00:38:03.190
+<v Marcos Casco>Party.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/435-0
+00:38:05.470 --> 00:38:09.864
+<v Norberto Nu&#241;ez>Entonces,
+una vez también que empecé a trabajar con</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/434-0
+00:38:06.990 --> 00:38:07.910
+<v Marcos Casco>Te dije.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/435-1
+00:38:09.864 --> 00:38:15.271
+<v Norberto Nu&#241;ez>Loki y a entenderlas,
+a entender su funcionamiento y a tener ya</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/435-2
+00:38:15.271 --> 00:38:19.750
+<v Norberto Nu&#241;ez>más cancha,
+me di cuenta que por muchísimas cosas se</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/435-3
+00:38:19.750 --> 00:38:26.509
+<v Norberto Nu&#241;ez>puede resolver con Loki, nomás, verdad?
+No hace falta tener un motor relacional</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/435-4
+00:38:26.509 --> 00:38:27.270
+<v Norberto Nu&#241;ez>complejo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/439-0
+00:38:27.630 --> 00:38:31.772
+<v Norberto Nu&#241;ez>Sí, tiene sus ventajas, obviamente,
+pero muchas veces pues uno con un log</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/439-1
+00:38:31.772 --> 00:38:35.187
+<v Norberto Nu&#241;ez>nomás puede resolver.
+Si voy a tener ya tu aplicación que ya</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/436-0
+00:38:34.550 --> 00:38:34.910
+<v Marcos Casco>Yeah.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/439-2
+00:38:35.187 --> 00:38:39.497
+<v Norberto Nu&#241;ez>está logueando, está escribiendo en logs.
+Esos mismos loggets te sirven para</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/437-0
+00:38:37.870 --> 00:38:38.190
+<v Marcos Casco>Yeah.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/439-3
+00:38:39.497 --> 00:38:44.031
+<v Norberto Nu&#241;ez>graficar o para hacer alerta o para hacer
+tu métrica o para sacar la información</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/438-0
+00:38:44.030 --> 00:38:44.470
+<v Marcos Casco>I'm sorry.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/439-4
+00:38:44.031 --> 00:38:46.830
+<v Norberto Nu&#241;ez>que vos necesites, ¿verdad?
+Por darte un ejemplo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/440-0
+00:38:48.590 --> 00:38:53.725
+<v Norberto Nu&#241;ez>Para esta implementa esta demo que
+estamos haciendo con Pedro Méndez, no hay,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/440-1
+00:38:53.725 --> 00:38:54.910
+<v Norberto Nu&#241;ez>no hay, no es ahí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/441-0
+00:38:56.910 --> 00:39:00.296
+<v Norberto Nu&#241;ez>Para esta demo estamos con Pedro Méndez
+para temar los grupos electrógenos con</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/441-1
+00:39:00.296 --> 00:39:00.510
+<v Norberto Nu&#241;ez>coma.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/442-0
+00:39:02.670 --> 00:39:08.627
+<v Norberto Nu&#241;ez>Nos vamos y traemos todas las métricas de
+las comap, de la comap de Hipodermo,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/442-1
+00:39:08.627 --> 00:39:13.755
+<v Norberto Nu&#241;ez>por ejemplo, en este caso el primero.
+Y le escribo en un log nomás.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/442-2
+00:39:13.755 --> 00:39:17.375
+<v Norberto Nu&#241;ez>Le escribo nomás a Loki los logs,
+así tal cual.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/442-3
+00:39:17.375 --> 00:39:21.070
+<v Norberto Nu&#241;ez>Y de los mismos logs sacamos los datos
+con Loki.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/443-0
+00:39:21.270 --> 00:39:26.807
+<v Norberto Nu&#241;ez>¿Y de esos mismos datos ya te sirve para
+hacer todos estos gráficos, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/443-1
+00:39:26.807 --> 00:39:31.409
+<v Norberto Nu&#241;ez>Entonces dije, bueno,
+ya que con lo que hice resuelve el 90% de</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/443-2
+00:39:31.409 --> 00:39:36.515
+<v Norberto Nu&#241;ez>los problemas que son simples y no
+necesitan tanta complejidad como un</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/443-3
+00:39:36.515 --> 00:39:40.470
+<v Norberto Nu&#241;ez>postgress o un o un time series tipo
+prometeo, verdad?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/447-0
+00:39:41.310 --> 00:39:46.039
+<v Norberto Nu&#241;ez>¿Entonces decidí volcarme a esto para la
+mayoría de los casos, verdad? Sí,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/444-0
+00:39:41.950 --> 00:39:42.270
+<v Marcos Casco>This.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/445-0
+00:39:43.870 --> 00:39:44.270
+<v Marcos Casco>Got it.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/447-1
+00:39:46.039 --> 00:39:50.705
+<v Norberto Nu&#241;ez>obviamente va a haber casos en que ya no
+es suficiente trabajar con logs,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/447-2
+00:39:50.705 --> 00:39:55.939
+<v Norberto Nu&#241;ez>va a hacer falta meter ya no time series
+y otros casos ya mucho más complejos otra</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/447-3
+00:39:55.939 --> 00:39:58.839
+<v Norberto Nu&#241;ez>vez,
+como lo que hacen ustedes era usar pobre</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/446-0
+00:39:57.550 --> 00:39:57.830
+<v Marcos Casco>Go.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/447-4
+00:39:58.839 --> 00:39:59.470
+<v Norberto Nu&#241;ez>un ratito.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/448-0
+00:39:59.670 --> 00:40:01.150
+<v Norberto Nu&#241;ez>Ratito, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/449-0
+00:40:00.350 --> 00:40:01.750
+<v Marcos Casco>Popular in rooks.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/451-0
+00:40:02.350 --> 00:40:02.910
+<v Norberto Nu&#241;ez>Señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/450-0
+00:40:02.590 --> 00:40:02.830
+<v Marcos Casco>No.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/452-0
+00:40:03.950 --> 00:40:04.670
+<v Norberto Nu&#241;ez>Ya no más.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/453-0
+00:40:07.110 --> 00:40:07.830
+<v Norberto Nu&#241;ez>Sí, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/454-0
+00:40:09.630 --> 00:40:10.270
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/455-0
+00:40:17.790 --> 00:40:18.310
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/456-0
+00:40:20.110 --> 00:40:20.710
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/457-0
+00:40:27.390 --> 00:40:28.110
+<v Norberto Nu&#241;ez>Sí, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/458-0
+00:40:34.430 --> 00:40:38.168
+<v Norberto Nu&#241;ez>Pasa que eso depende de Kakupemi2 si
+estoy bien,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/458-1
+00:40:38.168 --> 00:40:44.195
+<v Norberto Nu&#241;ez>si estoy bien y Kakupemi2 es de Tigo y
+ahí lo que tuvieron hay un problema con</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/458-2
+00:40:44.195 --> 00:40:49.383
+<v Norberto Nu&#241;ez>la instalación eléctrica,
+se derritieron todos los cables y por eso</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/458-3
+00:40:49.383 --> 00:40:50.070
+<v Norberto Nu&#241;ez>se se se.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/459-0
+00:40:52.670 --> 00:40:54.150
+<v Norberto Nu&#241;ez>A ver, te voy a confirmar.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/460-0
+00:40:55.630 --> 00:40:56.510
+<v Norberto Nu&#241;ez>1 segundo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/461-0
+00:41:02.030 --> 00:41:07.750
+<v Norberto Nu&#241;ez>Sí, he caído, Gustavo, desde el cuatro,
+sí, a las 8:35.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/463-0
+00:41:10.430 --> 00:41:13.629
+<v Norberto Nu&#241;ez>Sí, y bueno,
+ahí tenemos un problema de antes, dice,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/463-1
+00:41:13.629 --> 00:41:17.310
+<v Norberto Nu&#241;ez>acá tenemos todo el número de reclamo y
+se sigue reclamando.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/464-0
+00:41:20.590 --> 00:41:26.074
+<v Norberto Nu&#241;ez>Sigue caído, sigue caído, digamos,
+ya te digo que hice Hansa en el caso que</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/464-1
+00:41:26.074 --> 00:41:30.475
+<v Norberto Nu&#241;ez>ocupe mío se levantó,
+pero este por lo visto que igual sigue</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/464-2
+00:41:30.475 --> 00:41:31.630
+<v Norberto Nu&#241;ez>caído, no puedo.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/465-0
+00:41:33.470 --> 00:41:33.710
+<v Norberto Nu&#241;ez>Y.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/466-0
+00:41:35.150 --> 00:41:38.070
+<v Norberto Nu&#241;ez>Un ratito.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/467-0
+00:41:39.390 --> 00:41:41.550
+<v Norberto Nu&#241;ez>Quiero ver el ticket, si tiene ticket.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/468-0
+00:41:42.710 --> 00:41:43.470
+<v Norberto Nu&#241;ez>CGT.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/469-0
+00:41:44.990 --> 00:41:46.630
+<v Norberto Nu&#241;ez>Se vuelve a reclamar a dónde dice.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/470-0
+00:41:48.190 --> 00:41:54.525
+<v Norberto Nu&#241;ez>Okay, y sí, vamos a ir reclamando octavo.
+Pasa que este este si lo ha operado es o</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/470-1
+00:41:54.525 --> 00:41:56.510
+<v Norberto Nu&#241;ez>si lo ha operado la banda.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/471-0
+00:42:01.230 --> 00:42:11.230
+<v Norberto Nu&#241;ez>Sí, no sé, seguimos insistiendo. Dale,
+señor, dale, saludos, chao.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/478-0
+00:42:12.190 --> 00:42:15.965
+<v Marcos Casco>Albert, sí,
+vos no entras en indisponibilidad ahora</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/472-0
+00:42:12.750 --> 00:42:13.310
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/478-1
+00:42:15.965 --> 00:42:19.668
+<v Marcos Casco>para recordarte, pero antes antes de irte,
+no más,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/473-0
+00:42:16.270 --> 00:42:18.030
+<v Norberto Nu&#241;ez>Sí, tengo que entrar, disculpen.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/478-2
+00:42:19.668 --> 00:42:25.112
+<v Marcos Casco>nosotros queremos usar eso para lo para
+el monitoreo de los balanceadores,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/474-0
+00:42:20.830 --> 00:42:21.350
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/478-3
+00:42:25.112 --> 00:42:29.033
+<v Marcos Casco>queremos usar Loki.
+Ahí tenemos que hacer que se vaya</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/475-0
+00:42:26.910 --> 00:42:26.990
+<v Norberto Nu&#241;ez>Uh-huh.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/478-4
+00:42:29.033 --> 00:42:32.590
+<v Marcos Casco>escribiendo todo en el Ciclo, ¿verdad?
+Y ahí le.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/476-0
+00:42:31.790 --> 00:42:33.110
+<v Norberto Nu&#241;ez>Look, sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/483-0
+00:42:32.710 --> 00:42:36.438
+<v Marcos Casco>Está muy bien y leemos directamente a
+través del loki. OK,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/477-0
+00:42:33.990 --> 00:42:34.670
+<v Norberto Nu&#241;ez>Sí, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/479-0
+00:42:36.430 --> 00:42:37.110
+<v Norberto Nu&#241;ez>Sí, señor.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/483-1
+00:42:36.438 --> 00:42:40.355
+<v Marcos Casco>otra preguntita rápida,
+¿viste que vos dijiste que dentro del</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/480-0
+00:42:38.270 --> 00:42:38.630
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/483-2
+00:42:40.355 --> 00:42:45.157
+<v Marcos Casco>proxy inverso que configuras dentro de
+tus balanceadores le pones estas IP?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/483-3
+00:42:45.157 --> 00:42:49.390
+<v Marcos Casco>Quiero que ingresen, ¿verdad?
+¿Y cómo se pone el tema de los DHCP?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/482-0
+00:42:47.470 --> 00:42:47.910
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/486-0
+00:42:50.590 --> 00:42:54.270
+<v Marcos Casco>¿Te puedes asignar un rango así?
+Por ejemplo,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/484-0
+00:42:50.750 --> 00:42:51.790
+<v Norberto Nu&#241;ez>¿Cómo es HCP?</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/486-1
+00:42:54.270 --> 00:42:59.710
+<v Marcos Casco>a mí yo por VPN me conecto y me asigna,
+siempre me asigna 10150105.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/485-0
+00:42:56.830 --> 00:42:57.390
+<v Norberto Nu&#241;ez>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/489-0
+00:42:58.990 --> 00:43:03.651
+<v Norberto Nu&#241;ez>Ah ah no no esto esto yo le puse nomás
+modo temporal para que el Nexus del</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/489-1
+00:43:03.651 --> 00:43:08.561
+<v Norberto Nu&#241;ez>scander no esté rompiendo las bolas o
+viste que durante el tiempo que les toma</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/487-0
+00:43:07.470 --> 00:43:08.070
+<v Marcos Casco>Mhm.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/489-2
+00:43:08.561 --> 00:43:13.036
+<v Norberto Nu&#241;ez>usted inventariar pedir los permisos
+Entonces yo le le puse nomás estas</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/488-0
+00:43:12.190 --> 00:43:13.310
+<v Marcos Casco>claro.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/489-3
+00:43:13.036 --> 00:43:18.070
+<v Norberto Nu&#241;ez>directivas para que no cualquiera esté
+entrando y chusmeando como se dice verdad</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/491-0
+00:43:18.510 --> 00:43:22.304
+<v Norberto Nu&#241;ez>Pero una vez que todo está eso resuelto y
+ustedes digan no hay que entrar también</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/490-0
+00:43:18.990 --> 00:43:19.430
+<v Marcos Casco>Sí.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/491-1
+00:43:22.304 --> 00:43:24.617
+<v Norberto Nu&#241;ez>la VPN,
+hay que tratarme desde acá y desde allá y</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/491-2
+00:43:24.617 --> 00:43:26.190
+<v Norberto Nu&#241;ez>ahí sacamos nomás ya esos filtros.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/494-0
+00:43:25.710 --> 00:43:31.090
+<v Marcos Casco>O K, o K, o K, sí,
+a ella me queda mucho más claro. Bueno,</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/492-0
+00:43:29.390 --> 00:43:31.510
+<v Norberto Nu&#241;ez>Sí, bueno, nos pasamos la otra.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/494-1
+00:43:31.090 --> 00:43:34.190
+<v Marcos Casco>gracias, no lo por la ayuda. Dale.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/496-0
+00:43:32.630 --> 00:43:35.910
+<v Norberto Nu&#241;ez>Dale, saludos, dale, chao, chao, dale,
+chao.</v>
+
+3650e526-3701-4665-b549-b7f3b0ebfccb/495-0
+00:43:34.150 --> 00:43:35.630
+<v Elias Alfonzo>I sent the route, chao chao.</v>

@@ -1188,9 +1188,11 @@ lxc copy PFR-OSS-GW-SRV CAR-OSS-GW-SRV --profile PRF-CAR-OSS-GW-SRV --target car
 ## Buckets de almacenamiento S3 (backend de Loki/Mimir)
 
 ### ¿Qué controla?
-LXD puede exponer un *storage pool* como servidor de objetos compatible con S3. El equipo lo usa para dar almacenamiento de objetos a las herramientas de observabilidad (Loki para logs, Mimir para métricas de largo plazo) sin depender de un servicio S3 externo al cluster.
+LXD puede exponer un *storage pool* como servidor de objetos compatible con S3. La intención original era usarlo para dar almacenamiento de objetos a las herramientas de observabilidad (Loki para logs, Mimir para métricas de largo plazo) sin depender de un servicio S3 externo al cluster.
 
 ✅ Confirmado visualmente en la grabación de la reunión (`reunion/Llamada con Daniel y 3 personas más-20260625_105957-Grabación de la reunión.mp4`, min ~00:28). No estaba documentado previamente.
+
+> 🔴 **Actualización 2026-10 (`reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt`):** en la práctica, el Loki del proyecto (`C-Loki-1`) **no terminó usando** esta capacidad — su backend real es un servicio S3 externo al cluster, en infraestructura de IT. Ver el detalle en [14_Manual_Operativo.md — Logs de aplicación: Loki + MinIO propio del proyecto](14_Manual_Operativo.md#logs-de-aplicación-loki--minio-propio-del-proyecto). La capacidad en sí (`lxc storage bucket`) sigue siendo válida y puede usarse para Mimir u otro caso futuro — lo que cambió es que Loki, concretamente, no la usa.
 
 ### Comandos
 
