@@ -1,0 +1,77 @@
+2026-09-16T09:58:47-0300
+
+=== REPOSITORIO ===
+4096	/var/www/html/infrafilerun/oauth2/authorize
+8192	/var/www/html/infrafilerun/oauth2/token
+16384	/var/www/html/infrafilerun/oauth2
+8192	/var/www/html/infrafilerun/ocs
+4096	/var/www/html/infrafilerun/oembed
+4096	/var/www/html/infrafilerun/panel
+12288	/var/www/html/infrafilerun/sounds
+4096	/var/www/html/infrafilerun/sso
+15773696	/var/www/html/infrafilerun/system/classes
+2158592	/var/www/html/infrafilerun/system/data
+49152	/var/www/html/infrafilerun/system/functions
+180224	/var/www/html/infrafilerun/system/includes
+6488064	/var/www/html/infrafilerun/system/modules
+24653824	/var/www/html/infrafilerun/system
+8192	/var/www/html/infrafilerun/weblinks
+24576	/var/www/html/infrafilerun/wl/css
+8192	/var/www/html/infrafilerun/wl/img
+57344	/var/www/html/infrafilerun/wl/js
+98304	/var/www/html/infrafilerun/wl
+8192	/var/www/html/infrafilerun/a
+81920	/var/www/html/infrafilerun/cron
+12288	/var/www/html/infrafilerun/css/ext-ux
+176128	/var/www/html/infrafilerun/css/font-awesome
+253952	/var/www/html/infrafilerun/css/roboto
+581632	/var/www/html/infrafilerun/css
+98304	/var/www/html/infrafilerun/customizables/auth
+339968	/var/www/html/infrafilerun/customizables/emails
+4096	/var/www/html/infrafilerun/customizables/events
+11227136	/var/www/html/infrafilerun/customizables/plugins
+11673600	/var/www/html/infrafilerun/customizables
+339968	/var/www/html/infrafilerun/images/extjs
+487424	/var/www/html/infrafilerun/images/fico
+20480	/var/www/html/infrafilerun/images/generic
+204800	/var/www/html/infrafilerun/images/icons
+1060864	/var/www/html/infrafilerun/images
+331776	/var/www/html/infrafilerun/js/cpanel
+765952	/var/www/html/infrafilerun/js/ext
+315392	/var/www/html/infrafilerun/js/fileman
+16384	/var/www/html/infrafilerun/js/flow
+155648	/var/www/html/infrafilerun/js/jquery
+16384	/var/www/html/infrafilerun/js/swfobject
+1671168	/var/www/html/infrafilerun/js
+4096	/var/www/html/infrafilerun/logout
+629142773760	/var/www/html/infrafilerun/documentos/OBRAS
+252391424	/var/www/html/infrafilerun/documentos/GESTION
+149106688	/var/www/html/infrafilerun/documentos/ESTABILIZADORES
+237121536	/var/www/html/infrafilerun/documentos/FILTROS
+211406848	/var/www/html/infrafilerun/documentos/PROYECTOS_PLANOS_2019
+491008000	/var/www/html/infrafilerun/documentos/Relevamiento_Sitios_Proyecto_LTE
+55386112	/var/www/html/infrafilerun/documentos/.filerun.trash
+0	/var/www/html/infrafilerun/documentos/.filerun.thumbnails
+620560384	/var/www/html/infrafilerun/documentos/VIATICO
+0	/var/www/html/infrafilerun/documentos/ADM
+3663118336	/var/www/html/infrafilerun/documentos/Baterias2025-Telrad
+634822873088	/var/www/html/infrafilerun/documentos
+634862866432	/var/www/html/infrafilerun
+
+=== BACKUPS METADATOS ===
+d|4096|8|2|64768:2315688321|2026-09-16T00:00:01.8078952260|/var/www/html/backup_pg
+f|726628571|1419200|1|64768:2315543786|2026-09-08T00:02:01.4932789200|/var/www/html/backup_pg/backup_Infraestructura_20260908_000001.sql
+f|727163692|1420248|1|64768:2315543791|2026-09-09T00:02:00.5236091450|/var/www/html/backup_pg/backup_Infraestructura_20260909_000001.sql
+f|727692246|1421280|1|64768:2315543807|2026-09-10T00:02:00.9266707760|/var/www/html/backup_pg/backup_Infraestructura_20260910_000001.sql
+f|728163749|1422200|1|64768:2315544394|2026-09-11T00:02:01.3599303370|/var/www/html/backup_pg/backup_Infraestructura_20260911_000001.sql
+f|728635964|1423120|1|64768:2315544401|2026-09-12T00:02:02.5893422110|/var/www/html/backup_pg/backup_Infraestructura_20260912_000001.sql
+f|728704985|1423256|1|64768:2315544403|2026-09-13T00:01:59.8238166680|/var/www/html/backup_pg/backup_Infraestructura_20260913_000001.sql
+f|728707153|1423264|1|64768:2315544404|2026-09-14T00:02:02.1070570750|/var/www/html/backup_pg/backup_Infraestructura_20260914_000001.sql
+f|729182934|1424192|1|64768:2315544407|2026-09-15T00:02:02.2973763840|/var/www/html/backup_pg/backup_Infraestructura_20260915_000001.sql
+f|729730812|1425256|1|64768:2315544409|2026-09-16T00:02:00.0663119700|/var/www/html/backup_pg/backup_Infraestructura_20260916_000001.sql
+2026-09-16T09:59:19-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

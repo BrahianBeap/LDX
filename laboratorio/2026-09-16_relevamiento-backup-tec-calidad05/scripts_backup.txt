@@ -1,0 +1,33 @@
+
+=== /opt/backup_potsgres.sh RC=0 ===
+Rutas: 
+Indicadores: postgres
+Linea: PGUSER="postgres"
+[SECRETO REDACTADO] posible credencial o mecanismo de autenticacion en linea; no se imprime su valor
+Rutas: 
+Indicadores: 
+Rutas: 
+Indicadores: Infraestructura
+Linea: PGDATABASE="Infraestructura"  # Nombre de la BD a respaldar
+Rutas: /var/www/html/backup_pg
+Indicadores: 
+
+=== HTTPS SNI LOCAL ===
+/backup_pg/ 302
+CURL_RC=0
+/backup_pg/backup_Infraestructura_20260916_000001.sql 302
+CURL_RC=0
+
+=== DEFAULT CLIENT ===
+pg_dump (PostgreSQL) 10.12
+pg_restore (PostgreSQL) 10.12
+Enforcing
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+Traceback (most recent call last):
+  File "<stdin>", line 19, in <module>
+  File "<stdin>", line 17, in inspect
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xe1' in position 71: ordinal not in range(128)

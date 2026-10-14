@@ -1,0 +1,97 @@
+2026-09-16T10:49:00-0300
+
+=== LOCALIZAR ===
+/var/spool/cron/postgres
+BUSQUEDA_RC=0
+
+=== HERRAMIENTAS ===
+/usr/bin/pg_dump
+/usr/bin/pg_restore
+/usr/bin/psql
+/usr/bin/flock
+/usr/bin/sha256sum
+/usr/bin/logger
+pg_dump (PostgreSQL) 10.12
+pg_restore (PostgreSQL) 10.12
+psql (PostgreSQL) 10.12
+uid=26(postgres) gid=26(postgres) grupos=26(postgres)
+postgres:x:26:26:PostgreSQL Server:/var/lib/pgsql:/bin/bash
+
+=== AUTH ===
+AUTH_RC=1
+
+=== DESTINO ===
+drwxr-xr-x. root root unconfined_u:object_r:var_t:s0   /var/backups
+drwxr-xr-x. root root unconfined_u:object_r:httpd_sys_content_t:s0 /var/www/html/backup_pg
+f: /var/www/html/backup_pg/admtech
+ dr-xr-xr-x root root /
+ drwxr-xr-x root root var
+ drwxr-xr-x root root www
+ drwxr-xr-x root root html
+ drwxr-xr-x root root backup_pg
+admtech - No such file or directory
+S.ficheros              bloques de 1       Usados Disponibles Capacidad Montado en
+/dev/mapper/centos-root 800996720640 712457064448 88539656192       89% /
+S.ficheros                Nodos-i NUsados   NLibres NUso% Montado en
+/dev/mapper/centos-root 175225272 2171515 173053757    2% /
+POSTGRES_PARENT_WRITE_RC=1
+POSTGRES_DEST_WRITE_RC=1
+backup_Infraestructura_20260908_000001.sql|726628571|2026-09-08 00:02:01.4932789200|root|root|644
+backup_Infraestructura_20260909_000001.sql|727163692|2026-09-09 00:02:00.5236091450|root|root|644
+backup_Infraestructura_20260910_000001.sql|727692246|2026-09-10 00:02:00.9266707760|root|root|644
+backup_Infraestructura_20260911_000001.sql|728163749|2026-09-11 00:02:01.3599303370|root|root|644
+backup_Infraestructura_20260912_000001.sql|728635964|2026-09-12 00:02:02.5893422110|root|root|644
+backup_Infraestructura_20260913_000001.sql|728704985|2026-09-13 00:01:59.8238166680|root|root|644
+backup_Infraestructura_20260914_000001.sql|728707153|2026-09-14 00:02:02.1070570750|root|root|644
+backup_Infraestructura_20260915_000001.sql|729182934|2026-09-15 00:02:02.2973763840|root|root|644
+backup_Infraestructura_20260916_000001.sql|729730812|2026-09-16 00:02:00.0663119700|root|root|644
+
+=== APACHE ===
+VirtualHost configuration:
+*:80                   infra.personal.com.py (/etc/httpd/conf.d/infra.personal.com.py.conf:1)
+*:443                  is a NameVirtualHost
+         default server infra.personal.com.py (/etc/httpd/conf.d/infra.personal.com.py.conf:16)
+         port 443 namevhost infra.personal.com.py (/etc/httpd/conf.d/infra.personal.com.py.conf:16)
+         port 443 namevhost infra.personal.com.py (/etc/httpd/conf.d/ssl.conf:56)
+ServerRoot: "/etc/httpd"
+Main DocumentRoot: "/var/www/html"
+Main ErrorLog: "/etc/httpd/logs/error_log"
+Mutex ssl-stapling: using_defaults
+Mutex proxy: using_defaults
+Mutex authn-socache: using_defaults
+Mutex ssl-cache: using_defaults
+Mutex default: dir="/run/httpd/" mechanism=default 
+Mutex mpm-accept: using_defaults
+Mutex authdigest-opaque: using_defaults
+Mutex proxy-balancer-shm: using_defaults
+Mutex rewrite-map: using_defaults
+Mutex authdigest-client: using_defaults
+PidFile: "/run/httpd/httpd.pid"
+Define: _RH_HAS_HTTPPROTOCOLOPTIONS
+Define: DUMP_VHOSTS
+Define: DUMP_RUN_CFG
+User: name="apache" id=48 not_used
+Group: name="apache" id=48 not_used
+
+=== CRON ===
+active
+enabled
+      Local time: miÃ© 2026-09-16 10:49:01 -03
+  Universal time: miÃ© 2026-09-16 13:49:01 UTC
+        RTC time: miÃ© 2026-09-16 13:49:01
+       Time zone: America/Argentina/Buenos_Aires (-03, -0300)
+     NTP enabled: yes
+NTP synchronized: yes
+ RTC in local TZ: no
+      DST active: n/a
+2026-09-16T10:49:01-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+sudo: a password is required
+ls: no se puede acceder a /var/www/html/backup_pg/admtech: No existe el fichero o el directorio
+ls: no se puede acceder a /var/backups/postgresql/admtech: No existe el fichero o el directorio
+sudo: a password is required
+sudo: a password is required

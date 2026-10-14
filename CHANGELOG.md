@@ -343,3 +343,16 @@ Kanboard nunca había tenido su propia ficha en `03_Componentes.md` — solo se 
 
 **Resumen:**
 Se midió en vivo, sin necesidad de abrir sesión SSH a cada sitio por separado (LXD enruta las consultas con `--target` y con `lxc info`/`lxc exec` normales), la capacidad real de los 3 miembros del cluster. Disco no es una restricción en ningún sitio (entre 310 y 378 GiB libres); Franco tiene el triple de CPU que Carpinelli o Fernando; RAM es el recurso más parejo, ninguno en estado crítico. El hallazgo más accionable: 3 contenedores (`CAR-GW-OAM`, `FDO-GW-SRV`, `FDO-WS-1`) ya usaron swap dentro de su límite de 1 GiB — señal de que ese límite les queda justo, antes incluso de sumarles más carga. Se documentó también el procedimiento completo como referencia reutilizable, ya que el usuario pidió explícitamente los comandos exactos para poder repetir este tipo de verificación por su cuenta.
+
+---
+
+### 2026-09-16 (decimoséptima entrada)
+
+**Fuente:** Relevamiento e implementación realizados el 16/09/2026 sobre `tec-calidad05` (`10.129.2.165`), incorporados al repositorio posteriormente — trabajo previo del usuario, hecho con otra herramienta, que no tenía todavía un lugar fijado dentro de la estructura del repositorio.
+
+**Documentos creados:**
+- `laboratorio/2026-09-16_relevamiento-backup-tec-calidad05/README.md` — índice y resumen de ambos trabajos
+- `laboratorio/2026-09-16_relevamiento-backup-tec-calidad05/` — carpeta completa con la evidencia original: relevamiento de capacidad y consumo por aplicación (`04`, `07`, `08` y sus CSV de respaldo), e implementación verificada del backup nocturno de PostgreSQL para ADM-TECH (`implementacion_backup_admtech.md`, `verificacion_backup_admtech.md` como etapa intermedia), más los scripts y salidas crudas de cada paso
+
+**Resumen:**
+`tec-calidad05` es una VM VMware con CentOS 7 ajena al cluster LXD (aloja Infrawork, ADM-TECH y una versión legacy de VulnApp) — se incorpora a este repositorio porque el equipo centraliza acá toda la infraestructura, no solo la de LXD. El relevamiento de capacidad encontró el filesystem raíz al 88.8% (82.79 GiB disponibles, no crítico todavía pero a vigilar) y dejó pendiente de confirmar con el responsable si `/var/www/html/adm` corresponde efectivamente a ADM-TECH. La implementación del backup de PostgreSQL quedó verificada de punta a punta: script instalado, cron diario a las 02:30, primer respaldo corrido con checksum SHA-256 y catálogo comprobados (`pg_restore --list`), sin exponer ninguna credencial en los documentos (verificado explícitamente por los propios scripts de generación de reportes). Queda pendiente, si se decide mantener este servidor documentado de forma permanente, promover una ficha de componente y el procedimiento de backup a `docs/`.

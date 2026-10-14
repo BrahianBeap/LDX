@@ -1,0 +1,541 @@
+tec-calidad05
+alfonzel_opr
+
+=== IDENTIDAD ===
+tec-calidad05
+10.129.2.165 192.168.122.1 
+2026-09-16T09:25:10-0300
+CentOS Linux release 7.7.1908 (Core)
+3.10.0-1062.18.1.el7.x86_64
+ 09:25:10 up 65 days, 16:01,  2 users,  load average: 0,05, 0,05, 0,05
+vmware
+
+=== CPU ===
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                4
+On-line CPU(s) list:   0-3
+Thread(s) per core:    1
+Core(s) per socket:    1
+Socket(s):             4
+NUMA node(s):          1
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 37
+Model name:            Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz
+Stepping:              1
+CPU MHz:               2197.454
+BogoMIPS:              4394.90
+Hypervisor vendor:     VMware
+Virtualization type:   full
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              51200K
+NUMA node0 CPU(s):     0-3
+Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss syscall nx rdtscp lm constant_tsc arch_perfmon nopl xtopology tsc_reliable nonstop_tsc eagerfpu pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes hypervisor lahf_lm ssbd ibrs ibpb stibp tsc_adjust arat spec_ctrl intel_stibp flush_l1d arch_capabilities
+4
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 1  0 223608 160592      0 5880416    0    0    33    19    2    1  1  0 99  0  0
+ 0  0 223608 160812      0 5880664    0    0     0     0  532  561  2  1 97  0  0
+ 0  0 223608 160896      0 5880664    0    0     0     0  310  281  0  0 100  0  0
+ 0  0 223608 159404      0 5882200    0    0  1452   756  726  358  0  1 98  0  0
+ 0  0 223608 159404      0 5882196    0    0     0     0  181  207  0  0 100  0  0
+Linux 3.10.0-1062.18.1.el7.x86_64 (tec-calidad05) 	16/09/26 	_x86_64_	(4 CPU)
+
+09:25:14     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+09:25:15     all    1,25    0,00    0,00    0,00    0,00    0,00    0,00    0,00    0,00   98,75
+09:25:16     all    0,00    0,00    0,25    0,00    0,00    0,00    0,00    0,00    0,00   99,75
+09:25:17     all    1,00    0,00    0,25    0,00    0,00    0,00    0,00    0,00    0,00   98,75
+Media:       all    0,75    0,00    0,17    0,00    0,00    0,00    0,00    0,00    0,00   99,08
+
+=== HISTORIAL ===
+Linux 3.10.0-1062.18.1.el7.x86_64 (tec-calidad05) 	16/09/26 	_x86_64_	(4 CPU)
+
+00:00:01        CPU     %user     %nice   %system   %iowait    %steal     %idle
+00:10:01        all      5,71      0,00      0,42      0,00      0,00     93,87
+00:20:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+00:30:01        all      0,19      0,00      0,11      0,00      0,00     99,69
+00:40:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+00:50:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+01:00:01        all      0,19      0,00      0,11      0,00      0,00     99,69
+01:10:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+01:20:01        all      0,20      0,00      0,11      0,00      0,00     99,68
+01:30:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+01:40:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+01:50:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+02:00:01        all      0,19      0,00      0,12      0,00      0,00     99,69
+02:10:01        all      0,20      0,00      0,13      0,00      0,00     99,67
+02:20:01        all      0,20      0,00      0,11      0,00      0,00     99,69
+02:30:01        all      0,19      0,00      0,11      0,00      0,00     99,70
+02:40:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+02:50:01        all      0,20      0,00      0,11      0,00      0,00     99,69
+03:00:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+03:10:01        all      0,20      0,00      0,13      0,00      0,00     99,67
+03:20:01        all      0,20      0,00      0,11      0,00      0,00     99,69
+03:30:01        all      0,19      0,16      1,81      0,00      0,00     97,84
+03:40:01        all      0,21      0,00      0,13      0,00      0,00     99,66
+03:50:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+04:00:02        all      0,20      0,00      0,11      0,00      0,00     99,69
+04:10:01        all      0,21      0,00      0,13      0,00      0,00     99,65
+04:20:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+04:30:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+04:40:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+04:50:01        all      0,20      0,00      0,11      0,00      0,00     99,69
+05:00:01        all      0,19      0,00      0,11      0,00      0,00     99,69
+05:10:01        all      0,21      0,00      0,12      0,00      0,00     99,67
+05:20:01        all      0,20      0,00      0,11      0,00      0,00     99,69
+05:30:01        all      0,21      0,00      0,13      0,00      0,00     99,66
+05:40:02        all      0,34      0,00      0,18      0,00      0,00     99,48
+05:50:02        all      0,20      0,00      0,11      0,00      0,00     99,69
+06:00:02        all      0,19      0,00      0,11      0,00      0,00     99,69
+06:10:02        all      0,20      0,00      0,12      0,00      0,00     99,68
+06:20:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+06:30:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+06:40:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+06:50:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+07:00:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+07:10:01        all      0,21      0,00      0,14      0,00      0,00     99,65
+07:20:01        all      0,20      0,00      0,12      0,00      0,00     99,69
+07:30:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+07:40:01        all      0,79      0,00      0,16      0,00      0,00     99,05
+07:50:01        all      0,20      0,00      0,12      0,00      0,00     99,68
+08:00:01        all      0,69      0,00      0,19      0,00      0,00     99,13
+08:10:01        all      0,44      0,00      0,16      0,00      0,00     99,40
+08:20:01        all      0,88      0,00      0,20      0,01      0,00     98,91
+08:30:01        all      0,23      0,00      0,14      0,00      0,00     99,64
+08:40:01        all      0,58      0,00      0,28      0,01      0,00     99,14
+08:50:01        all      0,31      0,00      0,16      0,00      0,00     99,53
+09:00:01        all      1,78      0,00      0,67      0,05      0,00     97,49
+09:10:02        all      0,67      0,00      0,23      0,00      0,00     99,10
+09:20:01        all      0,72      0,00      0,25      0,00      0,00     99,02
+Media:          all      0,39      0,00      0,18      0,00      0,00     99,43
+
+=== MEMORIA ===
+              total        used        free      shared  buff/cache   available
+Mem:     8201240576  2015776768   162037760   605442048  6023426048  5266776064
+Swap:    2147479552   228974592  1918504960
+      8009024 K total memory
+      1968940 K used memory
+      2811944 K active memory
+      2708276 K inactive memory
+       157832 K free memory
+            0 K buffer memory
+      5882252 K swap cache
+      2097148 K total swap
+       223608 K used swap
+      1873540 K free swap
+     11917756 non-nice user cpu ticks
+        22527 nice user cpu ticks
+      4642681 system cpu ticks
+   2250042777 idle cpu ticks
+       280282 IO-wait cpu ticks
+            0 IRQ cpu ticks
+       404684 softirq cpu ticks
+            0 stolen cpu ticks
+    746586568 pages paged in
+    430668845 pages paged out
+         8489 pages swapped in
+        78785 pages swapped out
+   1239646147 interrupts
+   1319599902 CPU context switches
+   1783887816 boot time
+      8990553 forks
+
+=== DISCOS ===
+NAME            TYPE         SIZE FSTYPE      MOUNTPOINT
+fd0             disk         4096             
+sda             disk 805306368000             
+â”œâ”€sda1          part   1073741824 xfs         /boot
+â”œâ”€sda2          part  20400046080 LVM2_member 
+â”‚ â”œâ”€centos-root lvm  801007206400 xfs         /
+â”‚ â””â”€centos-swap lvm    2147483648 swap        [SWAP]
+â””â”€sda3          part 515396075520 LVM2_member 
+  â””â”€centos-root lvm  801007206400 xfs         /
+sdb             disk 279172874240 LVM2_member 
+â””â”€centos-root   lvm  801007206400 xfs         /
+sr0             rom    1073741312             
+sysfs sysfs /sys
+proc proc /proc
+devtmpfs devtmpfs /dev
+securityfs securityfs /sys/kernel/security
+tmpfs tmpfs /dev/shm
+devpts devpts /dev/pts
+tmpfs tmpfs /run
+tmpfs tmpfs /sys/fs/cgroup
+cgroup cgroup /sys/fs/cgroup/systemd
+pstore pstore /sys/fs/pstore
+cgroup cgroup /sys/fs/cgroup/devices
+cgroup cgroup /sys/fs/cgroup/memory
+cgroup cgroup /sys/fs/cgroup/cpu,cpuacct
+cgroup cgroup /sys/fs/cgroup/blkio
+cgroup cgroup /sys/fs/cgroup/perf_event
+cgroup cgroup /sys/fs/cgroup/pids
+cgroup cgroup /sys/fs/cgroup/net_cls,net_prio
+cgroup cgroup /sys/fs/cgroup/freezer
+cgroup cgroup /sys/fs/cgroup/cpuset
+cgroup cgroup /sys/fs/cgroup/hugetlb
+configfs configfs /sys/kernel/config
+/dev/mapper/centos-root xfs /
+selinuxfs selinuxfs /sys/fs/selinux
+systemd-1 autofs /proc/sys/fs/binfmt_misc
+hugetlbfs hugetlbfs /dev/hugepages
+debugfs debugfs /sys/kernel/debug
+mqueue mqueue /dev/mqueue
+/dev/sda1 xfs /boot
+sunrpc rpc_pipefs /var/lib/nfs/rpc_pipefs
+tmpfs tmpfs /run/user/42
+binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+tmpfs tmpfs /run/user/21563
+tmpfs tmpfs /run/user/47861
+S.ficheros              Tipo     bloques de 1       Usados Disponibles Capacidad Montado en
+devtmpfs                devtmpfs   4083376128            0  4083376128        0% /dev
+tmpfs                   tmpfs      4100620288         8192  4100612096        1% /dev/shm
+tmpfs                   tmpfs      4100620288    421167104  3679453184       11% /run
+tmpfs                   tmpfs      4100620288            0  4100620288        0% /sys/fs/cgroup
+/dev/mapper/centos-root xfs      800996720640 712104357888 88892362752       89% /
+/dev/sda1               xfs        1063256064    301240320   762015744       29% /boot
+tmpfs                   tmpfs       820125696        12288   820113408        1% /run/user/42
+tmpfs                   tmpfs       820125696            0   820125696        0% /run/user/21563
+tmpfs                   tmpfs       820125696            0   820125696        0% /run/user/47861
+S.ficheros                Nodos-i NUsados   NLibres NUso% Montado en
+devtmpfs                   996918     371    996547    1% /dev
+tmpfs                     1001128       2   1001126    1% /dev/shm
+tmpfs                     1001128     767   1000361    1% /run
+tmpfs                     1001128      16   1001112    1% /sys/fs/cgroup
+/dev/mapper/centos-root 175914088 2171473 173742615    2% /
+/dev/sda1                  524288     357    523931    1% /boot
+tmpfs                     1001128       9   1001119    1% /run/user/42
+tmpfs                     1001128       1   1001127    1% /run/user/21563
+tmpfs                     1001128       1   1001127    1% /run/user/47861
+
+=== SERVICIOS ===
+abrt-oops.service        loaded active running ABRT kernel log watcher
+abrt-xorg.service        loaded active running ABRT Xorg log watcher
+abrtd.service            loaded active running ABRT Automated Bug Reporting Tool
+accounts-daemon.service  loaded active running Accounts Service
+atd.service              loaded active running Job spooling tools
+auditd.service           loaded active running Security Auditing Service
+bolt.service             loaded active running Thunderbolt system service
+chronyd.service          loaded active running NTP client/server
+colord.service           loaded active running Manage, Install and Generate Color Profiles
+crond.service            loaded active running Command Scheduler
+cups.service             loaded active running CUPS Printing Service
+dbus.service             loaded active running D-Bus System Message Bus
+firewalld.service        loaded active running firewalld - dynamic firewall daemon
+gdm.service              loaded active running GNOME Display Manager
+gssproxy.service         loaded active running GSSAPI Proxy Daemon
+httpd.service            loaded active running The Apache HTTP Server
+irqbalance.service       loaded active running irqbalance daemon
+ksmtuned.service         loaded active running Kernel Samepage Merging (KSM) Tuning Daemon
+libstoragemgmt.service   loaded active running libstoragemgmt plug-in server daemon
+lvm2-lvmetad.service     loaded active running LVM2 metadata daemon
+mariadb.service          loaded active running MariaDB database server
+mcelog.service           loaded active running Machine Check Exception Logging Daemon
+NetworkManager.service   loaded active running Network Manager
+oddjobd.service          loaded active running privileged operations for unprivileged applications
+packagekit.service       loaded active running PackageKit Daemon
+polkit.service           loaded active running Authorization Manager
+postfix.service          loaded active running Postfix Mail Transport Agent
+postgresql-10.service    loaded active running PostgreSQL 10 database server
+rngd.service             loaded active running Hardware RNG Entropy Gatherer Daemon
+rpcbind.service          loaded active running RPC bind service
+rsyslog.service          loaded active running System Logging Service
+rtkit-daemon.service     loaded active running RealtimeKit Scheduling Policy Service
+smartd.service           loaded active running Self Monitoring and Reporting Technology (SMART) Daemon
+sshd.service             loaded active running OpenSSH server daemon
+sssd.service             loaded active running System Security Services Daemon
+systemd-journald.service loaded active running Journal Service
+systemd-logind.service   loaded active running Login Service
+systemd-machined.service loaded active running Virtual Machine and Container Registration Service
+systemd-udevd.service    loaded active running udev Kernel Device Manager
+tuned.service            loaded active running Dynamic System Tuning Daemon
+upower.service           loaded active running Daemon for power management
+vgauthd.service          loaded active running VGAuth Service for open-vm-tools
+vmtoolsd.service         loaded active running Service for virtual machines hosted on VMware
+vulnapp.service          loaded active running VulnApp
+wpa_supplicant.service   loaded active running WPA Supplicant daemon
+
+=== PROCESOS ===
+  PID USER     COMMAND         %CPU %MEM   RSS
+ 1940 mysql    mysqld           0.2  2.9 232660
+ 6366 apache   python           0.0  1.9 155052
+ 3252 postgres postmaster       0.0  1.7 141800
+ 2133 postgres postmaster       0.0  1.7 140108
+ 2134 postgres postmaster       0.0  1.7 138524
+ 2321 gdm      gnome-shell      0.0  0.8 69836
+15494 postgres postmaster       0.0  0.4 35816
+ 2232 postgres postmaster       0.0  0.3 29932
+27455 root     firewalld        0.0  0.3 28836
+ 1498 root     httpd            0.0  0.3 28040
+29445 postgres postmaster       0.0  0.3 24844
+19199 postgres postmaster       0.0  0.2 23176
+24591 apache   httpd            0.6  0.2 22936
+23170 apache   httpd            0.0  0.2 22548
+23322 apache   httpd            0.0  0.2 21244
+ 2405 gdm      gsd-color        0.2  0.2 20896
+22532 apache   httpd            0.0  0.2 20364
+23903 apache   httpd            0.0  0.2 18808
+24520 apache   httpd            0.2  0.2 18124
+ 2231 postgres postmaster       0.0  0.2 17968
+24607 apache   httpd            0.4  0.2 16224
+24690 apache   httpd            0.5  0.2 16068
+22626 apache   httpd            0.0  0.1 15704
+  690 root     systemd-journal  0.0  0.1 15464
+ 2653 postgres postmaster       0.0  0.1 15200
+24655 apache   httpd            0.0  0.1 15132
+ 9133 root     sssd_be          0.0  0.1 14996
+23495 apache   httpd            0.0  0.1 14748
+ 1044 polkitd  polkitd          0.0  0.1 13868
+23843 apache   httpd            0.0  0.1 13672
+15455 root     rsyslogd         0.0  0.1 13524
+ 9134 root     sssd_be          0.0  0.1 12620
+ 1491 postgres postmaster       0.0  0.1 11792
+19492 postgres postmaster       0.0  0.1 10528
+19302 postgres postmaster       0.0  0.1  9996
+16962 root     sudo             0.0  0.0  7424
+20452 postgres postmaster       0.0  0.0  6776
+19254 postgres postmaster       0.0  0.0  6712
+ 5178 root     sshd             0.0  0.0  6288
+ 5196 root     sshd             0.0  0.0  6272
+ 2136 postgres postmaster       0.0  0.0  6136
+24745 root     sshd             3.2  0.0  5828
+ 2422 gdm      gsd-power        0.0  0.0  5776
+    1 root     systemd          0.0  0.0  5492
+16865 root     sshd             0.0  0.0  5424
+16873 root     sshd             0.0  0.0  5320
+ 2135 postgres postmaster       0.0  0.0  5192
+ 1076 root     NetworkManager   0.0  0.0  4932
+ 2249 root     X                0.0  0.0  4896
+ 1487 root     tuned            0.0  0.0  4372
+ 1158 root     accounts-daemon  0.0  0.0  4236
+ 9135 root     sssd_nss         0.0  0.0  4132
+ 1028 root     vmtoolsd         0.0  0.0  4096
+16295 postfix  pickup           0.0  0.0  4080
+16964 root     su               0.0  0.0  3832
+ 2414 gdm      gsd-media-keys   0.0  0.0  3828
+ 9136 root     sssd_pam         0.0  0.0  3552
+ 2269 gdm      gnome-session-b  0.0  0.0  3512
+ 2265 root     gdm-session-wor  0.0  0.0  3456
+ 1077 root     abrtd            0.0  0.0  3324
+ 2388 root     packagekitd      0.0  0.0  3252
+ 1979 postfix  qmgr             0.0  0.0  3236
+ 2397 gdm      gsd-xsettings    0.0  0.0  3196
+ 1047 dbus     dbus-daemon      0.0  0.0  3192
+ 2455 gdm      gsd-wacom        0.0  0.0  3192
+ 2410 gdm      gsd-keyboard     0.0  0.0  3148
+ 2404 gdm      gsd-clipboard    0.0  0.0  3088
+16838 root     sshd             0.0  0.0  3088
+ 2364 gdm      ibus-x11         0.0  0.0  3080
+ 9132 root     sssd             0.0  0.0  3024
+ 5199 u996447+ sshd             0.0  0.0  2996
+ 5260 u996447+ sftp-server      0.0  0.0  2924
+ 5203 u996447+ bash             0.0  0.0  2912
+ 1529 root     gdm              0.0  0.0  2892
+16967 root     bash             0.0  0.0  2852
+ 2425 gdm      gsd-print-notif  0.0  0.0  2836
+16886 alfonze+ sftp-server      0.0  0.0  2836
+ 2387 root     boltd            0.0  0.0  2720
+24749 alfonze+ sshd             0.1  0.0  2660
+ 2466 colord   colord           0.0  0.0  2648
+16877 alfonze+ sshd             0.0  0.0  2632
+ 1027 root     VGAuthService    0.0  0.0  2596
+16908 alfonze+ bash             0.0  0.0  2584
+ 2406 gdm      gsd-datetime     0.0  0.0  2576
+ 5256 u996447+ sshd             0.0  0.0  2576
+ 9137 root     sssd_autofs      0.0  0.0  2568
+ 2329 root     upowerd          0.0  0.0  2552
+ 1078 root     abrt-watch-log   0.0  0.0  2464
+ 2292 gdm      at-spi2-registr  0.0  0.0  2444
+ 1473 root     cupsd            0.0  0.0  2436
+ 1079 root     abrt-watch-log   0.0  0.0  2432
+ 2437 gdm      gsd-sharing      0.0  0.0  2408
+16882 alfonze+ sshd             0.0  0.0  2400
+ 2448 gdm      gsd-sound        0.0  0.0  2340
+ 2358 gdm      ibus-daemon      0.0  0.0  2308
+ 2441 gdm      gsd-smartcard    0.0  0.0  2300
+ 2284 gdm      at-spi-bus-laun  0.0  0.0  2180
+24811 alfonze+ ps               0.0  0.0  2180
+ 2399 gdm      gsd-a11y-settin  0.0  0.0  2132
+ 1046 root     rngd             0.0  0.0  2124
+ 2398 root     wpa_supplicant   0.0  0.0  2048
+ 2434 gdm      gsd-screensaver  0.0  0.0  2024
+ 2361 gdm      ibus-dconf       0.0  0.0  1960
+ 2367 gdm      ibus-portal      0.0  0.0  1892
+ 2409 gdm      gsd-housekeepin  0.0  0.0  1864
+ 2420 gdm      gsd-mouse        0.0  0.0  1856
+ 2510 gdm      ibus-engine-sim  0.0  0.0  1856
+ 2431 gdm      gsd-rfkill       0.0  0.0  1852
+ 2377 gdm      xdg-permission-  0.0  0.0  1848
+ 2471 gdm      dconf-service    0.0  0.0  1764
+ 1045 root     smartd           0.0  0.0  1716
+ 1157 root     systemd-logind   0.0  0.0  1716
+24754 alfonze+ bash             0.2  0.0  1712
+ 2289 gdm      dbus-daemon      0.0  0.0  1692
+ 1468 root     oddjobd          0.0  0.0  1652
+ 2137 postgres postmaster       0.0  0.0  1592
+ 2139 postgres postmaster       0.0  0.0  1532
+ 2276 gdm      dbus-daemon      0.0  0.0  1528
+ 1006 root     sedispatch       0.0  0.0  1448
+ 1531 root     crond            0.0  0.0  1428
+ 1031 rtkit    rtkit-daemon     0.0  0.0  1376
+ 1039 chrony   chronyd          0.0  0.0  1344
+  714 root     lvmetad          0.0  0.0  1228
+  727 root     systemd-udevd    0.0  0.0  1216
+ 1591 mysql    mysqld_safe      0.0  0.0  1212
+ 1111 root     ksmtuned         0.0  0.0  1200
+ 1961 root     master           0.0  0.0  1200
+ 2340 gdm      pulseaudio       0.0  0.0  1188
+ 1036 root     irqbalance       0.0  0.0  1084
+ 1595 postgres postmaster       0.0  0.0  1064
+12588 root     systemd-machine  0.0  0.0   960
+10552 rpc      rpcbind          0.0  0.0   956
+  999 root     auditd           0.0  0.0   932
+ 1001 root     audispd          0.0  0.0   912
+ 1528 root     atd              0.0  0.0   728
+ 1034 libstor+ lsmd             0.0  0.0   660
+ 1051 root     gssproxy         0.0  0.0   612
+ 2007 nobody   dnsmasq          0.0  0.0   508
+24688 root     sleep            0.0  0.0   356
+ 2275 gdm      dbus-launch      0.0  0.0   344
+ 1104 root     mcelog           0.0  0.0   116
+ 2008 root     dnsmasq          0.0  0.0    12
+    2 root     kthreadd         0.0  0.0     0
+    4 root     kworker/0:0H     0.0  0.0     0
+    6 root     ksoftirqd/0      0.0  0.0     0
+    7 root     migration/0      0.0  0.0     0
+    8 root     rcu_bh           0.0  0.0     0
+    9 root     rcu_sched        0.0  0.0     0
+   10 root     lru-add-drain    0.0  0.0     0
+   11 root     watchdog/0       0.0  0.0     0
+   12 root     watchdog/1       0.0  0.0     0
+   13 root     migration/1      0.0  0.0     0
+   14 root     ksoftirqd/1      0.0  0.0     0
+   16 root     kworker/1:0H     0.0  0.0     0
+   17 root     watchdog/2       0.0  0.0     0
+   18 root     migration/2      0.0  0.0     0
+   19 root     ksoftirqd/2      0.0  0.0     0
+   21 root     kworker/2:0H     0.0  0.0     0
+   22 root     watchdog/3       0.0  0.0     0
+   23 root     migration/3      0.0  0.0     0
+   24 root     ksoftirqd/3      0.0  0.0     0
+   26 root     kworker/3:0H     0.0  0.0     0
+   28 root     kdevtmpfs        0.0  0.0     0
+   29 root     netns            0.0  0.0     0
+   30 root     khungtaskd       0.0  0.0     0
+   31 root     writeback        0.0  0.0     0
+   32 root     kintegrityd      0.0  0.0     0
+   33 root     bioset           0.0  0.0     0
+   34 root     bioset           0.0  0.0     0
+   35 root     bioset           0.0  0.0     0
+   36 root     kblockd          0.0  0.0     0
+   37 root     md               0.0  0.0     0
+   38 root     edac-poller      0.0  0.0     0
+   39 root     watchdogd        0.0  0.0     0
+   45 root     kswapd0          0.0  0.0     0
+   46 root     ksmd             0.0  0.0     0
+   47 root     khugepaged       0.0  0.0     0
+   48 root     crypto           0.0  0.0     0
+   56 root     kthrotld         0.0  0.0     0
+   58 root     kmpath_rdacd     0.0  0.0     0
+   59 root     kaluad           0.0  0.0     0
+   61 root     kpsmoused        0.0  0.0     0
+   63 root     ipv6_addrconf    0.0  0.0     0
+   76 root     deferwq          0.0  0.0     0
+  114 root     kauditd          0.0  0.0     0
+  291 root     mpt_poll_0       0.0  0.0     0
+  303 root     mpt/0            0.0  0.0     0
+  312 root     ata_sff          0.0  0.0     0
+  353 root     nfit             0.0  0.0     0
+  438 root     scsi_eh_0        0.0  0.0     0
+  440 root     scsi_tmf_0       0.0  0.0     0
+  443 root     scsi_eh_1        0.0  0.0     0
+  444 root     scsi_tmf_1       0.0  0.0     0
+  445 root     scsi_eh_2        0.0  0.0     0
+  446 root     scsi_tmf_2       0.0  0.0     0
+  447 root     irq/16-vmwgfx    0.0  0.0     0
+  450 root     ttm_swap         0.0  0.0     0
+  518 root     kworker/2:1H     0.0  0.0     0
+  568 root     kdmflush         0.0  0.0     0
+  569 root     bioset           0.0  0.0     0
+  581 root     kdmflush         0.0  0.0     0
+  582 root     bioset           0.0  0.0     0
+  595 root     bioset           0.0  0.0     0
+  596 root     xfsalloc         0.0  0.0     0
+  597 root     xfs_mru_cache    0.0  0.0     0
+  598 root     xfs-buf/dm-0     0.0  0.0     0
+  599 root     xfs-data/dm-0    0.0  0.0     0
+  600 root     xfs-conv/dm-0    0.0  0.0     0
+  601 root     xfs-cil/dm-0     0.0  0.0     0
+  602 root     xfs-reclaim/dm-  0.0  0.0     0
+  603 root     xfs-log/dm-0     0.0  0.0     0
+  604 root     xfs-eofblocks/d  0.0  0.0     0
+  605 root     xfsaild/dm-0     0.0  0.0     0
+  606 root     kworker/1:1H     0.0  0.0     0
+  951 root     xfs-buf/sda1     0.0  0.0     0
+  952 root     xfs-data/sda1    0.0  0.0     0
+  953 root     xfs-conv/sda1    0.0  0.0     0
+  954 root     xfs-cil/sda1     0.0  0.0     0
+  955 root     xfs-reclaim/sda  0.0  0.0     0
+  956 root     xfs-log/sda1     0.0  0.0     0
+  957 root     xfs-eofblocks/s  0.0  0.0     0
+  958 root     xfsaild/sda1     0.0  0.0     0
+ 1003 root     rpciod           0.0  0.0     0
+ 1004 root     xprtiod          0.0  0.0     0
+ 1066 root     kworker/0:1H     0.0  0.0     0
+ 1067 root     kworker/3:1H     0.0  0.0     0
+ 1975 root     kworker/u8:2     0.0  0.0     0
+ 4176 root     kworker/0:2      0.0  0.0     0
+12778 root     kworker/2:0      0.0  0.0     0
+22486 root     kworker/u8:1     0.0  0.0     0
+22881 root     kworker/3:0      0.0  0.0     0
+23263 root     kworker/1:2      0.0  0.0     0
+23803 root     kworker/0:1      0.0  0.0     0
+23858 root     kworker/1:1      0.0  0.0     0
+23871 root     kworker/3:2      0.0  0.0     0
+24216 root     kworker/2:1      0.0  0.0     0
+24248 root     kworker/0:0      0.0  0.0     0
+24345 root     kworker/3:1      0.0  0.0     0
+24557 root     kworker/1:0      0.0  0.0     0
+
+=== PUERTOS ===
+
+=== APACHE ===
+
+=== DIRECTORIOS ===
+/var/www
+/var/www/cgi-bin
+/var/www/html
+/var/www/html/Sistema
+/var/www/html/Proyecto
+/var/www/html/portafoox-lite
+/var/www/html/subirArchivos
+/var/www/html/supportix
+/var/www/html/webalizer
+/var/www/html/xampp
+/var/www/html/INFRAWORK
+/var/www/html/test
+/var/www/html/quill-1.3.6
+/var/www/html/infrafilerun
+/var/www/html/adm
+/var/www/html/sorteo
+/var/www/html/RuletaNucleo
+/var/www/html/backup_pg
+/var/www/html/vulnapp
+/opt
+/opt/rh
+/opt/sublime_text
+/opt/sublime_text/Icon
+/opt/sublime_text/Packages
+/opt/remi
+/opt/remi/php56
+/srv
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+bash: ss: command not found
+bash: httpd: command not found

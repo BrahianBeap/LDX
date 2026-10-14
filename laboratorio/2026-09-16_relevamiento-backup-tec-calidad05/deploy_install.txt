@@ -1,0 +1,18 @@
+drwxr-xr-x. root     root     unconfined_u:object_r:var_t:s0   /var/backups/postgresql
+drwx------. postgres postgres unconfined_u:object_r:var_t:s0   /var/backups/postgresql/admtech
+f: /var/backups/postgresql/admtech
+ dr-xr-xr-x root     root     /
+ drwxr-xr-x root     root     var
+ drwxr-xr-x root     root     backups
+ drwxr-xr-x root     root     postgresql
+ drwx------ postgres postgres admtech
+WRITE_TEST_RC=0
+-rwxr-xr-x. root root unconfined_u:object_r:bin_t:s0   /usr/local/sbin/backup_admtech.sh
+178f1a52f26ff35ef4e2b1e561cd138749f61ebb34613788eabccffc1459d174  /usr/local/sbin/backup_admtech.sh
+SCRIPT_PERMISSIONS_RC=0
+2026-09-16T11:11:07-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

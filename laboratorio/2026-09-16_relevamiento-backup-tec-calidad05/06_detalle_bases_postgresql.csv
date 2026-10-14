@@ -1,0 +1,5 @@
+﻿Aplicacion;Tipo_base;Base_datos;Tamano_total_GiB;Tablas_GiB;Indices_GiB;Estado;Fecha_medicion
+Infrawork;Principal;Infraestructura;1.79;1.45;0.32;"Verificada; solo lectura; tablas e índices de esquemas de usuario";2026-09-16T09:59:16-0300
+ADM-TECH;Principal;postgres;0.05;0.03;0.01;"Verificada; solo lectura; tablas e índices de esquemas de usuario";2026-09-16T09:59:16-0300
+VulnApp;Principal;vulnerabilidad;0.11;0.05;0.05;"Verificada; solo lectura; tablas e índices de esquemas de usuario";2026-09-16T09:59:16-0300
+Infrawork;Respaldo;Infra_restore;1.71;N/D;N/D;"Verificada; desglose no solicitado para respaldo";2026-09-16T09:58:47-0300

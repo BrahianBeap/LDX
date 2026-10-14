@@ -1,0 +1,67 @@
+2026-09-16T09:26:13-0300
+
+=== VULNAPP INTERVALO ===
+Linux 3.10.0-1062.18.1.el7.x86_64 (tec-calidad05) 	16/09/26 	_x86_64_	(4 CPU)
+
+09:26:13      UID       PID    %usr %system  %guest    %CPU   CPU  Command
+09:26:14       48      6366    0,00    0,00    0,00    0,00     1  python
+
+09:26:13      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+09:26:14       48      6366      0,00      0,00  499976 155044   1,94  python
+
+09:26:14      UID       PID    %usr %system  %guest    %CPU   CPU  Command
+09:26:15       48      6366    0,00    0,00    0,00    0,00     1  python
+
+09:26:14      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+09:26:15       48      6366      0,00      0,00  499976 155044   1,94  python
+
+09:26:15      UID       PID    %usr %system  %guest    %CPU   CPU  Command
+09:26:16       48      6366    0,00    0,00    0,00    0,00     1  python
+
+09:26:15      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+09:26:16       48      6366      0,00      0,00  499976 155044   1,94  python
+
+Media:        UID       PID    %usr %system  %guest    %CPU   CPU  Command
+Media:         48      6366    0,00    0,00    0,00    0,00     -  python
+
+Media:        UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+Media:         48      6366      0,00      0,00  499976 155044   1,94  python
+
+=== OTROS DIRECTORIOS IDENTIFICADOS ===
+6554636288	/var/www/html/backup_pg
+634862866432	/var/www/html/infrafilerun
+1978368	/var/www/html/subirArchivos
+
+=== LOGS CONCRETOS ===
+20480	/var/www/html/INFRAWORK/logs
+5574656	/var/www/html/INFRAWORK/garbage-test/log
+
+=== SERVICIOS ===
+MainPID=1498
+ControlGroup=/system.slice/httpd.service
+WorkingDirectory=
+Id=httpd.service
+MainPID=1591
+ControlGroup=/system.slice/mariadb.service
+WorkingDirectory=
+Id=mariadb.service
+MainPID=1491
+ControlGroup=/system.slice/postgresql-10.service
+WorkingDirectory=
+Id=postgresql-10.service
+
+=== NOMBRES APLICACIONES ===
+/var/www/html/portafoox-lite/admin
+/var/www/html/INFRAWORK
+/var/www/html/infrafilerun
+/var/www/html/infrafilerun/documentos/ADM
+/var/www/html/adm
+/var/www/html/vulnapp
+
+=== FECHA FIN ===
+2026-09-16T09:28:03-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

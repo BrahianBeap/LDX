@@ -1,0 +1,29 @@
+2026-09-16T09:58:47-0300
+
+=== READONLY ===
+current_setting|current_setting|current_setting
+on|on|30s
+(1 fila)
+
+=== NOMBRES ===
+datname
+Infra_restore
+Infraestructura
+postgres
+vulnerabilidad
+(4 filas)
+
+=== TAMANOS ===
+base_datos|bytes|gib
+Infra_restore|1840168071|1.71
+Infraestructura|1921186951|1.79
+postgres|58432647|0.05
+vulnerabilidad|121412743|0.11
+(4 filas)
+
+PGPASS_ELIMINADO=SI
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

@@ -1,0 +1,32 @@
+active
+enabled
+SHELL=/bin/bash
+PATH=/usr/pgsql-10/bin:/usr/local/sbin:/usr/bin:/bin
+MAILTO=root
+
+30 2 * * * postgres /usr/local/sbin/backup_admtech.sh
+-rw-r--r--. root root unconfined_u:object_r:system_cron_spool_t:s0 /etc/cron.d/backup-admtech
+271db236ea9fdec78776308cf099ab3f2f24d46593085e28e7a0d0bd79ea7c58  /etc/cron.d/backup-admtech
+178f1a52f26ff35ef4e2b1e561cd138749f61ebb34613788eabccffc1459d174  /usr/local/sbin/backup_admtech.sh
+active
+enabled
+2026-09-16T11:12:00-0300
+NEXT_RUN_LOCAL=2026-09-17T02:30:00-0300
+      Local time: miÃ© 2026-09-16 11:12:00 -03
+  Universal time: miÃ© 2026-09-16 14:12:00 UTC
+        RTC time: miÃ© 2026-09-16 14:12:00
+       Time zone: America/Argentina/Buenos_Aires (-03, -0300)
+     NTP enabled: yes
+NTP synchronized: yes
+ RTC in local TZ: no
+      DST active: n/a
+
+=== BACKUP LOG ===
+-- Logs begin at mar 2026-09-01 14:06:01 -03, end at miÃ© 2026-09-16 11:12:00 -03. --
+2026-09-16T11:11:26-0300 tec-calidad05 backup-admtech[5377]: INICIO base=postgres archivo=admtech_postgres_20260916T141126Z.dump
+2026-09-16T11:11:28-0300 tec-calidad05 backup-admtech[5391]: OK base=postgres archivo=admtech_postgres_20260916T141126Z.dump bytes=4638079
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

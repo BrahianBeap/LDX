@@ -1,0 +1,12 @@
+2026-09-16T09:58:35-0300
+
+=== READONLY ===
+
+PGPASS_ELIMINADO=SI
+
+STDERR
+[REDACTADO][REDACTADO] WARNING: connection is not using a post-quantum key exchange algorithm.
+[REDACTADO][REDACTADO] This session may be vulnerable to "store now, decrypt later" attacks.
+[REDACTADO][REDACTADO] The server may need to be upgraded. See https://openssh.com/pq.html
+psql: FATAL:  la autentificaciÃ³n password fallÃ³ para el usuario Â«postgresÂ»
+contraseÃ±a obtenida desde el archivo Â«/tmp/tmp.BSUcQjrTX2/.pgpassÂ»

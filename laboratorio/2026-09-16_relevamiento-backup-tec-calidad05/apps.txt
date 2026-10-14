@@ -1,0 +1,1005 @@
+
+=== FECHA ===
+2026-09-16T09:25:41-0300
+
+=== SERVICIOS APLICACION ===
+MainPID=6366
+ControlGroup=/system.slice/vulnapp.service
+MemoryCurrent=18446744073709551615
+CPUAccounting=no
+MemoryAccounting=no
+WorkingDirectory=/var/www/html/vulnapp
+Id=vulnapp.service
+FragmentPath=/etc/systemd/system/vulnapp.service
+httpd.service                                 enabled 
+initrd-udevadm-cleanup-db.service             static  
+mariadb.service                               enabled 
+mdadm-grow-continue@.service                  static  
+mdadm-last-resort@.service                    static  
+postgresql-10.service                         enabled 
+rhel-loadmodules.service                      enabled 
+vulnapp.service                               enabled 
+
+=== APACHE ===
+VirtualHost configuration:
+*:80                   infra.personal.com.py (/etc/httpd/conf.d/infra.personal.com.py.conf:1)
+*:443                  is a NameVirtualHost
+         default server infra.personal.com.py (/etc/httpd/conf.d/infra.personal.com.py.conf:16)
+         port 443 namevhost infra.personal.com.py (/etc/httpd/conf.d/infra.personal.com.py.conf:16)
+         port 443 namevhost infra.personal.com.py (/etc/httpd/conf.d/ssl.conf:56)
+ServerRoot: "/etc/httpd"
+Main DocumentRoot: "/var/www/html"
+Main ErrorLog: "/etc/httpd/logs/error_log"
+Mutex proxy-balancer-shm: using_defaults
+Mutex rewrite-map: using_defaults
+Mutex authdigest-client: using_defaults
+Mutex ssl-stapling: using_defaults
+Mutex proxy: using_defaults
+Mutex authn-socache: using_defaults
+Mutex ssl-cache: using_defaults
+Mutex default: dir="/run/httpd/" mechanism=default 
+Mutex mpm-accept: using_defaults
+Mutex authdigest-opaque: using_defaults
+PidFile: "/run/httpd/httpd.pid"
+Define: _RH_HAS_HTTPPROTOCOLOPTIONS
+Define: DUMP_VHOSTS
+Define: DUMP_RUN_CFG
+User: name="apache" id=48 not_used
+Group: name="apache" id=48 not_used
+
+=== PUERTOS ===
+State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              
+LISTEN     0      128          *:22                       *:*                  
+LISTEN     0      128    127.0.0.1:631                      *:*                  
+LISTEN     0      128          *:5432                     *:*                  
+LISTEN     0      100    127.0.0.1:25                       *:*                  
+LISTEN     0      128    127.0.0.1:6010                     *:*                  
+LISTEN     0      128    127.0.0.1:6011                     *:*                  
+LISTEN     0      128          *:5000                     *:*                  
+LISTEN     0      50           *:3306                     *:*                  
+LISTEN     0      128          *:111                      *:*                  
+LISTEN     0      5      192.168.122.1:53                       *:*                  
+LISTEN     0      128       [::]:22                    [::]:*                  
+LISTEN     0      128      [::1]:631                   [::]:*                  
+LISTEN     0      128       [::]:5432                  [::]:*                  
+LISTEN     0      100      [::1]:25                    [::]:*                  
+LISTEN     0      128      [::1]:6010                  [::]:*                  
+LISTEN     0      128      [::1]:6011                  [::]:*                  
+LISTEN     0      128       [::]:443                   [::]:*                  
+LISTEN     0      128       [::]:111                   [::]:*                  
+LISTEN     0      128       [::]:80                    [::]:*                  
+
+=== RUTAS ===
+/var/www/html/adm
+/var/www/html/adm/img
+/var/www/html/adm/assets
+/var/www/html/adm/assets/brand
+/var/www/html/adm/assets/js
+/var/www/html/adm/assets/dist
+/var/www/html/adm/vendor
+/var/www/html/adm/vendor/arielcr
+/var/www/html/adm/vendor/bin
+/var/www/html/adm/vendor/composer
+/var/www/html/adm/vendor/markbaker
+/var/www/html/adm/vendor/pclzip
+/var/www/html/adm/vendor/phpoffice
+/var/www/html/adm/vendor/psr
+/var/www/html/adm/vendor/zendframework
+/var/www/html/adm/archivos
+/var/www/html/adm/archivos/doc_excel
+/var/www/html/adm/archivos/doc_reservas
+/var/www/html/adm/migo_notificacion
+/var/www/html/adm/certificados
+/var/www/html/adm/certificados/tmp
+/var/www/html/adm/db
+/var/www/html/adm/db/migrations
+/var/www/html/adm/backups
+/var/www/html/adm/backups/2026-08-28_fase1_clasificacion
+/var/www/html/adm/backups/2026-09-07_restaurar_reservas
+/var/www/html/INFRAWORK
+/var/www/html/INFRAWORK/PHPMailer
+/var/www/html/INFRAWORK/PHPMailer/.git
+/var/www/html/INFRAWORK/PHPMailer/.github
+/var/www/html/INFRAWORK/PHPMailer/docs
+/var/www/html/INFRAWORK/PHPMailer/.phan
+/var/www/html/INFRAWORK/PHPMailer/examples
+/var/www/html/INFRAWORK/PHPMailer/language
+/var/www/html/INFRAWORK/PHPMailer/src
+/var/www/html/INFRAWORK/PHPMailer/test
+/var/www/html/INFRAWORK/PHPMailer-master
+/var/www/html/INFRAWORK/PHPMailer-master/language
+/var/www/html/INFRAWORK/PHPMailer-master/src
+/var/www/html/INFRAWORK/sweetalert
+/var/www/html/INFRAWORK/email
+/var/www/html/INFRAWORK/energia
+/var/www/html/INFRAWORK/proceso_carga_grilla
+/var/www/html/INFRAWORK/presupuesto-pago
+/var/www/html/INFRAWORK/jquery-ui-1.12.1
+/var/www/html/INFRAWORK/jquery-ui-1.12.1/images
+/var/www/html/INFRAWORK/sms
+/var/www/html/INFRAWORK/configuracion
+/var/www/html/INFRAWORK/gestion
+/var/www/html/INFRAWORK/gestion/css
+/var/www/html/INFRAWORK/gestion/js
+/var/www/html/INFRAWORK/gestion/inc
+/var/www/html/INFRAWORK/gestion/backend
+/var/www/html/INFRAWORK/api
+/var/www/html/INFRAWORK/garbage-test
+/var/www/html/INFRAWORK/garbage-test/log
+/var/www/html/INFRAWORK/informes
+/var/www/html/INFRAWORK/informes/backend
+/var/www/html/INFRAWORK/logs
+/var/www/html/INFRAWORK/PHPMailer-master_old
+/var/www/html/INFRAWORK/PHPMailer-master_old/language
+/var/www/html/INFRAWORK/PHPMailer-master_old/src
+/var/www/html/INFRAWORK/vendor
+/var/www/html/INFRAWORK/vendor/pclzip
+/var/www/html/INFRAWORK/vendor/composer
+/var/www/html/INFRAWORK/vendor/phpoffice
+/var/www/html/INFRAWORK/vendor/zendframework
+/var/www/html/INFRAWORK/vendor/bin
+/var/www/html/INFRAWORK/vendor/arielcr
+/var/www/html/INFRAWORK/vendor/markbaker
+/var/www/html/INFRAWORK/vendor/psr
+/var/www/html/INFRAWORK/pruebas
+/var/www/html/INFRAWORK/pruebas/assets
+/var/www/html/INFRAWORK/pruebas/Subidas
+/var/www/html/INFRAWORK/pruebas/dist
+/var/www/html/INFRAWORK/bootstrap-3.4.1
+/var/www/html/INFRAWORK/bootstrap-3.4.1/css
+/var/www/html/INFRAWORK/bootstrap-3.4.1/fonts
+/var/www/html/INFRAWORK/bootstrap-3.4.1/js
+/var/www/html/INFRAWORK/stock_estructura
+/var/www/html/INFRAWORK/alquiler
+/var/www/html/INFRAWORK/alquiler/js
+/var/www/html/INFRAWORK/alquiler/contrato
+/var/www/html/INFRAWORK/reporte
+/var/www/html/INFRAWORK/crono
+/var/www/html/INFRAWORK/crono/reportes
+/var/www/html/INFRAWORK/notificaciones
+/var/www/html/INFRAWORK/certificado_trabajo
+/var/www/html/INFRAWORK/certificado_trabajo/certificado_trabajo
+/var/www/html/INFRAWORK/solped
+/var/www/html/INFRAWORK/solped/ajax
+/var/www/html/INFRAWORK/solped/css
+/var/www/html/INFRAWORK/solped/js
+/var/www/html/INFRAWORK/solped/ajax_pantalla_2
+/var/www/html/INFRAWORK/solped/ajax_pantalla_3
+/var/www/html/INFRAWORK/solped/excel
+/var/www/html/INFRAWORK/Ejemplos_fileinput
+/var/www/html/INFRAWORK/Ejemplos_fileinput/compras
+/var/www/html/INFRAWORK/Ejemplos_fileinput/anticipo_rendiciones
+/var/www/html/INFRAWORK/Ejemplos_fileinput/descargas
+/var/www/html/INFRAWORK/Ejemplos_fileinput/gestion_facturas
+/var/www/html/INFRAWORK/Ejemplos_fileinput/alquiler
+/var/www/html/INFRAWORK/Ejemplos_fileinput/certificado_trabajo
+/var/www/html/INFRAWORK/Ejemplos_fileinput/fileinput
+/var/www/html/INFRAWORK/Ejemplos_fileinput/materiales_obras
+/var/www/html/INFRAWORK/Ejemplos_fileinput/plantilla
+/var/www/html/INFRAWORK/Ejemplos_fileinput/presupuestos
+/var/www/html/INFRAWORK/acciones
+/var/www/html/INFRAWORK/acciones/barcodegen
+/var/www/html/INFRAWORK/css
+/var/www/html/INFRAWORK/css/demos
+/var/www/html/INFRAWORK/fonts
+/var/www/html/INFRAWORK/fpdf
+/var/www/html/INFRAWORK/fpdf/doc
+/var/www/html/INFRAWORK/fpdf/font
+/var/www/html/INFRAWORK/fpdf/tutorial
+/var/www/html/INFRAWORK/FusionCharts
+/var/www/html/INFRAWORK/graficos
+/var/www/html/INFRAWORK/graficos/gfx
+/var/www/html/INFRAWORK/graficos/graphics
+/var/www/html/INFRAWORK/graficos/js
+/var/www/html/INFRAWORK/graficos/examples
+/var/www/html/INFRAWORK/graficos/exporting-server
+/var/www/html/INFRAWORK/html2
+/var/www/html/INFRAWORK/html2/archivos-php
+/var/www/html/INFRAWORK/html2/exemples
+/var/www/html/INFRAWORK/html2/langues
+/var/www/html/INFRAWORK/html2/_mypdf
+/var/www/html/INFRAWORK/html2/_tcpdf
+/var/www/html/INFRAWORK/images
+/var/www/html/INFRAWORK/img
+/var/www/html/INFRAWORK/img/avatars
+/var/www/html/INFRAWORK/img/gallery
+/var/www/html/INFRAWORK/img/jquery
+/var/www/html/INFRAWORK/img/loaders
+/var/www/html/INFRAWORK/img/photos
+/var/www/html/INFRAWORK/img/pricing
+/var/www/html/INFRAWORK/img/contratistas
+/var/www/html/INFRAWORK/img/logo_personal
+/var/www/html/INFRAWORK/img/firma
+/var/www/html/INFRAWORK/javascript
+/var/www/html/INFRAWORK/js
+/var/www/html/INFRAWORK/js/demos
+/var/www/html/INFRAWORK/js/libs
+/var/www/html/INFRAWORK/js/tinymce
+/var/www/html/INFRAWORK/js/plugins
+/var/www/html/INFRAWORK/popup
+/var/www/html/INFRAWORK/examples
+/var/www/html/INFRAWORK/examples/annyang
+/var/www/html/INFRAWORK/examples/beforeAfter
+/var/www/html/INFRAWORK/examples/blockrain
+/var/www/html/INFRAWORK/examples/BootstrapFileupload
+/var/www/html/INFRAWORK/examples/Cover3D
+/var/www/html/INFRAWORK/examples/filterizr
+/var/www/html/INFRAWORK/examples/highcharts
+/var/www/html/INFRAWORK/examples/jQuerydotdotdot
+/var/www/html/INFRAWORK/examples/jQuerymonthpicker
+/var/www/html/INFRAWORK/examples/jsbarcode
+/var/www/html/INFRAWORK/examples/pluginDAD
+/var/www/html/INFRAWORK/examples/PreviewTube
+/var/www/html/INFRAWORK/examples/progressBarWars
+/var/www/html/INFRAWORK/examples/rondell
+/var/www/html/INFRAWORK/examples/SimpleAjaxUploadASP
+/var/www/html/INFRAWORK/examples/SimpleCalculadora
+/var/www/html/INFRAWORK/examples/SopaLetras
+/var/www/html/INFRAWORK/examples/spectrum
+/var/www/html/INFRAWORK/examples/sweetalert
+/var/www/html/INFRAWORK/examples/Template
+/var/www/html/INFRAWORK/examples/bootstrap-fileinput-master
+/var/www/html/INFRAWORK/imagen_fileupload
+/var/www/html/INFRAWORK/tmp_file_upload
+/var/www/html/INFRAWORK/fileinput
+/var/www/html/INFRAWORK/fileinput/img
+/var/www/html/INFRAWORK/fileinput/css
+/var/www/html/INFRAWORK/fileinput/js
+/var/www/html/INFRAWORK/ticket_ABM
+/var/www/html/vulnapp
+/var/www/html/vulnapp/uploads
+/var/www/html/vulnapp/templates
+/var/www/html/vulnapp/templates.bak
+/var/www/html/vulnapp/static
+/var/www/html/vulnapp/static/css
+
+=== INDICIOS TECNOLOGIA (SOLO NOMBRES) ===
+/var/www/html/adm/contraste.php
+/var/www/html/adm/head.php
+/var/www/html/adm/index.php
+/var/www/html/adm/menu.php
+/var/www/html/adm/pie.php
+/var/www/html/adm/main.php
+/var/www/html/adm/new_reserva.php
+/var/www/html/adm/conexion.php
+/var/www/html/adm/vista_reserva.php
+/var/www/html/adm/reporte_reserva.php
+/var/www/html/adm/toast.css
+/var/www/html/adm/reporte_reserva_backend.php
+/var/www/html/adm/carga_adm.php
+/var/www/html/adm/carga_adm_backend.php
+/var/www/html/adm/test.php
+/var/www/html/adm/toast.js
+/var/www/html/adm/sing-in.css
+/var/www/html/adm/sing-in-backend.php
+/var/www/html/adm/permisos.php
+/var/www/html/adm/salir.php
+/var/www/html/adm/carga_deposito_backend.php
+/var/www/html/adm/carga_deposito.php
+/var/www/html/adm/listar_materiales.php
+/var/www/html/adm/generar_reserva.php
+/var/www/html/adm/update_reserva.php
+/var/www/html/adm/generar_reserva_update.php
+/var/www/html/adm/cronograma_reserva_adm.sql
+/var/www/html/adm/administrador.php
+/var/www/html/adm/comodin.php
+/var/www/html/adm/error.php
+/var/www/html/adm/cambio_estado_backend.php
+/var/www/html/adm/carga_requirente.php
+/var/www/html/adm/carga_requirente_backend.php
+/var/www/html/adm/carga_salida_backend.php
+/var/www/html/adm/carga_salida.php
+/var/www/html/adm/reserva_excel.php
+/var/www/html/adm/utilitarios.php
+/var/www/html/adm/password.php
+/var/www/html/adm/password_backend.php
+/var/www/html/adm/adjuntar_adm.php
+/var/www/html/adm/adjuntar_deposito.php
+/var/www/html/adm/adjuntar_deposito_salida.php
+/var/www/html/adm/adjuntar_requirente.php
+/var/www/html/adm/reporte_proyectos_activos.php
+/var/www/html/adm/reporte_proyectos_activos_backend.php
+/var/www/html/adm/reporte_proyectos_sin_pyato.php
+/var/www/html/adm/reporte_proyectos_sin_pyato_backend.php
+/var/www/html/adm/sin_pyato_excel.php
+/var/www/html/adm/adjuntar_excel_sin_pyato.php
+/var/www/html/adm/adjuntar_deposito_salida_archivos.php
+/var/www/html/adm/download_all.php
+/var/www/html/adm/eliminar_archivo.php
+/var/www/html/adm/cargar_usuarios.php
+/var/www/html/adm/administrador_backend.php
+/var/www/html/adm/obtener_usuario.php
+/var/www/html/adm/csv_cargar_linea_capex.php
+/var/www/html/adm/csv_cargar_stock_materiales.php
+/var/www/html/adm/reporte_stock_material_backend.php
+/var/www/html/adm/reporte_stock_material.php
+/var/www/html/adm/stock_material_excel.php
+/var/www/html/adm/new_reserva_old.php
+/var/www/html/adm/reserva_excel_total.php
+/var/www/html/adm/historial_adm.php
+/var/www/html/adm/csv_faltante_stock.php
+/var/www/html/adm/reporte_stock_material_change.php
+/var/www/html/adm/adm_graficos.php
+/var/www/html/adm/reporte_stock_material_carga.php
+/var/www/html/adm/csv_cargar_stock_new.php
+/var/www/html/adm/eliminar_reserva.php
+/var/www/html/adm/procesar_csv.php
+/var/www/html/adm/reporte_linea_capex.php
+/var/www/html/adm/linea_capex_backend.php
+/var/www/html/adm/recuperar-contrasena.php
+/var/www/html/adm/restablecer-contrasena.php
+/var/www/html/adm/recuperar-contrasena-backend.php
+/var/www/html/adm/actualizar_monto_linea_capex.php
+/var/www/html/adm/obtener_historial_global.php
+/var/www/html/adm/devolucion_requirente.php
+/var/www/html/adm/devolucion_requirente_backend.php
+/var/www/html/adm/buscar_estado_final.php
+/var/www/html/adm/devolucion_requirente_backend_cant_final.php
+/var/www/html/adm/adjuntar_requirente_devolucion.php
+/var/www/html/adm/devolucion_deposito.php
+/var/www/html/adm/devolucion_deposito_backend.php
+/var/www/html/adm/devolucion_deposito_backend_cant_final.php
+/var/www/html/adm/adjuntar_devolucion_requirente.php
+/var/www/html/adm/guardar_periodo.php
+/var/www/html/adm/get_periodo_actual.php
+/var/www/html/adm/validar_periodo.php
+/var/www/html/adm/ruta_al_endpoint.php
+/var/www/html/adm/update_stock_materiales.php
+/var/www/html/adm/carga_masiva_test.php
+/var/www/html/adm/reporte_stock_material_historial.php
+/var/www/html/adm/cronograma
+/var/www/html/adm/pedidos_reasignacion_frontend.php
+/var/www/html/adm/pedidos_reasignacion_backend.php
+/var/www/html/adm/carga_linea_capex_area.php
+/var/www/html/adm/pedidos_reasignacion.js
+/var/www/html/adm/update_precio_unitario.php
+/var/www/html/adm/carga_requirente_281.php
+/var/www/html/adm/carga_requirente_backend_101.php
+/var/www/html/adm/carga_requirente_101.php
+/var/www/html/adm/reporte_reserva_v2.php
+/var/www/html/adm/reporte_reserva_backend_v2.php
+/var/www/html/adm/query.sql
+/var/www/html/adm/adjuntar_requirente_281.php
+/var/www/html/adm/adjuntar_requirente_101.php
+/var/www/html/adm/ajax_usuarios_certificado.php
+/var/www/html/adm/ajax_datos_certificado.php
+/var/www/html/adm/guardar_certificado_backend.php
+/var/www/html/adm/generar_certificado.php
+/var/www/html/adm/linea_capex_backend_new.php
+/var/www/html/adm/linea_capex_excel.php
+/var/www/html/adm/subir_csv.html
+/var/www/html/adm/procesar_csv_v2.php
+/var/www/html/adm/adm_sitio_save.php
+/var/www/html/adm/adm_sitio_list.php
+/var/www/html/adm/adm_sitio.php
+/var/www/html/adm/asig_presupuesto.php
+/var/www/html/adm/update_reserva_10.php
+/var/www/html/adm/generar_reserva_10.php
+/var/www/html/adm/new_reserva_10.php
+/var/www/html/adm/test_error_log.php
+/var/www/html/adm/generar_reserva_update_10.php
+/var/www/html/adm/atp_frontend.php
+/var/www/html/adm/atp_backend.php
+/var/www/html/adm/atp_backend_cant_final.php
+/var/www/html/adm/reporte_reserva_10.php
+/var/www/html/adm/reporte_reserva_backend_10.php
+/var/www/html/adm/fiscalizador_eliminar.php
+/var/www/html/adm/fiscalizador_guardar.php
+/var/www/html/adm/fiscalizador_listar.php
+/var/www/html/adm/fiscalizadores_atp.php
+/var/www/html/adm/fiscalizador_delete.php
+/var/www/html/adm/fiscalizador_update.php
+/var/www/html/adm/fiscalizador_insert.php
+/var/www/html/adm/fiscalizador_cambiar_estado.php
+/var/www/html/adm/adjuntar_atp.php
+/var/www/html/adm/historial_backend.php
+/var/www/html/adm/historial_usuarios.php
+/var/www/html/adm/adjuntar_deposito_devolucion.php
+/var/www/html/adm/new_reserva_backend_adjunto.php
+/var/www/html/adm/listar_atp.php
+/var/www/html/adm/listar_almacenes.php
+/var/www/html/adm/almacen.php
+/var/www/html/adm/almacen_estado.php
+/var/www/html/adm/almacen_listado.php
+/var/www/html/adm/almacen_eliminar.php
+/var/www/html/adm/almacen_abm.php
+/var/www/html/adm/funciones_reutilizables.php
+/var/www/html/adm/reserva_csv_total.php
+/var/www/html/adm/correo_backend.php
+/var/www/html/adm/correo_frontend.php
+/var/www/html/adm/exportar_instalacion_por.php
+/var/www/html/adm/exportar_fiscalizadores_atp_excel.php
+/var/www/html/adm/insert_masivo_certificado_trabajo.php
+/var/www/html/adm/descargar_certificados_masivo.php
+/var/www/html/adm/verificar_certificados_activos.php
+/var/www/html/adm/corregir_certificados_activos.php
+/var/www/html/adm/verificar_mes_consumo.php
+/var/www/html/adm/ejemplo_carga_masiva.csv
+/var/www/html/adm/ejemplo.php
+/var/www/html/adm/capex_inicio.php
+/var/www/html/adm/capex_version_guardar.php
+/var/www/html/adm/capex_version_estado.php
+/var/www/html/adm/capex_grupos.php
+/var/www/html/adm/capex_grupos_api.php
+/var/www/html/adm/compras_informe_sitios_incidencias.php
+/var/www/html/adm/compras_informe_sitios_detalle_atraso.php
+/var/www/html/adm/compras_informe_sitios.php
+/var/www/html/adm/compras_informe_sitios_backend.php
+/var/www/html/adm/vista_bloqueo_carga.php
+/var/www/html/adm/api_bloqueo_carga.php
+/var/www/html/adm/obtener_historial.php
+/var/www/html/adm/revertir_adm.php
+/var/www/html/adm/interfaz_deposito.php
+/var/www/html/adm/descargar_excel_deposito.php
+/var/www/html/adm/subir_excel_deposito.php
+/var/www/html/adm/finalizar_deposito_backend.php
+/var/www/html/adm/subir_export_sap_deposito.php
+/var/www/html/adm/interfaz_deposito.php.bak-20260701_163612
+/var/www/html/adm/interfaz_deposito.php.bak-swalfix-20260702_114551
+/var/www/html/adm/capex_pxq_api.php
+/var/www/html/adm/capex_pxq.php
+/var/www/html/adm/capex_importar_api.php
+/var/www/html/adm/capex_importar.php
+/var/www/html/adm/capex_excel_download.php
+/var/www/html/adm/capex_config_api.php
+/var/www/html/adm/capex_config.php
+/var/www/html/adm/capex_funciones.php
+/var/www/html/adm/capex_clasificacion.php
+/var/www/html/adm/capex_clasificacion_api.php
+/var/www/html/adm/restaurar_reserva.php
+/var/www/html/adm/restaurar_reserva_api.php
+/var/www/html/INFRAWORK/AdmEspeTecnica.php
+/var/www/html/INFRAWORK/acta.php
+/var/www/html/INFRAWORK/AdmEspeTecnicaPersist.php
+/var/www/html/INFRAWORK/admin-empresas-cheques.php
+/var/www/html/INFRAWORK/admin-empresas.php
+/var/www/html/INFRAWORK/administrador-depe-ofi.php
+/var/www/html/INFRAWORK/administrador-dependencias.php
+/var/www/html/INFRAWORK/administrador-empresas-cheques-editar.php
+/var/www/html/INFRAWORK/administrador-empresas-cheques.php
+/var/www/html/INFRAWORK/administrador-empresas-editar.php
+/var/www/html/INFRAWORK/administrador-empresas.php
+/var/www/html/INFRAWORK/administrador-oficinas.php
+/var/www/html/INFRAWORK/administrador-permisos.php
+/var/www/html/INFRAWORK/administrador.php
+/var/www/html/INFRAWORK/administrador0.php
+/var/www/html/INFRAWORK/administrador2.php
+/var/www/html/INFRAWORK/beap_prueba.php
+/var/www/html/INFRAWORK/bootstrap.min.css
+/var/www/html/INFRAWORK/borrar.php
+/var/www/html/INFRAWORK/buscar.php
+/var/www/html/INFRAWORK/buscar2.php
+/var/www/html/INFRAWORK/buscar3.php
+/var/www/html/INFRAWORK/imprimir_vista_orden_trabajo.php
+/var/www/html/INFRAWORK/importar_sitios_busqueda.php
+/var/www/html/INFRAWORK/imprimir_vista_orden_trabajoX.php
+/var/www/html/INFRAWORK/vista_order_trabajo_rows.php
+/var/www/html/INFRAWORK/informe_oc_vs_sap.php
+/var/www/html/INFRAWORK/imprimir_vista_sap_fecha.php
+/var/www/html/INFRAWORK/montos_presupuesto_aprobado.php
+/var/www/html/INFRAWORK/CargaLineaPresupuestaria.php
+/var/www/html/INFRAWORK/carga_tanque.php
+/var/www/html/INFRAWORK/CodTarjeta_Fecha.php
+/var/www/html/INFRAWORK/imprimir_orden_trabajo.php
+/var/www/html/INFRAWORK/Formulario.php
+/var/www/html/INFRAWORK/enviar.php
+/var/www/html/INFRAWORK/prueba3.php
+/var/www/html/INFRAWORK/archivo.pdf
+/var/www/html/INFRAWORK/vista-ticketOri.php
+/var/www/html/INFRAWORK/prueba4.php
+/var/www/html/INFRAWORK/contenido.html
+/var/www/html/INFRAWORK/correo.php
+/var/www/html/INFRAWORK/vista-ticketViejo.php
+/var/www/html/INFRAWORK/send_mail2.php
+/var/www/html/INFRAWORK/vista-ticket2.php
+/var/www/html/INFRAWORK/avance_obra_sitio_new_propio.php
+/var/www/html/INFRAWORK/importar_csv_sitios_espejo.php
+/var/www/html/INFRAWORK/avance_obra_sitio_new_compartido.php
+/var/www/html/INFRAWORK/avance_obra_adecuacion.php
+/var/www/html/INFRAWORK/avance_obra_administrativo.php
+/var/www/html/INFRAWORK/nuevo_sitio.php
+/var/www/html/INFRAWORK/fichee.php
+/var/www/html/INFRAWORK/enviar_correo.sh
+/var/www/html/INFRAWORK/Beap1.txt
+/var/www/html/INFRAWORK/utilidades.php
+/var/www/html/INFRAWORK/utilidades.js
+/var/www/html/INFRAWORK/test_rand.php
+/var/www/html/INFRAWORK/auxiliar.php
+/var/www/html/INFRAWORK/auxiliar2.php
+/var/www/html/INFRAWORK/reporte_avance_obra_sitios_new2.php
+/var/www/html/INFRAWORK/auxiliar3.php
+/var/www/html/INFRAWORK/buscar_sitio.php
+/var/www/html/INFRAWORK/desarrollo.php
+/var/www/html/INFRAWORK/excel_enviar_correo_adecuacion.php
+/var/www/html/INFRAWORK/elias.php
+/var/www/html/INFRAWORK/nuevo-ticket2.php
+/var/www/html/INFRAWORK/informe_sitio.php
+/var/www/html/INFRAWORK/avance_obra_planos.php
+/var/www/html/INFRAWORK/avance_obra_lte.php
+/var/www/html/INFRAWORK/avance_obra_survey.php
+/var/www/html/INFRAWORK/auxiliar4.php
+/var/www/html/INFRAWORK/query_Enio.php
+/var/www/html/INFRAWORK/imprimir_informe_ppi.php
+/var/www/html/INFRAWORK/vista-ticket.php
+/var/www/html/INFRAWORK/orden_trabajo.php
+/var/www/html/INFRAWORK/test.php
+/var/www/html/INFRAWORK/send_mail.php
+/var/www/html/INFRAWORK/funciones_nuevo_ticket.php
+/var/www/html/INFRAWORK/beap2.php
+/var/www/html/INFRAWORK/composer.json
+/var/www/html/INFRAWORK/imprimir_vista_sin_sap_fecha.php
+/var/www/html/INFRAWORK/vista-orden-trabajo9.php
+/var/www/html/INFRAWORK/informe_ppi.php
+/var/www/html/INFRAWORK/busqueda_nemonico_presu.php
+/var/www/html/INFRAWORK/vista-orden-trabajotest.php
+/var/www/html/INFRAWORK/vista-orden-trabajo.php
+/var/www/html/INFRAWORK/tipo_estructura_avance.php
+/var/www/html/INFRAWORK/avance_entrega_documento.php
+/var/www/html/INFRAWORK/imprimir_vista_orden_trabajo2.php
+/var/www/html/INFRAWORK/imprimir_informe_sitio.php
+/var/www/html/INFRAWORK/auxiliar5.php
+/var/www/html/INFRAWORK/importar_sitios_inge.php
+/var/www/html/INFRAWORK/importar_sitios_estructura.php
+/var/www/html/INFRAWORK/imprimir_vista_orden_trabajoORI.php
+/var/www/html/INFRAWORK/vista-orden-trabajoX.php
+/var/www/html/INFRAWORK/importar_sitios_nis.php
+/var/www/html/INFRAWORK/imprimir_vista_orden_trabajo_status.php
+/var/www/html/INFRAWORK/imprimir_vista_orden_trabajoXX.php
+/var/www/html/INFRAWORK/imprimir_vista_noApro_fecha.php
+/var/www/html/INFRAWORK/nuevo_oc.php
+/var/www/html/INFRAWORK/notaAccesotoPdf_v2.php
+/var/www/html/INFRAWORK/listar_nota_acceso.php
+/var/www/html/INFRAWORK/utilidades_reporte_alarmas.php
+/var/www/html/INFRAWORK/test_rand2.php
+/var/www/html/INFRAWORK/borrar_estruc_sitio_backend.php
+/var/www/html/INFRAWORK/descar_.php
+/var/www/html/INFRAWORK/conexion-usuario.php
+/var/www/html/INFRAWORK/conexion-usuarios.php
+/var/www/html/INFRAWORK/conexion.php
+/var/www/html/INFRAWORK/consulta.php
+/var/www/html/INFRAWORK/datalist.js
+/var/www/html/INFRAWORK/error.php
+/var/www/html/INFRAWORK/encabezado.php
+/var/www/html/INFRAWORK/importar_sitios_2019.php
+/var/www/html/INFRAWORK/importar_csv_montos_sap.php
+/var/www/html/INFRAWORK/diferencias_sap.php
+/var/www/html/INFRAWORK/diferencias_sapE.php
+/var/www/html/INFRAWORK/informe_gestion_sitios.php
+/var/www/html/INFRAWORK/informe_item.php
+/var/www/html/INFRAWORK/importar_csv_grilla.php
+/var/www/html/INFRAWORK/avance_obra_social.php
+/var/www/html/INFRAWORK/avance_obra_mudanza_propio.php
+/var/www/html/INFRAWORK/avance_obra_mudanza_compartido.php
+/var/www/html/INFRAWORK/scrip_send_mail.php
+/var/www/html/INFRAWORK/imprimir_vista_torresec_atc.php
+/var/www/html/INFRAWORK/imprimir_vista_busqueda.php
+/var/www/html/INFRAWORK/imprimir_vista_obras_2019.php
+/var/www/html/INFRAWORK/imprimir_vista_obras_2020.php
+/var/www/html/INFRAWORK/imprimir_vista_demorada.php
+/var/www/html/INFRAWORK/imprimir_vista_conflictiva.php
+/var/www/html/INFRAWORK/imprimir_vista_en_proceso.php
+/var/www/html/INFRAWORK/imprimir_vista_finalizado.php
+/var/www/html/INFRAWORK/imprimir_vista_gestion_informe_.php
+/var/www/html/INFRAWORK/imprimir_vista_gestion_informe_G1.php
+/var/www/html/INFRAWORK/imprimir_vista_gestion_informe_G2.php
+/var/www/html/INFRAWORK/imprimir_vista_gestion_informe_G3_v1.php
+/var/www/html/INFRAWORK/imprimir_vista_gestion_informe_G3_v2.php
+/var/www/html/INFRAWORK/composer.lock
+/var/www/html/INFRAWORK/conexion_restore.php
+/var/www/html/INFRAWORK/update_sitios.php
+/var/www/html/INFRAWORK/diferencias_sap_2020.php
+/var/www/html/INFRAWORK/sacar_item.php
+/var/www/html/INFRAWORK/controlar_sap.php
+/var/www/html/INFRAWORK/reporte_sap.php
+/var/www/html/INFRAWORK/vista_alarma.php
+/var/www/html/INFRAWORK/avance_obra_telecentro.php
+/var/www/html/INFRAWORK/test_adjunto.php
+/var/www/html/INFRAWORK/sitio_datos_energia.php
+/var/www/html/INFRAWORK/auxiliar6.php
+/var/www/html/INFRAWORK/informe_ot_activos.php
+/var/www/html/INFRAWORK/test_beap.php
+/var/www/html/INFRAWORK/verificar_precio_item_por_zona.php
+/var/www/html/INFRAWORK/sitio_datos_energia_backend.php
+/var/www/html/INFRAWORK/actualizar_avance_telecentro.php
+/var/www/html/INFRAWORK/informe_gestion_sitios_v2.php
+/var/www/html/INFRAWORK/imprimir_vista_obras_2021.php
+/var/www/html/INFRAWORK/smsmsc3
+/var/www/html/INFRAWORK/envio_sms.php
+/var/www/html/INFRAWORK/verificar_item.php
+/var/www/html/INFRAWORK/sms_alarmas_gestion.php
+/var/www/html/INFRAWORK/leer_correo.php
+/var/www/html/INFRAWORK/generar_nota_acceso.php
+/var/www/html/INFRAWORK/user_in_line.php
+/var/www/html/INFRAWORK/agregar_new_items_csv.php
+/var/www/html/INFRAWORK/csv_item_precio.php
+/var/www/html/INFRAWORK/pruebas_varias.php
+/var/www/html/INFRAWORK/insert_new_email.php
+/var/www/html/INFRAWORK/historial.php
+/var/www/html/INFRAWORK/historial_infra.php
+/var/www/html/INFRAWORK/reporte_presupuestario.php
+/var/www/html/INFRAWORK/utilidades_reporte_presupuestario.php
+/var/www/html/INFRAWORK/reporte_presupuestario_tabla_1.php
+/var/www/html/INFRAWORK/reporte_presupuestario_tabla_2.php
+/var/www/html/INFRAWORK/test_aleatorio.php
+/var/www/html/INFRAWORK/imprimir_excel.php
+/var/www/html/INFRAWORK/reporte_obras.php
+/var/www/html/INFRAWORK/reporte_obras_cambio_fecha.php
+/var/www/html/INFRAWORK/imprimir_reporte_obras.php
+/var/www/html/INFRAWORK/reporte_obras_backend.php
+/var/www/html/INFRAWORK/formulario.html
+/var/www/html/INFRAWORK/nota_acceso_interface.php
+/var/www/html/INFRAWORK/nota_acceso_cambio_contratista_backend.php
+/var/www/html/INFRAWORK/nota_acceso_insert_new_ingresante.php
+/var/www/html/INFRAWORK/nota_acceso_html2pdfToServer.php
+/var/www/html/INFRAWORK/notaAccesotoPdf.php
+/var/www/html/INFRAWORK/index_2.php
+/var/www/html/INFRAWORK/nota_acceso_enviar_mail.php
+/var/www/html/INFRAWORK/nota_acceso_interface_backEnd.php
+/var/www/html/INFRAWORK/nota_acceso_insert_new_tipo_trabajo.php
+/var/www/html/INFRAWORK/nota_acceso_datos_sitios.php
+/var/www/html/INFRAWORK/test_rand3.php
+/var/www/html/INFRAWORK/comprometer_estruc_sitio_backend.php
+/var/www/html/INFRAWORK/head.php
+/var/www/html/INFRAWORK/hector.html
+/var/www/html/INFRAWORK/test_abm.php
+/var/www/html/INFRAWORK/nota_ABM_contratista.php
+/var/www/html/INFRAWORK/reporte_alarmas.php
+/var/www/html/INFRAWORK/reporte_alarma_backend.php
+/var/www/html/INFRAWORK/test_trainers.php
+/var/www/html/INFRAWORK/reservar_estruc_sitio_backend.php
+/var/www/html/INFRAWORK/test_beap_07.php
+/var/www/html/INFRAWORK/csv_hte_personales.php
+/var/www/html/INFRAWORK/test_aleatorio_2.php
+/var/www/html/INFRAWORK/csv_alquiler_negociacion_cerrados_renovacion.php
+/var/www/html/INFRAWORK/test_presus.php
+/var/www/html/INFRAWORK/scrip_send_mail_restore.php
+/var/www/html/INFRAWORK/control_file_system.sh
+/var/www/html/INFRAWORK/test_0.php
+/var/www/html/INFRAWORK/memoToPdf.php
+/var/www/html/INFRAWORK/generarGrilla.php
+/var/www/html/INFRAWORK/buscar_sitio_v2.php
+/var/www/html/INFRAWORK/backup_de_correos_salientes.php
+/var/www/html/INFRAWORK/scrip_sitio_opcion_activa_unica.php
+/var/www/html/INFRAWORK/email_legales_renovaciones_atrasadas.php
+/var/www/html/INFRAWORK/informe_contratos_ubi_frontend_graf.php
+/var/www/html/INFRAWORK/vista_reserva.php
+/var/www/html/INFRAWORK/controlar_sap_excel.php
+/var/www/html/INFRAWORK/error_404.php
+/var/www/html/INFRAWORK/buscar_sitiio.php
+/var/www/html/INFRAWORK/get_sitio_info.php
+/var/www/html/INFRAWORK/auditoria.php
+/var/www/html/INFRAWORK/index.php
+/var/www/html/INFRAWORK/buscar_proyecto_reserva.php
+/var/www/html/INFRAWORK/test_ayer.php
+/var/www/html/INFRAWORK/informe_alarmas_excel.php
+/var/www/html/INFRAWORK/test_casco.php
+/var/www/html/INFRAWORK/change_site_name.php
+/var/www/html/INFRAWORK/save_avance_vandalismo.php
+/var/www/html/INFRAWORK/ingresar.php
+/var/www/html/INFRAWORK/reservar_estruc_sitio_backend_negativa.php
+/var/www/html/INFRAWORK/test_telecentro.php
+/var/www/html/INFRAWORK/test_descarga.php
+/var/www/html/INFRAWORK/archivo_2.pdf
+/var/www/html/INFRAWORK/test_descarga_v2.php
+/var/www/html/INFRAWORK/descarga_presupuestos.php
+/var/www/html/INFRAWORK/auxiliar7.php
+/var/www/html/INFRAWORK/main_2.php
+/var/www/html/INFRAWORK/funciones_saldo_ficticio.php
+/var/www/html/INFRAWORK/test_07.php
+/var/www/html/INFRAWORK/nota_acceo_alta_equipo.php
+/var/www/html/INFRAWORK/auxiliar9.php
+/var/www/html/INFRAWORK/main_3.php
+/var/www/html/INFRAWORK/test_sap_vs_infra.php
+/var/www/html/INFRAWORK/csv_alquiler_sitios.php
+/var/www/html/INFRAWORK/csv_alquiler_pedido_neg.php
+/var/www/html/INFRAWORK/csv_alquiler_negociacion.php
+/var/www/html/INFRAWORK/csv_alquiler_negociacion_cerrados.php
+/var/www/html/INFRAWORK/test_08.php
+/var/www/html/INFRAWORK/compras_informe_sitios_backend.php
+/var/www/html/INFRAWORK/head_v3.php
+/var/www/html/INFRAWORK/ruc_test.php
+/var/www/html/INFRAWORK/csv_OT_consulta.php
+/var/www/html/INFRAWORK/leer_correo_restore.php
+/var/www/html/INFRAWORK/get_avance_vandalismo_data.php
+/var/www/html/INFRAWORK/sitios_a_renovar.php
+/var/www/html/INFRAWORK/error_compras_incidencias.php
+/var/www/html/INFRAWORK/query_modal_update_contrato.php
+/var/www/html/INFRAWORK/csv_facturacion.php
+/var/www/html/INFRAWORK/importar_csv_montos_sap_v2.php
+/var/www/html/INFRAWORK/new_reserva.php
+/var/www/html/INFRAWORK/vista_reserva_backend.php
+/var/www/html/INFRAWORK/cronograma.sql
+/var/www/html/INFRAWORK/error404.php
+/var/www/html/INFRAWORK/ot_sin_nis.php
+/var/www/html/INFRAWORK/update_sitio.php
+/var/www/html/INFRAWORK/lista_incidencia.php
+/var/www/html/INFRAWORK/inm-tit-original.php
+/var/www/html/INFRAWORK/inm-tit.php
+/var/www/html/INFRAWORK/julio.html
+/var/www/html/INFRAWORK/letras.php
+/var/www/html/INFRAWORK/listarPedidoItem.php
+/var/www/html/INFRAWORK/listas_informes_recibos.php
+/var/www/html/INFRAWORK/main.php
+/var/www/html/INFRAWORK/mantenimiento.php
+/var/www/html/INFRAWORK/menu(ori).php
+/var/www/html/INFRAWORK/menu.php
+/var/www/html/INFRAWORK/menu2.php
+/var/www/html/INFRAWORK/mesa-entrada.php
+/var/www/html/INFRAWORK/jquery-1.10.2.js
+/var/www/html/INFRAWORK/muestra.php
+/var/www/html/INFRAWORK/nlet.php
+/var/www/html/INFRAWORK/nota-remision.php
+/var/www/html/INFRAWORK/numeros.php
+/var/www/html/INFRAWORK/numerosALetras.class.php
+/var/www/html/INFRAWORK/numletra.php
+/var/www/html/INFRAWORK/numletraSistema.php
+/var/www/html/INFRAWORK/correo_legales_to_gestion.php
+/var/www/html/INFRAWORK/copia_usuario.php
+/var/www/html/INFRAWORK/password.php
+/var/www/html/INFRAWORK/alquiler_query.sql
+/var/www/html/INFRAWORK/permisos.php
+/var/www/html/INFRAWORK/pie.php
+/var/www/html/INFRAWORK/gestion_alarma_solarw.php
+/var/www/html/INFRAWORK/control_file_system.php
+/var/www/html/INFRAWORK/diferencias_sap_2022.php
+/var/www/html/INFRAWORK/test_pedro.php
+/var/www/html/INFRAWORK/avance_obra_refuerzo.php
+/var/www/html/INFRAWORK/recalcular_avance.php
+/var/www/html/INFRAWORK/email_compras_renovaciones_atrasadas.php
+/var/www/html/INFRAWORK/contrato_update.php
+/var/www/html/INFRAWORK/diferencias_sap_new.php
+/var/www/html/INFRAWORK/actualizar-ticket.php
+/var/www/html/INFRAWORK/csv_reserva_materiales.php
+/var/www/html/INFRAWORK/test_envio_sms.php
+/var/www/html/INFRAWORK/alarma_historial.php
+/var/www/html/INFRAWORK/crear_incidencia_backend.php
+/var/www/html/INFRAWORK/copia_sitios_infra_to_adm.php
+/var/www/html/INFRAWORK/proc.php
+/var/www/html/INFRAWORK/proceso.php
+/var/www/html/INFRAWORK/README.md
+/var/www/html/INFRAWORK/actualizar_ejecucion_mudanza_nuevo.php
+/var/www/html/INFRAWORK/pie_V2.php
+/var/www/html/INFRAWORK/historial.php.bak_20260618
+/var/www/html/INFRAWORK/index.php.bak_20260618
+/var/www/html/INFRAWORK/interfaz_deposito.php
+/var/www/html/INFRAWORK/nota_ABM_responsable.php
+/var/www/html/INFRAWORK/_test_elias_reporte.php
+/var/www/html/INFRAWORK/menu.php.bak-20260826b
+/var/www/html/INFRAWORK/salir.php
+/var/www/html/INFRAWORK/lista_incidencia_backend.php
+/var/www/html/INFRAWORK/orden_trabajo_update.php
+/var/www/html/INFRAWORK/upload_linea_capex.php
+/var/www/html/INFRAWORK/carga_linea_capex.php
+/var/www/html/INFRAWORK/aignar_linea_capex_frontend.php
+/var/www/html/INFRAWORK/asignar_lineas_capex_backend.php
+/var/www/html/INFRAWORK/fetch_lineas_capex_asignadas.php
+/var/www/html/INFRAWORK/controlar_sap_backend.php
+/var/www/html/INFRAWORK/zre_obtener_registro.php
+/var/www/html/INFRAWORK/ver_correo_ajax.php
+/var/www/html/INFRAWORK/sugerencias_asunto.php
+/var/www/html/INFRAWORK/mail_limites.php
+/var/www/html/INFRAWORK/buscar_items_disponibles.php
+/var/www/html/INFRAWORK/buscar_items.php
+/var/www/html/INFRAWORK/ajax_buscar_items.php
+/var/www/html/INFRAWORK/exportar_excel_items.php
+/var/www/html/INFRAWORK/buscar_detalles_items.php
+/var/www/html/INFRAWORK/guardar_plantilla_backend.php
+/var/www/html/INFRAWORK/listar_plantillas_backend.php
+/var/www/html/INFRAWORK/obtener_plantilla_backend.php
+/var/www/html/INFRAWORK/cargar_items_backend.php
+/var/www/html/INFRAWORK/eliminar_plantilla.php
+/var/www/html/INFRAWORK/generar_certificados.php
+/var/www/html/INFRAWORK/certificados_trabajo.php
+/var/www/html/INFRAWORK/obtener_periodos.php
+/var/www/html/INFRAWORK/auditoria_certificados_data.php
+/var/www/html/INFRAWORK/procesar_csv_certificados.php
+/var/www/html/INFRAWORK/funcion_porcentaje.php
+/var/www/html/INFRAWORK/funcion_porcentaje_new.php
+/var/www/html/INFRAWORK/validador_ruc_masivo.php
+/var/www/html/INFRAWORK/validador_ruc_general.php
+/var/www/html/INFRAWORK/normalizar_ruc_ci.php
+/var/www/html/INFRAWORK/sitios_disponibles.php
+/var/www/html/INFRAWORK/limpiar_traspaso.php
+/var/www/html/INFRAWORK/destinatarios_guardar.php
+/var/www/html/INFRAWORK/destinatarios_eliminar.php
+/var/www/html/INFRAWORK/destinatarios_obtener.php
+/var/www/html/INFRAWORK/destinatarios_listar.php
+/var/www/html/INFRAWORK/destinatarios_abm.php
+/var/www/html/INFRAWORK/test_error_log.php
+/var/www/html/INFRAWORK/detalle_trabajos_modal.php
+/var/www/html/INFRAWORK/pie_v3.php
+/var/www/html/INFRAWORK/proveedor_pedido_cambiar_estado.php
+/var/www/html/INFRAWORK/proveedor_pedido_adjuntos.php
+/var/www/html/INFRAWORK/proveedor_pedido_guardar.php
+/var/www/html/INFRAWORK/proveedor_pedido_listado.php
+/var/www/html/INFRAWORK/proveedor_pedido_nuevo.php
+/var/www/html/INFRAWORK/proveedor_pedido_modal.php
+/var/www/html/INFRAWORK/proveedor_frontend.php
+/var/www/html/INFRAWORK/proveedor_pedido_cargar_datos.php
+/var/www/html/INFRAWORK/proveedor_pedido_cargar_estados.php
+/var/www/html/INFRAWORK/proveedor_validar_set.php
+/var/www/html/INFRAWORK/proveedor_pedido_cargar_historial.php
+/var/www/html/INFRAWORK/proveedor_adjuntos_eliminar.php
+/var/www/html/INFRAWORK/proveedor_adjuntos_subir.php
+/var/www/html/INFRAWORK/proveedor_adjuntos_listar.php
+/var/www/html/INFRAWORK/proveedor_abm.css
+/var/www/html/INFRAWORK/proveedor_descargar_excel.php
+/var/www/html/INFRAWORK/proveedor_pedido_tracking.php
+/var/www/html/INFRAWORK/proveedor_enviar_mail.php
+/var/www/html/INFRAWORK/proveedor_preview_notificacion_estancamiento.php
+/var/www/html/INFRAWORK/ajax_historial.php
+/var/www/html/INFRAWORK/nota_acceso_carga_masiva_ci.php
+/var/www/html/INFRAWORK/nota_acceso_carga_masiva_nemonico.php
+/var/www/html/INFRAWORK/comparar_sitios_energia_csv.php
+/var/www/html/INFRAWORK/zre_eliminar.php
+/var/www/html/INFRAWORK/limpiar_archivos.php
+/var/www/html/INFRAWORK/ruc_backend.php
+/var/www/html/INFRAWORK/exportar-tickets.php
+/var/www/html/INFRAWORK/info_2.php
+/var/www/html/INFRAWORK/index_sdi.php
+/var/www/html/INFRAWORK/index_old.php
+/var/www/html/INFRAWORK/ver_permisos.php
+/var/www/html/INFRAWORK/menu_old.php
+/var/www/html/INFRAWORK/info_renovaciones.php
+/var/www/html/INFRAWORK/contratos_vencer_ajax.php
+/var/www/html/INFRAWORK/contratos_vencer.php
+/var/www/html/INFRAWORK/cron_renovacion_contratos.php
+/var/www/html/INFRAWORK/abm_correos_grupales_ajax.php
+/var/www/html/INFRAWORK/abm_correos_grupales.php
+/var/www/html/INFRAWORK/test_00.php
+/var/www/html/INFRAWORK/aaaaaaaa.txt
+/var/www/html/INFRAWORK/ajax_historial.php.bak_20260618
+/var/www/html/INFRAWORK/administrador.php.bak_20260618
+/var/www/html/INFRAWORK/subir_export_sap_deposito.php
+/var/www/html/INFRAWORK/nota_ABM_responsable_ajax.php
+/var/www/html/INFRAWORK/menu.php.bak-20260826
+/var/www/html/INFRAWORK/nuevo-ticket.php.bak_20260831_160935
+/var/www/html/INFRAWORK/nuevo_oc.php.bak_20260831_160935
+/var/www/html/INFRAWORK/vista-ticketViejo.php.bak_20260831_160935
+/var/www/html/INFRAWORK/submit.php
+/var/www/html/INFRAWORK/test_contra.php
+/var/www/html/INFRAWORK/session.php
+/var/www/html/INFRAWORK/administradorOri.php
+/var/www/html/INFRAWORK/nuevo-ticket.php
+/var/www/html/INFRAWORK/prueba.php
+/var/www/html/INFRAWORK/upload.php
+/var/www/html/INFRAWORK/prueba_fileupload.html
+/var/www/html/INFRAWORK/importar_csv_sitios.php
+/var/www/html/INFRAWORK/prueba2.php
+/var/www/html/INFRAWORK/recibe-fileinput.php
+/var/www/html/vulnapp/vulnapp.service
+/var/www/html/vulnapp/vulnapp.conf
+/var/www/html/vulnapp/app.py.funcionando
+/var/www/html/vulnapp/app.py.debug
+/var/www/html/vulnapp/app.py
+/var/www/html/vulnapp/app.pyc
+/var/www/html/vulnapp/app.py.bak.20260822_191856
+
+=== TAMANOS ===
+299008	/var/www/html/adm/img
+48185344	/var/www/html/adm/assets
+15880192	/var/www/html/adm/vendor
+7109476352	/var/www/html/adm/archivos
+77824	/var/www/html/adm/migo_notificacion
+24576	/var/www/html/adm/certificados
+139264	/var/www/html/adm/db
+1150976	/var/www/html/adm/backups
+7177682944	/var/www/html/adm
+8069120	/var/www/html/INFRAWORK/PHPMailer
+520192	/var/www/html/INFRAWORK/PHPMailer-master
+770048	/var/www/html/INFRAWORK/sweetalert
+9109504	/var/www/html/INFRAWORK/email
+667648	/var/www/html/INFRAWORK/energia
+221184	/var/www/html/INFRAWORK/proceso_carga_grilla
+577536	/var/www/html/INFRAWORK/presupuesto-pago
+1036288	/var/www/html/INFRAWORK/jquery-ui-1.12.1
+4096	/var/www/html/INFRAWORK/sms
+20480	/var/www/html/INFRAWORK/configuracion
+1458176	/var/www/html/INFRAWORK/gestion
+0	/var/www/html/INFRAWORK/api
+6520832	/var/www/html/INFRAWORK/garbage-test
+106496	/var/www/html/INFRAWORK/informes
+20480	/var/www/html/INFRAWORK/logs
+487424	/var/www/html/INFRAWORK/PHPMailer-master_old
+15880192	/var/www/html/INFRAWORK/vendor
+1028096	/var/www/html/INFRAWORK/pruebas
+1732608	/var/www/html/INFRAWORK/bootstrap-3.4.1
+163840	/var/www/html/INFRAWORK/stock_estructura
+3596288	/var/www/html/INFRAWORK/alquiler
+266240	/var/www/html/INFRAWORK/reporte
+864256	/var/www/html/INFRAWORK/crono
+40960	/var/www/html/INFRAWORK/notificaciones
+277209088	/var/www/html/INFRAWORK/certificado_trabajo
+311296	/var/www/html/INFRAWORK/solped
+40639614976	/var/www/html/INFRAWORK/Ejemplos_fileinput
+1081344	/var/www/html/INFRAWORK/acciones
+1019904	/var/www/html/INFRAWORK/css
+1470464	/var/www/html/INFRAWORK/fonts
+798720	/var/www/html/INFRAWORK/fpdf
+274432	/var/www/html/INFRAWORK/FusionCharts
+18706432	/var/www/html/INFRAWORK/graficos
+16252928	/var/www/html/INFRAWORK/html2
+1908736	/var/www/html/INFRAWORK/images
+6787072	/var/www/html/INFRAWORK/img
+593920	/var/www/html/INFRAWORK/javascript
+21708800	/var/www/html/INFRAWORK/js
+57344	/var/www/html/INFRAWORK/popup
+11472896	/var/www/html/INFRAWORK/examples
+1794048	/var/www/html/INFRAWORK/imagen_fileupload
+0	/var/www/html/INFRAWORK/tmp_file_upload
+200704	/var/www/html/INFRAWORK/fileinput
+327680	/var/www/html/INFRAWORK/ticket_ABM
+41064361984	/var/www/html/INFRAWORK
+470507520	/var/www/html/vulnapp/uploads
+286720	/var/www/html/vulnapp/templates
+57344	/var/www/html/vulnapp/templates.bak
+16384	/var/www/html/vulnapp/static
+471416832	/var/www/html/vulnapp
+
+=== DATOS Y LOGS ===
+drwxr-xr-x. 5 mysql    mysql     215 jul 12 17:26 /var/lib/mysql
+drwx------. 5 postgres postgres  181 feb 11  2020 /var/lib/pgsql
+drwx------. 2 root     root     4096 sep 13 03:12 /var/log/httpd
+drwxr-x---. 2 mysql    mysql      25 ago  8  2019 /var/log/mariadb
+62951424	/var/lib/mysql
+0	/var/lib/pgsql
+4096	/var/log/httpd
+0	/var/log/mariadb
+
+=== MONTAJES APPS ===
+S.ficheros              bloques de 1       Usados Disponibles Capacidad Montado en
+/dev/mapper/centos-root 800996720640 712104275968 88892444672       89% /
+/dev/mapper/centos-root 800996720640 712104275968 88892444672       89% /
+/dev/mapper/centos-root 800996720640 712104275968 88892444672       89% /
+
+=== PAQUETES ===
+httpd-2.4.6-97.el7.centos.x86_64
+php-5.6.40-41.el7.remi.x86_64
+php-cli-5.6.40-41.el7.remi.x86_64
+mariadb-server-5.5.64-1.el7.x86_64
+postgresql10-server-10.12-1PGDG.rhel7.x86_64
+python-2.7.5-86.el7.x86_64
+python-flask-0.10.1-4.el7.noarch
+
+=== CPU PROCESOS INTERVALO ===
+Linux 3.10.0-1062.18.1.el7.x86_64 (tec-calidad05) 	16/09/26 	_x86_64_	(4 CPU)
+
+09:25:50      UID       PID    %usr %system  %guest    %CPU   CPU  Command
+
+09:25:50      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+09:25:51       48     24855      2,88      0,00  592368  10364   0,13  httpd
+09:25:51       48     24856      2,88      0,00  592368  10364   0,13  httpd
+
+09:25:51      UID       PID    %usr %system  %guest    %CPU   CPU  Command
+09:25:52        0      1498    0,00    1,00    0,00    1,00     3  httpd
+09:25:52       48     23903    1,00    0,00    0,00    1,00     1  httpd
+
+09:25:51      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+09:25:52       48     23903   1466,00      0,00       0      0   0,00  httpd
+
+09:25:52      UID       PID    %usr %system  %guest    %CPU   CPU  Command
+09:25:53       48     24591    1,00    1,00    0,00    2,00     1  httpd
+
+09:25:52      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+09:25:53       48     24591   1392,00      0,00       0      0   0,00  httpd
+
+Media:        UID       PID    %usr %system  %guest    %CPU   CPU  Command
+Media:          0      1498    0,00    0,33    0,00    0,33     -  httpd
+Media:         48     24591    0,33    0,33    0,00    0,66     -  httpd
+
+Media:        UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command
+Media:         48     24591    457,89      0,00  454832  15456   0,19  httpd
+Media:         48     24855      0,99      0,00  592368  10364   0,13  httpd
+Media:         48     24856      0,99      0,00  592368  10364   0,13  httpd
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+ls: no se puede acceder a /var/lib/pgsql/10/data: Permiso denegado
+du: no se puede leer el directorio Â«/var/lib/mysql/mysqlÂ»: Permiso denegado
+du: no se puede leer el directorio Â«/var/lib/mysql/performance_schemaÂ»: Permiso denegado
+du: no se puede leer el directorio Â«/var/lib/mysql/infrafilerunÂ»: Permiso denegado
+du: no se puede leer el directorio Â«/var/lib/pgsqlÂ»: Permiso denegado
+du: no se puede leer el directorio Â«/var/log/httpdÂ»: Permiso denegado
+du: no se puede leer el directorio Â«/var/log/mariadbÂ»: Permiso denegado

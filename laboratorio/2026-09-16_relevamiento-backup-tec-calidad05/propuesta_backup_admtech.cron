@@ -1,0 +1,5 @@
+SHELL=/bin/bash
+PATH=/usr/pgsql-10/bin:/usr/local/sbin:/usr/bin:/bin
+MAILTO=root
+
+30 2 * * * postgres /usr/local/sbin/backup_admtech.sh

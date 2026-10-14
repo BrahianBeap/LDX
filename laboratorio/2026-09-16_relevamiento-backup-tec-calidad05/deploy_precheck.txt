@@ -1,0 +1,15 @@
+tec-calidad05
+alfonzel_opr
+uid=0(root) gid=0(root) grupos=0(root) contexto=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+root
+AUSENTE /var/backups/postgresql/admtech
+AUSENTE /usr/local/sbin/backup_admtech.sh
+AUSENTE /etc/cron.d/backup-admtech
+S.ficheros              bloques de 1       Usados Disponibles Capacidad Montado en
+/dev/mapper/centos-root 800996720640 712467566592 88529154048       89% /
+2026-09-16T11:10:17-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

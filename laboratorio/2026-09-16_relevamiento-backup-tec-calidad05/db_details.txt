@@ -1,0 +1,87 @@
+2026-09-16T09:59:16-0300
+
+=== DATABASE Infraestructura ===
+current_database|current_setting|current_setting|total_bytes
+Infraestructura|on|30s|1921186951
+(1 fila)
+tablas_bytes|indices_bytes
+1554325504|348372992
+(1 fila)
+esquema|tablas_bytes|indices_bytes|total_bytes
+public|1430306816|326475776|1756782592
+gestion|67657728|11059200|78716928
+energia|42688512|7323648|50012160
+nota_acceso|6545408|1007616|7553024
+auditoria|5373952|1769472|7143424
+reserva|811008|606208|1417216
+utilitario|761856|16384|778240
+stock_estructura|180224|114688|294912
+(8 filas)
+esquema|tabla|bytes
+public|mail_historial_backup|1105805312
+public|control_ip_cant|434806784
+public|presupuesto_item|138125312
+energia|datos_consumo_ande|46006272
+gestion|incidencia_historial|20242432
+public|orden_trabajo|16441344
+gestion|incidencia|16138240
+public|grilla_item_precio|14090240
+gestion|doc_adj|10502144
+auditoria|audi_presupuesto|7086080
+(10 filas)
+
+=== DATABASE postgres ===
+current_database|current_setting|current_setting|total_bytes
+postgres|on|30s|58432647
+(1 fila)
+tablas_bytes|indices_bytes
+34578432|13156352
+(1 fila)
+esquema|tablas_bytes|indices_bytes|total_bytes
+reserva|34512896|13107200|47620096
+aud|49152|32768|81920
+public|16384|16384|32768
+(3 filas)
+esquema|tabla|bytes
+reserva|historial|17276928
+reserva|reserva_detalle|4366336
+reserva|adm_inicial_detalle|3301376
+reserva|deposito_inicial_detalle|3186688
+reserva|requirente_inicial_detalle|2695168
+reserva|reserva_estado_historial|2367488
+reserva|deposito_salida_detalle|2301952
+reserva|adjuntos|2072576
+reserva|reserva|1974272
+reserva|auditoria_eliminacion|1368064
+(10 filas)
+
+=== DATABASE vulnerabilidad ===
+current_database|current_setting|current_setting|total_bytes
+vulnerabilidad|on|30s|121412743
+(1 fila)
+tablas_bytes|indices_bytes
+58589184|53559296
+(1 fila)
+esquema|tablas_bytes|indices_bytes|total_bytes
+public|58589184|53559296|112148480
+(1 fila)
+esquema|tabla|bytes
+public|vulnerabilidades|85360640
+public|hosts|9887744
+public|historial_vulnerabilidades|7741440
+public|importacion_hosts|7258112
+public|mv_resumen_hosts|1310720
+public|historial_hosts|122880
+public|auditoria_usuarios|65536
+public|historial_areas|65536
+public|operaciones_masivas|65536
+public|areas|57344
+(10 filas)
+2026-09-16T09:59:17-0300
+
+PGPASS_ELIMINADO=SI
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

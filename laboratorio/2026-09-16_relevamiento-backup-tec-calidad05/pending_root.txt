@@ -1,0 +1,31 @@
+2026-09-16T11:02:50-0300
+postgres|postgres|f|58432647
+AUTH_RC=0
+SCHEMA_RC=0
+
+=== SIN PGPASS NI CREDENCIALES HEREDADAS ===
+postgres|postgres|f|58432647
+AUTH_SIN_CREDENCIALES_RC=0
+
+=== DESTINO ===
+drwxr-xr-x. root root unconfined_u:object_r:var_t:s0   /var/backups
+DEST_WRITE_RC=1
+
+=== REGLAS Y LIMPIEZA (SOLO LINEAS ESPECIFICAS) ===
+    Require all denied
+<FilesMatch "^\.(git|svn|hg|bzr|gitignore|gitattributes|env)">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(bak|backup|old|orig|save|swp|tmp|sql|sql\.gz|dump|tar|tar\.gz|tgz|zip)$">
+    Require all denied
+</FilesMatch>
+/etc/httpd/conf.d/infra.personal.com.py.conf:    Redirect permanent / https://infra.personal.com.py/
+2026-09-16T11:02:52-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+ADVERTENCIA: El archivo de claves Â«/dev/nullÂ» no es un archivo plano
+ls: no se puede acceder a /var/backups/postgresql: No existe el fichero o el directorio
+ls: no se puede acceder a /var/backups/postgresql/admtech: No existe el fichero o el directorio

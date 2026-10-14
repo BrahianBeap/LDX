@@ -1,0 +1,15 @@
+2026-09-16T11:11:25-0300
+FILES_BEFORE=0
+BACKUP_RC=0
+CHECKSUM_RC=0
+PG_RESTORE_LIST_RC=0
+FILES_AFTER=3
+.backup_admtech.lock|0|postgres|postgres|600|2026-09-16T11:11:26.1658765530
+admtech_postgres_20260916T141126Z.dump|4638079|postgres|postgres|600|2026-09-16T11:11:28.0289246560
+admtech_postgres_20260916T141126Z.dump.sha256|105|postgres|postgres|600|2026-09-16T11:11:28.0769258960
+2026-09-16T11:11:28-0300
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

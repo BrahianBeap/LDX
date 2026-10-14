@@ -1,0 +1,17 @@
+
+=== ARCHIVO REAL ===
+HTTP/1.1 302 Found
+Location: /INFRAWORK/error.php
+
+=== DESTINO DE REDIRECCION ===
+HTTP/1.1 200 OK
+
+=== ERROR DOCUMENT ===
+/etc/httpd/conf.d/welcome.conf:    ErrorDocument 403 /.noindex.html
+/etc/httpd/conf.d/zz-hardening-personal.conf:ErrorDocument 403 /INFRAWORK/main.php
+/etc/httpd/conf.d/zz-hardening-personal.conf:ErrorDocument 404 /INFRAWORK/error404.php
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

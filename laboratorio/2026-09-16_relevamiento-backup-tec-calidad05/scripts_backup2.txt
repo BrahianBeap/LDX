@@ -1,0 +1,113 @@
+
+=== /opt/backup_potsgres.sh RC=0 ===
+Rutas: 
+Indicadores: postgres
+Linea: PGUSER="postgres"
+[SECRETO REDACTADO] posible credencial o mecanismo de autenticacion en linea; no se imprime su valor
+Rutas: 
+Indicadores: 
+Rutas: 
+Indicadores: Infraestructura
+Linea: PGDATABASE="Infraestructura"  # Nombre de la BD a respaldar
+Rutas: /var/www/html/backup_pg
+Indicadores: 
+Linea: BACKUP_DIR="/var/www/html/backup_pg"  # Carpeta donde se guardarÃ¡n los backups
+Rutas: 
+Indicadores: 
+Linea: TIMESTAMP=$(date +%Y%m%d_%H%M%S)  # Fecha y hora del backup
+Rutas: 
+Indicadores: 
+Linea: BACKUP_FILE="$BACKUP_DIR/backup_${PGDATABASE}_$TIMESTAMP.sql"
+Rutas: 
+Indicadores: 
+Linea: mkdir -p "$BACKUP_DIR"
+[SECRETO REDACTADO] posible credencial o mecanismo de autenticacion en linea; no se imprime su valor
+Rutas: 
+Indicadores: pg_dump
+Rutas: 
+Indicadores: find,mtime,delete
+Linea: find "$BACKUP_DIR" -type f -mtime +7 -delete
+
+=== /var/lib/pgsql/10/backups/backup_infra.sh RC=0 ===
+Rutas: 
+Indicadores: pg_dump,Infraestructura,postgres
+Linea: pg_dump -U postgres Infraestructura > /tmp/backups/Infra_backup.bak
+
+=== /var/lib/pgsql/10/backups/restore.sh RC=0 ===
+Rutas: 
+Indicadores: 
+Linea: psql -c "select pg_terminate_backend (pid) from pg_stat_activity where datname = 'Infra_restore';"
+Rutas: 
+Indicadores: 
+Linea: dropdb Infra_restore
+Rutas: 
+Indicadores: 
+Linea: createdb Infra_restore
+Rutas: /var/lib/pgsql/10/backups/Infra_backup.bak
+Indicadores: 
+Linea: psql Infra_restore < /var/lib/pgsql/10/backups/Infra_backup.bak
+
+=== /etc/cron.d/sysstat RC=0 ===
+Rutas: /usr/lib64/sa/sa1
+Indicadores: 
+Linea: */10 * * * * root /usr/lib64/sa/sa1 1 1
+Rutas: /usr/lib64/sa/sa2
+Indicadores: 
+Linea: 53 23 * * * root /usr/lib64/sa/sa2 -A
+
+=== /etc/anacrontab RC=0 ===
+Rutas: /bin/sh
+Indicadores: 
+Linea: SHELL=/bin/sh
+Rutas: /usr/sbin /usr/bin
+Indicadores: 
+Linea: PATH=/sbin:/bin:/usr/sbin:/usr/bin
+Rutas: 
+Indicadores: 
+Linea: MAILTO=root
+Rutas: 
+Indicadores: 
+Linea: RANDOM_DELAY=45
+Rutas: 
+Indicadores: 
+Linea: START_HOURS_RANGE=3-22
+Rutas: /etc/cron.daily
+Indicadores: 
+Linea: 1	5	cron.daily		nice run-parts /etc/cron.daily
+Rutas: /etc/cron.weekly
+Indicadores: 
+Linea: 7	25	cron.weekly		nice run-parts /etc/cron.weekly
+Rutas: /etc/cron.monthly
+Indicadores: 
+Linea: @monthly 45	cron.monthly		nice run-parts /etc/cron.monthly
+
+=== HTTPS SNI LOCAL ===
+/backup_pg/ 302
+CURL_RC=0
+/backup_pg/backup_Infraestructura_20260916_000001.sql 302
+CURL_RC=0
+
+=== DEFAULT CLIENT ===
+pg_dump (PostgreSQL) 10.12
+pg_restore (PostgreSQL) 10.12
+Enforcing
+
+=== HEAD REDIRECT METADATA ===
+HTTP/1.1 302 Found
+Location: /INFRAWORK/error.php
+
+=== ACCESS MATCH RULES ===
+<DirectoryMatch "/\.(git|svn|hg|bzr)">
+    Require all denied
+</DirectoryMatch>
+<FilesMatch "^\.(git|svn|hg|bzr|gitignore|gitattributes|env)">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(bak|backup|old|orig|save|swp|tmp|sql|sql\.gz|dump|tar|tar\.gz|tgz|zip)$">
+    Require all denied
+</FilesMatch>
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html

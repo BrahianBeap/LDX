@@ -1,0 +1,317 @@
+
+=== CRON ROOT RC=0 ===
+Rutas: 
+Indicadores: 
+Linea: DB_HOST=10.129.2.165
+Rutas: 
+Indicadores: 
+Linea: DB_PORT=5432
+Rutas: 
+Indicadores: postgres
+Linea: DB_USER=postgres
+Rutas: 
+Indicadores: 
+DB_PASS=[SECRETO REDACTADO]
+Rutas: 
+Indicadores: Infraestructura
+Linea: DB_NAME=Infraestructura
+Horario: * * * * *
+Rutas: /usr/bin/flock /var/www/html/INFRAWORK/scrip_send_mail.php /var/log/infrawork_mail.log
+Indicadores: flock
+Linea: * * * * * /usr/bin/flock -n /tmp/scrip_send_mail.lock php /var/www/html/INFRAWORK/scrip_send_mail.php >> /var/log/infrawork_mail.log 2>&1
+Horario: 5 8 * * 1,4
+Rutas: /var/www/html/INFRAWORK/alquiler/zre_track_email.php
+Indicadores: 
+Linea: 5 8 * * 1,4  php /var/www/html/INFRAWORK/alquiler/zre_track_email.php
+Horario: 30 5 * * 1-5
+Rutas: /var/www/html/INFRAWORK/garbage-test/verificar_precio_item_por_zona.php
+Indicadores: 
+Linea: 30 5 * * 1-5 php /var/www/html/INFRAWORK/garbage-test/verificar_precio_item_por_zona.php
+Horario: 30 5 * * 1-5
+Rutas: /var/www/html/INFRAWORK/garbage-test/verificar_sumasubtotal_de_items_vs_total.php
+Indicadores: 
+Linea: 30 5 * * 1-5 php /var/www/html/INFRAWORK/garbage-test/verificar_sumasubtotal_de_items_vs_total.php
+Horario: 30 5 * * 1-5
+Rutas: /var/www/html/INFRAWORK/garbage-test/actualizar_estado_ticket.php
+Indicadores: 
+Linea: 30 5 * * 1-5 php /var/www/html/INFRAWORK/garbage-test/actualizar_estado_ticket.php
+Horario: 0 7 * * *
+Rutas: /var/www/html/INFRAWORK/error_compras_incidencias.php
+Indicadores: 
+Linea: 0 7 * * * php /var/www/html/INFRAWORK/error_compras_incidencias.php
+Horario: 0 7 * * *
+Rutas: /var/www/html/INFRAWORK/cron_renovacion_contratos.php
+Indicadores: 
+Linea: 0 7 * * * php /var/www/html/INFRAWORK/cron_renovacion_contratos.php
+Horario: 11 9 * * 1
+Rutas: /var/www/html/INFRAWORK/email_compras_renovaciones_atrasadas.php
+Indicadores: 
+Linea: 11 9 * * 1 php /var/www/html/INFRAWORK/email_compras_renovaciones_atrasadas.php
+Horario: 10 10 * * 1
+Rutas: /var/www/html/INFRAWORK/email_legales_renovaciones_atrasadas.php
+Indicadores: 
+Linea: 10 10 * * 1 php /var/www/html/INFRAWORK/email_legales_renovaciones_atrasadas.php
+Horario: 30 7 * * 1-5
+Rutas: /var/www/html/INFRAWORK/email/gestion_informe_nis.php
+Indicadores: 
+Linea: 30 7 * * 1-5 php /var/www/html/INFRAWORK/email/gestion_informe_nis.php
+Horario: 1 8 * * 1-5
+Rutas: /var/www/html/INFRAWORK/email/gestion_alarma.php
+Indicadores: 
+Linea: 1 8 * * 1-5 php /var/www/html/INFRAWORK/email/gestion_alarma.php
+Horario: 30 5 * * *
+Rutas: /var/www/html/INFRAWORK/email/incidencias_diarias.php
+Indicadores: 
+Linea: 30 5 * * * php /var/www/html/INFRAWORK/email/incidencias_diarias.php
+Horario: 45 16 * * 5
+Rutas: /var/www/html/INFRAWORK/email/incidencias_diarias_obras.php
+Indicadores: 
+Linea: 45 16 * * 5 php /var/www/html/INFRAWORK/email/incidencias_diarias_obras.php
+Horario: 30 5 * * *
+Rutas: /var/www/html/INFRAWORK/email/control_rebote_correo.php
+Indicadores: 
+Linea: 30 5 * * * php /var/www/html/INFRAWORK/email/control_rebote_correo.php
+Horario: 30 5 * * *
+Rutas: /var/www/html/INFRAWORK/email/control_sitios_to_contabilidad.php
+Indicadores: 
+Linea: 30 5 * * * php /var/www/html/INFRAWORK/email/control_sitios_to_contabilidad.php
+Horario: 30 5 * * 1-5
+Rutas: /var/www/html/INFRAWORK/email/control_sincronizacion_opcion_compartir.php
+Indicadores: 
+Linea: 30 5 * * 1-5 php /var/www/html/INFRAWORK/email/control_sincronizacion_opcion_compartir.php
+Horario: 30 5 * * 1-5
+Rutas: /var/www/html/INFRAWORK/email/control_ticket_sin_ot.php
+Indicadores: 
+Linea: 30 5 * * 1-5 php /var/www/html/INFRAWORK/email/control_ticket_sin_ot.php
+Horario: 0 7 * * *
+Rutas: /var/www/html/INFRAWORK/scrip_sitio_opcion_activa_unica.php
+Indicadores: 
+Linea: 0 7  * * *   php /var/www/html/INFRAWORK/scrip_sitio_opcion_activa_unica.php
+Horario: 0 8 * * 1-5
+Rutas: /var/www/html/INFRAWORK/crono/cro_notificaciones_diarias.php
+Indicadores: 
+Linea: 0 8 * * 1-5 php /var/www/html/INFRAWORK/crono/cro_notificaciones_diarias.php
+Horario: 0 9 * * 1-5
+Rutas: /var/www/html/adm/migo_notificacion/cron_notificar_por_area.php
+Indicadores: 
+Linea: 0 9 * * 1-5 php /var/www/html/adm/migo_notificacion/cron_notificar_por_area.php
+Horario: 0 9,18 * * 1-5
+Rutas: /var/www/html/adm/migo_notificacion/notificar_presus.php
+Indicadores: 
+Linea: 0 9,18 * * 1-5 php /var/www/html/adm/migo_notificacion/notificar_presus.php
+Horario: 30 7 * * 1-5
+Rutas: /var/www/html/adm/migo_notificacion/cron_notificar_logistica.php
+Indicadores: 
+Linea: 30 7 * * 1-5 php /var/www/html/adm/migo_notificacion/cron_notificar_logistica.php
+Horario: 0 12 * * 1-5
+Rutas: /var/www/html/INFRAWORK/control_file_system.php
+Indicadores: 
+Linea: 0 12 * * 1-5   php /var/www/html/INFRAWORK/control_file_system.php
+Horario: 0 4 * * *
+Rutas: /var/www/html/INFRAWORK/garbage-test/alquiler_contrato_dar_baja_proceso.php
+Indicadores: 
+Linea: 0 4 * * *   php /var/www/html/INFRAWORK/garbage-test/alquiler_contrato_dar_baja_proceso.php
+Horario: 30 4 * * *
+Rutas: /var/www/html/INFRAWORK/garbage-test/alquiler_contrato_consolidar_proceso.php
+Indicadores: 
+Linea: 30 4 * * *   php /var/www/html/INFRAWORK/garbage-test/alquiler_contrato_consolidar_proceso.php
+Horario: 0 3 * * *
+Rutas: /var/www/html/INFRAWORK/backup_de_correos_salientes.php
+Indicadores: 
+Linea: 0 3 * * * php /var/www/html/INFRAWORK/backup_de_correos_salientes.php
+Horario: 30 3 * * *
+Rutas: /var/www/html/INFRAWORK/garbage-test/crear_item_torrera.sh
+Indicadores: 
+Linea: 30 3 * * * sh /var/www/html/INFRAWORK/garbage-test/crear_item_torrera.sh
+Horario: 0 9 * * *
+Rutas: /var/www/html/INFRAWORK/ot_sin_nis.php
+Indicadores: 
+Linea: 0 9 * * * php /var/www/html/INFRAWORK/ot_sin_nis.php
+Horario: 0 10 1 * *
+Rutas: /var/www/html/INFRAWORK/garbage-test/sitio_energia_data_missing.php
+Indicadores: 
+Linea: 0 10 1 * * php /var/www/html/INFRAWORK/garbage-test/sitio_energia_data_missing.php
+Horario: 0 0 * * *
+Rutas: /opt/backup_potsgres.sh /var/log/backup_postgres.log
+Indicadores: postgres
+Linea: 0 0 * * * /opt/backup_potsgres.sh >> /var/log/backup_postgres.log 2>&1
+Horario: 0 10 * * 1-5
+Rutas: /var/www/html/INFRAWORK/gestion/verificar_anomalias_negociacion.php
+Indicadores: 
+Linea: 0 10 * * 1-5 php /var/www/html/INFRAWORK/gestion/verificar_anomalias_negociacion.php
+
+=== CRON POSTGRES RC=0 ===
+Horario: 0 22 * * 1-5
+Rutas: /var/lib/pgsql/10/backups/backup_infra.sh
+Indicadores: 
+Linea: 0 22 * * 1-5 sh /var/lib/pgsql/10/backups/backup_infra.sh
+Horario: 0 5 * * 6
+Rutas: /var/lib/pgsql/10/backups/Infra_backup.bak
+Indicadores: pg_dump,Infraestructura,postgres
+Linea: 0 5 * * 6 pg_dump -U postgres Infraestructura > /var/lib/pgsql/10/backups/Infra_backup.bak
+Horario: 0 6 * * 6
+Rutas: /var/lib/pgsql/10/backups/restore.sh
+Indicadores: 
+Linea: 0 6 * * 6 sh /var/lib/pgsql/10/backups/restore.sh
+
+=== SPOOL POSTGRES RC=0 ===
+Horario: 0 22 * * 1-5
+Rutas: /var/lib/pgsql/10/backups/backup_infra.sh
+Indicadores: 
+Linea: 0 22 * * 1-5 sh /var/lib/pgsql/10/backups/backup_infra.sh
+Horario: 0 5 * * 6
+Rutas: /var/lib/pgsql/10/backups/Infra_backup.bak
+Indicadores: pg_dump,Infraestructura,postgres
+Linea: 0 5 * * 6 pg_dump -U postgres Infraestructura > /var/lib/pgsql/10/backups/Infra_backup.bak
+Horario: 0 6 * * 6
+Rutas: /var/lib/pgsql/10/backups/restore.sh
+Indicadores: 
+Linea: 0 6 * * 6 sh /var/lib/pgsql/10/backups/restore.sh
+
+=== /etc/cron.d/0hourly RC=0 ===
+Rutas: /bin/bash
+Indicadores: 
+Linea: SHELL=/bin/bash
+Rutas: /usr/sbin /usr/bin
+Indicadores: 
+Linea: PATH=/sbin:/bin:/usr/sbin:/usr/bin
+Rutas: 
+Indicadores: 
+Linea: MAILTO=root
+Horario: 01 * * * *
+Rutas: /etc/cron.hourly
+Indicadores: 
+Linea: 01 * * * * root run-parts /etc/cron.hourly
+
+=== /etc/cron.d/raid-check RC=0 ===
+Horario: 0 1 * * Sun
+Rutas: /usr/sbin/raid-check
+Indicadores: 
+Linea: 0 1 * * Sun root /usr/sbin/raid-check
+
+=== /etc/cron.d/sysstat RC=1 ===
+Sin acceso para verificacion
+
+=== /etc/crontab RC=0 ===
+Rutas: /bin/bash
+Indicadores: 
+Linea: SHELL=/bin/bash
+Rutas: /usr/sbin /usr/bin
+Indicadores: 
+Linea: PATH=/sbin:/bin:/usr/sbin:/usr/bin
+Rutas: 
+Indicadores: 
+Linea: MAILTO=root
+
+=== /etc/anacrontab RC=1 ===
+Sin acceso para verificacion
+
+=== REGLAS APACHE SELECCIONADAS ===
+/etc/httpd/conf/httpd.conf:103: <Directory />
+/etc/httpd/conf/httpd.conf:104: AllowOverride all
+/etc/httpd/conf/httpd.conf:105: Require all denied
+/etc/httpd/conf/httpd.conf:106: </Directory>
+/etc/httpd/conf/httpd.conf:120: DocumentRoot "/var/www/html"
+/etc/httpd/conf/httpd.conf:125: <Directory "/var/www">
+/etc/httpd/conf/httpd.conf:126: AllowOverride All
+/etc/httpd/conf/httpd.conf:128: Require all granted
+/etc/httpd/conf/httpd.conf:129: </Directory>
+/etc/httpd/conf/httpd.conf:131: <Directory "/var/www/html/INFRAWORK/tmp_file_upload">
+/etc/httpd/conf/httpd.conf:132: Options -Indexes
+/etc/httpd/conf/httpd.conf:133: AllowOverride None
+/etc/httpd/conf/httpd.conf:134: Order allow,deny
+/etc/httpd/conf/httpd.conf:135: Allow from all
+/etc/httpd/conf/httpd.conf:136: </Directory>
+/etc/httpd/conf/httpd.conf:137: <Directory "/var/www/html/INFRAWORK/imagen_fileupload">
+/etc/httpd/conf/httpd.conf:138: Options -Indexes
+/etc/httpd/conf/httpd.conf:139: </Directory>
+/etc/httpd/conf/httpd.conf:144: <Directory "/var/www/html">
+/etc/httpd/conf/httpd.conf:157: Options -Indexes +FollowSymLinks
+/etc/httpd/conf/httpd.conf:164: AllowOverride None
+/etc/httpd/conf/httpd.conf:169: Require all granted
+/etc/httpd/conf/httpd.conf:170: </Directory>
+/etc/httpd/conf/httpd.conf:184: <Files ".ht*">
+/etc/httpd/conf/httpd.conf:185: Require all denied
+/etc/httpd/conf/httpd.conf:186: </Files>
+/etc/httpd/conf/httpd.conf:268: <Directory "/var/www/cgi-bin">
+/etc/httpd/conf/httpd.conf:269: AllowOverride None
+/etc/httpd/conf/httpd.conf:270: Options None
+/etc/httpd/conf/httpd.conf:271: Require all granted
+/etc/httpd/conf/httpd.conf:272: </Directory>
+/etc/httpd/conf.d/autoindex.conf:21: Alias /icons/ "/usr/share/httpd/icons/"
+/etc/httpd/conf.d/autoindex.conf:23: <Directory "/usr/share/httpd/icons">
+/etc/httpd/conf.d/autoindex.conf:24: Options MultiViews FollowSymlinks
+/etc/httpd/conf.d/autoindex.conf:25: AllowOverride None
+/etc/httpd/conf.d/autoindex.conf:26: Require all granted
+/etc/httpd/conf.d/autoindex.conf:27: </Directory>
+/etc/httpd/conf.d/userdir.conf:31: <Directory "/home/*/public_html">
+/etc/httpd/conf.d/userdir.conf:32: AllowOverride FileInfo AuthConfig Limit Indexes
+/etc/httpd/conf.d/userdir.conf:33: Options MultiViews SymLinksIfOwnerMatch IncludesNoExec
+/etc/httpd/conf.d/userdir.conf:34: Require method GET POST OPTIONS
+/etc/httpd/conf.d/userdir.conf:35: </Directory>
+/etc/httpd/conf.d/welcome.conf:9: Options -Indexes
+/etc/httpd/conf.d/welcome.conf:13: <Directory /usr/share/httpd/noindex>
+/etc/httpd/conf.d/welcome.conf:14: AllowOverride None
+/etc/httpd/conf.d/welcome.conf:15: Require all granted
+/etc/httpd/conf.d/welcome.conf:16: </Directory>
+/etc/httpd/conf.d/welcome.conf:18: Alias /.noindex.html /usr/share/httpd/noindex/index.html
+/etc/httpd/conf.d/welcome.conf:19: Alias /noindex/css/bootstrap.min.css /usr/share/httpd/noindex/css/bootstrap.min.css
+/etc/httpd/conf.d/welcome.conf:20: Alias /noindex/css/open-sans.css /usr/share/httpd/noindex/css/open-sans.css
+/etc/httpd/conf.d/welcome.conf:21: Alias /images/apache_pb.gif /usr/share/httpd/noindex/images/apache_pb.gif
+/etc/httpd/conf.d/welcome.conf:22: Alias /images/poweredby.png /usr/share/httpd/noindex/images/poweredby.png
+/etc/httpd/conf.d/php.conf:4: <Files ".user.ini">
+/etc/httpd/conf.d/php.conf:6: Require all denied
+/etc/httpd/conf.d/php.conf:9: Order allow,deny
+/etc/httpd/conf.d/php.conf:10: Deny from all
+/etc/httpd/conf.d/php.conf:13: </Files>
+/etc/httpd/conf.d/ssl.conf:56: <VirtualHost _default_:443>
+/etc/httpd/conf.d/ssl.conf:175: <Files ~ "\.(cgi|shtml|phtml|php3?)$">
+/etc/httpd/conf.d/ssl.conf:177: </Files>
+/etc/httpd/conf.d/ssl.conf:178: <Directory "/var/www/cgi-bin">
+/etc/httpd/conf.d/ssl.conf:180: </Directory>
+/etc/httpd/conf.d/ssl.conf:216: </VirtualHost>
+/etc/httpd/conf.d/zz-hardening-personal.conf:10: Require all denied
+/etc/httpd/conf.d/zz-hardening-personal.conf:14: Require all denied
+/etc/httpd/conf.d/zz-hardening-personal.conf:19: Require all denied
+/etc/httpd/conf.d/infra.personal.com.py.conf:1: <VirtualHost *:80>
+/etc/httpd/conf.d/infra.personal.com.py.conf:3: DocumentRoot /var/www/html/
+/etc/httpd/conf.d/infra.personal.com.py.conf:12: Redirect permanent / https://infra.personal.com.py/
+/etc/httpd/conf.d/infra.personal.com.py.conf:15: </VirtualHost>
+/etc/httpd/conf.d/infra.personal.com.py.conf:16: <VirtualHost *:443>
+/etc/httpd/conf.d/infra.personal.com.py.conf:18: DocumentRoot /var/www/html
+/etc/httpd/conf.d/infra.personal.com.py.conf:21: <Directory "/var/www/html/INFRAWORK/imagen_fileupload">
+/etc/httpd/conf.d/infra.personal.com.py.conf:22: Options -Indexes
+/etc/httpd/conf.d/infra.personal.com.py.conf:35: </Directory>
+/etc/httpd/conf.d/infra.personal.com.py.conf:64: </VirtualHost>
+/var/www/html/.htaccess: No disponible (2)
+/var/www/html/backup_pg/.htaccess: No disponible (2)
+
+=== HEAD HTTP ===
+/backup_pg/ 301
+CURL_RC=0
+/backup_pg/backup_Infraestructura_20260916_000001.sql 301
+CURL_RC=0
+
+=== HEAD HTTPS ===
+/backup_pg/ 000
+CURL_RC=51
+/backup_pg/backup_Infraestructura_20260916_000001.sql 000
+CURL_RC=51
+
+=== DAC APACHE ===
+uid=48(apache) gid=48(apache) grupos=48(apache),1004(infrawork)
+f: /var/www/html/backup_pg/backup_Infraestructura_20260916_000001.sql
+ dr-xr-xr-x root root /
+ drwxr-xr-x root root var
+ drwxr-xr-x root root www
+ drwxr-xr-x root root html
+ drwxr-xr-x root root backup_pg
+ -rw-r--r-- root root backup_Infraestructura_20260916_000001.sql
+
+STDERR
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+curl: (51) Unable to communicate securely with peer: requested domain name does not match the server's certificate.
+curl: (51) Unable to communicate securely with peer: requested domain name does not match the server's certificate.
+bash: getenforce: command not found
