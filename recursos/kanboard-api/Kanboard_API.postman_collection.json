@@ -1,0 +1,418 @@
+{
+  "info": {
+    "name": "Kanboard API",
+    "description": "Colección para probar accesos a la API JSON-RPC de Kanboard. Configurar la variable de colección 'kb_token' (o una Environment de Postman) con el token de API de cada usuario antes de ejecutar. No commitear esta colección con un token real cargado. kb_user: jsonrpc para el token de la aplicacion; tu login (ej. elias.alfonzo) para un token personal.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{kb_user}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{kb_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "kb_base_url",
+      "value": "https://TU-INSTANCIA-KANBOARD/jsonrpc.php",
+      "type": "string"
+    },
+    {
+      "key": "kb_user",
+      "value": "jsonrpc",
+      "type": "string"
+    },
+    {
+      "key": "kb_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb_project_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "kb_task_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Proyectos y tablero",
+      "item": [
+        {
+          "name": "Listar mis proyectos",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getMyProjects\", \"id\": 1, \"params\": {}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ver columnas de un proyecto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getColumns\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ver tablero completo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getBoard\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ver miembros del proyecto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getProjectUsers\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tareas",
+      "item": [
+        {
+          "name": "Listar todas las tareas de un proyecto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getAllTasks\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}, \"status_id\": 1}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear tarea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"createTask\", \"id\": 1, \"params\": {\"title\": \"Tarea de prueba\", \"project_id\": {{kb_project_id}}, \"owner_id\": 1, \"description\": \"Creada desde Postman\", \"color_id\": \"yellow\"}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Leer tarea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getTask\", \"id\": 1, \"params\": {\"task_id\": {{kb_task_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Editar tarea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"updateTask\", \"id\": 1, \"params\": {\"id\": {{kb_task_id}}, \"description\": \"Editada desde Postman\"}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mover de columna",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"moveTaskPosition\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}, \"task_id\": {{kb_task_id}}, \"column_id\": 1, \"position\": 1, \"swimlane_id\": 1}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Leer comentarios",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getAllComments\", \"id\": 1, \"params\": {\"task_id\": {{kb_task_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Agregar comentario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"createComment\", \"id\": 1, \"params\": {\"task_id\": {{kb_task_id}}, \"user_id\": 1, \"content\": \"Comentario de prueba desde Postman\"}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar tareas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"searchTasks\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}, \"query\": \"texto a buscar\"}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cerrar tarea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"closeTask\", \"id\": 1, \"params\": {\"task_id\": {{kb_task_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reabrir tarea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"openTask\", \"id\": 1, \"params\": {\"task_id\": {{kb_task_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categorías",
+      "item": [
+        {
+          "name": "Listar categorías de un proyecto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"getAllCategories\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear categoría",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"jsonrpc\": \"2.0\", \"method\": \"createCategory\", \"id\": 1, \"params\": {\"project_id\": {{kb_project_id}}, \"name\": \"Categoría de prueba\"}}"
+            },
+            "url": {
+              "raw": "{{kb_base_url}}",
+              "host": [
+                "{{kb_base_url}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
