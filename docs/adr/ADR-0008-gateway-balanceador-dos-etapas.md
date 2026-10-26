@@ -182,6 +182,19 @@ Dos hallazgos nuevos durante esta alta:
 
 ---
 
+## Actualización — escaneo Nessus y preparación de los 3 gateways para el FQDN compartido (2026-10-16)
+
+**Fecha:** 2026-10-16. **Referencia:** [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../../laboratorio/2026-10-16_hardening-gateways-nessus/).
+
+El escaneo Nessus adjunto al ticket Jerure #1076134 encontró en `PFR-GW-SRV` dos problemas de la variante embebida que no aparecían con un balanceador separado. Primero, el gateway publica **tal cual** todo lo que expone la aplicación, incluido `web.config` de Kanboard (corregido con una exclusión `ProxyPass !`). Segundo, el gateway responde ICMP timestamp (corregido en los 3 gateways).
+
+La verificación mostró además que **los 3 gateways no son equivalentes**: solo PFR evolucionó con Kanboard y VulnApp NG. CAR y FDO exigen certificado de cliente en todo el vhost y apuntan a backends detenidos. Esto contradice el supuesto del diseño de FQDN compartido (cualquier gateway puede atender a cualquier usuario). Se resolvió en dos etapas:
+
+- **Etapa 1 (✅ 2026-10-16):** red y aplicación listas: regla de ACL para `.2`/`.4` hacia VulnApp NG, `--forwarded-allow-ips` de Gunicorn ampliado y `mod_headers` en CAR y FDO.
+- **Etapa 2 (🔴 pendiente):** reescribir los `LB.conf` de CAR y FDO con el modelo de PFR. Requiere probar antes, con Norberto Núñez, que el cliente de NTF funcione con certificado pedido por ruta.
+
+---
+
 ## Pendientes de seguimiento
 
 - [ ] Confirmar y documentar la sintaxis exacta de la regla de firewalld de reenvío de puerto (gateway → balanceador) — pendiente de la siguiente sesión con Norberto. 🟡 Parcialmente confirmado: el `forward-port` funciona correctamente a nivel de firewalld/kernel (probado con Kanboard, ver actualización arriba), pero el tráfico externo real fue bloqueado por un firewall corporativo intermedio — sigue sin resolverse el trámite de alta de servicio para puertos no estándar.
@@ -190,7 +203,9 @@ Dos hallazgos nuevos durante esta alta:
 - [ ] Evaluar si corresponde balanceo activo entre réplicas del mismo servicio, o si el balanceador solo hace ruteo 1:1 por URL.
 - [x] Confirmar con Norberto Núñez el trabajo del 2026-09-18 en `LB.conf` — ✅ Confirmado por él mismo en `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt`, ver la actualización arriba. Qué es `CAR-kanboard-1`/`CAR-KANBOARD` ya se había aclarado por separado (el usuario, no Norberto) — ver [13_Linea_de_Tiempo.md](../13_Linea_de_Tiempo.md). 🔴 Sigue sin confirmar si Norberto tenía algo más planeado para Kanboard que no llegó a aplicar.
 - [ ] Decidir si el "modelo estándar" de este ADR debería actualizarse para reflejar que, en la práctica, se usa la variante embebida en los 4 casos reales existentes (Loki, NTF, Kanboard, VulnApp NG).
-- [ ] Pedir a Seguridad/Redes que habilite la conectividad de `PFR-VULNAPP-APP` hacia `10.150.58.116:443` (API de SDI) — ver [RIE-015 en 11_Riesgos.md](../11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada).
+- [ ] Pedir a Seguridad/Redes que habilite la conectividad de `PFR-VULNAPP-APP` hacia `10.150.58.116:443` (API de SDI) — ver [RIE-015 en 11_Riesgos.md](../11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada). 🟡 Avance 2026-10-16: la IP `10.143.11.8` ya quedó inventariada en Jerure (ticket #1076134 resuelto), requisito para aprobar la regla.
+- [ ] Etapa 2: homogeneizar los `LB.conf` de CAR-GW-SRV y FDO-GW-SRV con el de PFR, coordinado con Norberto Núñez por NTF — ver [RIE-020](../11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
+- [ ] Pedir el DNS `oss.personal.com.py` (las 3 IP) recién después de la Etapa 2, con certificado con SAN — ver [02_Arquitectura.md](../02_Arquitectura.md#nombre-de-dominio-compartido-entre-sitios-fqdn--dns-round-robin).
 
 ---
 

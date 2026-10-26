@@ -356,3 +356,129 @@ Se midió en vivo, sin necesidad de abrir sesión SSH a cada sitio por separado 
 
 **Resumen:**
 `tec-calidad05` es una VM VMware con CentOS 7 ajena al cluster LXD (aloja Infrawork, ADM-TECH y una versión legacy de VulnApp) — se incorpora a este repositorio porque el equipo centraliza acá toda la infraestructura, no solo la de LXD. El relevamiento de capacidad encontró el filesystem raíz al 88.8% (82.79 GiB disponibles, no crítico todavía pero a vigilar) y dejó pendiente de confirmar con el responsable si `/var/www/html/adm` corresponde efectivamente a ADM-TECH. La implementación del backup de PostgreSQL quedó verificada de punta a punta: script instalado, cron diario a las 02:30, primer respaldo corrido con checksum SHA-256 y catálogo comprobados (`pg_restore --list`), sin exponer ninguna credencial en los documentos (verificado explícitamente por los propios scripts de generación de reportes). Queda pendiente, si se decide mantener este servidor documentado de forma permanente, promover una ficha de componente y el procedimiento de backup a `docs/`.
+---
+
+### 2026-10-12 (decimoctava entrada)
+
+**Fuente:** Relevamiento técnico de solo lectura de `PFR-GW-SRV` para su alta en el inventario de Ciberseguridad (Jerure), a pedido del usuario. Seguimiento de los tickets hasta el 2026-10-16.
+
+**Documentos creados:**
+- `laboratorio/2026-10-12_alta-jerure-pfr-gw-srv/README.md` — objetivo, estado de los tickets #1076072 (tema 447) y #1076134 (tema 939), y hallazgos
+- `laboratorio/2026-10-12_alta-jerure-pfr-gw-srv/bitacora.md` — datos cargados en el formulario, servicios y puertos, verificación de IP propia, DNS y respuesta a SDI
+
+**Documentos actualizados:**
+- `docs/07_Troubleshooting.md` — TRB-018 (la verificación de SDI por SSH a la IP de servicio de un gateway falla por diseño)
+- `docs/03_Componentes.md` — gateway de servicios: SSH deshabilitado verificado y su consecuencia en las altas de Jerure
+- `docs/11_Riesgos.md` — RIE-021 (`PFR-GW-SRV` sin snapshots ni backup)
+
+**Resumen:**
+Se confirmó que `10.143.11.8` es una IP propia del contenedor (ipvlan L2, estática), por lo que correspondía el tema 447 y no el 857. El registro previo 632 (DNSv6-home-21) sobre la misma IP se dejó intacto, por recomendación de SDI. El ticket de agregar la IP al activo `fr-oss` quedó resuelto el 16/10. El alta del servidor virtual sigue en verificación de SDI: su prueba por SSH falló porque el gateway no tiene SSH por diseño, y se acordó que la verificación se haga con `lxc exec` desde el host de gestión. El relevamiento también encontró que el gateway no tiene snapshots ni registro DNS.
+
+---
+
+### 2026-10-16 (decimonovena entrada)
+
+**Fuente:** Escaneo Nessus de Seguridad de la Información (adjunto al ticket Jerure #1076134) y cambios aplicados en vivo, con autorización explícita del usuario y rollback preparado.
+
+**Documentos creados:**
+- `laboratorio/2026-10-16_hardening-gateways-nessus/README.md` — detecciones, tratamiento, estado de los 3 gateways, Etapa 1 completada y Etapa 2 pendiente
+- `laboratorio/2026-10-16_hardening-gateways-nessus/bitacora.md` — comandos, verificaciones antes y después, hashes y rollback de cada cambio
+- `recursos/kanboard-api/` — referencia de la API JSON-RPC de Kanboard (`KANBOARD_API.md`), colección Postman con 16 solicitudes y README. Sin tokens
+
+**Documentos actualizados:**
+- `docs/05_Configuracion.md` — regla nueva de `ACL-OVN-1` (CAR/FDO → VulnApp NG); bloqueo de ICMP timestamp en la zona `external`; bloqueo de archivos de la aplicación (`web.config`); parámetro `--forwarded-allow-ips` de Gunicorn; estado real del mTLS en CAR/FDO; verificación de métricas sin autenticación
+- `docs/06_Operacion.md` — procedimiento nuevo "Modificar el LB.conf de un gateway de forma controlada"
+- `docs/07_Troubleshooting.md` — TRB-019 (401 en la API de Kanboard con un token personal)
+- `docs/11_Riesgos.md` — RIE-018 (métricas de LXD sin autenticación), RIE-019 (certificados TLS no confiables y cifrados heredados), RIE-020 (gateways CAR/FDO no homogéneos, bloquean el DNS); resumen de severidades
+- `docs/03_Componentes.md` — diferencias entre los 3 gateways; ficha de Kanboard (API y archivos de fábrica expuestos)
+- `docs/02_Arquitectura.md` — requisitos previos antes de pedir el DNS `oss.personal.com.py`
+- `docs/adr/ADR-0008-gateway-balanceador-dos-etapas.md` — actualización del 16/10 y pendientes nuevos
+- `docs/13_Linea_de_Tiempo.md` — hitos del 12 y 16/10 y acciones pendientes
+
+**Resumen:**
+De 13 detecciones de criticidad media, se cerraron 2 en `10.143.11.8`: ICMP timestamp (bloqueado en los 3 gateways) y `/web.config` de Kanboard (bloqueado en PFR; en CAR y FDO no estaba expuesto). Las 11 restantes son certificados (CA interna en el gateway, certificado propio de LXD en el host) y quedaron como riesgo a tratar. La verificación encontró que el endpoint de métricas de LXD no exige autenticación, y que los gateways de CAR y FDO no son iguales al de PFR: exigen certificado en todo el sitio y apuntan a Kanboard detenidos. Esto bloquea el plan de DNS compartido. Se completó la Etapa 1 de la homogeneización (ACL, Gunicorn y `mod_headers`) sin impacto visible, salvo unos segundos de reinicio de VulnApp NG. La Etapa 2 (`LB.conf` de CAR y FDO) queda pendiente de coordinar con Norberto Núñez por el riesgo sobre NTF.
+
+---
+
+### 2026-10-24 (vigésima entrada)
+
+**Fuente:** Reuniones con Norberto Núñez, Marcos Casco y Daniel Medina (2026-10-16 y 2026-10-24), más el seguimiento de los tickets Jerure de certificado (#1078719) y DNS (#1079305).
+
+**Documentos creados:**
+- `docs/adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md` — nombre compartido `oss.personal.com.py` por round-robin, con nombres propios por sitio para clientes con restricción de ruta (caso Comap → Fernando)
+- `PENDIENTES.md` — resumen priorizado de trabajo en curso, para retomar
+
+**Documentos actualizados:**
+- `reunion/README.md` — dos reuniones nuevas registradas y analizadas (las transcripciones todavía no se copiaron a la carpeta)
+- `docs/05_Configuracion.md` — procedimiento estándar de Norberto para operar contenedores (`lxc file push/pull`, `lxc exec -n`)
+- `docs/06_Operacion.md` — inventario hacia Jerure con IP de servicio + puerto + URL, y los dos niveles del checklist de alta (servidor y servicio)
+- `docs/07_Troubleshooting.md` — TRB-017: `-n` como solución nativa, confirmada por Norberto
+- `docs/11_Riesgos.md` — RIE-019: avance del certificado y coordinación obligatoria con Tembiapó
+- `docs/02_Arquitectura.md`, `docs/10_Decisiones.md`, `docs/README.md` — referencias al ADR-0009
+- `docs/13_Linea_de_Tiempo.md` — lo definido en las dos reuniones y las acciones nuevas (Infrawork/ADM-TECH, bases centralizadas y S3, correo entrante, OSRM, prueba de SMS)
+
+**Resumen:**
+Las dos reuniones cierran tres definiciones. Primero, las aplicaciones se inventarían en Jerure con la IP de servicio del gateway, el puerto y la URL, no con la IP del contenedor. Segundo, el DNS compartido tiene una excepción: los clientes que solo alcanzan un sitio (Comap) necesitan un nombre propio hacia ese sitio; se registró como ADR-0009. Tercero, el cambio de certificado no puede hacerse sin coordinar con Tembiapó, que consume NTF por Fernando confiando en el certificado actual. Además, se decidió migrar Infrawork y ADM-TECH al clúster arrancando con 1 CPU, dejando FileRoom (~800 GB) en tec-calidad05, y se habilitó centralizar las bases del área en el servidor de Norberto, con un servicio S3 ya disponible. En DNS, `oss.personal.com.py` ya resuelve a `10.143.11.8`; las IP de Carpinelli y Fernando se suman después de la Etapa 2.
+
+---
+
+### 2026-10-24 (vigesimoprimera entrada)
+
+**Fuente:** Relevamiento de solo lectura de ADM-TECH en `tec-calidad05` y en su repositorio (`adm-tech`), a pedido del usuario, para planificar su migración al clúster.
+
+**Documentos creados:**
+- `laboratorio/2026-10-24_migracion-admtech-lxd/README.md` — plataforma actual, código, archivos, base, dependencias externas críticas, hallazgos de seguridad y diseño propuesto (Fase 2)
+- `laboratorio/2026-10-24_migracion-admtech-lxd/bitacora.md` — consultas ejecutadas y la advertencia sobre secretos impresos por accidente
+
+**Documentos actualizados:**
+- `docs/06_Operacion.md` — procedimiento "Actualizar la versión de PHP o PostgreSQL de una aplicación (azul/verde)" (🟡 diseño, no ejecutado)
+- `PENDIENTES.md` — sección de migraciones con el estado de ADM-TECH
+
+**Fuera de este repositorio:** en el repo de la aplicación se creó `knowledge/06_Roadmap/plan_migracion_lxd_php85.md` (plan del refactor), sin commit.
+
+**Resumen:**
+ADM-TECH corre con PHP 5.6 y PostgreSQL 10. Como Ubuntu 26.04 solo trae PHP 8.5, el código tiene que modernizarse antes del pase. El trabajo es acotado: ~35 archivos propios con funciones eliminadas o etiquetas cortas, más la actualización de dos librerías. La base es chica (71 MB). Los archivos pesan 7,2 GB y crecen más de 7 GB por año, por eso el volumen se dimensionó en 40 GiB. Dos dependencias bloquean el corte: el proceso externo que envía los correos (lee una cola en la base `Infraestructura` y adjunta archivos) y el ETL de SAP que carga tablas de la base, ambos sin identificar. El relevamiento también confirmó que la aplicación se conecta como superusuario y que sus credenciales son legibles en el vhost de Apache; se propone rotarlas en la migración.
+
+### 2026-10-26 (vigesimosegunda entrada)
+
+**Fuente:** Implementación supervisada (Kanboard bajo `/kanboard/`) y prueba de conectividad de solo lectura hacia la API de SDI, a pedido del usuario.
+
+**Documentos creados:**
+- `laboratorio/2026-10-26_kanboard-subruta/README.md`: paso 1 (alias `/kanboard` y ajuste de `.htaccess` en `PFR-KANBOARD-TEST`) y paso 2 (rutas del `LB.conf` de `PFR-GW-SRV`, `mod_rewrite`), con la tabla antes/después y el rollback
+
+**Documentos actualizados:**
+- `docs/02_Arquitectura.md`: nueva sección "IP que ve el firewall corporativo: entrada y salida" (doble NAT por GW-OAM y `lxdbr_OAM`; la salida usa la IP de gestión del host); IP de gestión y de servicio de Fernando completadas
+- `docs/11_Riesgos.md`: avance de RIE-015 (ticket #1083155, vence 31/05/2027)
+- `PENDIENTES.md`: ticket #1083155
+
+**Resumen:**
+Kanboard pasó a publicarse en `https://10.143.11.8/kanboard/` y la raíz quedó libre para un portal de aplicaciones (pendiente). Los enlaces viejos redirigen a la ruta nueva y la API vieja sigue respondiendo. Solo en Franco; CAR y FDO se alinean en la Etapa 2. La prueba hacia la API de SDI confirmó que la ACL del cluster ya permite el tráfico y que el bloqueo está en el firewall corporativo. También mostró que, para el firewall, los contenedores salen con la IP de gestión del host de cada sitio y no con la del GW-OAM, porque `lxdbr_OAM` hace un segundo NAT.
+
+### 2026-10-26 (vigesimotercera entrada)
+
+**Fuente:** Tickets de Jerure aportados por el usuario (707 #1047036; 452 #1083088 y #1083104) y criterio de inventario acordado por el equipo.
+
+**Documentos creados:**
+- `docs/18_Inventario_Ciberseguridad.md`: estado del inventario en Ciberseguridad (aplicación 608 `PLATAFORMA-LXD-OSS` y servicios `Kanboard-OSS` y `Vulnapp-OSS`), con los pendientes de corrección de los 452
+
+**Documentos actualizados:**
+- `docs/06_Operacion.md`: subsección "Criterio de inventario acordado"; URL de ejemplo de Kanboard corregida a `/kanboard/`
+- `docs/README.md`: índice con el documento 18
+- `PENDIENTES.md`: los dos 452, con enlace a los pendientes del documento 18
+
+**Resumen:**
+La plataforma está inventariada como aplicación 608 (707 resuelto el 2026-08-18). Kanboard y VulnApp NG se dieron de alta como servicios (452) asociados a la 608 y al activo 10041 `fr-oss` (`10.143.11.8`), el gateway que los publica. Los contenedores no se inventarían por separado. Quedan correcciones pendientes en los dos 452 y una evaluación con SDI sobre declarar el acceso administrativo de los nodos (8443, 22) como servicios de tipo CONSOLA.
+
+### 2026-10-26 (vigesimocuarta entrada)
+
+**Fuente:** Copia impresa del ticket 451 #1078719 y archivos del certificado entregados por Natalia Cardozo (Ciberseguridad), verificados localmente con `openssl` (solo partes públicas).
+
+**Documentos creados:**
+- `laboratorio/2026-10-26_certificado-lets-encrypt/README.md`: historial y cierre del ticket, datos del certificado, verificación y plan de instalación en los 3 gateways (no aplicado)
+
+**Documentos actualizados:**
+- `docs/11_Riesgos.md`: avance de RIE-019 (certificado recibido); nuevo RIE-022 (certificado de 90 días sin renovación automática); resumen de severidades
+- `PENDIENTES.md`: #1078719 resuelto; paso 1 de "Certificado y DNS" completado
+
+**Resumen:**
+Natalia Cardozo cerró el ticket #1078719 el 2026-10-22 con un certificado Let's Encrypt para `oss.personal.com.py` (SAN incluido) que vence el 2027-01-20. La cadena valida y la clave privada corresponde al certificado. La instalación en los 3 gateways sigue pendiente de coordinar con Tembiapó (NTF por Fernando). En el mismo cambio se reemplaza la línea de cifrados heredada. Como el certificado dura 90 días, se registró el riesgo de vencimiento sin renovación automática.

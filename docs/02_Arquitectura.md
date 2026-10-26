@@ -123,7 +123,7 @@ El sistema es un **cluster LXD distribuido en 3 sitios geográficos**. Cada siti
 |---|---|---|
 | `.1` – `.5` | Fija | Gateways de servicio por proyecto. ✅ Asignadas hoy: `.1` `PFR-GW-SRV`, `.2` `CAR-GW-SRV`, `.4` `FDO-GW-SRV`. Libres: `.3`, `.5` (reservadas para `CDE`, `IT` cuando se incorporen) |
 | `.6` – `.10` | Fija | Gateways de operación y mantenimiento por sitio (proyecto `default`). ✅ Asignadas hoy: `.6` `PFR-GW-OAM`, `.8` `CAR-GW-OAM`, `.9` `FDO-GW-OAM`. Libres: `.7`, `.10` (reservadas para `CDE`, `IT`) |
-| `.11` – `.99` | Fija | Contenedores de infraestructura con IP fija, asignados según necesidad — no reservado por rol fijo. ✅ Asignadas hoy: `.11` `C-Colector-1`, `.12` `C-Loki-1`, `.13` `PFR-VULNAPP-DB`, `.14` `PFR-VULNAPP-APP`. El resto (`.15`–`.99`) sigue libre |
+| `.11` – `.99` | Fija | Contenedores de infraestructura con IP fija, asignados según necesidad — no reservado por rol fijo. ✅ Asignadas hoy (verificado en vivo 2026-10-24): `.11` `C-Colector-1`, `.12` `C-Loki-1`, `.13` `PFR-VULNAPP-DB`, `.14` `PFR-VULNAPP-APP`, **`.16` `CAR-SystemSMTP`** (servidor Postfix en `car.1`, no estaba documentado). 🟡 Reservadas para la migración de ADM-TECH: `.15` (DB), `.17` (APP), `.18`/`.19` (entorno de desarrollo). El resto (`.20`–`.99`) sigue libre |
 | `.100` – `.253` | DHCP | Contenedores de aplicación (asignación dinámica vía OVN). Ej.: `.106` Kanboard, `.110`/`.111` `FDO-WS-1`/`PFR-WS-1` (NTF) |
 | `.254` | Fija | Gateway de la red (`OVN_1.ipv4.address`) |
 
@@ -135,9 +135,46 @@ El sistema es un **cluster LXD distribuido en 3 sitios geográficos**. Cada siti
 |---|---|---|---|---|---|
 | Franco | `pfr-oss` | `10.143.11.228/29` | 410 | `10.143.11.8/26` | 411 |
 | Carpinelli | `car-oss` | `192.168.91.116/27` | — | `192.168.91.117/27` | — |
-| Fernando | `fdo-oss` | `10.150.32.x/24` | 701 | `10.11.11.x/24` | 5 |
+| Fernando | `fdo-oss1` | `10.150.32.101/24` | 701 | `10.11.11.12/24` | 5 |
 
 Esto confirma lo aclarado en [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md): la VLAN de servicio **no es la misma** entre sitios (411 en Franco, 5 en Fernando) — lo único que debe coincidir en todo el cluster es el **nombre lógico** de la interfaz (`nic_srv1`), no su VLAN física.
+
+### IP que ve el firewall corporativo: entrada y salida
+
+Los contenedores usan IP privadas de `OVN_1` (`192.168.0.x`) que la red corporativa no conoce. Por eso un permiso de firewall nunca lleva la IP de un contenedor: lleva la IP del punto por donde el tráfico entra o sale del cluster. Esa IP depende del **sentido** de la conexión.
+
+| Sentido | Quién inicia la conexión | IP que ve el firewall | Franco | Carpinelli | Fernando |
+|---|---|---|---|---|---|
+| **Entrada** | Un usuario o sistema externo hacia una aplicación del cluster | IP de servicio del gateway de servicios (`*-GW-SRV`) | `10.143.11.8` | `192.168.91.117` | `10.11.11.12` |
+| **Salida** | Una aplicación del cluster hacia un servicio corporativo (10.150.x: SDI, ciberseg, proxy, SMS) | IP de gestión del **host** del sitio | `10.143.11.228` | `192.168.91.116` 🟡 | `10.150.32.101` |
+
+✅ Verificado en vivo el 2026-10-26 para Franco y Fernando (`ip route get 10.150.58.116`). 🟡 Carpinelli: es la IP de gestión con la que el nodo está registrado en el cluster y en el inventario de Jerure (`car-oss`), pero su ruta de salida no se probó.
+
+**Por qué la salida no usa la IP del gateway de OAM:** el tráfico de salida pasa por **dos NAT**.
+
+```
+ Contenedor 192.168.0.14
+     │  ruta estática 10.150.0.0/16 via 192.168.0.6
+     ▼
+ PFR-GW-OAM   eth1 192.168.0.6 (OVN_1)
+     │  NAT 1: masquerade de nftables en el contenedor
+     ▼
+ eth0 10.231.193.114 — red lxdbr_OAM (privada, solo existe dentro de cada host)
+     │  NAT 2: lxdbr_OAM tiene ipv4.nat=true
+     ▼
+ Host pfr-oss, IP de gestión 10.143.11.228   ← IP visible para el firewall
+     │
+     ▼
+ Red corporativa 10.150.x
+```
+
+`lxdbr_OAM` usa la misma subred (`10.231.193.0/24`) en los 3 hosts. Las IP `10.231.193.x` de los GW-OAM no son ruteables fuera del host y **no** deben usarse en permisos de firewall.
+
+**Consecuencias:**
+
+- Todos los contenedores de un sitio salen con la misma IP. Un destino permitido para las 3 IP de gestión queda alcanzable desde cualquier contenedor, presente o futuro. El control por contenedor lo hace la ACL `ACL-OVN-1`.
+- Hoy los contenedores tienen la ruta hacia `10.150.0.0/16` fija a `192.168.0.6` (`PFR-GW-OAM`). Aunque un contenedor corra en otro sitio, sale por Franco. Para salir por Carpinelli o Fernando hay que cambiar esa ruta.
+- Antes, un servidor tradicional (ej. `tec-calidad05`, `10.129.2.165`) usaba la misma IP para entrada y salida. En esta plataforma son distintas, y hay que usar la de la tabla según el sentido.
 
 ### Patrón de contenedor "gateway de servicios"
 
@@ -209,6 +246,14 @@ La idea es que los 3 balanceadores (uno por sitio) **compartan un mismo nombre d
 - Quien realmente elige a qué IP conectarse es **el cliente** (navegador o aplicación) — normalmente usa la primera IP de la lista que le devolvió el DNS, y si esa falla, el comportamiento de reintentar con la siguiente depende del cliente, no del DNS ni del cluster.
 - No reemplaza al balanceador Apache de cada sitio — este mecanismo decide **a qué sitio** llega el usuario; el balanceador de ese sitio decide luego **a qué contenedor** dentro del sitio.
 - Por eso, pedir el DNS implica dar de alta **las 3 IPs bajo el mismo nombre**, no un nombre por sitio — ver la solicitud pendiente en [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+> ✅ **Actualización 2026-10-16/21:** el nombre compartido tiene una excepción para clientes que solo alcanzan un sitio (ej. Comap → solo Fernando): un nombre propio por sitio, independiente del compartido. Ver [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md). El alta del nombre está en el ticket #1079305: hoy resuelve solo a `10.143.11.8`; las IP de Carpinelli y Fernando se suman después de la Etapa 2.
+
+> 🔴 **Requisitos previos antes de pedir el DNS (verificado 2026-10-16):**
+> 1. **Los 3 gateways tienen que publicar lo mismo.** Hoy solo PFR publica Kanboard y VulnApp NG sin certificado de cliente; con el DNS activo, 2 de cada 3 accesos fallarían. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
+> 2. **Las redirecciones HTTP → HTTPS no pueden apuntar a IP fija.** Hoy PFR redirige a `https://10.143.11.8/`; con DNS debe ser `https://oss.personal.com.py/`.
+> 3. **El certificado necesita SAN** con el FQDN. El actual de `AutoridadOSS` no tiene, y los navegadores modernos lo rechazan. Ver [RIE-019](11_Riesgos.md#rie-019--certificados-tls-no-confiables-y-configuración-tls-heredada-en-gateways-y-hosts).
+> 4. **Cada gateway sirve a los usuarios de otros sitios.** CAR y FDO acceden por `OVN_1` a los contenedores de PFR (`192.168.0.106`, `192.168.0.14`); la ACL ya lo permite desde la Etapa 1.
 
 ### Modelo de multi-tenancy (proyectos LXD)
 

@@ -732,6 +732,78 @@ Ver el detalle completo de una verificación real en [`laboratorio/2026-10-10_ca
 
 ---
 
+## Modificar el LB.conf de un gateway de forma controlada
+
+### Objetivo
+Cambiar la configuración de Apache de un gateway (`PFR-GW-SRV`, `CAR-GW-SRV`, `FDO-GW-SRV`) sin afectar los servicios que ya publica (Kanboard, VulnApp NG, NTF, Loki) y con la vuelta atrás preparada. Es el procedimiento usado el 2026-10-16 para bloquear `/web.config`; ver [`laboratorio/2026-10-16_hardening-gateways-nessus/bitacora.md`](../laboratorio/2026-10-16_hardening-gateways-nessus/bitacora.md).
+
+### Pasos
+
+| # | Paso | Comando (dentro del gateway, vía `lxc exec <gateway> --project PRJ-OSS --`) | Por qué |
+|---|---|---|---|
+| 1 | Backup con fecha | `cp -p /etc/apache2/sites-available/LB.conf /root/LB.conf.bak-AAAAMMDD` | Punto de retorno exacto, con permisos y dueño |
+| 2 | Línea base | Código HTTP de cada ruta publicada (`/`, login, `/vulnapp/`, `/ntf`, `/kanboard`, HTTP→HTTPS) | Comparar después del cambio y detectar efectos no buscados |
+| 3 | Preparar el cambio fuera del servidor y revisar el diff | — | Respetar los fines de línea del archivo (PFR usa CRLF; CAR y FDO usan LF) y confirmar que se toca solo lo previsto |
+| 4 | Instalar y validar | `cat LB.conf.new > LB.conf && apache2ctl configtest` | `cat >` conserva permisos y dueño del archivo original |
+| 5 | Si la validación falla | `cat /root/LB.conf.bak-AAAAMMDD > LB.conf`, **sin recargar** | Apache sigue corriendo con la configuración anterior: no hay impacto |
+| 6 | Recargar sin cortar conexiones | `systemctl reload apache2` | Recarga *graceful*: las conexiones en curso terminan normalmente |
+| 7 | Verificar | Repetir la línea base y comparar. Solo deben cambiar las rutas buscadas | Confirma el cambio y que no afectó al resto |
+| 8 | Si algo no coincide | Paso 5 y luego `systemctl reload apache2` | Rollback completo en segundos |
+
+### Errores frecuentes
+
+| Error | Causa | Solución |
+|---|---|---|
+| `Invalid command 'RequestHeader'` en el configtest | `mod_headers` no habilitado | `a2enmod headers`, ver [TRB-015](07_Troubleshooting.md#trb-015--requestheader-falla-con-invalid-command-porque-mod_headers-no-está-habilitado) |
+| Una exclusión `ProxyPass ... !` no tiene efecto | Quedó después del `ProxyPass /` general | Moverla antes: Apache aplica la primera regla que coincide |
+| Una prueba justo después del reload da "conexión cerrada" | Apache estaba renovando sus procesos | Repetir la prueba a los pocos segundos antes de concluir que hay un problema |
+
+> **Nota:** el gateway no tiene snapshots ([RIE-021](11_Riesgos.md#rie-021--pfr-gw-srv-sin-snapshots-ni-backup)). Mientras eso no se resuelva, el backup del paso 1 es la única forma de volver atrás.
+
+---
+
+## Actualizar la versión de PHP o PostgreSQL de una aplicación (azul/verde)
+
+> 🟡 Procedimiento de diseño (2026-10-24), todavía no ejecutado. Pensado para ADM-TECH y aplicable a cualquier aplicación con el mismo esquema (app, base y archivos separados). Ver [`laboratorio/2026-10-24_migracion-admtech-lxd/`](../laboratorio/2026-10-24_migracion-admtech-lxd/).
+
+### Objetivo
+Que actualizar PHP o PostgreSQL no sea una migración, sino **reemplazar un contenedor**: el nuevo se prueba al lado del actual y, si algo falla, se vuelve atrás en segundos.
+
+### Requisitos previos (se cumplen desde el diseño)
+
+| Requisito | Por qué |
+|---|---|
+| App, base y archivos separados (archivos en un **volumen de LXD**) | Cada pieza se actualiza sin tocar las otras. El volumen se monta en el contenedor nuevo, nunca se copia |
+| Configuración en variables de entorno, no en el código | El contenedor nuevo apunta a la base correcta sin cambiar código |
+| Contenedores creados con **perfil + script de instalación versionados** en el repo de la aplicación | Crear el contenedor nuevo es cambiar un número de versión y ejecutar el script |
+| PostgreSQL instalado desde el repositorio oficial **PGDG** | La versión de la base se elige independientemente de la versión del SO |
+| Cambios de esquema como **migraciones SQL numeradas** en el repo | La base se reconstruye y se prueba en cualquier versión |
+| En el repo: `composer.json` con la versión de PHP declarada, **PHPCompatibility** (`phpcs`) y **PHPStan**; en desarrollo, `E_DEPRECATED` activado | Los problemas de la versión siguiente aparecen como avisos antes de que rompan algo |
+
+### Pasos para actualizar PHP (app)
+
+1. Correr PHPCompatibility contra la versión nueva y corregir en una rama del repo.
+2. Crear `<APP>-v2` con el script de instalación (versión nueva de PHP), montando el **mismo** volumen de archivos y con la misma configuración.
+3. Probar `<APP>-v2` directamente (por IP interna) o con una ruta de prueba en el gateway.
+4. Snapshot de `<APP>` y cambio del `ProxyPass` del gateway hacia `<APP>-v2`, con el procedimiento [Modificar el LB.conf de un gateway de forma controlada](#modificar-el-lbconf-de-un-gateway-de-forma-controlada).
+5. **Rollback:** volver el `ProxyPass` al contenedor anterior. Se elimina `<APP>` recién después de un período de observación.
+
+> **Advertencia:** solo uno de los dos contenedores puede tener montado el volumen **en uso** a la vez, o al menos solo uno puede escribir. En la prueba del paso 3, montar el volumen en solo lectura o usar una copia.
+
+### Pasos para actualizar PostgreSQL (base)
+
+1. Crear `<DB>-v2` con la versión nueva desde PGDG.
+2. `pg_dump` de la base actual y restauración en `<DB>-v2`. Probar la aplicación contra la copia (con un contenedor de app de prueba).
+3. **Corte:** detener las escrituras (modo mantenimiento o detener la app), nuevo `pg_dump` con los datos del momento, restaurar, y cambiar `DB_HOST` de la app. Mover la IP fija de la base al contenedor nuevo evita tocar la configuración y las reglas de la ACL.
+4. **Rollback:** volver la app a la base anterior, que quedó intacta (solo se pierde lo escrito después del corte).
+
+### Cómo verificar
+- La versión en ejecución: `lxc exec <APP> --project <P> -n -- php -v` y `lxc exec <DB> --project <P> -n -- psql -V`.
+- Mismas rutas y códigos HTTP antes y después, como en el procedimiento de `LB.conf`.
+- Los logs de la aplicación sin errores nuevos (`E_DEPRECATED` incluidos).
+
+---
+
 ## Ver logs de un contenedor
 
 ```bash
@@ -772,6 +844,37 @@ Registrar cada servicio nuevo expuesto en el cluster, para que el equipo tenga t
 | Número de ticket | Referencia al ticket ITSM de alta de servidor asociado |
 
 > **Nota:** este inventario es un registro operativo del equipo (vive en su documento de proyecto compartido), distinto de la documentación de referencia en `docs/` — ver la distinción de carpetas en el [README.md](../README.md) del repositorio.
+
+### Inventario hacia Ciberseguridad (Jerure): IP de servicio + puerto + URL
+
+✅ Criterio indicado por Norberto Núñez en `reunion/2026-10-16_llamada-marcos-norberto-inventario-dns-certificado.vtt` (min. ~1:00-3:00).
+
+En los tickets de Jerure, **cada aplicación se inventaría con la IP de servicio del gateway, el puerto y la URL**, no con la IP interna del contenedor (`192.168.0.x`). Para Seguridad los contenedores son transparentes: lo que inventarían es el tráfico (quién pide, quién recibe, por qué puerto). El balanceo y los contenedores que hay detrás son arquitectura interna del equipo.
+
+| Campo para Jerure | Ejemplo (Kanboard) |
+|---|---|
+| Servidor | Activo del host del sitio (ej. `fr-oss`), con su IP de servicio agregada (ticket 939) |
+| IP | IP de servicio del gateway (ej. `10.143.11.8`) |
+| Puerto / protocolo | `443/TCP` (HTTPS) |
+| URL | `https://oss.personal.com.py/kanboard/` (VulnApp NG: `/vulnapp/`, NTF: `/ntf`) |
+
+Los dos niveles del checklist de alta de Ciberseguridad:
+
+| Nivel | Qué se inventaría | Tickets típicos |
+|---|---|---|
+| **Servidor** (uno por host: Franco, Carpinelli, Fernando) | La VM del sitio, con su interfaz de gestión y su interfaz de servicio | 447/448 alta, 535 PasswordSafe, 404 acceso seguro, 500 segurización, 939 agregar IP, IPAM, SIEM |
+| **Servicio** (uno por aplicación) | Cada aplicación publicada | 452 alta de servicios, 707 alta de aplicaciones, 623 OAuth + grupos AD, pase a producción. Certificado (451) y DNS (741/31) se piden **una sola vez** para todos |
+
+### Criterio de inventario acordado
+
+✅ Acordado por el equipo (registrado el 2026-10-26).
+
+- **Qué se inventaría:** los nodos del clúster (como activos) y la plataforma como aplicación (707).
+- **Servicios:** cada servicio publicado se da de alta con un 452, asociado a la aplicación 608 y al host por donde entra (el gateway `fr-oss`, `10.143.11.8`).
+- **Contenedores:** no se inventarían uno por uno. Están en la red interna del clúster (`192.168.0.x`), no se llega a ellos desde la red corporativa y el escáner no los ve. Se nombran en la descripción de cada servicio. Excepciones: un contenedor con IP corporativa, uno publicado sin pasar por el gateway, o cuando Seguridad lo pida.
+- **Puertos:** solo se declaran los que reciben conexiones desde la red. No se declaran los internos ni las conexiones salientes.
+
+Qué está dado de alta hoy: ver [18_Inventario_Ciberseguridad.md](18_Inventario_Ciberseguridad.md). Estado de cada ítem: ver [PENDIENTES.md](../PENDIENTES.md).
 
 ---
 

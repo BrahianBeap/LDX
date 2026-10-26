@@ -80,6 +80,8 @@ lxc config set core.metrics_address 10.143.11.228:8555
 lxc config set core.metrics_authentication false
 ```
 
+> 🔴 **Verificado en vivo 2026-10-16:** el valor sigue en `false`, y el escáner de vulnerabilidades de Seguridad llegó al puerto 8555. Se registró como [RIE-018](11_Riesgos.md#rie-018--métricas-de-lxd-sin-autenticación). Antes de pasarlo a `true`, registrar en LXD el certificado del recolector de Observabilidad, porque si no se corta la recolección.
+
 > **Advertencia:** con `core.metrics_authentication false`, cualquier cliente que alcance el puerto 8555 por red puede leer las métricas sin autenticarse. Este puerto debe estar protegido por firewall (ver [Configuración de firewall](#configuración-de-firewall-firewalld) más abajo) y accesible solo desde el servidor de observabilidad (SVATOOL, `10.150.31.68`, que también recibe los logs vía syslog — ver [Reenvío de logs del host a Loki](#reenvío-de-logs-del-host-a-loki-rsyslog)).
 
 ### Cómo verificar
@@ -342,6 +344,32 @@ firewall-cmd --reload
 | `toport` | (Opcional) Puerto de destino, si es distinto al de entrada — por defecto usa el mismo |
 
 > 🔴 **Pendiente de validación:** la sintaxis completa exacta usada en la demostración no quedó del todo clara en el audio de la reunión — confirmar el comando definitivo (incluyendo si hace falta `masquerade` en la zona) en la próxima sesión antes de replicarlo en otros sitios. Ver [ADR-0008 — Riesgos](adr/ADR-0008-gateway-balanceador-dos-etapas.md).
+
+### Bloqueo de ICMP timestamp en la zona `external`
+
+✅ Aplicado en los 3 gateways (`PFR-GW-SRV`, `CAR-GW-SRV`, `FDO-GW-SRV`) el 2026-10-16, como tratamiento de la detección Nessus 10114 (CVE-1999-0524). Ver [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/).
+
+**Objetivo:** que el gateway no responda las consultas ICMP de hora (*timestamp*). Revelan la hora exacta del equipo, lo que puede ayudar a atacar protocolos que dependen de la hora. No afecta al `ping` común (*echo*).
+
+```bash
+for t in timestamp-request timestamp-reply; do
+  firewall-cmd --zone=external --add-icmp-block=$t               # activo ya (runtime)
+  firewall-cmd --permanent --zone=external --add-icmp-block=$t   # persiste al reinicio
+done
+```
+
+| Parámetro | Descripción |
+|---|---|
+| `--add-icmp-block` | Tipo de ICMP a bloquear (`firewall-cmd --get-icmptypes` lista los válidos) |
+| `--permanent` | Guarda en la configuración persistente. Sin él, el cambio se pierde al reiniciar firewalld |
+
+> **Nota:** aplicar runtime y permanent por separado, en lugar de `--runtime-to-permanent`. Ese comando guarda **todo** lo que haya en runtime, incluido cualquier cambio temporal que nadie pretendía dejar fijo.
+
+**Resultado esperado:** `firewall-cmd --zone=external --list-icmp-blocks` → `timestamp-reply timestamp-request`, igual con `--permanent`.
+
+**Cómo verificar:** `nft list ruleset | grep -c timestamp` → 2. La confirmación final es el siguiente escaneo de Nessus.
+
+**Rollback:** el mismo bucle, con `--remove-icmp-block`.
 
 ## Puente NAT temporal hacia el proxy SDI (para sitios sin autorización propia)
 
@@ -665,6 +693,58 @@ curl -k -I https://IP_GATEWAY/ntf       # sin certificado -> debe seguir rechaza
 ### Rollback
 Volver `SSLVerifyClient` a `require` a nivel de `VirtualHost` y sacar el override dentro del `<Location>` del servicio protegido — vuelve al estado donde todo el vhost exige certificado de cliente.
 
+> 🟡 **Estado real (verificado 2026-10-16):** solo `PFR-GW-SRV` usa este modelo. `CAR-GW-SRV` y `FDO-GW-SRV` siguen con `SSLVerifyClient require` en todo el vhost, y sus `<Location '/ntf'>` (y `/supervisionge` en FDO) **no** declaran `SSLVerifyClient require` propio: hoy dependen del `require` del vhost. Al migrarlos a este modelo, hay que agregar el `require` explícito en cada una de esas rutas. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
+>
+> **Advertencia:** con TLS 1.3, el certificado pedido por ruta requiere que el cliente soporte autenticación posterior al handshake. Muchos clientes de scripts (librerías HTTP) no la soportan y fallarían con 403. Probar con el cliente real de NTF antes de migrar un gateway que hoy pide el certificado en el handshake.
+
+---
+
+## Proxies de confianza en Gunicorn (`--forwarded-allow-ips`, VulnApp NG)
+
+| Campo | Detalle |
+|---|---|
+| **Parámetro y archivo** | `--forwarded-allow-ips` en `ExecStart` de `/etc/systemd/system/vulnapp.service` (contenedor `PFR-VULNAPP-APP`) |
+| **Función** | Lista de IP desde las que Gunicorn acepta las cabeceras `X-Forwarded-*` (protocolo, host y IP de origen reales) |
+| **Valores posibles** | Lista de IP separadas por coma, o `*` (confía en cualquiera) |
+| **Valor actual** | `192.168.0.1,192.168.0.2,192.168.0.4`: los 3 gateways *(ampliado el 2026-10-16; antes solo `192.168.0.1`)* |
+| **Impacto de cambiarlo** | Requiere `systemctl daemon-reload` y reiniciar el servicio: unos segundos de corte de VulnApp NG |
+| **Riesgo de configuración incorrecta** | Si un gateway no está en la lista, VulnApp ignora `X-Forwarded-Proto: https` y genera redirecciones a `http://` (mismo síntoma que [TRB-015](07_Troubleshooting.md#trb-015--requestheader-falla-con-invalid-command-porque-mod_headers-no-está-habilitado)). Con `*`, cualquier contenedor de `OVN_1` podría falsear la IP de origen |
+| **Recomendación del equipo** | Listar solo las IP fijas de los gateways, nunca `*`. Cada gateway listado también necesita su regla en `ACL-OVN-1` hacia `192.168.0.14:5000` y `mod_headers` habilitado |
+
+> **Advertencia:** la unidad la genera el instalador `02_instalar_app.sh` del paquete de VulnApp NG. Una reinstalación vuelve a dejar solo `192.168.0.1`. Hay que incorporar el cambio en el paquete o reaplicarlo después de reinstalar.
+
+---
+
+## Bloquear archivos de la aplicación que no deben publicarse
+
+### Objetivo
+Evitar que el proxy reverso publique archivos que la aplicación trae de fábrica pero que no son contenido. Caso real: `web.config`, el archivo de reglas para IIS que incluye Kanboard, quedaba accesible en `https://10.143.11.8/web.config` (detección Nessus 121479). No tenía secretos, pero revelaba configuración.
+
+### Comando (en el `<VirtualHost *:443>` de `LB.conf`)
+```apache
+    # Bloquear web.config de Kanboard (Nessus 121479, 16/10/2026)
+    ProxyPass /web.config !
+    <Location "/web.config">
+      Require all denied
+    </Location>
+```
+
+### Explicación
+`ProxyPass /web.config !` excluye esa ruta del proxy: el pedido no llega al contenedor de Kanboard. `Require all denied` hace que Apache responda 403 en lugar de buscar el archivo localmente.
+
+**El orden importa:** las exclusiones `ProxyPass ... !` tienen que estar **antes** del `ProxyPass /` general. Apache aplica la primera regla que coincide.
+
+### Resultado esperado
+`/web.config` → 403. Todas las demás rutas responden igual que antes.
+
+### Cómo verificar
+Comparar el código HTTP de las rutas publicadas antes y después del cambio. Ver el procedimiento en [06_Operacion.md](06_Operacion.md#modificar-el-lbconf-de-un-gateway-de-forma-controlada).
+
+### Rollback
+Quitar el bloque y recargar Apache, o restaurar el backup de `LB.conf` tomado antes del cambio.
+
+> **Nota:** en `PFR-GW-SRV` está aplicado desde el 2026-10-16. `CAR-GW-SRV` y `FDO-GW-SRV` no lo necesitan mientras exijan certificado de cliente en todo el vhost, pero hay que incluirlo cuando publiquen Kanboard sin certificado.
+
 ---
 
 ## Despliegue de configuración a varios contenedores sin SSH
@@ -708,6 +788,37 @@ lxc exec NOMBRE_CONTENEDOR --project NOMBRE_PROYECTO -- systemctl status apache2
 ```
 
 > **Buena práctica:** si el archivo local es temporal (solo para el push), eliminarlo después de enviarlo a todos los contenedores destino, para no dejar residuos de configuración en la máquina desde la que se ejecuta el despliegue.
+
+### Procedimiento estándar para operar contenedores (Norberto Núñez, 2026-10-16)
+
+✅ Explicado por Norberto Núñez en `reunion/2026-10-16_llamada-marcos-norberto-inventario-dns-certificado.vtt` (min. ~10:40-22:30) como el **procedimiento genérico** que también va a usar Seguridad Informática para operar dentro de los contenedores sin la interfaz web de LXD. Él lo dejó documentado en el OneNote del equipo ("Procedimiento para contenedores").
+
+```bash
+# Subir un archivo (ej. certificado, LB.conf) al contenedor
+lxc file push ARCHIVO_LOCAL REMOTO:CONTENEDOR/RUTA/DESTINO --project PROYECTO --mode 0640
+
+# Bajar un archivo del contenedor
+lxc file pull REMOTO:CONTENEDOR/RUTA/ARCHIVO DESTINO_LOCAL --project PROYECTO
+
+# Ejecutar un comando dentro del contenedor
+lxc exec REMOTO:CONTENEDOR --project PROYECTO -n -- COMANDO
+```
+
+| Parámetro | Descripción |
+|---|---|
+| `REMOTO:` | Remoto de LXD configurado en el cliente (ej. el clúster OSS). Se omite si se ejecuta desde un host del clúster |
+| `--mode 0640` | Permisos con que se escribe el archivo |
+| `-p` / `--create-dirs` | Crea los directorios de destino si no existen |
+| `-r` / `--recursive` | Copia una carpeta completa |
+| `-n` / `--disable-stdin` | **No conectar la entrada estándar.** Norberto recomienda usarlo siempre en scripts: "les va a ahorrar mucho dolor de cabeza" |
+
+**Por qué `-n`:** comandos como `lxc exec`, `lxc launch` o `lxc start` pueden leer datos desde la entrada estándar (por ejemplo, la configuración completa de un contenedor con cloud-init). En un script que ya usa la entrada estándar para otra cosa (un loop que lee una lista, una sesión SSH sin terminal), esa lectura interfiere y el comando se cuelga o consume datos que no le correspondían. Es la causa de [TRB-017](07_Troubleshooting.md#trb-017--lxc-launchlxc-init-se-cuelgan-sin-error-al-ejecutarse-por-ssh-sin-terminal), que el equipo había encontrado por su cuenta.
+
+**Dos formas de trabajo válidas:**
+1. Desde la PC propia, con el cliente `lxc` conectado al clúster como remoto: el archivo va directo al contenedor, sin SSH intermedio (lo que usa Norberto).
+2. Subir primero el archivo por SFTP al host del clúster y hacer el `lxc file push` desde ahí.
+
+> **Nota:** Norberto usa `systemctl restart apache2` para aplicar los cambios. Para los gateways que publican varios servicios, el equipo usa `systemctl reload apache2` después de `apache2ctl configtest`: no corta las conexiones en curso. Ver [06_Operacion.md — Modificar el LB.conf de un gateway de forma controlada](06_Operacion.md#modificar-el-lbconf-de-un-gateway-de-forma-controlada).
 
 ---
 
@@ -895,6 +1006,7 @@ lxc network acl show ACL-OVN-1 --project default
 | (cualquiera en `OVN_1`) | `192.168.0.11` | tcp 1514 | Grafana-Alloy |
 | `192.168.0.14` | `192.168.0.13` | tcp 5432 | VulnApp NG: app → PostgreSQL *(agregada 2026-10-09)* |
 | `192.168.0.1` | `192.168.0.14` | tcp 5000 | VulnApp NG: balanceador de Franco → Gunicorn *(agregada 2026-10-09)* |
+| `192.168.0.2,192.168.0.4` | `192.168.0.14` | tcp 5000 | VulnApp NG: balanceadores de Carpinelli y Fernando → Gunicorn *(agregada 2026-10-16, regla separada para no tocar la de Franco; ver [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/))* |
 | `192.168.0.14` | `10.150.58.116` | tcp 443 | VulnApp NG: app → API de SDI *(agregada 2026-10-09, ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) — permitida acá, pero bloqueada más allá de este cluster)* |
 | `192.168.0.14` | `10.150.31.68` | tcp 80 | VulnApp NG: app → pasarela de SMS *(agregada 2026-10-09)* |
 

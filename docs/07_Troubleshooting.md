@@ -272,9 +272,37 @@ Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Ferna
 | **Causa** | `lxc launch`/`lxc init` pueden leer configuración adicional desde la entrada estándar (stdin) si detectan que no hay una terminal interactiva (TTY) asociada. Una sesión SSH abierta mandando un único comando remoto dura dejar el stdin del lado del cliente abierto — nadie lo cierra nunca — entonces el comando se queda esperando para siempre a que termine una entrada que no va a llegar |
 | **Diagnóstico** | Si el comando viene de un script que ejecuta comandos remotos por SSH (no de una sesión interactiva a mano) y el comando es justo `lxc launch`, `lxc init`, o `lxc exec` sin asignación de TTY, sospechar esto antes que un problema de red o del cluster |
 | **Solución** | Cerrar explícitamente la escritura del stdin del lado de quien ejecuta el comando apenas se lanza (en Paramiko: `stdin.channel.shutdown_write()` inmediatamente después de `exec_command()`), o agregar `< /dev/null` al final del comando remoto |
-| **Prevención** | Para cualquier automatización que dispare `lxc launch`/`lxc init`/`lxc exec` por SSH sin terminal, aplicar el cierre de stdin (o `< /dev/null`) de entrada, no solo cuando aparece el problema |
+| **Prevención** | Para cualquier automatización que dispare `lxc launch`/`lxc init`/`lxc exec` por SSH sin terminal, aplicar el cierre de stdin (o `< /dev/null`) de entrada, no solo cuando aparece el problema. ✅ Para `lxc exec`, la forma nativa es el flag **`-n` / `--disable-stdin`**: Norberto Núñez lo recomienda usar siempre en scripts (reunión del 2026-10-16, ver [05_Configuracion.md](05_Configuracion.md#procedimiento-estándar-para-operar-contenedores-norberto-núñez-2026-10-16)) |
 
 **Contexto:** encontrado automatizando la creación de los contenedores de VulnApp NG (`PFR-VULNAPP-DB`, `PFR-VULNAPP-APP`) por SSH — ver [`laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md`](../laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md#0-creación-de-la-plataforma-perfiles-contenedores-acl-snapshot). Se había sospechado primero de la imagen usada (un alias remoto que necesita internet) — se descartó esa hipótesis al ver el mismo cuelgue con una imagen local ya cacheada; la causa real era esta, ajena a qué imagen se use.
+
+---
+
+## TRB-018 — La verificación de acceso de SDI por SSH a la IP de servicio de un gateway falla con connection refused
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | En el paso "Verificación Acceso SDI a Activo" de un alta en Jerure, SDI intenta entrar por SSH a la IP de servicio de un gateway (ej. `ssh u998524_opr@10.143.11.8`) y lo informa como "Sin acceso" |
+| **Síntomas** | `ssh: connect to host 10.143.11.8 port 22: Connection refused`; `curl -v telnet://10.143.11.8:22` → *Failed connect* |
+| **Causa** | Por diseño, los contenedores gateway **no tienen SSH en ninguna interfaz** (`ssh` *inactive/masked*), ver [03_Componentes.md](03_Componentes.md#contenedor-gateway-de-servicios). Además, la IP de servicio solo publica 80/443 y los reenvíos declarados. No es un bloqueo de red ni un error de inventario |
+| **Diagnóstico** | Desde el host: `lxc exec PFR-GW-SRV --project PRJ-OSS -- systemctl is-enabled ssh` → `masked`; `lxc exec PFR-GW-SRV --project PRJ-OSS -- ss -lntp \| grep :22` → vacío |
+| **Solución** | Responder en el ticket que la verificación se hace desde el servidor de gestión del clúster (ej. `10.143.11.228`) con `lxc exec <gateway> --project PRJ-OSS -- <comando>`. Esto requiere que el usuario de SDI tenga permisos de LXD en ese host. Si no los tiene, el equipo de infraestructura asiste la verificación. **No habilitar SSH en el gateway** para resolverlo |
+| **Prevención** | Al cargar el alta en Jerure, aclarar en "Comentarios" que el activo es un contenedor LXD administrado vía `lxc exec` desde el host de gestión, sin SSH propio |
+
+**Contexto:** ticket Jerure #1076072 (alta de `PFR-GW-SRV`), ver [`laboratorio/2026-10-12_alta-jerure-pfr-gw-srv/`](../laboratorio/2026-10-12_alta-jerure-pfr-gw-srv/).
+
+---
+
+## TRB-019 — La API JSON-RPC de Kanboard devuelve 401 con un token de usuario
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Las llamadas a `https://10.143.11.8/jsonrpc.php` devuelven `HTTP 401 Unauthorized` aunque el token se copió correctamente |
+| **Síntomas** | Cualquier método (ej. `getTask`) falla con 401. Si fuera un problema de red, el síntoma sería un timeout o un error de conexión, no un 401 |
+| **Causa** | Kanboard tiene dos tipos de token con autenticación Basic distinta: el **token de la aplicación** (Configuración → API) se usa con usuario `jsonrpc`; el **token personal** (perfil de usuario → API) se usa con el **login propio** (ej. `elias.alfonzo`). Usar un token personal con usuario `jsonrpc` da 401 |
+| **Diagnóstico** | Confirmar de dónde salió el token: si viene del perfil del usuario, es personal |
+| **Solución** | Autenticar con `login_del_usuario:token_personal`. El login figura en el perfil (ej. `?controller=UserViewController&action=show&user_id=5` → "Login: elias.alfonzo") |
+| **Prevención** | Documentar junto a cada script qué tipo de token usa. Nunca guardar tokens en archivos del repositorio: usar la variable de entorno `KB_TOKEN`. Referencia de uso de la API en [`recursos/kanboard-api/`](../recursos/kanboard-api/) |
 
 ---
 

@@ -245,6 +245,9 @@
 | **Mitigación actual** | Ninguna. El servicio de carga (`vulnapp-sdi.service`/`.timer`) no se instaló ni se activó a propósito, para no insistir contra un destino que todavía rechaza la conexión |
 | **Acción requerida** | Pedir a Seguridad/Redes que confirme qué IP ven en el destino `10.150.58.116:443` cuando el tráfico sale de este cluster, y que habiliten esa IP si todavía no lo está. Una vez confirmado, repetir la prueba de conectividad desde `PFR-VULNAPP-APP` antes de instalar el servicio de carga |
 | **Responsable** | Pendiente de asignar (Seguridad/Redes) |
+| **Avance** | 2026-10-26: nueva prueba de solo lectura. DNS resuelve `ciberseg3.sis.personal.net.py` → `10.150.58.116`. La ACL `ACL-OVN-1` ya permite `192.168.0.14 → 10.150.58.116 tcp/443`. La conexión se rechaza (`No route to host`) igual desde el contenedor, los 3 GW-OAM y los hosts `pfr-oss` y `fdo-oss1`: **falta firewall corporativo**. Se pidió en Jerure **#1083155** (Alta de Permisos Firewall-17): origen `fr-oss` `10.143.11.228`, `car-oss` `192.168.91.116`, `FDO-OSS` `10.150.32.101` (IP de gestión de los hosts, ver [02_Arquitectura.md](02_Arquitectura.md#ip-que-ve-el-firewall-corporativo-entrada-y-salida)); destino servicio `TCP/443 (ciberseg3)` `10.150.58.116:443`; aplicación `608 PLATAFORMA-LXD-OSS`; **vence el 31/05/2027** |
+
+> **Advertencia:** el permiso del ticket #1083155 vence el **31/05/2027**. Pedir la renovación antes de esa fecha; si vence, la carga diaria de VulnApp NG se corta sin aviso.
 
 Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md`](../laboratorio/2026-10-09_alta-vulnapp-ng/bitacora.md#7-alcance-hacia-sdi-y-hacia-la-pasarela-de-sms-sin-ejecutar-03_instalar_cargash).
 
@@ -278,14 +281,87 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 
 ---
 
+## RIE-018 — Métricas de LXD sin autenticación
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | ✅ Verificado en vivo el 2026-10-16: `core.metrics_authentication = false`. El endpoint `https://10.143.11.228:8555/1.0/metrics` entrega las métricas del nodo (nombres de contenedores; uso de CPU, RAM, disco y red) a cualquiera que llegue al puerto, sin certificado |
+| **Causa** | Configuración inicial del endpoint (ver [05_Configuracion.md — Endpoint de métricas](05_Configuracion.md#endpoint-de-métricas-prometheus-de-lxd)). La protección depende solo del firewall del host |
+| **Impacto** | Exposición de información del clúster (inventario de servicios y consumo) a cualquier IP habilitada en el firewall, incluido el escáner de vulnerabilidades ([RIE-016](#rie-016--acceso-temporal-del-escáner-de-vulnerabilidades-por-lista-de-ips-sin-fecha-de-retiro)), que efectivamente llegó al puerto 8555 en el escaneo del 16/10. Desde la red corporativa general el puerto no responde (filtrado) |
+| **Severidad** | Media |
+| **Mitigación actual** | Firewall del host. 🔴 No se pudo auditar la regla exacta: `alfonzel_opr` no tiene sudo sin contraseña en `pfr-oss` |
+| **Acción requerida** | 1) Confirmar con Observabilidad quién recolecta las métricas (Prometheus o Grafana Alloy). 2) Registrar el certificado del recolector en LXD. 3) `lxc config set core.metrics_authentication true`. Activarlo sin el paso 2 corta la recolección sin aviso |
+| **Responsable** | Elías Alfonzo, con Observabilidad |
+
+---
+
+## RIE-019 — Certificados TLS no confiables y configuración TLS heredada en gateways y hosts
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | El escaneo Nessus del 16/10/2026 informó 11 detecciones de certificado (criticidad media): en `10.143.11.8:443`, el certificado del gateway está emitido por `AutoridadOSS`, una CA interna autofirmada; en `10.143.11.228:8443/8444/8555`, LXD usa su certificado propio (`O=LXD/CN=root@pfr-oss`). Además, el `LB.conf` de los 3 gateways declara `SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP`, que habilita explícitamente cifrados débiles |
+| **Causa** | El certificado compartido de los gateways se generó con una CA propia y sin SAN (ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md)). LXD genera su propio certificado por diseño: la confianza se basa en registrar explícitamente ese certificado, no en una CA. La línea de cifrados es heredada |
+| **Impacto** | Navegadores y escáneres no confían en los servicios web publicados. En LXD no hay debilidad real del cifrado. Los cifrados débiles hoy no se pueden negociar con la OpenSSL de Ubuntu 26.04, pero quedarían habilitados ante un cambio de librería |
+| **Severidad** | Baja (VulnApp los clasificó P7) |
+| **Mitigación actual** | Acceso a rutas sensibles (`/ntf`, `/loki`) restringido por IP y certificado de cliente; LXD solo opera con certificados registrados |
+| **Avance** | 2026-10-16: pedido el certificado (ticket #1078719) y cargada la aceptación de riesgo en Gestión de Vulnerabilidades (revisión 16/11/2026). 2026-10-24: Norberto Núñez y Daniel Medina advierten que **Tembiapó consume NTF por Fernando (`10.11.11.12`) confiando hoy en el certificado de `AutoridadOSS`**. El cambio de certificado tiene que coordinarse con Daniel Medina y Marcos Casco antes del reload; después, Tembiapó pasa a HTTPS estándar sin configuración especial. 2026-10-22: Natalia Cardozo cerró el ticket #1078719 y entregó un certificado **Let's Encrypt** para `oss.personal.com.py` (SAN incluido, vence 2027-01-20). Verificado el 2026-10-26: cadena válida y clave correspondiente. **Pendiente de instalar**, ver [`laboratorio/2026-10-26_certificado-lets-encrypt/`](../laboratorio/2026-10-26_certificado-lets-encrypt/) y [RIE-022](#rie-022--certificado-lets-encrypt-de-90-días-sin-renovación-automática) |
+| **Acción requerida** | Gateways: certificado de la CA corporativa con SAN + DNS `oss.personal.com.py`, en los 3 a la vez y en una ventana coordinada con Tembiapó; en el mismo cambio, reemplazar la línea de cifrados por `HIGH:!aNULL:!MD5:!RC4` y agregar `SSLProtocol -all +TLSv1.2 +TLSv1.3`. LXD: formalizar la aceptación de riesgo con Seguridad |
+| **Responsable** | Elías Alfonzo, con Ciberseguridad |
+
+---
+
+## RIE-020 — Gateways de CAR y FDO no homogéneos con PFR: bloquean el DNS compartido
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | ✅ Verificado el 2026-10-16: CAR-GW-SRV y FDO-GW-SRV exigen certificado de cliente para todo el sitio, apuntan Kanboard a `CAR-kanboard-1` (inexistente) y no publican VulnApp NG. CAR además hace proxy de `/` por HTTP sin cifrar hacia `PFR-KANBOARD-DR` (detenido). Detalle en [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/) |
+| **Causa** | Solo PFR-GW-SRV se fue actualizando a medida que se publicaron Kanboard y VulnApp NG |
+| **Impacto** | Si se pide el DNS round-robin `oss.personal.com.py` hacia los 3 gateways (ver [02_Arquitectura.md](02_Arquitectura.md#nombre-de-dominio-compartido-entre-sitios-fqdn--dns-round-robin)), **2 de cada 3 accesos fallarían** (error de certificado o backend detenido) |
+| **Severidad** | Media (bloqueante para el DNS, sin impacto hoy) |
+| **Mitigación actual** | Etapa 1 completada el 16/10: red, Gunicorn y `mod_headers` listos para que CAR y FDO publiquen VulnApp NG |
+| **Acción requerida** | Etapa 2: reescribir los `LB.conf` de CAR y FDO con el modelo de PFR. Antes, coordinar con Norberto Núñez una prueba del cliente de NTF con certificado pedido por ruta (TLS 1.3, autenticación posterior al handshake). Recién después, pedir el DNS |
+| **Responsable** | Elías Alfonzo, con Norberto Núñez |
+
+---
+
+## RIE-021 — `PFR-GW-SRV` sin snapshots ni backup
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | ✅ Verificado el 2026-10-12: `PFR-GW-SRV` no tiene `snapshots.schedule`/`snapshots.expiry` ni ningún snapshot. Kanboard y VulnApp NG sí tienen snapshots cada 6 horas. 🔴 No verificado todavía en CAR-GW-SRV ni FDO-GW-SRV |
+| **Causa** | El perfil del gateway nunca incluyó política de snapshots |
+| **Impacto** | Ante una corrupción o un cambio mal aplicado (por ejemplo en `LB.conf` o firewalld), no hay punto de restauración. Habría que reconstruir a mano la configuración que publica Kanboard, VulnApp NG, NTF y Loki |
+| **Severidad** | Media |
+| **Mitigación actual** | Backups manuales puntuales antes de cada cambio (ej. `/root/LB.conf.bak-20261016`) y la documentación de este repositorio |
+| **Acción requerida** | Definir `snapshots.schedule`/`snapshots.expiry` para los 3 gateways, con el mismo criterio que Kanboard (ver [06_Operacion.md](06_Operacion.md)) |
+| **Responsable** | Elías Alfonzo |
+
+---
+
+## RIE-022 — Certificado Let's Encrypt de 90 días sin renovación automática
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | ✅ El certificado de `oss.personal.com.py` entregado en el ticket #1078719 es de Let's Encrypt y vence el **2027-01-20** (90 días). Los gateways no tienen un proceso que lo renueve: Ciberseguridad lo emite y el equipo lo instala a mano |
+| **Causa** | Let's Encrypt emite certificados de 90 días por diseño, pensado para renovación automática (ACME). Acá la emisión está centralizada en Ciberseguridad y los gateways no tienen salida a Let's Encrypt |
+| **Impacto** | Si vence sin reemplazo, todos los accesos a `https://oss.personal.com.py/` (Kanboard, VulnApp NG, NTF de Tembiapó) fallan por certificado vencido en los 3 sitios a la vez |
+| **Severidad** | Media (alta probabilidad si no hay recordatorio; impacto total pero con aviso previo de la fecha) |
+| **Mitigación actual** | Ninguna. Fecha registrada también en `https://ciberseg.personal.com.py/certificados/oss.personal.com.py` |
+| **Acción requerida** | 1) Confirmar con Natalia Cardozo cómo y cuándo llega la renovación. 2) Recordatorio para el equipo ~20 días antes de cada vencimiento (primero: **2026-12-31**). 3) Evaluar automatizar la instalación en los 3 gateways (un script con `lxc file push` + `configtest` + `reload`) |
+| **Responsable** | Elías Alfonzo |
+
+Detalle del certificado y plan de instalación: [`laboratorio/2026-10-26_certificado-lets-encrypt/`](../laboratorio/2026-10-26_certificado-lets-encrypt/).
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
 |---|---|
 | **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-006 (sin backup), RIE-015 (conectividad SDI de VulnApp NG bloqueada) |
-| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria) |
-| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades), RIE-017 (3 contenedores con límite de memoria ajustado) |
+| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria), RIE-018 (métricas de LXD sin autenticación), RIE-020 (gateways CAR/FDO no homogéneos, bloquean el DNS), RIE-021 (`PFR-GW-SRV` sin snapshots), RIE-022 (certificado de 90 días sin renovación automática) |
+| **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades), RIE-017 (3 contenedores con límite de memoria ajustado), RIE-019 (certificados TLS no confiables y cifrados heredados) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 | **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |
 

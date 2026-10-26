@@ -157,6 +157,45 @@
 | Carga diaria de datos desde la API de SDI | 🔴 Pendiente — conectividad bloqueada fuera de este cluster, ver [RIE-015 en 11_Riesgos.md](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) |
 | Documentación de `ACL-OVN-1` (previamente no documentada en este repositorio) | ✅ Completado — ver [05_Configuracion.md](05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl) |
 
+### Alta de `PFR-GW-SRV` en el inventario Jerure (2026-10-12 → 2026-10-16)
+
+**Qué fue:** relevamiento técnico de solo lectura del gateway de Franco para cargar el alta en Ciberseguridad (Jerure, tema 447) y agregar su IP al activo `fr-oss` (tema 939).
+**Referencia:** [`laboratorio/2026-10-12_alta-jerure-pfr-gw-srv/`](../laboratorio/2026-10-12_alta-jerure-pfr-gw-srv/).
+
+| Hito | Estado |
+|---|---|
+| Relevamiento: IP propia (ipvlan L2), servicios, puertos, DNS, backup | ✅ Completado 2026-10-12 |
+| Ticket #1076134 (agregar `10.143.11.8` al activo `fr-oss`) | ✅ Resuelto 2026-10-16 |
+| Ticket #1076072 (alta de servidor virtual) | 🟡 En "Verificación Acceso SDI a Activo": la prueba por SSH de SDI falló por diseño, ver [TRB-018](07_Troubleshooting.md#trb-018--la-verificación-de-acceso-de-sdi-por-ssh-a-la-ip-de-servicio-de-un-gateway-falla-con-connection-refused) |
+
+### Tratamiento del escaneo Nessus y Etapa 1 de los gateways (2026-10-16)
+
+**Qué fue:** tratamiento de las 13 detecciones del escaneo Nessus de `10.143.11.8` y `10.143.11.228`, y preparación de CAR y FDO para publicar Kanboard y VulnApp NG como PFR (requisito del DNS compartido).
+**Referencia:** [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/).
+
+| Hito | Estado |
+|---|---|
+| Bloqueo de ICMP timestamp en los 3 gateways (Nessus 10114) | ✅ Completado |
+| Bloqueo de `/web.config` en PFR-GW-SRV (Nessus 121479) | ✅ Completado (200 → 403, resto de rutas sin cambios) |
+| Etapa 1: ACL, Gunicorn y `mod_headers` para que CAR/FDO publiquen VulnApp NG | ✅ Completado |
+| Certificados TLS de gateways y de LXD (Nessus 51192/57582/45411) | 🟡 Pendiente, ver [RIE-019](11_Riesgos.md#rie-019--certificados-tls-no-confiables-y-configuración-tls-heredada-en-gateways-y-hosts) |
+| Métricas de LXD sin autenticación (hallazgo propio) | 🔴 Pendiente, ver [RIE-018](11_Riesgos.md#rie-018--métricas-de-lxd-sin-autenticación) |
+| Etapa 2: `LB.conf` de CAR y FDO | 🔴 Pendiente, coordinar con Norberto Núñez, ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido) |
+
+### Reuniones con Norberto Núñez sobre inventario, DNS, certificado y recursos (2026-10-16 y 2026-10-24)
+
+**Referencias:** `reunion/2026-10-16_llamada-marcos-norberto-inventario-dns-certificado.vtt` y `reunion/2026-10-24_llamada-daniel-norberto-recursos-s3-certificado-ntf.vtt`.
+
+| Tema | Qué se definió | Dónde quedó documentado |
+|---|---|---|
+| Inventario en Jerure | Cada aplicación se inventaría con IP de servicio del gateway + 443 + URL, no con la IP del contenedor | [06_Operacion.md](06_Operacion.md#inventario-hacia-ciberseguridad-jerure-ip-de-servicio--puerto--url) |
+| DNS | Nombre compartido por round-robin, con nombres propios por sitio para clientes con restricción de ruta (Comap → Fernando) | [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) |
+| Kanboard/VulnApp desde CAR y FDO | Validado: los otros gateways llevan a Franco (por proxy interno) | [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) |
+| Certificado | Lo entrega Seguridad y lo instala el equipo. **Coordinar con Daniel Medina (Tembiapó → NTF por Fernando) antes del reload** | [RIE-019](11_Riesgos.md#rie-019--certificados-tls-no-confiables-y-configuración-tls-heredada-en-gateways-y-hosts) |
+| Operación de contenedores | Procedimiento estándar `lxc file push/pull` + `lxc exec -n` (también para Seguridad) | [05_Configuracion.md](05_Configuracion.md#procedimiento-estándar-para-operar-contenedores-norberto-núñez-2026-10-16) |
+| Infrawork y ADM-TECH | Migrar a contenedores en los 3 sitios, arrancando con 1 CPU y ajustando por uso real. **FileRoom (~800 GB) se queda en tec-calidad05** hasta tener capacidad | Esta línea de tiempo |
+| Bases de datos | Se habilita centralizarlas en el servidor de Norberto (asignado a SDA); Marcos pidió a Marta reservar esa capacidad en el presupuesto del año próximo. Norberto habilitó ahí un servicio **S3** (bucket ya creado, credenciales en PasswordSafe) | Esta línea de tiempo |
+
 ---
 
 ## Hitos pendientes (próximos pasos)
@@ -191,6 +230,17 @@
 | Retirar la redirección directa a nivel de host (esquema inicial de Kanboard) una vez migrado al modelo gateway + balanceador | Elías Alfonzo | ✅ Completado 2026-10-08 — ver [ADR-0008 — Actualización](adr/ADR-0008-gateway-balanceador-dos-etapas.md#actualización--migración-de-kanboard-2026-10-08) y [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/) |
 | Investigar opciones de base de datos con alta disponibilidad/replicación nativa (incluye CockroachDB) | Sin asignar | 🟡 Solo sugerido, sin dueño ni fecha |
 | Usar Loki también para monitorear los balanceadores (escribiendo su log a syslog y leyéndolo desde Loki) | Sin asignar | 🟡 Idea de Marcos Casco, confirmada como viable por Norberto Núñez en la reunión, sin tarea concreta ni fecha — ver `reunion/2026-10_llamada-abel-balanceadores-ntf-loki.vtt` (min. ~42:19) |
+| Etapa 2: homogeneizar los `LB.conf` de CAR-GW-SRV y FDO-GW-SRV con el de PFR | Elías Alfonzo + Norberto Núñez | 🔴 Pendiente — antes, probar el cliente de NTF con certificado pedido por ruta, ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido) |
+| Pedir el DNS `oss.personal.com.py` hacia los 3 gateways | Elías Alfonzo | 🔴 Pendiente — depende de la Etapa 2, ver los requisitos previos en [02_Arquitectura.md](02_Arquitectura.md#nombre-de-dominio-compartido-entre-sitios-fqdn--dns-round-robin) |
+| Activar autenticación de métricas de LXD | Elías Alfonzo + Observabilidad | 🔴 Pendiente, ver [RIE-018](11_Riesgos.md#rie-018--métricas-de-lxd-sin-autenticación) |
+| Snapshots programados para los 3 gateways | Elías Alfonzo | 🔴 Pendiente, ver [RIE-021](11_Riesgos.md#rie-021--pfr-gw-srv-sin-snapshots-ni-backup) |
+| Avisar al mantenedor del paquete de VulnApp NG que `02_instalar_app.sh` debe generar `--forwarded-allow-ips` con los 3 gateways | Elías Alfonzo | 🔴 Pendiente, ver [05_Configuracion.md](05_Configuracion.md#proxies-de-confianza-en-gunicorn---forwarded-allow-ips-vulnapp-ng) |
+| Coordinar con Daniel Medina (Tembiapó) la ventana de cambio de certificado | Elías Alfonzo + Daniel Medina | 🔴 Pendiente — antes de instalar el certificado del ticket #1078719 |
+| Contenedores de Infrawork y ADM-TECH en los 3 sitios (1 CPU inicial) | Elías Alfonzo | 🔴 Pendiente — FileRoom queda fuera del clúster |
+| Centralizar bases de datos del área en el servidor de Norberto y usar su servicio S3 | Elías Alfonzo + Norberto Núñez | 🟡 Habilitado, sin iniciar |
+| Prueba de envío de SMS por NTF desde Infrawork | Elías Alfonzo + Daniel Medina | 🔴 Pendiente — falta el OK de un tercero (Norberto revisa el correo) |
+| Servidor de correo entrante para permisos de ingreso a sitios (Postfix/Exim, puerto 25 con TLS) | Norberto Núñez | 🟡 Propuesto y aprobado por Marcos Casco para alojar en el clúster (segundo entregable) |
+| Contenedor con Docker para OSRM (cálculo de rutas de técnicos) | Sin asignar | 🟡 Pedido de Marcos Casco; requiere `security.nesting` y evaluar RAM |
 
 ---
 

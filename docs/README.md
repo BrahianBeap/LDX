@@ -28,6 +28,7 @@ Este directorio contiene la documentación técnica oficial del proyecto LXD.
 | 15 | [`15_Revision_Arquitectonica.md`](15_Revision_Arquitectonica.md) | Auditoría técnica independiente — crítica, riesgos, recomendaciones priorizadas | ✅ Completo |
 | 16 | [`16_Auditoria_Knowledge_Base.md`](16_Auditoria_Knowledge_Base.md) | Auditoría de calidad del KB — duplicaciones, inconsistencias, plan de mejora | ✅ Completo |
 | 17 | [`17_Avance_Presentacion.md`](17_Avance_Presentacion.md) | Línea de tiempo de avance, antes/ahora y decisiones clave — insumo para presentación a dirección | ✅ Completo |
+| 18 | [`18_Inventario_Ciberseguridad.md`](18_Inventario_Ciberseguridad.md) | Estado del inventario en Ciberseguridad (Jerure): aplicación 608 (707) y servicios publicados (452) | 🟡 En curso |
 
 ---
 
@@ -49,6 +50,7 @@ docs/adr/
 | [`ADR-0006-wireguard-underlay-ovn-multisitio.md`](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) | WireGuard como transporte underlay para OVN entre sitios en Capa 3 | Aceptado |
 | [`ADR-0007-proyectos-lxd-multitenancy.md`](adr/ADR-0007-proyectos-lxd-multitenancy.md) | Proyectos LXD como modelo de aislamiento multi-tenant | Aceptado |
 | [`ADR-0008-gateway-balanceador-dos-etapas.md`](adr/ADR-0008-gateway-balanceador-dos-etapas.md) | Exposición de servicios: gateway + balanceador en dos etapas | Aceptado |
+| [`ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md`](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) | DNS: nombre compartido por round-robin, con nombres propios por sitio | Aceptado (parcial) |
 
 ---
 

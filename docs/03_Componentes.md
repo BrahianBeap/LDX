@@ -266,6 +266,8 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 | Aplicación | Kanboard **v1.2.46** (junio 2025) — en `/var/www/kanboard` |
 | Plugins instalados | `Calendar`, `Customizer`, `Essential`, `Subtaskdescription`, `TeamWorkload`, `Telegram` |
 | Autenticación | Local (usuario/clave) — `LDAP_AUTH` y `REVERSE_PROXY_AUTH` desactivados en `config.php` |
+| API | JSON-RPC en `https://10.143.11.8/jsonrpc.php`. Referencia de uso y colección Postman en [`recursos/kanboard-api/`](../recursos/kanboard-api/); error 401 típico en [TRB-019](07_Troubleshooting.md#trb-019--la-api-json-rpc-de-kanboard-devuelve-401-con-un-token-de-usuario) |
+| Archivos de fábrica expuestos | `web.config` (reglas IIS) quedaba público por el gateway; bloqueado el 2026-10-16. `/.htaccess` y `/data/` (base SQLite) responden 403 |
 | Snapshot | `0 */6 * * *`, retiene 7 días — mismo patrón que Kanboard le dio después a VulnApp NG, ver [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/). 9 snapshots activos al momento de esta verificación |
 | Disco | 🟡 Único límite de recursos que sí tiene: `size: 5GiB` en el dispositivo `root` del perfil. Uso real (`df -h` adentro del contenedor): 520 MB usados de 5.2 GB (10%) |
 | Memoria | 🔴 Sin `limits.cpu`/`limits.memory` explícitos en el perfil — corre sin techo propio, usa lo que el nodo `pfr.1` tenga disponible en cada momento. Uso real ahora (medido por LXD vía cgroups, `lxc info PFR-KANBOARD-TEST --resources`): 271 MB — muy por debajo del uso típico que tendría un límite puesto; el riesgo es que nada lo frena si algún día sube |
@@ -294,7 +296,7 @@ Ver la publicación HTTPS por el gateway en [ADR-0008 — Actualización](adr/AD
 
 ### Buenas prácticas (aplicadas por Norberto Núñez en la demostración)
 
-- Deshabilitar SSH dentro de este contenedor. La administración se hace exclusivamente vía `lxc exec` / consola del daemon LXD, nunca por SSH directo — reduce la posibilidad de movimiento lateral si algún contenedor del cluster llegara a estar comprometido.
+- Deshabilitar SSH dentro de este contenedor. La administración se hace exclusivamente vía `lxc exec` / consola del daemon LXD, nunca por SSH directo — reduce la posibilidad de movimiento lateral si algún contenedor del cluster llegara a estar comprometido. ✅ Verificado en `PFR-GW-SRV` (2026-10-12): `ssh` *masked*. Consecuencia práctica: las verificaciones de SDI en altas de Jerure fallan por SSH y se hacen desde el host de gestión, ver [TRB-018](07_Troubleshooting.md#trb-018--la-verificación-de-acceso-de-sdi-por-ssh-a-la-ip-de-servicio-de-un-gateway-falla-con-connection-refused).
 - Limitar el tamaño de `journald` a 100 MB (por defecto puede acumular hasta 4 GB de logs). Este contenedor actúa como router y no aloja aplicaciones, por lo que no necesita retener logs extensos.
 - Configurar NTP (`systemd-timesyncd`) igual que en el host — ver [05_Configuracion.md](05_Configuracion.md).
 - Un contenedor gateway de servicios distinto por cada sitio/proyecto (ej. `presidente-franco-ss-gw`, y su equivalente en Carpinelli), no compartido entre sitios.
@@ -339,6 +341,10 @@ Ver el patrón de configuración (regla ACL por `path` + balanceo hacia los miem
 > 🟡 **Actualización 2026-10-08:** en la práctica, `PFR-GW-SRV` (gateway de Franco) ya corre Apache embebido sirviendo **tres** servicios, no solo NTF: **Loki** (`/loki/loki/api/v1`, restringido por IP — trabajo de Norberto Núñez, sin fecha de reunión asociada, encontrado sin documentar) y **Kanboard** (sin restricción de IP, migrado del acceso temporal por firewall — ver [`laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/`](../laboratorio/2026-10-08_migracion-kanboard-gateway-balanceador/)). Ningún balanceador *separado* (ej. `PFR-LB`) llegó a crearse de forma persistente. Esto sugiere que la variante embebida se volvió el patrón real usado por el equipo, no la excepción — pendiente de confirmar formalmente si el ADR-0008 debería actualizar su modelo por defecto.
 
 > ✅ **Actualización 2026-10-09:** se agregó un **cuarto** servicio al mismo gateway embebido: **VulnApp NG** (`/vulnapp`, sin restricción de IP, `ProxyPass` hacia un contenedor de aplicación en otro puerto — no un balanceo entre réplicas, porque no tiene). A diferencia de Kanboard, este bloque sí usa un prefijo de path real (la aplicación soporta `SCRIPT_NAME`/`APPLICATION_ROOT`, a diferencia de Kanboard). Detalle completo en [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/).
+
+> 🟡 **Actualización 2026-10-16 — los 3 gateways no son iguales:** solo `PFR-GW-SRV` (`10.143.11.8`) publica Kanboard y VulnApp NG sin certificado de cliente. `CAR-GW-SRV` (`192.168.91.117`) y `FDO-GW-SRV` (`10.11.11.12`) exigen certificado para todo el sitio y apuntan Kanboard a contenedores detenidos. La red, Gunicorn y `mod_headers` ya quedaron listos para que también publiquen VulnApp NG (Etapa 1). Falta reescribir sus `LB.conf` (Etapa 2), que es requisito para el DNS compartido. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido) y [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/).
+>
+> El mismo día se aplicaron en los gateways dos correcciones del escaneo Nessus: bloqueo de ICMP timestamp (los 3) y de `/web.config` (PFR). Ver [05_Configuracion.md](05_Configuracion.md#bloquear-archivos-de-la-aplicación-que-no-deben-publicarse).
 
 ---
 

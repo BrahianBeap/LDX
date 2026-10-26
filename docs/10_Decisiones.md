@@ -15,6 +15,8 @@
 | 4 | Arquitectura de servicios | Un servicio por contenedor | Stack completo por contenedor | [ADR-0005](adr/ADR-0005-arquitectura-microservicios.md) |
 | 5 | Transporte inter-sitio para OVN | WireGuard como underlay cifrado | Túnel nativo de OVN sobre backbone, VXLAN | [ADR-0006](adr/ADR-0006-wireguard-underlay-ovn-multisitio.md) |
 | 6 | Aislamiento multi-tenant | Proyectos LXD con límites y grupos | Proyecto `default` único para todos | [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
+| 7 | Exposición de servicios | Gateway + balanceador (variante embebida en la práctica) | Exposición directa de cada contenedor | [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
+| 8 | Nombres DNS de los servicios | `oss.personal.com.py` por round-robin + nombres propios por sitio cuando hay restricción de ruta | Solo un nombre por sitio | [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) |
 
 ---
 
