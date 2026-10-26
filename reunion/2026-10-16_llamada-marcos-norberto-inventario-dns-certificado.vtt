@@ -1,0 +1,3227 @@
+WEBVTT
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/6-0
+00:00:03.586 --> 00:00:07.251
+<v Norberto Nu&#241;ez>una serie de comandos,
+va a tener de ejemplo de los pasos que va</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/6-1
+00:00:07.251 --> 00:00:11.705
+<v Norberto Nu&#241;ez>a tener que hacer seguridad informática
+una vez que se conecte. Va a servidor,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/6-2
+00:00:11.705 --> 00:00:15.426
+<v Norberto Nu&#241;ez>se va a lugar como root y ahí va a ser el
+procedimiento, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/8-0
+00:00:17.186 --> 00:00:20.527
+<v Norberto Nu&#241;ez>¿Para no,
+para no mostrarle nomás el la interfaz</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/8-1
+00:00:20.527 --> 00:00:25.572
+<v Norberto Nu&#241;ez>del XD, verdad? Como ellos desconocen,
+van a hacer preguntas y va a serme</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/8-2
+00:00:25.572 --> 00:00:31.095
+<v Norberto Nu&#241;ez>incómodo eso porque van a creer que hay
+cosas que no son así, ¿verdad? Entonces,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/8-3
+00:00:31.095 --> 00:00:36.685
+<v Norberto Nu&#241;ez>para hacer un procedimiento estándar de
+para y de en adelante le va a servir para</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/8-4
+00:00:36.685 --> 00:00:37.026
+<v Norberto Nu&#241;ez>todo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/9-0
+00:00:37.386 --> 00:00:42.930
+<v Norberto Nu&#241;ez>Todo lo que ellos quieran hacer dentro de
+los contenedores va a ser válido el mismo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/9-1
+00:00:42.930 --> 00:00:44.626
+<v Norberto Nu&#241;ez>los mismos pasos, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/10-0
+00:00:46.866 --> 00:00:50.120
+<v Elias Alfonzo>¿Hay consulto otra vez, verdad,
+ya que estamos hablando de los</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/10-1
+00:00:50.120 --> 00:00:53.426
+<v Elias Alfonzo>contenedores, verdad?
+Yo sí quiero inventaría, por ejemplo, un.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/11-0
+00:00:54.866 --> 00:00:55.786
+<v Elias Alfonzo>Er.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/12-0
+00:00:56.866 --> 00:00:57.986
+<v Elias Alfonzo>Una aplicación.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/14-0
+00:00:59.586 --> 00:01:05.733
+<v Elias Alfonzo>Ellos hoy en día ven solamente los 3
+cluster que son de Carpinelli, PFR y FD O.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/14-1
+00:01:05.733 --> 00:01:11.571
+<v Elias Alfonzo>Yo ahora voy a empezar a inventariar los
+servicios que son Bulna, Camboard,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/14-2
+00:01:11.571 --> 00:01:14.952
+<v Elias Alfonzo>el este, el de SM,
+el de envío de mensajes.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/14-3
+00:01:14.952 --> 00:01:17.026
+<v Elias Alfonzo>Veo que había también Loki.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/16-0
+00:01:17.986 --> 00:01:23.729
+<v Elias Alfonzo>Todos esos servicios nosotros tenemos que
+inventariar ahora y con qué IP, o sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/16-1
+00:01:23.729 --> 00:01:29.401
+<v Elias Alfonzo>con la IP propia que le da al contenedor
+del XD o inventaríamos con el servicio</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/15-0
+00:01:27.106 --> 00:01:27.986
+<v Norberto Nu&#241;ez>No, not.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/16-2
+00:01:29.401 --> 00:01:29.826
+<v Elias Alfonzo>barra.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/17-0
+00:01:32.546 --> 00:01:33.986
+<v Elias Alfonzo>Barra Cambora, por ejemplo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/18-0
+00:01:34.626 --> 00:01:37.058
+<v Norberto Nu&#241;ez>Sí,
+tiene que ser con la IP que se le asigna</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/18-1
+00:01:37.058 --> 00:01:39.759
+<v Norberto Nu&#241;ez>a la VM.
+Porque para ello pues es transparente el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/18-2
+00:01:39.759 --> 00:01:43.811
+<v Norberto Nu&#241;ez>tema de los contenedores, ¿verdad?
+Ellos lo que ven es la IP asociada a la</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/18-3
+00:01:43.811 --> 00:01:47.215
+<v Norberto Nu&#241;ez>interfaz de la VM. En el caso de Fernando,
+por dar un ejemplo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/18-4
+00:01:47.215 --> 00:01:50.673
+<v Norberto Nu&#241;ez>Tenemos dos interfaces.
+Tengo una interfaz de gestión que es la</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/18-5
+00:01:50.673 --> 00:01:53.266
+<v Norberto Nu&#241;ez>de 150 algo.
+Yo tengo una interfaz de servicio.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/19-0
+00:01:53.986 --> 00:01:59.106
+<v Norberto Nu&#241;ez>¿Que las 10:111, algo, verdad?
+Entonces vas a inventariar tu servicio.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/20-0
+00:02:00.146 --> 00:02:07.311
+<v Norberto Nu&#241;ez>Y tu aplicación con esa IP de la interfaz
+de servicio que es la 101111 2.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/20-1
+00:02:07.311 --> 00:02:15.250
+<v Norberto Nu&#241;ez>443 como HTTPS directamente con el home
+del con el nombre de hosera oss.personal.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/20-2
+00:02:15.250 --> 00:02:17.186
+<v Norberto Nu&#241;ez>com.py barra lo que.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/21-0
+00:02:18.466 --> 00:02:22.386
+<v Norberto Nu&#241;ez>Lo que sea tu aplicación,
+barra cowar o barra NTF o lo que sea.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/22-0
+00:02:24.626 --> 00:02:29.482
+<v Norberto Nu&#241;ez>Yo creo que esa sería la manera más
+transparente para ellos y claro también</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/22-1
+00:02:29.482 --> 00:02:33.444
+<v Norberto Nu&#241;ez>para ellos de entender el sistema,
+¿verdad? Porque para ello,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/22-2
+00:02:33.444 --> 00:02:34.466
+<v Norberto Nu&#241;ez>pues es tráfico.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/24-0
+00:02:35.426 --> 00:02:40.269
+<v Norberto Nu&#241;ez>Eso es lo que ellos quieren inventariar
+el tráfico, como de dónde a dónde,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/23-0
+00:02:35.586 --> 00:02:36.026
+<v Elias Alfonzo>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/24-1
+00:02:40.269 --> 00:02:44.467
+<v Norberto Nu&#241;ez>quién pide y quién recibe.
+Eso es lo que para ellos es su mundo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/24-2
+00:02:44.467 --> 00:02:49.827
+<v Norberto Nu&#241;ez>Nosotros nomás por debajo entendemos que
+se distribuye en un sistema de balanceo y</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/24-3
+00:02:49.827 --> 00:02:55.186
+<v Norberto Nu&#241;ez>servidores que están por detrás. Bueno,
+ese ya es un tema de arquitectura nuestro.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/25-0
+00:02:56.466 --> 00:03:00.602
+<v Norberto Nu&#241;ez>Pero para los efectos de ellos lo que
+vale es tal servidor, tal interface,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/25-1
+00:03:00.602 --> 00:03:02.146
+<v Norberto Nu&#241;ez>tal IP, tal puerto, así pum.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/27-0
+00:03:04.626 --> 00:03:08.523
+<v Norberto Nu&#241;ez>¿Y cómo subir el certificado al
+contenedor?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/27-1
+00:03:08.523 --> 00:03:14.546
+<v Norberto Nu&#241;ez>Es lo que yo te voy a dejar los pasos en
+el mismo OneNote, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/26-0
+00:03:14.866 --> 00:03:15.386
+<v Elias Alfonzo>Okay.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/28-0
+00:03:15.866 --> 00:03:19.446
+<v Norberto Nu&#241;ez>Te voy a dejar ahí los pasos. De hecho,
+hay muchos ejemplos ahí,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/28-1
+00:03:19.446 --> 00:03:22.639
+<v Norberto Nu&#241;ez>pero son ejemplos dispersos por cada por
+cada aplicación.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/28-2
+00:03:22.639 --> 00:03:25.227
+<v Norberto Nu&#241;ez>Yo te voy a dejar un ejemplo general,
+digamos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/28-3
+00:03:25.227 --> 00:03:28.586
+<v Norberto Nu&#241;ez>y a partir de ese ejemplo puede aplicar
+cualquier situación.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/30-0
+00:03:29.666 --> 00:03:33.952
+<v Elias Alfonzo>Lo que generalmente pasa es que cuando
+ellos me dan un certificado,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/30-1
+00:03:33.952 --> 00:03:39.120
+<v Elias Alfonzo>ellos me dan tres o cuatro archivos y yo
+esos archivos lo que tengo que... Bueno,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/30-2
+00:03:39.120 --> 00:03:43.846
+<v Elias Alfonzo>uno vamos a configurar en este lv.conf,
+o sea, en los tres cluster, o sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/30-3
+00:03:43.846 --> 00:03:48.573
+<v Elias Alfonzo>tengo entendido que va a ser así y
+redireccionar nomás a esos certificados</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/29-0
+00:03:47.386 --> 00:03:47.666
+<v Norberto Nu&#241;ez>Mhm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/30-4
+00:03:48.573 --> 00:03:49.266
+<v Elias Alfonzo>que me dan.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/33-0
+00:03:50.586 --> 00:03:56.175
+<v Norberto Nu&#241;ez>¿Sí, hay aclaración, verdad? Mejor dicho,
+consulta, el ellos te pasan a ver,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/31-0
+00:03:50.626 --> 00:03:51.346
+<v Elias Alfonzo>But...</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/33-1
+00:03:56.175 --> 00:04:01.835
+<v Norberto Nu&#241;ez>ellos instalan el certificado por mano
+propia o nos pasan a nosotros para que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/33-2
+00:04:01.835 --> 00:04:02.706
+<v Norberto Nu&#241;ez>hagamos eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/32-0
+00:04:03.186 --> 00:04:04.186
+<v Elias Alfonzo>Nosotros hacemos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/34-0
+00:04:04.386 --> 00:04:05.986
+<v Norberto Nu&#241;ez>No, entonces no hay problema.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/35-0
+00:04:06.866 --> 00:04:09.346
+<v Norberto Nu&#241;ez>Bueno,
+de todas formas te voy a dejar el ejemplo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/36-0
+00:04:11.306 --> 00:04:11.826
+<v Norberto Nu&#241;ez>Mhm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/37-0
+00:04:13.826 --> 00:04:17.586
+<v Norberto Nu&#241;ez>Voy a poner acá una hojita que dentro del
+mismo OneNote.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/38-0
+00:04:19.186 --> 00:04:23.746
+<v Norberto Nu&#241;ez>Procedimiento y miento para.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/39-0
+00:04:25.226 --> 00:04:26.706
+<v Norberto Nu&#241;ez>Su vida.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/40-0
+00:04:28.386 --> 00:04:31.986
+<v Norberto Nu&#241;ez>Procedimiento para contenedores de
+monedas.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/41-0
+00:04:32.586 --> 00:04:32.946
+<v Elias Alfonzo>Ajá.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/42-0
+00:04:34.706 --> 00:04:37.026
+<v Norberto Nu&#241;ez>Montiene 2.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/43-0
+00:04:38.066 --> 00:04:41.764
+<v Norberto Nu&#241;ez>Bueno,
+yo voy a hacer este tutorial así fácil,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/43-1
+00:04:41.764 --> 00:04:48.215
+<v Norberto Nu&#241;ez>así conciso y después les paso el link de
+la del la página dentro del OneNote que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/43-2
+00:04:48.215 --> 00:04:52.306
+<v Norberto Nu&#241;ez>estamos compartiendo,
+así pueden entrar a millones.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/44-0
+00:04:53.986 --> 00:04:58.041
+<v Elias Alfonzo>Bueno, sin problema,
+sin problema y entonces pido no mayor el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/44-1
+00:04:58.041 --> 00:04:58.826
+<v Elias Alfonzo>certificado.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/45-0
+00:04:59.026 --> 00:05:00.066
+<v Norberto Nu&#241;ez>Sí, país no mañana.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/46-0
+00:05:01.106 --> 00:05:06.284
+<v Elias Alfonzo>Y sería un ahí lo que me confundo un poco
+otra vez porque viste que tengo que pedir</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/46-1
+00:05:06.284 --> 00:05:10.599
+<v Elias Alfonzo>un DNS para los 3 clusters,
+digo asociar los 3 a un a un solo nombre,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/46-2
+00:05:10.599 --> 00:05:12.386
+<v Elias Alfonzo>verdad? O ss.personal.com.pi.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/47-0
+00:05:11.026 --> 00:05:13.967
+<v Norberto Nu&#241;ez>Sí,
+eso estábamos hablando la otra vez y no</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/47-1
+00:05:13.967 --> 00:05:16.706
+<v Norberto Nu&#241;ez>terminamos de hablar a lo que les quería.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/49-0
+00:05:17.746 --> 00:05:21.806
+<v Norberto Nu&#241;ez>¿Que les quería aclarar, verdad?
+Y nosotros estamos hablando así,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/49-1
+00:05:21.806 --> 00:05:25.066
+<v Norberto Nu&#241;ez>les voy a partir pantalla ahora son
+nuevos gráficos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/48-0
+00:05:25.826 --> 00:05:26.306
+<v Marcos Casco>Seven.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/50-0
+00:05:27.106 --> 00:05:29.799
+<v Norberto Nu&#241;ez>O sea,
+tenemos diferentes situaciones y cada uno</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/50-1
+00:05:29.799 --> 00:05:34.470
+<v Norberto Nu&#241;ez>lo que eso es lo que le decía la otra vez.
+Cada situación va a depender muchísimo de</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/50-2
+00:05:34.470 --> 00:05:38.537
+<v Norberto Nu&#241;ez>la aplicación y qué es lo que queremos
+lograr, qué solución queremos dar,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/50-3
+00:05:38.537 --> 00:05:41.339
+<v Norberto Nu&#241;ez>¿verdad?
+En el caso de esto es lo que yo propongo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/50-4
+00:05:41.339 --> 00:05:45.186
+<v Norberto Nu&#241;ez>pero es lo que finalmente depende de
+usted cómo van a hacer, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/51-0
+00:05:45.986 --> 00:05:49.946
+<v Norberto Nu&#241;ez>personal.com.pediría, por ejemplo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/52-0
+00:05:50.946 --> 00:05:57.357
+<v Norberto Nu&#241;ez>En este caso podemos hacer que apunte a
+tres IPs, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/52-1
+00:05:57.357 --> 00:06:05.537
+<v Norberto Nu&#241;ez>Sería 10 11 11 12 el otro creo que es de
+268 91 117 y 10 143 11 8 verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/52-2
+00:06:05.537 --> 00:06:09.626
+<v Norberto Nu&#241;ez>Podemos hacer que apunte a esos tres.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/53-0
+00:06:10.386 --> 00:06:13.708
+<v Norberto Nu&#241;ez>Y digamos esto,
+esto sería el caso general para todas las</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/53-1
+00:06:13.708 --> 00:06:18.060
+<v Norberto Nu&#241;ez>para la mayor parte de las aplicaciones,
+pero van a van a haber situaciones</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/53-2
+00:06:18.060 --> 00:06:21.897
+<v Norberto Nu&#241;ez>particulares en que no querés que no
+querés que apunte a los tres,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/53-3
+00:06:21.897 --> 00:06:25.676
+<v Norberto Nu&#241;ez>querés que apunte a uno de ellos nomás
+por algún motivo, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/53-4
+00:06:25.676 --> 00:06:29.799
+<v Norberto Nu&#241;ez>¿Vos crees que tu aplicación entre
+solamente por Franco o solamente por</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/53-5
+00:06:29.799 --> 00:06:31.746
+<v Norberto Nu&#241;ez>Fernando por motivo que vos digas?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/54-0
+00:06:32.706 --> 00:06:38.125
+<v Norberto Nu&#241;ez>Entonces, en esos casos,
+son todas sugerencias mías nomás, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/54-1
+00:06:38.125 --> 00:06:43.702
+<v Norberto Nu&#241;ez>Ustedes pueden decir, por ejemplo, no,
+ahora quiero otro DNS que sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/54-2
+00:06:43.702 --> 00:06:47.606
+<v Norberto Nu&#241;ez>por ejemplo, crp.uss verdad,
+punto personal.com.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/54-3
+00:06:47.606 --> 00:06:52.626
+<v Norberto Nu&#241;ez>pyrea y que este exclusivamente apunte al
+de Carpinelli nomás.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/55-0
+00:06:53.186 --> 00:06:59.346
+<v Norberto Nu&#241;ez>¿Verdad? 168, como lo que dijimos, 91 117,
+¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/57-0
+00:06:59.666 --> 00:07:04.733
+<v Marcos Casco>Pero igual el otro se va a poder seguir
+usando el o ese punto personal punto y va</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/56-0
+00:07:03.906 --> 00:07:04.466
+<v Norberto Nu&#241;ez>Claro.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/57-1
+00:07:04.733 --> 00:07:08.626
+<v Marcos Casco>a apuntar a los 3 igual independiente a
+que ya tenga otro DNS.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/58-0
+00:07:06.586 --> 00:07:11.438
+<v Norberto Nu&#241;ez>Claro, por eso te digo, claro,
+este es un FQN, este es otro FQN,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/58-1
+00:07:11.438 --> 00:07:17.261
+<v Norberto Nu&#241;ez>son totalmente independientes, o sea,
+vos no vayas a mirar, no vayas a mirar,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/58-2
+00:07:17.261 --> 00:07:22.784
+<v Norberto Nu&#241;ez>o sea, no creas que porque estás,
+es un subdominio, depende de este, ¿no?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/58-3
+00:07:22.784 --> 00:07:25.546
+<v Norberto Nu&#241;ez>En el mundo NS, cada subdominio es...</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/59-0
+00:07:26.306 --> 00:07:31.600
+<v Norberto Nu&#241;ez>Es una rama aparte, vamos a decir,
+no tiene relación con su con el dominio</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/62-0
+00:07:30.626 --> 00:07:35.101
+<v Elias Alfonzo>Hay un ejemplo, por ejemplo,
+no ver como yo estaba planteando.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/59-1
+00:07:31.600 --> 00:07:32.306
+<v Norberto Nu&#241;ez>principal.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/60-0
+00:07:33.826 --> 00:07:34.306
+<v Norberto Nu&#241;ez>Chinga.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/62-1
+00:07:35.101 --> 00:07:38.723
+<v Elias Alfonzo>Por ejemplo,
+yo iba a meter todo dentro de, o sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/62-2
+00:07:38.723 --> 00:07:42.346
+<v Elias Alfonzo>la idea de meter todo dentro de oss.
+personal.com.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/62-3
+00:07:42.346 --> 00:07:46.039
+<v Elias Alfonzo>pi barra y ahí salen las aplicaciones.
+Por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/61-0
+00:07:43.626 --> 00:07:44.106
+<v Norberto Nu&#241;ez>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/62-4
+00:07:46.039 --> 00:07:49.306
+<v Elias Alfonzo>cambar hoy solamente está en PFR,
+pero igual.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/63-0
+00:07:50.066 --> 00:07:54.010
+<v Elias Alfonzo>Yo configuro el lv.
+com de Carpinelli y de Fernando,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/63-1
+00:07:54.010 --> 00:07:59.666
+<v Elias Alfonzo>que si entran por ahí me redireccione
+nomás a Franco y con eso solucionado.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/64-0
+00:08:01.106 --> 00:08:01.906
+<v Norberto Nu&#241;ez>Totalmente.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/65-0
+00:08:02.946 --> 00:08:07.459
+<v Norberto Nu&#241;ez>Digo nomás que capaz que haya alguna
+situación. Yo me adelanto, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/65-1
+00:08:07.459 --> 00:08:11.972
+<v Norberto Nu&#241;ez>Ustedes que son los que van a,
+ustedes son dueños de la plataforma y los</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/65-2
+00:08:11.972 --> 00:08:16.979
+<v Norberto Nu&#241;ez>que van a mantener alguna situación donde
+necesiten solamente entrar por un solo</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/65-3
+00:08:16.979 --> 00:08:22.110
+<v Norberto Nu&#241;ez>lugar, por un motivo específico, ¿verdad?
+Por decirte un ejemplo que no sé tampoco</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/65-4
+00:08:22.110 --> 00:08:26.746
+<v Norberto Nu&#241;ez>se aplica el caso de la demo que estamos
+haciendo con el tema de las coma.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/66-0
+00:08:27.666 --> 00:08:31.108
+<v Norberto Nu&#241;ez>los grupos electrógenos que están
+repartidos. Por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/66-1
+00:08:31.108 --> 00:08:34.082
+<v Norberto Nu&#241;ez>ese caso apuntaría solamente a Fernando.
+¿Por qué?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/66-2
+00:08:34.082 --> 00:08:38.749
+<v Norberto Nu&#241;ez>Porque la BRF que está en la móvil tiene
+solamente rutas hacia esa IP, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/66-3
+00:08:38.749 --> 00:08:43.532
+<v Norberto Nu&#241;ez>Y si yo le si yo le doy a la comal le doy
+para que se comunique con esta URL cada</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/66-4
+00:08:43.532 --> 00:08:47.906
+<v Norberto Nu&#241;ez>vez que se quiera comunicar como es al
+azar, como es aleatorio, es random.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/67-0
+00:08:48.306 --> 00:08:51.168
+<v Norberto Nu&#241;ez>El tema de NS me puede tocar cualquiera
+de las 3 IP,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/67-1
+00:08:51.168 --> 00:08:55.379
+<v Norberto Nu&#241;ez>entonces va a fallar uno de cada 3 veces
+estadísticamente, ¿verdad? Entonces,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/67-2
+00:08:55.379 --> 00:08:58.186
+<v Norberto Nu&#241;ez>en el caso de la Comap,
+a mí lo que me conviene es.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/68-0
+00:08:59.026 --> 00:09:01.786
+<v Norberto Nu&#241;ez>¿Pero algún FQN que diga F de O, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/69-0
+00:09:03.826 --> 00:09:10.713
+<v Norberto Nu&#241;ez>.com.pyrea y que ese fqn apunta exclusiva,
+está frenando. Ah, este nomás. Entonces,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/69-1
+00:09:10.713 --> 00:09:15.058
+<v Norberto Nu&#241;ez>yo cuando,
+eso es si yo quiero darle a la commap que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/69-2
+00:09:15.058 --> 00:09:20.469
+<v Norberto Nu&#241;ez>me tire los trap por FQn.
+Hoy en día los trap están fijos por IP,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/69-3
+00:09:20.469 --> 00:09:23.666
+<v Norberto Nu&#241;ez>¿verdad? Puede llevar un ejemplo nomás.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/70-0
+00:09:24.146 --> 00:09:28.733
+<v Norberto Nu&#241;ez>Si yo tengo un host que está en alguna
+parte y quiero que se comunique,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/70-1
+00:09:28.733 --> 00:09:31.918
+<v Norberto Nu&#241;ez>ya sea como cliente o como sea a nuestro
+cluster,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/70-2
+00:09:31.918 --> 00:09:37.014
+<v Norberto Nu&#241;ez>pero quiero que apunte por una sola IP o
+le pongo directamente la IP o le pongo</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/70-3
+00:09:37.014 --> 00:09:41.920
+<v Norberto Nu&#241;ez>por FQN solamente que el FQN va a tener
+que va a tener que hacer FQN de esta</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/70-4
+00:09:41.920 --> 00:09:43.066
+<v Norberto Nu&#241;ez>manera específico.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/71-0
+00:09:43.506 --> 00:09:46.466
+<v Norberto Nu&#241;ez>¿Que apunte exclusivamente a esa IP,
+verdad? Eso nomás.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/72-0
+00:10:04.146 --> 00:10:05.146
+<v Norberto Nu&#241;ez>Y creo que esa.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/73-0
+00:10:05.226 --> 00:10:06.386
+<v Elias Alfonzo>O fallas que decís.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/74-0
+00:10:06.746 --> 00:10:09.530
+<v Norberto Nu&#241;ez>No,
+pero esto pues es algo del lado cliente,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/74-1
+00:10:09.530 --> 00:10:12.746
+<v Norberto Nu&#241;ez>¿verdad?
+No sé si tengo dibujado por acá este caso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/75-0
+00:10:15.146 --> 00:10:16.426
+<v Norberto Nu&#241;ez>Yes.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/76-0
+00:10:18.266 --> 00:10:19.946
+<v Norberto Nu&#241;ez>Bueno, pues si tengo dibujado eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/77-0
+00:10:18.586 --> 00:10:22.330
+<v Elias Alfonzo>No, o sea, pero se enti se se en,
+yo creo que se entiende bien,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/77-1
+00:10:22.330 --> 00:10:23.266
+<v Elias Alfonzo>no me hablan de.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/78-0
+00:10:24.386 --> 00:10:25.706
+<v Norberto Nu&#241;ez>¿Bueno, se entiende, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/79-0
+00:10:25.866 --> 00:10:26.266
+<v Elias Alfonzo>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/80-0
+00:10:26.906 --> 00:10:27.626
+<v Marcos Casco>Encended.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/81-0
+00:10:27.066 --> 00:10:27.626
+<v Norberto Nu&#241;ez>Okay.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/85-0
+00:10:30.026 --> 00:10:33.687
+<v Marcos Casco>Igual ese es tu PPT es bueno para ir
+actualizando, no,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/82-0
+00:10:30.426 --> 00:10:31.266
+<v Elias Alfonzo>Yeah, lo que.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/85-1
+00:10:33.687 --> 00:10:38.346
+<v Marcos Casco>porque ahí vamos guiándonos también,
+si es que nos compartís ese con.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/84-0
+00:10:37.226 --> 00:10:37.866
+<v Norberto Nu&#241;ez>Ah.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/87-0
+00:10:38.906 --> 00:10:44.905
+<v Norberto Nu&#241;ez>Ok, esto más le puse aquí a modo gráfico,
+pero en esta hoja, lo que les voy a poner,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/87-1
+00:10:44.905 --> 00:10:49.421
+<v Norberto Nu&#241;ez>en esta hoja le voy a poner el
+procedimiento genérico, digamos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/87-2
+00:10:49.421 --> 00:10:53.585
+<v Norberto Nu&#241;ez>para interactuar,
+para subir archivos o bajar archivos del</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/87-3
+00:10:53.585 --> 00:10:57.114
+<v Norberto Nu&#241;ez>contenedor.
+¿Qué es lo que yo hago finalmente con</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/87-4
+00:10:57.114 --> 00:10:58.666
+<v Norberto Nu&#241;ez>esta serie de scripts?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/88-0
+00:10:59.946 --> 00:11:05.605
+<v Norberto Nu&#241;ez>Con esta serie de script que tengo por
+acá, por acá, por acá, por acá. Bueno,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/88-1
+00:11:05.605 --> 00:11:09.523
+<v Norberto Nu&#241;ez>no está acá,
+pero vamos a ver si encuentro por aquí 6</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/88-2
+00:11:09.523 --> 00:11:10.466
+<v Norberto Nu&#241;ez>CD, acá está.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/89-0
+00:11:13.306 --> 00:11:16.907
+<v Norberto Nu&#241;ez>Por ejemplo,
+acá tengo una serie de scripts que lo que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/89-1
+00:11:16.907 --> 00:11:21.686
+<v Norberto Nu&#241;ez>hacen es cuando yo tengo un proyecto y
+quiero subir, ese es mi proyecto,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/89-2
+00:11:21.686 --> 00:11:27.054
+<v Norberto Nu&#241;ez>mi código. Quiero subir a un contenedor,
+yo lo que hago es llamar a estos scripts</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/89-3
+00:11:27.054 --> 00:11:31.178
+<v Norberto Nu&#241;ez>para que hagan eso. Y por ejemplo,
+este es uno de los scripts.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/89-4
+00:11:31.178 --> 00:11:35.826
+<v Norberto Nu&#241;ez>Lo que hago es desde un cliente,
+el XD que yo tengo en mi computadora,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/90-0
+00:11:36.506 --> 00:11:40.644
+<v Norberto Nu&#241;ez>Me conecto al servidor LXD,
+en este caso el cluster OSS,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/90-1
+00:11:40.644 --> 00:11:45.942
+<v Norberto Nu&#241;ez>y empujo un archivo de mi computadora
+directamente al contenedor. O sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/90-2
+00:11:45.942 --> 00:11:51.168
+<v Norberto Nu&#241;ez>yo no me tengo conectado por SSH,
+no tengo que hacer ningún malabarismo</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/90-3
+00:11:51.168 --> 00:11:55.378
+<v Norberto Nu&#241;ez>intermedio, digamos,
+para subir el archivo al contenedor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/90-4
+00:11:55.378 --> 00:11:58.426
+<v Norberto Nu&#241;ez>¿Ustedes también podrían hacer esta forma?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/91-0
+00:11:59.626 --> 00:12:03.481
+<v Norberto Nu&#241;ez>O bien, primero subir el archivo por SSH,
+por FTP, perdón,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/91-1
+00:12:03.481 --> 00:12:07.990
+<v Norberto Nu&#241;ez>SFTP al servidor y una vez que tenga el
+archivo ahí aplicar el mismo</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/91-2
+00:12:07.990 --> 00:12:13.413
+<v Norberto Nu&#241;ez>procedimiento sería push también, o sea,
+sería este mismo comando solamente que ya</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/91-3
+00:12:13.413 --> 00:12:17.986
+<v Norberto Nu&#241;ez>sería desde el cliente local que ya está
+instalado dentro del server.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/92-0
+00:12:19.706 --> 00:12:21.466
+<v Norberto Nu&#241;ez>Y eso es lo que les voy a dejar acá.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/93-0
+00:12:22.386 --> 00:12:27.146
+<v Norberto Nu&#241;ez>Por ejemplo, va a ser procedimiento,
+a ver.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/94-0
+00:12:29.386 --> 00:12:31.306
+<v Norberto Nu&#241;ez>¿Archivos, verdad? Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/95-0
+00:12:33.626 --> 00:12:39.319
+<v Norberto Nu&#241;ez>Archivos,
+este vamos a poner ahí al inicio su vida</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/95-1
+00:12:39.319 --> 00:12:40.546
+<v Norberto Nu&#241;ez>de archivo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/96-0
+00:12:44.986 --> 00:12:45.506
+<v Norberto Nu&#241;ez>Ahí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/97-0
+00:12:46.506 --> 00:12:48.266
+<v Norberto Nu&#241;ez>Entonces.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/98-0
+00:12:50.266 --> 00:12:55.546
+<v Norberto Nu&#241;ez>¿Si trabajan localmente, verdad,
+va a ser así proyecto o qué?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/99-0
+00:12:56.746 --> 00:12:58.906
+<v Norberto Nu&#241;ez>Proyecto o SS.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/100-0
+00:13:00.426 --> 00:13:01.946
+<v Norberto Nu&#241;ez>No, creo que es ver J.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/101-0
+00:13:03.466 --> 00:13:05.866
+<v Norberto Nu&#241;ez>Pues eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/102-0
+00:13:07.546 --> 00:13:09.506
+<v Norberto Nu&#241;ez>El servidor remoto.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/103-0
+00:13:10.386 --> 00:13:11.066
+<v Norberto Nu&#241;ez>El local.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/104-0
+00:13:13.346 --> 00:13:17.949
+<v Norberto Nu&#241;ez>¿Y el contenedor, verdad?
+Contenedor donde quiero interactuar,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/104-1
+00:13:17.949 --> 00:13:18.826
+<v Norberto Nu&#241;ez>por decirte.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/105-0
+00:13:19.946 --> 00:13:21.346
+<v Norberto Nu&#241;ez>Ponle que uno de ellos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/106-0
+00:13:30.026 --> 00:13:33.346
+<v Norberto Nu&#241;ez>¿Em, qué sé yo, este, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/107-0
+00:13:35.266 --> 00:13:37.146
+<v Norberto Nu&#241;ez>Independientemente de su ubicación.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/108-0
+00:13:40.346 --> 00:13:44.809
+<v Norberto Nu&#241;ez>Así,
+entonces su vida de archivos es el XC</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/108-1
+00:13:44.809 --> 00:13:51.346
+<v Norberto Nu&#241;ez>file push, es file push, ¿verdad?
+El archivo que quiero subir.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/109-0
+00:13:53.866 --> 00:13:56.186
+<v Norberto Nu&#241;ez>¿Y el path donde quiero subir?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/110-0
+00:13:57.706 --> 00:14:03.958
+<v Norberto Nu&#241;ez>Sería el archivo, por ejemplo, barra,
+mi archivo está en barra tmp, mi código,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/110-1
+00:14:03.958 --> 00:14:07.520
+<v Norberto Nu&#241;ez>punto PY, por decir cualquier cosa,
+¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/110-2
+00:14:07.520 --> 00:14:13.376
+<v Norberto Nu&#241;ez>En tu caso sería lo que yo quería subir,
+va a ser un archivo certificado,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/110-3
+00:14:13.376 --> 00:14:16.146
+<v Norberto Nu&#241;ez>va a ser un CRT o un punto, sí, un.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/111-0
+00:14:16.346 --> 00:14:23.184
+<v Norberto Nu&#241;ez>CRT. El path, ¿verdad?
+El path es el lugar dentro del contenedor</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/111-1
+00:14:23.184 --> 00:14:30.864
+<v Norberto Nu&#241;ez>donde quiero subir, por decirte,
+quiero subir en barra user o en tu, sí,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/111-2
+00:14:30.864 --> 00:14:37.386
+<v Norberto Nu&#241;ez>o poner en root, ¿verdad? Por ejemplo,
+mi código punto pyrea.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/112-0
+00:14:37.826 --> 00:14:42.026
+<v Norberto Nu&#241;ez>Entonces lo que yo hago es push de este
+archivo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/113-0
+00:14:45.546 --> 00:14:54.970
+<v Norberto Nu&#241;ez>¿En qué? ¿En qué servidor sería local?
+O sea, pero con variables, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/113-1
+00:14:54.970 --> 00:14:58.026
+<v Norberto Nu&#241;ez>2 puntos, el contenedor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/114-0
+00:15:04.186 --> 00:15:05.786
+<v Norberto Nu&#241;ez>¿El contenedor, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/115-0
+00:15:07.306 --> 00:15:08.306
+<v Norberto Nu&#241;ez>Después el pack.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/116-0
+00:15:09.586 --> 00:15:13.226
+<v Norberto Nu&#241;ez>Este es el lugar donde se va a guardar el
+archivo dentro del contenedor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/117-0
+00:15:14.266 --> 00:15:14.506
+<v Norberto Nu&#241;ez>Oh.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/118-0
+00:15:18.906 --> 00:15:22.706
+<v Norberto Nu&#241;ez>¿Y ya es el proyecto, verdad? Project.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/119-0
+00:15:31.386 --> 00:15:39.026
+<v Norberto Nu&#241;ez>Inclusive puedo decir el modo en que se
+va a escribir, no sé, por decir una cosa,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/119-1
+00:15:39.026 --> 00:15:44.243
+<v Norberto Nu&#241;ez>verdad? 040640,
+que es el modo habitual que se escribió</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/119-2
+00:15:44.243 --> 00:15:45.826
+<v Norberto Nu&#241;ez>en archivo y así.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/120-0
+00:15:46.786 --> 00:15:48.666
+<v Norberto Nu&#241;ez>Esto es para subir archivos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/121-0
+00:15:50.746 --> 00:15:51.866
+<v Norberto Nu&#241;ez>Call you, Aita.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/122-0
+00:15:54.266 --> 00:15:56.506
+<v Norberto Nu&#241;ez>Verdad, esto es su vida de archivos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/123-0
+00:15:57.626 --> 00:15:59.946
+<v Norberto Nu&#241;ez>¿Cómo poner la bajada de?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/124-0
+00:16:00.986 --> 00:16:02.146
+<v Norberto Nu&#241;ez>Archivos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/125-0
+00:16:06.986 --> 00:16:09.186
+<v Norberto Nu&#241;ez>Ese sí que es el XS File.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/126-0
+00:16:12.346 --> 00:16:13.586
+<v Norberto Nu&#241;ez>Pool creo que es.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/127-0
+00:16:17.346 --> 00:16:18.586
+<v Norberto Nu&#241;ez>We are confirmar.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/128-0
+00:16:21.986 --> 00:16:23.626
+<v Norberto Nu&#241;ez>Documentation importante.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/129-0
+00:16:25.066 --> 00:16:25.706
+<v Marcos Casco>Stich.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/130-0
+00:16:30.906 --> 00:16:38.386
+<v Norberto Nu&#241;ez>Banpage LXC, bueno, vamos a ir en file,
+pum, file create.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/131-0
+00:16:38.786 --> 00:16:40.426
+<v Elias Alfonzo>Delete.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/133-0
+00:16:39.546 --> 00:16:47.706
+<v Norberto Nu&#241;ez>¿File delete, file pool sería, verdad?
+From instance, viste.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/132-0
+00:16:44.826 --> 00:16:45.306
+<v Elias Alfonzo>Yes.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/134-0
+00:16:50.346 --> 00:16:50.906
+<v Norberto Nu&#241;ez>Google.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/135-0
+00:16:51.866 --> 00:16:52.266
+<v Norberto Nu&#241;ez>Un.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/137-0
+00:16:58.906 --> 00:17:03.746
+<v Norberto Nu&#241;ez>Verdad de la misma manera como estamos
+hablando, verdad sería proyecto.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/136-0
+00:17:02.186 --> 00:17:02.586
+<v Elias Alfonzo>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/138-0
+00:17:08.026 --> 00:17:10.866
+<v Norberto Nu&#241;ez>Perdón, el servidor remoto.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/139-0
+00:17:12.186 --> 00:17:14.346
+<v Norberto Nu&#241;ez>¿Será la instancia de lo que es el
+contenedor?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/140-0
+00:17:15.786 --> 00:17:18.506
+<v Norberto Nu&#241;ez>Y después,
+dentro del contenedor está el pad.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/141-0
+00:17:19.546 --> 00:17:20.706
+<v Norberto Nu&#241;ez>Que quiero bajar.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/142-0
+00:17:20.946 --> 00:17:21.346
+<v Elias Alfonzo>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/143-0
+00:17:22.306 --> 00:17:24.106
+<v Norberto Nu&#241;ez>Es el archivo que quiero bajar mejor
+dicho.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/144-0
+00:17:29.706 --> 00:17:35.154
+<v Norberto Nu&#241;ez>¿Y el target sería el archivo donde voy a
+escribir, este al revés, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/144-1
+00:17:35.154 --> 00:17:37.986
+<v Norberto Nu&#241;ez>En push es el archivo que quiero subir.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/145-0
+00:17:39.546 --> 00:17:41.666
+<v Norberto Nu&#241;ez>Y en pool es el archivo donde quiero
+escribir.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/146-0
+00:17:46.426 --> 00:17:47.746
+<v Norberto Nu&#241;ez>Y explotan los flags.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/147-0
+00:17:48.906 --> 00:17:52.026
+<v Norberto Nu&#241;ez>Que es lo mismo que este también supongo
+miramos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/148-0
+00:17:53.306 --> 00:17:56.387
+<v Norberto Nu&#241;ez>Plax dice crear, crear directorio,
+si es que no existen,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/148-1
+00:17:56.387 --> 00:17:59.737
+<v Norberto Nu&#241;ez>si quiero hacer recursivo,
+una carpeta completa, por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/148-2
+00:17:59.737 --> 00:18:03.196
+<v Norberto Nu&#241;ez>y todo lo demás, verdad?
+Project que ya creo que ya creo que ya</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/148-3
+00:18:03.196 --> 00:18:03.466
+<v Norberto Nu&#241;ez>puse.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/149-0
+00:18:07.346 --> 00:18:07.946
+<v Norberto Nu&#241;ez>No puse.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/150-0
+00:18:09.426 --> 00:18:11.586
+<v Norberto Nu&#241;ez>Bueno, esto es para bajar archivos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/151-0
+00:18:14.346 --> 00:18:15.306
+<v Norberto Nu&#241;ez>Ehm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/152-0
+00:18:19.386 --> 00:18:22.078
+<v Norberto Nu&#241;ez>Sí, básicamente eso es lo que vas a hacer,
+¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/152-1
+00:18:22.078 --> 00:18:25.495
+<v Norberto Nu&#241;ez>Para esto va a ser para subir los
+certificados y con mi compañía.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/152-2
+00:18:25.495 --> 00:18:29.325
+<v Norberto Nu&#241;ez>Yo lo mismo hago cuando quiero subir
+cualquiera de estas cosas que yo voy</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/152-3
+00:18:29.325 --> 00:18:31.706
+<v Norberto Nu&#241;ez>modificando el cómo se llama este punto
+conf.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/153-0
+00:18:35.066 --> 00:18:38.788
+<v Norberto Nu&#241;ez>el dl.com, por ejemplo, el Apache ejecuto.
+O sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/153-1
+00:18:38.788 --> 00:18:43.925
+<v Norberto Nu&#241;ez>yo hago localmente el archivo de mi
+computadora y le hago este push.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/153-2
+00:18:43.925 --> 00:18:49.433
+<v Norberto Nu&#241;ez>Después ejecutar comandos, verdad?
+Ejecutar comandos dentro del servidor,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/153-3
+00:18:49.433 --> 00:18:53.155
+<v Norberto Nu&#241;ez>obviamente.
+Eso puedo hacerlo remotamente de esta</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/153-4
+00:18:53.155 --> 00:18:54.346
+<v Norberto Nu&#241;ez>forma. Es el xc.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/154-0
+00:18:54.506 --> 00:18:55.666
+<v Norberto Nu&#241;ez>Exec.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/155-0
+00:18:58.026 --> 00:19:00.226
+<v Norberto Nu&#241;ez>Sería contenedor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/156-0
+00:19:04.906 --> 00:19:05.226
+<v Norberto Nu&#241;ez>Um.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/157-0
+00:19:07.306 --> 00:19:08.466
+<v Norberto Nu&#241;ez>Proyecto.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/158-0
+00:19:11.386 --> 00:19:18.506
+<v Norberto Nu&#241;ez>Creo que hay un comando más interesante y
+acá el acá pone el comando, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/159-0
+00:19:20.826 --> 00:19:22.026
+<v Norberto Nu&#241;ez>Vamos a poner como variable.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/160-0
+00:19:25.706 --> 00:19:32.396
+<v Norberto Nu&#241;ez>Por decirte,
+mi comando va a ser LS menos LD barra TMP,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/160-1
+00:19:32.396 --> 00:19:34.666
+<v Norberto Nu&#241;ez>por decir, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/161-0
+00:19:37.546 --> 00:19:38.186
+<v Norberto Nu&#241;ez>Um.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/162-0
+00:19:39.306 --> 00:19:43.346
+<v Norberto Nu&#241;ez>Contenedor,
+proyecto y por acá creo que está.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/163-0
+00:19:44.506 --> 00:19:45.586
+<v Norberto Nu&#241;ez>El servidor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/164-0
+00:19:48.266 --> 00:19:51.866
+<v Norberto Nu&#241;ez>No, la fuente que es el manual.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/165-0
+00:19:59.706 --> 00:20:00.306
+<v Norberto Nu&#241;ez>Exit.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/166-0
+00:20:01.866 --> 00:20:03.186
+<v Norberto Nu&#241;ez>Instance.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/167-0
+00:20:05.266 --> 00:20:06.826
+<v Norberto Nu&#241;ez>Bueno, acá está remote, viste.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/168-0
+00:20:08.026 --> 00:20:12.287
+<v Norberto Nu&#241;ez>Remote, flags y guión,
+guión y command line básicamente no más,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/168-1
+00:20:12.287 --> 00:20:17.747
+<v Norberto Nu&#241;ez>este es interesante este siempre ponganle
+acá porque les va a ahorrar mucho dolor</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/168-2
+00:20:17.747 --> 00:20:18.346
+<v Norberto Nu&#241;ez>de cabeza</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/169-0
+00:20:19.546 --> 00:20:22.906
+<v Norberto Nu&#241;ez>Por eso le digo por esa experiencia y
+sale estándar in.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/170-0
+00:20:26.586 --> 00:20:27.626
+<v Elias Alfonzo>¿Qué hace eso, Norbert?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/171-0
+00:20:28.586 --> 00:20:30.266
+<v Norberto Nu&#241;ez>¿Sabes lo que pasó?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/173-0
+00:20:31.546 --> 00:20:35.186
+<v Norberto Nu&#241;ez>El Hay comandos como este, como Lexec.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/174-0
+00:20:36.746 --> 00:20:40.766
+<v Norberto Nu&#241;ez>Dentro del XC,
+dentro del subconjunto del XC,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/174-1
+00:20:40.766 --> 00:20:47.408
+<v Norberto Nu&#241;ez>que vos le podés tirar texto o archivos,
+le podés tirar por estándar input.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/174-2
+00:20:47.408 --> 00:20:52.390
+<v Norberto Nu&#241;ez>Por ejemplo, ahí, por ejemplo,
+el XC Start, por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/174-3
+00:20:52.390 --> 00:20:55.186
+<v Norberto Nu&#241;ez>o el XC Launch cuando vos creas.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/175-0
+00:20:55.306 --> 00:20:59.904
+<v Norberto Nu&#241;ez>Contenedores está la etapa de creación
+del contenedor o le puedes tirar ya la</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/175-1
+00:20:59.904 --> 00:21:04.560
+<v Norberto Nu&#241;ez>configuración completa del contenedor ya
+con el cómo se llama este otro con el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/175-2
+00:21:04.560 --> 00:21:09.039
+<v Norberto Nu&#241;ez>cloud in y completo ya puedes tirar ya
+como archivo así pum de una, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/175-3
+00:21:09.039 --> 00:21:11.986
+<v Norberto Nu&#241;ez>Y como le tiras eso,
+le tiras por estándar input.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/176-0
+00:21:13.706 --> 00:21:17.531
+<v Norberto Nu&#241;ez>Entonces, eso funciona espectacular,
+pero hay situaciones,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/176-1
+00:21:17.531 --> 00:21:22.327
+<v Norberto Nu&#241;ez>especialmente cuando haces scripts,
+en donde ya manejás tu estándar input</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/176-2
+00:21:22.327 --> 00:21:25.244
+<v Norberto Nu&#241;ez>para otras partes de tu código.
+Por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/176-3
+00:21:25.244 --> 00:21:29.975
+<v Norberto Nu&#241;ez>si estás en un loop y la entrada para tu
+loop está en un estándar input,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/176-4
+00:21:29.975 --> 00:21:31.466
+<v Norberto Nu&#241;ez>se interfiere con este.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/178-0
+00:21:32.346 --> 00:21:35.922
+<v Norberto Nu&#241;ez>Y ahí se arma un quilombo.
+Entonces por eso le digo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/177-0
+00:21:34.026 --> 00:21:34.706
+<v Elias Alfonzo>Ah.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/178-1
+00:21:35.922 --> 00:21:38.957
+<v Norberto Nu&#241;ez>esto les va a ahorrar mucho dolor de
+cabeza.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/178-2
+00:21:38.957 --> 00:21:44.219
+<v Norberto Nu&#241;ez>Salvo que quieran usar Standard Input
+para hacer para meter parte del comando</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/178-3
+00:21:44.219 --> 00:21:49.616
+<v Norberto Nu&#241;ez>por ponerle, cosa que yo nunca hice.
+Y bueno, así nomás. Entonces, por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/178-4
+00:21:49.616 --> 00:21:52.786
+<v Norberto Nu&#241;ez>vamos a poner un ejemplo,
+el comando va a ser.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/180-0
+00:21:54.666 --> 00:22:00.812
+<v Norberto Nu&#241;ez>system CTL restart Apache 2, verdad? Así,
+entonces vos primero vas a subir tu</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/180-1
+00:22:00.812 --> 00:22:04.830
+<v Norberto Nu&#241;ez>archivo lb.
+conf en el path donde tiene que estar,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/180-2
+00:22:04.830 --> 00:22:09.872
+<v Norberto Nu&#241;ez>vas a subir tu certificado,
+todo siguiendo esta lógica, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/180-3
+00:22:09.872 --> 00:22:15.466
+<v Norberto Nu&#241;ez>Y una vez que ya haces todo eso,
+le metes este comando except, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/179-0
+00:22:15.066 --> 00:22:15.346
+<v Marcos Casco>Mhm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/181-0
+00:22:16.746 --> 00:22:19.789
+<v Norberto Nu&#241;ez>Y donde tu comando es system CT eres
+restar,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/181-1
+00:22:19.789 --> 00:22:22.426
+<v Norberto Nu&#241;ez>ahí reiniciar el apache del contenedor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/182-0
+00:22:24.986 --> 00:22:27.871
+<v Norberto Nu&#241;ez>Y así, eso es genérico para todos,
+¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/182-1
+00:22:27.871 --> 00:22:31.346
+<v Norberto Nu&#241;ez>Esto ya vamos a sacar acá y vamos a poner
+en la PPT.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/183-0
+00:22:32.986 --> 00:22:35.858
+<v Marcos Casco>Sí, seguro, señor,
+algo independiente de eso,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/183-1
+00:22:35.858 --> 00:22:38.792
+<v Marcos Casco>tener a otro que le iba a preguntar a
+Alianza.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/183-2
+00:22:38.792 --> 00:22:43.786
+<v Marcos Casco>¿Ustedes no tienen algún servicio o SRM
+que tengan corriendo en algún servidor?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/184-0
+00:22:45.466 --> 00:22:46.826
+<v Elias Alfonzo>¿O SRM, no?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/185-0
+00:22:47.066 --> 00:22:48.146
+<v Marcos Casco>See.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/186-0
+00:22:51.626 --> 00:22:53.306
+<v Marcos Casco>Norver? No.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/187-0
+00:22:52.746 --> 00:22:54.586
+<v Norberto Nu&#241;ez>¿Señor, cómo es 2 RM?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/189-0
+00:22:55.626 --> 00:23:01.973
+<v Marcos Casco>Y es la instalación de OpenStrip en tu en
+algún servidor para que nos salga a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/189-1
+00:23:01.973 --> 00:23:05.553
+<v Marcos Casco>consultar afuera.
+Y entonces en base a eso,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/189-2
+00:23:05.553 --> 00:23:11.574
+<v Marcos Casco>pues así para que puedas cerrar nomás el
+tema de los de los GPS, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/189-3
+00:23:11.574 --> 00:23:17.106
+<v Marcos Casco>Si tenemos ese servicio o SRM corriendo
+dentro de nuestro servidor.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/190-0
+00:23:17.226 --> 00:23:21.627
+<v Marcos Casco>Él puede generar la ruta,
+la ruta más fácil para, por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/190-1
+00:23:21.627 --> 00:23:26.377
+<v Marcos Casco>el GPS. Nosotros decimos,
+él tiene asignado un ticket, por ejemplo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/190-2
+00:23:26.377 --> 00:23:31.057
+<v Marcos Casco>Carlos Fleita tiene asignado un ticket en
+tal lugar, en tal sitio.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/190-3
+00:23:31.057 --> 00:23:36.715
+<v Marcos Casco>Y seleccionas el sitio y ves dónde está,
+dónde está Carlos Fleita y él te genera</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/190-4
+00:23:36.715 --> 00:23:40.906
+<v Marcos Casco>la ruta y te dice más o menos en cuánto
+tiempo va a llegar.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/191-0
+00:23:41.626 --> 00:23:47.276
+<v Marcos Casco>Y también te genera una hoja de ruta
+dependiendo de la posición de la persona</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/191-1
+00:23:47.276 --> 00:23:53.289
+<v Marcos Casco>y el sitio y todos los sitios donde tiene,
+donde tiene ticket asignado y él genera</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/191-2
+00:23:53.289 --> 00:23:58.649
+<v Marcos Casco>una ruta por donde puede ir empezando y
+también va a tomar el valor de la</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/191-3
+00:23:58.649 --> 00:24:01.546
+<v Marcos Casco>criticidad de cada uno de los y te dice.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/192-0
+00:24:02.026 --> 00:24:04.849
+<v Marcos Casco>En tantas horas,
+si tarda 1 hora por sitio,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/192-1
+00:24:04.849 --> 00:24:09.146
+<v Marcos Casco>voy a poder terminar todos estos trabajos,
+eso es lo que necesito.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/194-0
+00:24:08.266 --> 00:24:11.915
+<v Norberto Nu&#241;ez>No, por por suerte,
+yo nunca trabajé con mapas, jamás,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/193-0
+00:24:11.786 --> 00:24:12.266
+<v Marcos Casco>No.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/194-1
+00:24:11.915 --> 00:24:15.763
+<v Norberto Nu&#241;ez>nunca hice nada, nada con mapas,
+no tengo nada con mapas.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/194-2
+00:24:15.763 --> 00:24:20.606
+<v Norberto Nu&#241;ez>El que el que trabaja con mapas era
+Néstor, que tiene con oxígeno y eso,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/195-0
+00:24:19.626 --> 00:24:23.255
+<v Marcos Casco>Pues si ya venció la licencia,
+es lo que él tiene, sí,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/194-3
+00:24:20.606 --> 00:24:21.866
+<v Norberto Nu&#241;ez>por el localizador.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/195-1
+00:24:23.255 --> 00:24:24.706
+<v Marcos Casco>ya venció la licencia.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/196-0
+00:24:29.466 --> 00:24:35.486
+<v Marcos Casco>O K sería instalar entonces crear un
+contenedor para ese instalar ahí uno que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/196-1
+00:24:35.486 --> 00:24:37.106
+<v Marcos Casco>tenga docker y demás.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/200-0
+00:24:50.346 --> 00:24:52.826
+<v Norberto Nu&#241;ez>Bueno, ya que estamos este tema.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/201-0
+00:24:53.626 --> 00:24:56.586
+<v Norberto Nu&#241;ez>¿Lo que quiero instalar, viste, viste?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/202-0
+00:24:58.186 --> 00:25:03.037
+<v Norberto Nu&#241;ez>¿Que vamos a tener este caso de uso
+práctico para el tema de los ingresos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/202-1
+00:25:03.037 --> 00:25:05.106
+<v Norberto Nu&#241;ez>verdad? Para tomar los permisos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/203-0
+00:25:06.026 --> 00:25:10.386
+<v Norberto Nu&#241;ez>Es que estamos ahí, vamos a abrir ese.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/204-0
+00:25:13.386 --> 00:25:14.266
+<v Norberto Nu&#241;ez>I don't know.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/205-0
+00:25:17.226 --> 00:25:18.546
+<v Norberto Nu&#241;ez>No, está un poco.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/206-0
+00:25:20.666 --> 00:25:21.146
+<v Norberto Nu&#241;ez>Este.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/207-0
+00:25:23.066 --> 00:25:23.466
+<v Norberto Nu&#241;ez>Bueno.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/209-0
+00:25:24.666 --> 00:25:27.768
+<v Norberto Nu&#241;ez>Esto yo estaba preparando para pasarle a
+Gustavo García.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/209-1
+00:25:27.768 --> 00:25:31.958
+<v Norberto Nu&#241;ez>Viste que yo tuve que haber mostrado esto
+en la reunión pasada y no alcancé,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/208-0
+00:25:28.986 --> 00:25:29.386
+<v Marcos Casco>Hmm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/211-0
+00:25:31.306 --> 00:25:37.952
+<v Marcos Casco>Sí yo esperaba yo esperaba tu ppt porque
+eso no estaba me sorprendiste cuando</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/209-2
+00:25:31.958 --> 00:25:34.026
+<v Norberto Nu&#241;ez>no me alcanzó el tiempo para aprender.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/210-0
+00:25:36.986 --> 00:25:37.706
+<v Norberto Nu&#241;ez>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/211-1
+00:25:37.952 --> 00:25:41.786
+<v Marcos Casco>dijiste marco Cómo podes mostrar tu al
+grano</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/212-0
+00:25:40.186 --> 00:25:45.466
+<v Norberto Nu&#241;ez>Sí, no llegué porque no,
+porque el día anterior me.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/215-0
+00:25:46.506 --> 00:25:50.298
+<v Norberto Nu&#241;ez>cambio de rumbo, Julio,
+con el tema de Santa Anita y todo eso ahí</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/215-1
+00:25:50.298 --> 00:25:54.492
+<v Norberto Nu&#241;ez>la zona del norte que teníamos que ver la
+parte de aseguramiento. Bueno,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/215-2
+00:25:54.492 --> 00:25:58.226
+<v Norberto Nu&#241;ez>es entre paréntesis. Está dando más...
+ustemos comerlo, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/213-0
+00:25:59.306 --> 00:26:00.506
+<v Elias Alfonzo>Yo comimos todas.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/214-0
+00:26:01.986 --> 00:26:03.346
+<v Marcos Casco>Yo acabo de desayunar.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/216-0
+00:26:02.826 --> 00:26:02.866
+<v Norberto Nu&#241;ez>Y.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/217-0
+00:26:04.066 --> 00:26:06.953
+<v Norberto Nu&#241;ez>Bueno,
+esto es lo que está preparando para</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/217-1
+00:26:06.953 --> 00:26:12.459
+<v Norberto Nu&#241;ez>Gustavo García, ¿verdad? Tema de permiso.
+Esto es lo que es actualmente, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/217-2
+00:26:12.459 --> 00:26:18.099
+<v Norberto Nu&#241;ez>Más o menos esto gráfica así rápidamente.
+Pero la cuestión es que ahora voy a hacer</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/217-3
+00:26:18.099 --> 00:26:22.866
+<v Norberto Nu&#241;ez>la diapositiva de donde va a decir el
+procedimiento objetivo, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/218-0
+00:26:23.986 --> 00:26:28.085
+<v Norberto Nu&#241;ez>En donde todo va a pasar por Tenviapo,
+¿verdad? Sin embargo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/218-1
+00:26:28.085 --> 00:26:32.991
+<v Norberto Nu&#241;ez>eso es lo que hablamos la otra vez,
+Marcos, lo que quería hacer un zoom,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/218-2
+00:26:32.991 --> 00:26:36.889
+<v Norberto Nu&#241;ez>digamos, ingeniería,
+feel service y toda la compañía va a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/218-3
+00:26:36.889 --> 00:26:41.055
+<v Norberto Nu&#241;ez>trabajar contra Tenviapo.
+Estas flechitas van a ir hacia acá,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/218-4
+00:26:41.055 --> 00:26:42.466
+<v Norberto Nu&#241;ez>básicamente, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/219-0
+00:26:43.866 --> 00:26:50.391
+<v Norberto Nu&#241;ez>Pero los externos, pero los externos,
+no van a tener acceso a tu enviar,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/219-1
+00:26:50.391 --> 00:26:56.647
+<v Norberto Nu&#241;ez>al menos todavía. Entonces,
+una idea que estuve masticando y nos va a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/219-2
+00:26:56.647 --> 00:27:02.546
+<v Norberto Nu&#241;ez>servir no solamente para este caso,
+sino para muchos otros casos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/221-0
+00:27:02.986 --> 00:27:07.771
+<v Norberto Nu&#241;ez>Hacer un servidor de mail out para un
+servidor de mail de sistema,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/221-1
+00:27:07.771 --> 00:27:12.412
+<v Norberto Nu&#241;ez>pero no es para enviar correo,
+es para recibir correo. Entonces,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/220-0
+00:27:10.186 --> 00:27:11.426
+<v Marcos Casco>Para recibir cobres.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/221-2
+00:27:12.412 --> 00:27:18.053
+<v Norberto Nu&#241;ez>implementar un servidor que yo la veo
+bastante factible técnicamente y no va a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/221-3
+00:27:18.053 --> 00:27:22.266
+<v Norberto Nu&#241;ez>llevar mucho tiempo.
+Es implementar un servidor de correo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/222-0
+00:27:23.546 --> 00:27:27.592
+<v Norberto Nu&#241;ez>Puede ser un Postfix o Exim.
+Cualquier opción,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/222-1
+00:27:27.592 --> 00:27:33.618
+<v Norberto Nu&#241;ez>cualquier opción es válida.
+Donde ese servidor de correo puede tener,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/222-2
+00:27:33.618 --> 00:27:38.266
+<v Norberto Nu&#241;ez>por ejemplo, por ejemplo,
+puede tener esta dirección.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/223-0
+00:27:39.266 --> 00:27:40.506
+<v Norberto Nu&#241;ez>¿Este FQN, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/224-0
+00:27:42.426 --> 00:27:46.106
+<v Norberto Nu&#241;ez>Ese correo, entonces los externos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/225-0
+00:27:47.706 --> 00:27:53.129
+<v Norberto Nu&#241;ez>gente externa a núcleo,
+cuando quieran pedir los permisos pueden</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/225-1
+00:27:53.129 --> 00:27:58.718
+<v Norberto Nu&#241;ez>enviar los permisos a una dirección que
+diga por decirte permisos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/225-2
+00:27:58.718 --> 00:28:05.224
+<v Norberto Nu&#241;ez>esto es un ejemplo nomás @cs.personal.com.
+pd. Esto va a llegar por internet,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/225-3
+00:28:05.224 --> 00:28:07.226
+<v Norberto Nu&#241;ez>va a llegar por internet</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/226-0
+00:28:07.866 --> 00:28:13.216
+<v Norberto Nu&#241;ez>va a llegar a seguridad informática,
+porque seguridad informática el que tiene</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/226-1
+00:28:13.216 --> 00:28:18.294
+<v Norberto Nu&#241;ez>hoy en día ya no tiene tecnología,
+seguridad informática se hizo propio el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/226-2
+00:28:18.294 --> 00:28:21.680
+<v Norberto Nu&#241;ez>relay de email entrantes, verdad.
+Entonces vemos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/226-3
+00:28:21.680 --> 00:28:25.607
+<v Norberto Nu&#241;ez>lo charlamos esto con seguridad
+informática y le decimos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/226-4
+00:28:25.607 --> 00:28:27.706
+<v Norberto Nu&#241;ez>necesitamos que ustedes reciban</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/227-0
+00:28:27.866 --> 00:28:32.793
+<v Norberto Nu&#241;ez>Estos correos,
+todo lo que es arroba SS y nos en el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/227-1
+00:28:32.793 --> 00:28:39.426
+<v Norberto Nu&#241;ez>punto donde está el relay,
+nos deriven a nuestro servidor de sistema.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/228-0
+00:28:40.386 --> 00:28:41.946
+<v Norberto Nu&#241;ez>¿Verdad que va a ser?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/229-0
+00:28:42.986 --> 00:28:46.424
+<v Norberto Nu&#241;ez>Va a ser algo parecido a esto y te ella
+duplicado,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/229-1
+00:28:46.424 --> 00:28:48.986
+<v Norberto Nu&#241;ez>ya luego sería procedimiento objetivo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/231-0
+00:28:53.306 --> 00:28:57.441
+<v Norberto Nu&#241;ez>Ahí. Entonces,
+los externos van a enviar un correo a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/231-1
+00:28:57.441 --> 00:29:01.342
+<v Norberto Nu&#241;ez>arrobaOSS,
+algo arrobaOSS y eso según informática</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/230-0
+00:28:59.306 --> 00:28:59.786
+<v Marcos Casco>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/231-2
+00:29:01.342 --> 00:29:05.789
+<v Norberto Nu&#241;ez>nos va a tener que,
+una vez que ya pasó el scan de según</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/231-3
+00:29:05.789 --> 00:29:09.689
+<v Norberto Nu&#241;ez>informática,
+nos va a tener que derivar a nuestro</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/231-4
+00:29:09.689 --> 00:29:13.278
+<v Norberto Nu&#241;ez>clúster,
+puede ser un contenedor en cualquier</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/231-5
+00:29:13.278 --> 00:29:13.746
+<v Norberto Nu&#241;ez>parte.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/232-0
+00:29:14.586 --> 00:29:20.295
+<v Norberto Nu&#241;ez>Verdad de nuestro cluster va a ser un
+solo contenedor o inclusive puede ser más</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/232-1
+00:29:20.295 --> 00:29:23.864
+<v Norberto Nu&#241;ez>de uno,
+puede ser uno por sitio también porque es</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/232-2
+00:29:23.864 --> 00:29:27.146
+<v Norberto Nu&#241;ez>sin estado,
+pues no va a manejar el estado y.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/234-0
+00:29:29.466 --> 00:29:33.267
+<v Norberto Nu&#241;ez>Va a venir, por ejemplo,
+eso le podemos decir a los externos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/234-1
+00:29:33.267 --> 00:29:36.271
+<v Norberto Nu&#241;ez>Bueno,
+a partir de ahora para los permisos ya no</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/234-2
+00:29:36.271 --> 00:29:40.746
+<v Norberto Nu&#241;ez>vas a enviarle a Pedro Méndez el correo,
+vas a enviar a algo arroba uss.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/233-0
+00:29:40.066 --> 00:29:40.586
+<v Marcos Casco>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/235-0
+00:29:41.826 --> 00:29:45.475
+<v Norberto Nu&#241;ez>Con un adjunto,
+con el adjunto puede ser una plantilla ya</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/235-1
+00:29:45.475 --> 00:29:49.816
+<v Norberto Nu&#241;ez>de Excel que nosotros le digamos.
+En esta hoja vas a poner todos los</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/235-2
+00:29:49.816 --> 00:29:53.150
+<v Norberto Nu&#241;ez>ingresantes,
+en estado trabajo vas a poner todos los</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/235-3
+00:29:53.150 --> 00:29:56.862
+<v Norberto Nu&#241;ez>móviles que van a ingresar al sitio,
+la camioneta, camión,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/235-4
+00:29:56.862 --> 00:30:01.706
+<v Norberto Nu&#241;ez>lo que sea que tengan que entrar.
+Entonces llega ese correo con ese adjunto.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/236-0
+00:30:21.626 --> 00:30:22.106
+<v Marcos Casco>T.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/237-0
+00:30:22.146 --> 00:30:26.308
+<v Norberto Nu&#241;ez>Script va a tomar el adjunto,
+va a validar el remitente contra una</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/237-1
+00:30:26.308 --> 00:30:30.159
+<v Norberto Nu&#241;ez>lista de una lista blanca,
+vamos a decir remitente permitido.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/237-2
+00:30:30.159 --> 00:30:34.506
+<v Norberto Nu&#241;ez>Ahí podemos poner todas las reglas que
+queramos, verdad? Entonces va.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/239-0
+00:30:33.306 --> 00:30:37.118
+<v Marcos Casco>El mail tiene que tener un formato
+especial,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/239-1
+00:30:37.118 --> 00:30:41.946
+<v Marcos Casco>no tiene que tener un adjunto luego con
+un template, sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/241-0
+00:30:38.746 --> 00:30:43.836
+<v Norberto Nu&#241;ez>Es una posibilidad,
+es una posibilidad o inclusive para mí,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/241-1
+00:30:43.836 --> 00:30:51.047
+<v Norberto Nu&#241;ez>para mí es más conveniente porque también
+podemos tomar el cuerpo del email, verdad,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/240-0
+00:30:45.306 --> 00:30:45.626
+<v Elias Alfonzo>Ajá.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/243-0
+00:30:50.506 --> 00:30:54.130
+<v Marcos Casco>A mí me es más fácil el adjunto y el ahí
+el adjunto,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/241-2
+00:30:51.047 --> 00:30:51.386
+<v Norberto Nu&#241;ez>como</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/243-1
+00:30:54.130 --> 00:30:58.437
+<v Marcos Casco>que es un template válido con los campos
+que nosotros digamos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/242-0
+00:30:56.186 --> 00:30:58.826
+<v Norberto Nu&#241;ez>Sí, por eso sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/243-2
+00:30:58.437 --> 00:31:02.266
+<v Marcos Casco>y eso directamente se inserta ya en
+nuestra aplicación.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/247-0
+00:31:00.986 --> 00:31:04.566
+<v Norberto Nu&#241;ez>Correcto, correcto, o sea,
+entonces ahí nos alineamos, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/247-1
+00:31:04.566 --> 00:31:08.258
+<v Norberto Nu&#241;ez>Puede ser también el cuerpo del mailboard,
+yo el cuerpo de mail,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/247-2
+00:31:08.258 --> 00:31:11.894
+<v Norberto Nu&#241;ez>pues muchas veces se reenvía,
+se le copia a alguien y se herman</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/244-0
+00:31:10.106 --> 00:31:10.826
+<v Marcos Casco>Por eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/247-3
+00:31:11.894 --> 00:31:14.508
+<v Norberto Nu&#241;ez>quilomway.
+Entonces el adjunto para mí en ese</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/247-4
+00:31:14.508 --> 00:31:18.939
+<v Norberto Nu&#241;ez>sentido es más práctico desde el punto de
+vista sistémico y entonces llega el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/245-0
+00:31:14.826 --> 00:31:15.306
+<v Marcos Casco>Siri.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/246-0
+00:31:17.626 --> 00:31:18.266
+<v Marcos Casco>De acuerdo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/247-5
+00:31:18.939 --> 00:31:21.666
+<v Norberto Nu&#241;ez>adjunto con los datos que nosotros
+solicitamos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/249-0
+00:31:22.186 --> 00:31:27.001
+<v Norberto Nu&#241;ez>El scripto mal adjunto,
+inserta en la base de datos o bien deja</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/249-1
+00:31:27.001 --> 00:31:33.019
+<v Norberto Nu&#241;ez>en algún lugar y después toma esos datos,
+inserta en su circuito de aprobación,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/249-2
+00:31:33.019 --> 00:31:36.630
+<v Norberto Nu&#241;ez>verdad.
+Y ya después me puse que se encarga del</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/249-3
+00:31:36.630 --> 00:31:40.466
+<v Norberto Nu&#241;ez>resto, por decirte, no sé,
+poner el caso de que...</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/248-0
+00:31:37.226 --> 00:31:37.706
+<v Marcos Casco>Two.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/250-0
+00:31:41.146 --> 00:31:45.409
+<v Norberto Nu&#241;ez>Bueno, el caso particular,
+el caso normal va a ser que Pedro o</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/250-1
+00:31:45.409 --> 00:31:48.657
+<v Norberto Nu&#241;ez>Freddy, a quien sea, apruebe, ¿verdad?
+Y bueno,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/250-2
+00:31:48.657 --> 00:31:54.137
+<v Norberto Nu&#241;ez>ahí te envía por lo que va a ser generar
+un mail al remitente original, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/250-3
+00:31:54.137 --> 00:31:58.400
+<v Norberto Nu&#241;ez>Entonces ahí te envía,
+pues va a tener que tener vía otra vez,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/250-4
+00:31:58.400 --> 00:32:01.106
+<v Norberto Nu&#241;ez>vía seguridad informática, vía su relay.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/251-0
+00:32:01.546 --> 00:32:05.946
+<v Norberto Nu&#241;ez>Enviar correo al remitente original,
+verdad.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/256-0
+00:32:06.426 --> 00:32:10.042
+<v Marcos Casco>Envíos de email, envíos de email externos.
+Sí,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/252-0
+00:32:06.746 --> 00:32:07.066
+<v Norberto Nu&#241;ez>Y.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/253-0
+00:32:09.386 --> 00:32:10.186
+<v Norberto Nu&#241;ez>Hacia afuera.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/256-1
+00:32:10.042 --> 00:32:15.888
+<v Marcos Casco>tiene que enviar por hoy porque se le va
+a Hansa, se le va a Intech, salen,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/254-0
+00:32:11.226 --> 00:32:11.986
+<v Norberto Nu&#241;ez>Esther no, verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/255-0
+00:32:14.826 --> 00:32:15.226
+<v Norberto Nu&#241;ez>Oh.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/256-2
+00:32:15.888 --> 00:32:17.426
+<v Marcos Casco>está habilitado eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/258-0
+00:32:17.626 --> 00:32:22.506
+<v Norberto Nu&#241;ez>Excelente, o sea, ya tenemos,
+ya tenemos ya una tapandose de quema. y.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/257-0
+00:32:21.666 --> 00:32:22.026
+<v Marcos Casco>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/260-0
+00:32:23.786 --> 00:32:26.678
+<v Norberto Nu&#241;ez>Eh, bueno,
+y ahí también va a manejar su lógica,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/260-1
+00:32:26.678 --> 00:32:31.045
+<v Norberto Nu&#241;ez>verdad? Por decirte, por decirte,
+Pedro aprobó estos y rechazó los otros,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/260-2
+00:32:31.045 --> 00:32:33.878
+<v Norberto Nu&#241;ez>verdad?
+Por ponerle que en el grupo de personas</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/260-3
+00:32:33.878 --> 00:32:37.301
+<v Norberto Nu&#241;ez>había uno que está inhabilitado, verdad?
+Entonces, bueno,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/259-0
+00:32:36.426 --> 00:32:36.826
+<v Marcos Casco>Mhm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/260-4
+00:32:37.301 --> 00:32:40.369
+<v Norberto Nu&#241;ez>eso ya te ha podido manejar la lógica de
+esa parte.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/260-5
+00:32:40.369 --> 00:32:44.146
+<v Norberto Nu&#241;ez>Por lo que a lo que iba nomás es el
+circuito entrante de email.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/261-0
+00:32:45.346 --> 00:32:49.754
+<v Norberto Nu&#241;ez>¿Qué es lo que yo creo que podríamos
+establecer y va a servir no solamente</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/261-1
+00:32:49.754 --> 00:32:52.870
+<v Norberto Nu&#241;ez>para este caso,
+sino para otros casos donde queramos</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/261-2
+00:32:52.870 --> 00:32:57.513
+<v Norberto Nu&#241;ez>automatizar cosas vía email, verdad?
+También ya va a quedar un precedente y ya</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/261-3
+00:32:57.513 --> 00:32:59.746
+<v Norberto Nu&#241;ez>va a estar preparado para eso, verdad.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/262-0
+00:33:02.586 --> 00:33:03.386
+<v Marcos Casco>Perfect.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/265-0
+00:33:06.426 --> 00:33:10.344
+<v Marcos Casco>Espectacular,
+pero eso es para 1 segundo entregable,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/263-0
+00:33:07.946 --> 00:33:08.586
+<v Norberto Nu&#241;ez>Bueno.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/265-1
+00:33:10.344 --> 00:33:13.226
+<v Marcos Casco>Norbert, no me diga mañana necesitamos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/264-0
+00:33:10.826 --> 00:33:11.786
+<v Norberto Nu&#241;ez>no, pero.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/266-0
+00:33:13.466 --> 00:33:16.506
+<v Norberto Nu&#241;ez>no te voy a preocupar que yo mismo voy a
+hacer.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/267-0
+00:33:18.346 --> 00:33:19.786
+<v Norberto Nu&#241;ez>Yo mismo quiero hacer, ¿verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/269-0
+00:33:21.146 --> 00:33:31.262
+<v Norberto Nu&#241;ez>y una vez que te Sí porque qué pasa el la
+configuración del del servidor de correo</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/268-0
+00:33:21.866 --> 00:33:23.466
+<v Marcos Casco>Perfecto, el script.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/269-1
+00:33:31.262 --> 00:33:39.306
+<v Norberto Nu&#241;ez>para tener un un relay es el nombre que
+le dan en el mundo es MTP</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/271-0
+00:33:39.706 --> 00:33:43.930
+<v Norberto Nu&#241;ez>A cualquier entidad,
+ya sea un programa u otro sistema de</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/271-1
+00:33:43.930 --> 00:33:47.935
+<v Norberto Nu&#241;ez>email que reciba,
+un email que recibió otro sistema se</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/271-2
+00:33:47.935 --> 00:33:51.940
+<v Norberto Nu&#241;ez>llama relay.
+O gateway o smart host también se le dice</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/271-3
+00:33:51.940 --> 00:33:56.746
+<v Norberto Nu&#241;ez>en el mundo del email.
+Una vez que yo haga el relay vía software,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/270-0
+00:33:52.106 --> 00:33:52.666
+<v Marcos Casco>Mm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/272-0
+00:33:58.106 --> 00:34:03.963
+<v Norberto Nu&#241;ez>Lo que te decía es que yo tengo
+experiencia con la configuración de relay</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/272-1
+00:34:03.963 --> 00:34:05.546
+<v Norberto Nu&#241;ez>vía software vía sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/274-0
+00:34:06.666 --> 00:34:12.533
+<v Norberto Nu&#241;ez>porque es la misma figura que hoy tengo
+por ejemplo para el MMS yo había creado</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/274-1
+00:34:12.533 --> 00:34:18.033
+<v Norberto Nu&#241;ez>una plataforma desde cero porque con el
+con el ransomware pues se mató ese</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/274-2
+00:34:18.033 --> 00:34:23.900
+<v Norberto Nu&#241;ez>servidor de MMS o Windows que teníamos
+que era un vendor x y después yo levanté</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/273-0
+00:34:18.626 --> 00:34:19.226
+<v Marcos Casco>Mm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/274-3
+00:34:23.900 --> 00:34:26.026
+<v Norberto Nu&#241;ez>desde cero una plataforma MMS</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/275-0
+00:34:26.186 --> 00:34:32.466
+<v Norberto Nu&#241;ez>Y tenemos por el caso del MMS, email, MMS,
+email.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/276-0
+00:34:33.226 --> 00:34:38.677
+<v Norberto Nu&#241;ez>¿Y ya tengo, digamos,
+unas algunos skills ahí desarrollados,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/276-1
+00:34:38.677 --> 00:34:41.626
+<v Norberto Nu&#241;ez>verdad? Lo que sí nunca hice fue.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/277-0
+00:34:47.066 --> 00:34:51.762
+<v Norberto Nu&#241;ez>No te miento, sí, ya hice,
+ya tengo experiencia con esto,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/278-0
+00:34:51.386 --> 00:34:54.733
+<v Marcos Casco>20 horas,
+voy a tener todo el camino hecho,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/277-1
+00:34:51.762 --> 00:34:53.786
+<v Norberto Nu&#241;ez>no me acordaba nomás, sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/278-1
+00:34:54.733 --> 00:34:56.026
+<v Marcos Casco>entonces snorber.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/279-0
+00:34:55.866 --> 00:34:58.906
+<v Norberto Nu&#241;ez>Sí, es Manuel Laura y tiempo, digamos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/281-0
+00:35:00.346 --> 00:35:03.706
+<v Marcos Casco>Tiempo con este tema del niño es lo que
+vos no tenés ahora mismo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/280-0
+00:35:00.466 --> 00:35:01.026
+<v Norberto Nu&#241;ez>Um.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/283-0
+00:35:04.106 --> 00:35:07.655
+<v Norberto Nu&#241;ez>Y sí, no,
+pero realmente es muy importante hacer</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/283-1
+00:35:07.655 --> 00:35:11.203
+<v Norberto Nu&#241;ez>esto también.
+Porque una vez también que esto se</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/283-2
+00:35:11.203 --> 00:35:16.996
+<v Norberto Nu&#241;ez>resuelva ya por esa vía, después muchas,
+mucho tiempo nos va a ahorrar en otros</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/282-0
+00:35:16.186 --> 00:35:17.786
+<v Marcos Casco>Sí, así es.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/283-3
+00:35:16.996 --> 00:35:20.617
+<v Norberto Nu&#241;ez>temas también.
+O sea que ahí en ese contexto toma</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/283-4
+00:35:20.617 --> 00:35:23.586
+<v Norberto Nu&#241;ez>prioridad. ¿Qué más? Ah, a lo que iba es.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/286-0
+00:35:24.186 --> 00:35:27.955
+<v Norberto Nu&#241;ez>Una vez que hagamos la demo,
+ese es el primer entregable,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/286-1
+00:35:27.955 --> 00:35:32.957
+<v Norberto Nu&#241;ez>como digo ahora, y funcione, internamente,
+lo mismo tenemos que probar bien,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/286-2
+00:35:32.957 --> 00:35:38.285
+<v Norberto Nu&#241;ez>internamente. Una vez que eso funcione,
+hay que declarar el puerto porque vamos a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/284-0
+00:35:34.026 --> 00:35:34.506
+<v Marcos Casco>Team.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/286-3
+00:35:38.285 --> 00:35:41.403
+<v Norberto Nu&#241;ez>tener que habilitar el puerto 25 en el
+cluster.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/286-4
+00:35:41.403 --> 00:35:45.626
+<v Norberto Nu&#241;ez>Hay que hacer el inventario del servicio,
+toda esa parafernalia.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/285-0
+00:35:44.986 --> 00:35:45.986
+<v Marcos Casco>El puerto.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/288-0
+00:35:46.986 --> 00:35:52.963
+<v Marcos Casco>El puerto 25 no te toma como vulnerable
+seguridad. No, el puerto 21 era, perdón,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/287-0
+00:35:51.386 --> 00:35:52.106
+<v Norberto Nu&#241;ez>Hey.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/288-1
+00:35:52.963 --> 00:35:54.586
+<v Marcos Casco>no sé si el puerto 25.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/290-0
+00:35:53.306 --> 00:35:58.039
+<v Norberto Nu&#241;ez>No, pero no, pero no, a ver,
+pero no está de más tampoco Marcos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/290-1
+00:35:58.039 --> 00:36:02.262
+<v Norberto Nu&#241;ez>porque qué pasó?
+Hoy va a entrar un SMTP plano con el 25,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/289-0
+00:36:01.186 --> 00:36:01.546
+<v Marcos Casco>Hmm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/290-2
+00:36:02.262 --> 00:36:05.466
+<v Norberto Nu&#241;ez>tendríamos que implementar un SMTP con
+SSL.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/294-0
+00:36:07.066 --> 00:36:11.246
+<v Norberto Nu&#241;ez>Igual siempre con el importe 25,
+no importa que sea el importe 25,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/291-0
+00:36:10.986 --> 00:36:11.946
+<v Marcos Casco>Un certificado.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/294-1
+00:36:11.246 --> 00:36:15.675
+<v Norberto Nu&#241;ez>pero aprovechando si tomando el punto
+tiene que estar con certificado,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/294-2
+00:36:15.675 --> 00:36:19.855
+<v Norberto Nu&#241;ez>ya que nazca ya así, verdad?
+Entonces que después no sea eso un un</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/292-0
+00:36:16.026 --> 00:36:16.586
+<v Marcos Casco>Okay.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/294-3
+00:36:19.855 --> 00:36:24.035
+<v Norberto Nu&#241;ez>obstáculo del lado del yo. ¿Qué más?
+Bueno, a eso lo que yo tengo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/293-0
+00:36:21.026 --> 00:36:21.426
+<v Marcos Casco>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/294-4
+00:36:24.035 --> 00:36:25.906
+<v Norberto Nu&#241;ez>vamos a tener que una vez que.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/296-0
+00:36:26.026 --> 00:36:32.010
+<v Norberto Nu&#241;ez>Demos por válido el sistema, declarar,
+hacer el tema del inventario de puertos,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/296-1
+00:36:32.010 --> 00:36:37.919
+<v Norberto Nu&#241;ez>de la aplicación seguramente. Y después,
+una vez que ya tengamos aplanado eso,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/296-2
+00:36:37.919 --> 00:36:44.053
+<v Norberto Nu&#241;ez>el siguiente paso va a ser sentarnos con
+ellos a mostrarles lo que queremos hacer</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/295-0
+00:36:44.026 --> 00:36:44.346
+<v Marcos Casco>Two.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/296-3
+00:36:44.053 --> 00:36:49.363
+<v Norberto Nu&#241;ez>para que vía relay de ellos,
+porque ahí van a tener que ellos tocar su</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/296-4
+00:36:49.363 --> 00:36:50.186
+<v Norberto Nu&#241;ez>plataforma.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/297-0
+00:36:50.826 --> 00:36:57.893
+<v Norberto Nu&#241;ez>Para derivarnos esos arroba uss verdad
+hacia nuestro cluster y así verdad es un</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/297-1
+00:36:57.893 --> 00:36:59.306
+<v Norberto Nu&#241;ez>poco en general.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/298-0
+00:37:00.106 --> 00:37:04.728
+<v Marcos Casco>Pero ahora ya tenemos por lo menos la
+primera parte,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/298-1
+00:37:04.728 --> 00:37:09.699
+<v Marcos Casco>que igual reduce bastante el tema de que
+estén llamando,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/298-2
+00:37:09.699 --> 00:37:14.146
+<v Marcos Casco>enviando mail para el tema de acceso a
+los sitios.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/301-0
+00:37:14.106 --> 00:37:19.227
+<v Norberto Nu&#241;ez>Sí, va a seguir llegando nomás al mail,
+están nomás viendo que hoy por ejemplo</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/301-1
+00:37:19.227 --> 00:37:24.478
+<v Norberto Nu&#241;ez>llegó cualquier cantidad de mail externos,
+¿verdad? Por ejemplo, llegó de claro,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/299-0
+00:37:20.906 --> 00:37:21.906
+<v Marcos Casco>Ah.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/301-2
+00:37:24.478 --> 00:37:28.367
+<v Norberto Nu&#241;ez>llegó de testigo,
+gente que ellos quieren llevar su gente a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/301-3
+00:37:28.367 --> 00:37:31.673
+<v Norberto Nu&#241;ez>nuestro sitio para hacer mantenimiento
+preventivo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/300-0
+00:37:30.026 --> 00:37:33.746
+<v Marcos Casco>El tema de que es tan exactamente, sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/301-4
+00:37:31.673 --> 00:37:34.266
+<v Norberto Nu&#241;ez>Están con los preventivos también ellos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/302-0
+00:37:35.706 --> 00:37:36.826
+<v Norberto Nu&#241;ez>Y nada, eso nomás.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/303-0
+00:37:36.346 --> 00:37:36.866
+<v Marcos Casco>I see.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/304-0
+00:37:38.586 --> 00:37:43.194
+<v Norberto Nu&#241;ez>Por eso un poco, digamos, el así,
+el mapa general contexto de lo que se</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/304-1
+00:37:43.194 --> 00:37:46.138
+<v Norberto Nu&#241;ez>viene.
+Por eso te quería consultar si podemos</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/304-2
+00:37:46.138 --> 00:37:50.106
+<v Norberto Nu&#241;ez>meter ese esa automatización por mailera
+adentro del cluster.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/305-0
+00:37:52.266 --> 00:37:53.706
+<v Marcos Casco>Sí, claro que sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/306-0
+00:38:01.866 --> 00:38:04.586
+<v Norberto Nu&#241;ez>Ok, no sé,
+algunas cosas más al lado de ustedes.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/308-0
+00:38:04.906 --> 00:38:10.647
+<v Marcos Casco>De mi labra, eso el tema.
+A mí lo que me interesaba era el tema del</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/308-1
+00:38:10.647 --> 00:38:14.531
+<v Marcos Casco>o SRM para generar este tema del
+automatismo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/308-2
+00:38:14.531 --> 00:38:20.947
+<v Marcos Casco>ya que te calcule toda la ruta porque
+quieren tener una ruta de una hoja de</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/308-3
+00:38:20.947 --> 00:38:23.226
+<v Marcos Casco>ruta de trabajo, no sé qué.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/307-0
+00:38:23.066 --> 00:38:24.666
+<v Norberto Nu&#241;ez>Es para nosotros para cansar.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/312-0
+00:38:23.546 --> 00:38:30.160
+<v Marcos Casco>Y con ese no para nosotros dentro del GPS
+móvil, dentro del GPS de supervisores,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/309-0
+00:38:28.106 --> 00:38:28.826
+<v Norberto Nu&#241;ez>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/312-1
+00:38:30.160 --> 00:38:36.773
+<v Marcos Casco>ya vos con todos los tickets que tiene,
+pinchá en un usuario y ya te genera toda</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/310-0
+00:38:33.866 --> 00:38:35.466
+<v Norberto Nu&#241;ez>Le sugiera ya un.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/312-2
+00:38:36.773 --> 00:38:37.426
+<v Marcos Casco>la ruta.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/311-0
+00:38:37.626 --> 00:38:38.586
+<v Norberto Nu&#241;ez>Espectacular.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/313-0
+00:38:39.146 --> 00:38:41.106
+<v Marcos Casco>Sí, te genera toda la ruta.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/314-0
+00:38:39.706 --> 00:38:42.850
+<v Norberto Nu&#241;ez>Y eso,
+esa inteligencia es lo que logró</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/314-1
+00:38:42.850 --> 00:38:48.586
+<v Norberto Nu&#241;ez>Coca-Cola, pero hace décadas.
+¿Ustedes saben el ca el caso de Coca-Cola?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/316-0
+00:38:46.106 --> 00:38:49.418
+<v Marcos Casco>Sí, pero ellos no tenían,
+ellos antes no tenían muchas</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/316-1
+00:38:49.418 --> 00:38:51.946
+<v Marcos Casco>restricciones como nosotros tenemos ahora.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/319-0
+00:38:52.466 --> 00:38:56.158
+<v Norberto Nu&#241;ez>Sí, no,
+o sea que el logro de ellos es que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/315-0
+00:38:52.986 --> 00:38:53.266
+<v Elias Alfonzo>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/319-1
+00:38:56.158 --> 00:39:02.855
+<v Norberto Nu&#241;ez>hicieron todo esto antes de que exista el
+GPS, antes de que exista los mapas,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/317-0
+00:38:59.946 --> 00:39:01.786
+<v Marcos Casco>¿En serio, antes que exista la IA?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/319-2
+00:39:02.855 --> 00:39:09.466
+<v Norberto Nu&#241;ez>por ejemplo, ellos hace los años 70,
+80 ya duraron eso y sí, digamos que es.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/318-0
+00:39:06.266 --> 00:39:07.226
+<v Marcos Casco>¿En serio?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/320-0
+00:39:08.426 --> 00:39:11.626
+<v Marcos Casco>Hacer la hoja de ruta de sus repartidores,
+por decir.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/322-0
+00:39:10.506 --> 00:39:13.850
+<v Norberto Nu&#241;ez>Automatizar la hoja de ruta,
+sus repartidores.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/322-1
+00:39:13.850 --> 00:39:18.759
+<v Norberto Nu&#241;ez>Eso fue uno de esos grandes éxitos
+comerciales operativos, hablando,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/322-2
+00:39:18.759 --> 00:39:23.525
+<v Norberto Nu&#241;ez>hablando operativamente,
+porque es lo que le da esa competitividad</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/322-3
+00:39:23.525 --> 00:39:27.154
+<v Norberto Nu&#241;ez>en reducir el costo por transporte a su
+logística,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/322-4
+00:39:27.154 --> 00:39:30.426
+<v Norberto Nu&#241;ez>la eficiencia logística que se logró con
+eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/321-0
+00:39:27.226 --> 00:39:27.706
+<v Marcos Casco>Hmm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/323-0
+00:39:30.706 --> 00:39:34.026
+<v Norberto Nu&#241;ez>Lo que hizo fue un gran ahorro en
+transporte, digamos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/326-0
+00:39:36.946 --> 00:39:41.000
+<v Marcos Casco>Sí,
+miramos y nosotros ahora rompiéndonos el</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/324-0
+00:39:38.266 --> 00:39:38.746
+<v Norberto Nu&#241;ez>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/326-1
+00:39:41.000 --> 00:39:45.774
+<v Marcos Casco>coco para ver cómo podemos hacerlo
+primero, pero sí,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/328-0
+00:39:42.386 --> 00:39:47.565
+<v Norberto Nu&#241;ez>No, ahora ya esto es fácil, digamos,
+ahora ya tenemos, tenemos que tener GPS,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/326-2
+00:39:45.774 --> 00:39:48.386
+<v Marcos Casco>ahora le tenemos a la y a sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/328-1
+00:39:47.565 --> 00:39:52.346
+<v Norberto Nu&#241;ez>tener te te te calcula la distancia,
+la velocidad, no sé, tener la I A.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/325-0
+00:39:49.306 --> 00:39:49.586
+<v Elias Alfonzo>Te.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/327-0
+00:39:51.106 --> 00:39:52.106
+<v Marcos Casco>Una locura.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/329-0
+00:39:53.546 --> 00:39:54.306
+<v Norberto Nu&#241;ez>Hay una excusa.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/330-0
+00:39:53.546 --> 00:39:54.626
+<v Marcos Casco>Una locura.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/333-0
+00:39:56.426 --> 00:40:01.515
+<v Marcos Casco>Ahora el único tope que tenemos de
+seguridad que vos desarrollás todo,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/331-0
+00:40:00.946 --> 00:40:01.466
+<v Norberto Nu&#241;ez>So.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/333-1
+00:40:01.515 --> 00:40:06.746
+<v Marcos Casco>pero tenés que esperar 5 meses para que
+ellos te digan podés o no podés.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/332-0
+00:40:06.666 --> 00:40:07.546
+<v Elias Alfonzo>6 meses.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/334-0
+00:40:08.186 --> 00:40:12.139
+<v Marcos Casco>6 meses por ahí,
+se que ayer nos enteramos que no puede</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/334-1
+00:40:12.139 --> 00:40:17.927
+<v Marcos Casco>seguir haciendo el pase a producción de
+Tenvia Po porque no le está pillando a su</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/334-2
+00:40:17.927 --> 00:40:20.186
+<v Marcos Casco>y a cómo hacer el escaneo de la.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/335-0
+00:40:21.386 --> 00:40:22.266
+<v Marcos Casco>¿Quién los?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/336-0
+00:40:21.986 --> 00:40:24.386
+<v Norberto Nu&#241;ez>¿Y cómo están haciendo entonces?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/339-0
+00:40:25.186 --> 00:40:30.529
+<v Elias Alfonzo>Ahí con la y algo con una versión no
+explicó ahí que era tipo algo de GPT 5.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/337-0
+00:40:25.586 --> 00:40:26.146
+<v Marcos Casco>Porque ahora.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/338-0
+00:40:27.746 --> 00:40:28.226
+<v Marcos Casco>Hmm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/339-1
+00:40:30.529 --> 00:40:35.039
+<v Elias Alfonzo>5 y que sacaron ya esa versión y ahora
+está usando otra versión,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/339-2
+00:40:35.039 --> 00:40:38.786
+<v Elias Alfonzo>pero con que con esa no se entiende y que
+estaba ahí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/341-0
+00:40:37.586 --> 00:40:41.791
+<v Marcos Casco>Que la versión 6.
+1 es la que está ahora Elías,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/341-1
+00:40:41.791 --> 00:40:48.186
+<v Marcos Casco>que es la de Astra y ese es el que no le
+no le está pillando, qué locos.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/340-0
+00:40:42.706 --> 00:40:43.506
+<v Elias Alfonzo>Ah.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/344-0
+00:40:49.346 --> 00:40:52.623
+<v Marcos Casco>Yo lo que le dije es si a mí,
+yo desde el 2024 estaba,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/344-1
+00:40:52.623 --> 00:40:56.912
+<v Marcos Casco>estoy implementando todo esto porque pero
+no se pone a mirar uno a uno,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/344-2
+00:40:56.912 --> 00:40:57.746
+<v Marcos Casco>no va a tener.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/343-0
+00:40:58.786 --> 00:40:59.626
+<v Elias Alfonzo>Y sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/347-0
+00:41:00.706 --> 00:41:05.161
+<v Elias Alfonzo>Pero así como no ayudó a avanzar mucho lo
+que es también la guía verdad nosotros</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/347-1
+00:41:05.161 --> 00:41:09.561
+<v Elias Alfonzo>ellos también le sacan el punto fuerte
+verdad de cómo pueden avanzar y ahora sí</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/347-2
+00:41:09.561 --> 00:41:13.741
+<v Elias Alfonzo>vamos a controlar Ahora sí podemos
+controlar y venga todo vamos a controlar</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/347-3
+00:41:13.741 --> 00:41:18.196
+<v Elias Alfonzo>la dicen pero tampoco no le da el cuero
+ahora por la otra vez se quejaban porque</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/346-0
+00:41:15.666 --> 00:41:15.946
+<v Marcos Casco>Mhm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/347-4
+00:41:18.196 --> 00:41:19.186
+<v Elias Alfonzo>le consumían todos</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/349-0
+00:41:19.346 --> 00:41:22.486
+<v Elias Alfonzo>Toquen esto aquello era porque usan
+cuentas propias también,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/349-1
+00:41:22.486 --> 00:41:25.986
+<v Elias Alfonzo>no es que la empresa le da para que ellos
+puedan controlar eso ahí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/348-0
+00:41:23.626 --> 00:41:24.146
+<v Marcos Casco>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/350-0
+00:41:26.466 --> 00:41:29.735
+<v Norberto Nu&#241;ez>¿Eso me parece raro porque nosotros
+tenemos, o sea,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/350-1
+00:41:29.735 --> 00:41:34.826
+<v Norberto Nu&#241;ez>no sé hasta qué punto nosotros tenemos
+contrato con Microsoft para usar copilot,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/352-0
+00:41:33.426 --> 00:41:37.103
+<v Marcos Casco>O Pilo sí,
+pero no tenemos al nivel de lo que se</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/350-2
+00:41:34.826 --> 00:41:35.266
+<v Norberto Nu&#241;ez>verdad?</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/352-1
+00:41:37.103 --> 00:41:40.629
+<v Marcos Casco>necesita.
+Creo que no tenemos también para que</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/352-2
+00:41:40.629 --> 00:41:44.830
+<v Marcos Casco>metas ahí te va a liquidar el token de
+toda la empresa.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/352-3
+00:41:44.830 --> 00:41:47.306
+<v Marcos Casco>Yo creo consume mucho token este.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/351-0
+00:41:46.466 --> 00:41:46.986
+<v Norberto Nu&#241;ez>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/354-0
+00:41:48.306 --> 00:41:51.631
+<v Norberto Nu&#241;ez>Los que consumen mucho token son las
+ideas generativas.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/354-1
+00:41:51.631 --> 00:41:55.134
+<v Norberto Nu&#241;ez>Si quieres hacer imágenes,
+procesar imágenes y esas cosas.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/354-2
+00:41:55.134 --> 00:41:59.586
+<v Norberto Nu&#241;ez>Ahí lo que el cómputo es pesado, ¿verdad?
+Pero para código me parece raro.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/357-0
+00:41:57.106 --> 00:42:04.262
+<v Marcos Casco>No, el work, el work,
+el work y el code también te consumen</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/357-1
+00:42:04.262 --> 00:42:10.703
+<v Marcos Casco>mucho token.
+Depende de la del pienso que le das a tu</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/355-0
+00:42:05.426 --> 00:42:06.066
+<v Norberto Nu&#241;ez>No, mira.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/357-2
+00:42:10.703 --> 00:42:16.666
+<v Marcos Casco>a tu IA,
+a tu a tu consulta te consume muchísimo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/356-0
+00:42:14.866 --> 00:42:15.426
+<v Norberto Nu&#241;ez>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/360-0
+00:42:19.186 --> 00:42:23.675
+<v Marcos Casco>Se consumen mucho más ahora con esta
+versión que salió,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/358-0
+00:42:19.666 --> 00:42:19.986
+<v Norberto Nu&#241;ez>Eso.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/360-1
+00:42:23.675 --> 00:42:28.966
+<v Marcos Casco>que es la abstract de chat GPT,
+es la versión 6.1 que tiene Luna,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/359-0
+00:42:26.306 --> 00:42:26.626
+<v Norberto Nu&#241;ez>Mhm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/360-2
+00:42:28.966 --> 00:42:33.134
+<v Marcos Casco>Sol y Astract.
+Luna es el que te va a responder así</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/360-3
+00:42:33.134 --> 00:42:39.146
+<v Marcos Casco>preguntitas que le haces nomás.
+Sol ya empieza a hacer análisis de código.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/361-0
+00:42:39.266 --> 00:42:44.546
+<v Marcos Casco>Y Astra sí que es el que te analiza todo,
+te trae resultado la gran 7,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/361-1
+00:42:44.546 --> 00:42:50.271
+<v Marcos Casco>pero te consume mucho más los token,
+también te chupa todito así al toque te</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/361-2
+00:42:50.271 --> 00:42:50.866
+<v Marcos Casco>liquida.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/363-0
+00:42:51.906 --> 00:42:55.979
+<v Norberto Nu&#241;ez>Entonces no sé en qué quedamos,
+aquí veo tanta, tanta,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/362-0
+00:42:53.986 --> 00:42:56.066
+<v Marcos Casco>No, y eso por eso se están.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/363-1
+00:42:55.979 --> 00:42:58.866
+<v Norberto Nu&#241;ez>tanto bomba y platillos al final no te.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/364-0
+00:42:58.706 --> 00:43:03.045
+<v Marcos Casco>Te sale más caro muchas veces.
+Eso es lo que muchas empresas estuve.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/364-1
+00:43:03.045 --> 00:43:07.760
+<v Marcos Casco>Justamente estuve viendo, o sea,
+muchas empresas que desistieron de muchos</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/364-2
+00:43:07.760 --> 00:43:11.596
+<v Marcos Casco>de sus empleados porque la IA ya te viene
+a solucionar todo.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/364-3
+00:43:11.596 --> 00:43:16.563
+<v Marcos Casco>Le sale más caro pagar lo que es la IA
+que pagar a un empleado que se siente a</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/364-4
+00:43:16.563 --> 00:43:17.506
+<v Marcos Casco>hacer la burda.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/365-0
+00:43:19.026 --> 00:43:21.306
+<v Norberto Nu&#241;ez>Sí, lo que lo que tiene la IA es.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/366-0
+00:43:19.906 --> 00:43:21.666
+<v Elias Alfonzo>Que pague no mal empleado su.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/368-0
+00:43:22.506 --> 00:43:23.586
+<v Norberto Nu&#241;ez>Su obra es hombrera.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/367-0
+00:43:22.626 --> 00:43:23.426
+<v Elias Alfonzo>So, yeah.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/370-0
+00:43:25.906 --> 00:43:32.242
+<v Norberto Nu&#241;ez>Lo que digo nomás es que ponele que es
+útil si querés tener análisis técnicos</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/370-1
+00:43:32.242 --> 00:43:38.415
+<v Norberto Nu&#241;ez>infalibles, por decirte, ¿verdad?
+Porque se supone que tiene un pensamiento</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/370-2
+00:43:38.415 --> 00:43:43.207
+<v Norberto Nu&#241;ez>superior la IA, ¿verdad?
+Pero para la rutina del día y las</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/369-0
+00:43:41.026 --> 00:43:41.666
+<v Marcos Casco>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/370-3
+00:43:43.207 --> 00:43:47.106
+<v Norberto Nu&#241;ez>cuestiones operativas del ya no más,
+no sé, no.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/372-0
+00:43:48.866 --> 00:43:50.986
+<v Norberto Nu&#241;ez>No sé qué tanto conviene. hm.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/371-0
+00:43:49.026 --> 00:43:50.706
+<v Marcos Casco>Tanto darle.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/374-0
+00:43:52.546 --> 00:43:56.266
+<v Marcos Casco>Porque al final te sale caro,
+realmente sí te sale caro.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/373-0
+00:43:55.186 --> 00:43:56.066
+<v Norberto Nu&#241;ez>Es el tema.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/375-0
+00:43:57.186 --> 00:43:59.266
+<v Norberto Nu&#241;ez>Yendo el tema del número,
+siempre el problema.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/376-0
+00:44:01.346 --> 00:44:06.946
+<v Marcos Casco>El día, por ejemplo,
+van gasta 850 por ahí por y acá.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/377-0
+00:44:07.746 --> 00:44:08.786
+<v Norberto Nu&#241;ez>Hay que volume.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/378-0
+00:44:08.146 --> 00:44:09.386
+<v Elias Alfonzo>Y no es mentira.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/379-0
+00:44:12.466 --> 00:44:13.506
+<v Marcos Casco>Qué ladrón.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/381-0
+00:44:15.906 --> 00:44:20.706
+<v Marcos Casco>ahora sí le dejo pues tengo que cocinar
+ya llegaron hijos eso es la escuela</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/380-0
+00:44:20.706 --> 00:44:21.106
+<v Norberto Nu&#241;ez>This.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/383-0
+00:44:21.426 --> 00:44:25.186
+<v Elias Alfonzo>Qué nivel será, pasó, pasó, hombre.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/382-0
+00:44:22.546 --> 00:44:23.906
+<v Norberto Nu&#241;ez>Suerte éxito.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/389-0
+00:44:25.506 --> 00:44:33.026
+<v Norberto Nu&#241;ez>Yo también ponele más agua, dale, hijo,
+suerte, chao.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/384-0
+00:44:25.906 --> 00:44:26.586
+<v Marcos Casco>Ya está.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/388-0
+00:44:27.506 --> 00:44:32.021
+<v Marcos Casco>Le voy a ponerle,
+voy a echarle más agua al loco, ya está,</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/385-0
+00:44:30.226 --> 00:44:30.586
+<v Elias Alfonzo>Sí.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/388-1
+00:44:32.021 --> 00:44:32.786
+<v Marcos Casco>chao chao.</v>
+
+6f0e992b-2a64-4467-a8cb-e26e5f7cd035/387-0
+00:44:32.626 --> 00:44:33.266
+<v Elias Alfonzo>Put out.</v>
