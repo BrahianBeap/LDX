@@ -59,7 +59,132 @@ Ubicación en la PC del usuario: `C:\Users\alfonzel\Documents\certificado digita
 | Clave ↔ certificado | Hash de la clave pública idéntico en ambos → **coinciden** |
 | DNS | `oss.personal.com.py` resuelve a `10.143.11.8` (solo Franco; ver #1079305) |
 
-## Plan de instalación (🔴 no aplicado)
+## Instalación aplicada (2026-10-26, ~17:26-17:28 UTC)
+
+✅ Aplicada por Elías Alfonzo con Daniel Medina presente para probar Tembiapó.
+
+**Chequeos previos:** `lxc exec` respondió en los 3 gateways. Los archivos precargados estaban presentes y los 3 servían `AutoridadOSS`. Se guardó un baseline de rutas de PFR. **SMS real desde Tembiapó, ya con `ntf-ca.crt` y antes del cambio: llegó.**
+
+**Cambio en cada `LB.conf`** (PFR conserva sus fines de línea CRLF):
+
+```apache
+	SSLCipherSuite HIGH:!aNULL:!MD5:!RC4
+	SSLProtocol -all +TLSv1.2 +TLSv1.3
+	SSLCertificateFile      /etc/ssl/certs/oss.personal.com.py-20261022.fullchain.pem
+	SSLCertificateKeyFile   /etc/ssl/private/oss.personal.com.py-20261022.key
+```
+
+`SSLCACertificateFile /etc/ssl/certs/ca.crt` y los `SSLVerifyClient` no se tocaron: los clientes de `/ntf` se siguen validando contra `AutoridadOSS`.
+
+| Gateway | Backup (`/root/LB.conf.bak-20261026-cert`) | `LB.conf` nuevo | `configtest` / reload | Sirve |
+|---|---|---|---|---|
+| `PFR-GW-SRV` | `dee8de49…` | `caac1039…` | OK / `active` | Let's Encrypt YR1, vence 2027-01-20 |
+| `CAR-GW-SRV` | `2487c9c7…` | `6cfa868d…` | OK / `active` | Let's Encrypt YR1, vence 2027-01-20 |
+| `FDO-GW-SRV` | `9243b81b…` | `3bcbbdae…` | OK / `active` | Let's Encrypt YR1, vence 2027-01-20 |
+
+**Verificación posterior:**
+
+| Prueba | Resultado |
+|---|---|
+| `openssl s_client -verify_hostname oss.personal.com.py` contra las 3 IP | `Verify return code: 0 (ok)`, TLS 1.3 |
+| TLS 1.0 y 1.1 contra PFR | Rechazados |
+| `curl` sin `-k` a `https://oss.personal.com.py/kanboard/` y `/vulnapp/` | 302, `ssl_verify=0` |
+| `/ntf` desde la PC del operador (sin certificado de cliente) | Rechazado (sigue exigiendo certificado de cliente) |
+| Rutas de PFR antes/después (`rutas_kb.py`) | Sin diferencias |
+| Log de `FDO-GW-SRV` | Reload 17:27:37; `POST /ntf` desde `10.11.11.24` a las 17:27:52 → **200** |
+| SMS real desde Tembiapó | Ver confirmación de Daniel Medina |
+
+**Rollback** (por gateway):
+```bash
+lxc exec <GW> --project PRJ-OSS -n -- sh -c 'cat /root/LB.conf.bak-20261026-cert > /etc/apache2/sites-available/LB.conf && apache2ctl configtest && systemctl reload apache2' < /dev/null
+```
+
+**Observación:** `FDO-GW-SRV` registra `AH01909 ... server certificate does NOT include an ID which matches the server name` porque el vhost no declara `ServerName` y Apache usa `fdo-gw-srv.lxd`. Es solo un aviso. Se corrige con `ServerName oss.personal.com.py` en los 3 gateways en un próximo cambio.
+
+**Después del cambio:**
+- [x] Hallazgos informados como **RESUELTO** en el ticket 778 **#1083298** (2026-10-26 14:59), con la evidencia `evidencia_certificado_oss_20261026.txt` (salida de `openssl s_client` contra las 3 IP: cadena válida, TLS 1.3, TLS 1.0/1.1 rechazados).
+
+  | IP | Host (inventario) | ID Grafana | Hallazgo | Detectado |
+  |---|---|---|---|---|
+  | `10.143.11.8` | `fr-oss` | 41817 / 41818 | Certificado no confiable / CA no reconocida | 02/10/2026 |
+  | `192.168.91.117` | `car-oss` | 40608 / 40609 | Certificado no confiable / CA no reconocida | 05/09/2026 |
+  | `10.11.11.12` | `fdo-dns-lxd` | 41771 / 41772 | Certificado no confiable / CA no reconocida | 29/09/2026 |
+
+- [ ] Seguir #1083298 hasta el cierre y la baja en el próximo escaneo. 🟡 Si el escaneo es por IP, puede aparecer "nombre de host incorrecto" (Nessus 45411): el servicio se publica como `oss.personal.com.py`.
+- [ ] Cerrar la aceptación de riesgo del 16/10, haciendo referencia a #1083298.
+- [ ] Quitar `AutoridadOSS` de `ntf-ca.crt` en Tembiapó (opcional; hoy no molesta).
+- [x] Agregar `ServerName oss.personal.com.py` en los 3 gateways (hecho el 26/10 junto con las redirecciones, ver abajo).
+
+## Redirección al nombre y de HTTP a HTTPS (aplicada 2026-10-26, ~17:36-17:37 UTC)
+
+✅ Con OK del usuario.
+
+**Problema:** el certificado es válido solo para `oss.personal.com.py`. Hoy:
+- El puerto 80 de PFR redirigía a `https://10.143.11.8/`, la IP, así que cualquier acceso por `http://` terminaba en la advertencia de certificado.
+- CAR publicaba Kanboard por HTTP sin cifrar, hacia `PFR-KANBOARD-DR`, que está detenido.
+- FDO no redirigía el puerto 80.
+- Por `https://<IP>/` el navegador avisa que el nombre no coincide. Esa advertencia aparece **antes** de que el servidor pueda responder y no se puede evitar; solo se puede llevar al usuario al nombre después.
+
+**Clientes de máquina relevados antes del cambio (para excluirlos):**
+
+| Cliente | Ruta | Puerto | Método |
+|---|---|---|---|
+| Grafana `10.11.11.23` (`Grafana/13.1.0`) | `/loki/...` | 80 | `GET` |
+| `10.11.11.23` | `/supervisionge/...` | 443 (FDO) | `GET` |
+| Tembiapó `10.11.11.24` | `/ntf` | 443 (FDO) | `POST` |
+| Clientes de la API de Kanboard | `/jsonrpc.php`, `/kanboard/jsonrpc.php` | 443 (PFR) | `POST` |
+
+**Cambio en los 3 `LB.conf`** (backup `/root/LB.conf.bak-20261026-redir`; `a2enmod rewrite` en CAR y FDO):
+
+Puerto 80: se quitaron los `Redirect`/`ProxyPass` existentes, salvo el balanceador de Loki (PFR 1 línea, CAR 6, FDO 0), y se agregó:
+```apache
+    RedirectMatch 302 ^/(?!loki/)(.*)$ https://oss.personal.com.py/$1
+```
+
+Puerto 443, al inicio del `VirtualHost`:
+```apache
+    ServerName oss.personal.com.py
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} !^oss\.personal\.com\.py(:443)?$ [NC]
+    RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+    RewriteCond %{REQUEST_URI} !^/(ntf|loki|supervisionge|jsonrpc\.php|kanboard/jsonrpc\.php)
+    RewriteRule ^/(.*)$ https://oss.personal.com.py/$1 [R=302,L]
+```
+
+| Decisión | Motivo |
+|---|---|
+| Solo `GET`/`HEAD` | Un `POST` redirigido rompe a los clientes de API |
+| Excluir `/ntf`, `/loki`, `/supervisionge` y `jsonrpc` | Son clientes de máquina; algunos entran por IP |
+| 302 y no 301 | No queda cacheado en los navegadores si hay rollback; se puede pasar a 301 más adelante |
+| `ServerName oss.personal.com.py` | Las URL que arma Apache usan el nombre; además elimina el aviso `AH01909` |
+
+| Gateway | `LB.conf` nuevo (SHA-256) | Resultado |
+|---|---|---|
+| `PFR-GW-SRV` | `ab1dd91d…` | OK / `active` |
+| `CAR-GW-SRV` | `1d57afc0…` | OK / `active` |
+| `FDO-GW-SRV` | `a70840b6…` | OK / `active` |
+
+**Verificación:**
+
+| Pedido | Resultado |
+|---|---|
+| `http://10.143.11.8/kanboard/`, `http://oss.personal.com.py/` | 302 → `https://oss.personal.com.py/...` |
+| `http://oss.personal.com.py/kanboard/?controller=...&task_id=175` | 302 → `https://oss.personal.com.py/kanboard/?controller=...&task_id=175` (conserva la consulta) |
+| `https://10.143.11.8/kanboard/`, `https://10.143.11.8/` | 302 → `https://oss.personal.com.py/...` |
+| `http://192.168.91.117/`, `http://10.11.11.12/` | 302 → `https://oss.personal.com.py/` |
+| `https://oss.personal.com.py/kanboard/`, `/vulnapp/`, `/?controller=...` | Igual que antes |
+| `POST https://10.143.11.8/jsonrpc.php` | 200 (sin redirección) |
+| `http://10.143.11.8/loki/...`, `https://oss.personal.com.py/web.config` | 403 (sin redirección) |
+| FDO después de la recarga (17:37:29) | Grafana `/loki/loki` 200, `/loki/prometheus` 404 (igual que antes), `/supervisionge` 200, Tembiapó `/ntf` 200 |
+
+**Rollback** (por gateway):
+```bash
+lxc exec <GW> --project PRJ-OSS -n -- sh -c 'cat /root/LB.conf.bak-20261026-redir > /etc/apache2/sites-available/LB.conf && apache2ctl configtest && systemctl reload apache2' < /dev/null
+```
+
+**Pendiente opcional:** HSTS (`Header always set Strict-Transport-Security "max-age=300"`, y subir el valor después de unos días) para que el navegador use siempre HTTPS con el nombre.
+
+## Plan de instalación (✅ ejecutado el 2026-10-26, ver arriba)
 
 Orden pactado en [PENDIENTES.md](../../PENDIENTES.md#2-certificado-y-dns-orden-obligatorio).
 
@@ -172,7 +297,22 @@ curl -s -o /dev/null -w '%{http_code}\n' --cacert /etc/pki/tls/certs/ntf-ca.crt 
 
 > **Lección:** al concatenar PEM, no dar por hecho que cada archivo termina con salto de línea. Usar `{ cat a; echo; cat b; }`.
 
-Pendiente: desplegar los 3 `enviar_sms.php` con `CURLOPT_CAINFO` → `ntf-ca.crt` (commit en el repo de Tembiapó) y enviar un SMS real.
+#### Avance 2026-10-26: código de Tembiapó actualizado (Daniel Medina)
+
+El repo de Tembiapó en GitHub no coincide con producción (faltan `ingresos/libs` y `tcp/libs`, y hay cambios hechos directo en el servidor). Por eso el cambio se aplicó **en el servidor** y no desde un commit del repo. Fueron **6 lugares**, no los 3 del relevamiento inicial:
+
+| Archivo (`/var/www/html/tembiapo/page/`) | Línea | Valor |
+|---|---|---|
+| `ticket_ate/libs/enviar_sms.php` | 38 | `CURLOPT_CAINFO` → `ntf-ca.crt` |
+| `tcp/libs/enviar_sms.php` | 38 | `CURLOPT_CAINFO` → `ntf-ca.crt` |
+| `ingresos/libs/enviar_sms.php` | 53 | `CURLOPT_CAINFO` → `ntf-ca.crt` |
+| `viaticos/libs/enviar_sms.php` | 84 | `CURLOPT_CAINFO` → `ntf-ca.crt` |
+| `class/class_fs.php` | 27 | `'cainfo'` → `ntf-ca.crt` |
+| `class/class_ingreso.php` | 21 | `'cainfo'` → `ntf-ca.crt` |
+
+Verificado (solo lectura): ya no queda ninguna referencia a `tls/certs/ca.crt` en Tembiapó; `php -l` sin errores en los 6; dueños originales conservados; sin errores de SMS/cURL en los logs de Apache.
+
+🔴 Pendiente: un SMS real de prueba antes de la ventana. 🟡 Sincronizar el repo de Tembiapó con producción (tarea de Daniel; el commit `b232d9a` de la PC del usuario quedó sin push y no se usa).
 
 - **Por qué no se toca `ca.crt`:** puede tenerlo en uso otra configuración del servidor. Un archivo nuevo deja el cambio acotado a NTF.
 - **Por qué un archivo de transición:** con las dos CA, no hay que coordinar al minuto el cambio en los gateways con el de Tembiapó. Cuando el certificado de los 3 gateways sea el de Let's Encrypt, se puede quitar `AutoridadOSS` de `ntf-ca.crt`.
@@ -183,12 +323,12 @@ Pendiente: desplegar los 3 `enviar_sms.php` con `CURLOPT_CAINFO` → `ntf-ca.crt
 
 ## Renovación (riesgo nuevo)
 
-El certificado dura **90 días** y no hay renovación automática hacia los gateways. Ver [RIE-022](../../docs/11_Riesgos.md#rie-022--certificado-lets-encrypt-de-90-días-sin-renovación-automática). 🔴 Falta confirmar con Natalia Cardozo cómo y cuándo entrega Ciberseguridad el certificado renovado.
+El certificado dura **90 días** y no hay renovación automática hacia los gateways. Ver [RIE-022](../../docs/11_Riesgos.md#rie-022--certificado-lets-encrypt-de-90-días-sin-renovación-automática). ✅ Ciberseguridad **reabre el ticket de Jerure cada 3 meses** con el certificado renovado (confirmado por el usuario el 2026-10-26). Al llegar, se repite la precarga y el cambio de líneas de esta bitácora.
 
 ## Pendientes
 
 - [ ] Coordinar la ventana con Daniel Medina y Marcos Casco.
 - [ ] Instalar en los 3 gateways a la vez.
-- [ ] Preguntar a Natalia Cardozo por la renovación (¿la inicia Ciberseguridad?, ¿con cuánta anticipación?, ¿por qué canal llegan los archivos?).
+- [x] Renovación: Ciberseguridad reabre el ticket de Jerure cada 3 meses (confirmado por el usuario el 2026-10-26).
 - [ ] Definir dónde se guarda la clave privada fuera de la PC (¿PasswordSafe?).
 - [ ] El certificado solo cubre `oss.personal.com.py`. Un nombre propio de Fernando para Comap ([ADR-0009](../../docs/adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md)) necesitaría otro certificado o la próxima emisión con ese SAN.

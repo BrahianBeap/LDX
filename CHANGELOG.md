@@ -482,3 +482,37 @@ La plataforma está inventariada como aplicación 608 (707 resuelto el 2026-08-1
 
 **Resumen:**
 Natalia Cardozo cerró el ticket #1078719 el 2026-10-22 con un certificado Let's Encrypt para `oss.personal.com.py` (SAN incluido) que vence el 2027-01-20. La cadena valida y la clave privada corresponde al certificado. La instalación en los 3 gateways sigue pendiente de coordinar con Tembiapó (NTF por Fernando). En el mismo cambio se reemplaza la línea de cifrados heredada. Como el certificado dura 90 días, se registró el riesgo de vencimiento sin renovación automática.
+
+### 2026-10-26 (vigesimoquinta entrada)
+
+**Fuente:** Ventana de cambio aplicada en vivo (certificado de los gateways), con Daniel Medina (Tembiapó) presente; relevamiento y ajuste del cliente Tembiapó.
+
+**Documentos actualizados:**
+- `laboratorio/2026-10-26_certificado-lets-encrypt/README.md`: lado cliente Tembiapó (CA fijada; `ntf-ca.crt`; cambio de Daniel Medina en 6 lugares), precarga en los 3 gateways, instalación aplicada con verificación y rollback
+- `docs/11_Riesgos.md`: avance de RIE-019 (certificado instalado)
+- `PENDIENTES.md`: pasos 2 a 4 de "Certificado y DNS" completados; 778 listo para cerrar
+
+**Resumen:**
+Tembiapó validaba NTF solo contra la CA interna, así que se creó en su servidor `ntf-ca.crt` (AutoridadOSS + ISRG Root X1) y Daniel Medina apuntó a ese archivo los 6 lugares que envían SMS. Después se instaló el certificado Let's Encrypt en `PFR-GW-SRV`, `CAR-GW-SRV` y `FDO-GW-SRV`, y en el mismo cambio se dejaron solo TLS 1.2/1.3 y cifrados fuertes. Las 3 IP validan el certificado y las rutas de PFR quedaron sin cambios. Tembiapó siguió enviando SMS (POST /ntf 200 a los 15 segundos del reload en Fernando).
+
+### 2026-10-26 (vigesimosexta entrada)
+
+**Fuente:** Cambio aplicado en vivo en los 3 gateways, a pedido del usuario.
+
+**Documentos actualizados:**
+- `laboratorio/2026-10-26_certificado-lets-encrypt/README.md`: redirección de HTTP a HTTPS y del acceso por IP al nombre `oss.personal.com.py`, con los clientes de máquina excluidos, la verificación y el rollback
+
+**Resumen:**
+Con el certificado nuevo, el acceso por IP muestra una advertencia, y el puerto 80 de PFR redirigía justamente a la IP. Ahora, en los 3 gateways, el puerto 80 lleva todo a `https://oss.personal.com.py/` salvo Loki. En el 443, los navegadores (`GET`/`HEAD`) que entran por IP se redirigen al nombre, salvo `/ntf`, `/loki`, `/supervisionge` y la API de Kanboard. De paso, CAR dejó de publicar Kanboard por HTTP sin cifrar. Grafana, Comap y Tembiapó siguen recibiendo los mismos códigos que antes.
+
+### 2026-10-26 (vigesimoséptima entrada)
+
+**Fuente:** Ticket de Jerure cargado por el usuario (778 #1083298) y exportes de vulnerabilidades de Grafana de los 3 gateways.
+
+**Documentos actualizados:**
+- `PENDIENTES.md`: ticket #1083298 para seguimiento; la aceptación de riesgo del 16/10 queda superada
+- `laboratorio/2026-10-26_certificado-lets-encrypt/README.md`: tabla de los 6 hallazgos y la evidencia adjunta
+- `docs/11_Riesgos.md`: avance de RIE-019
+
+**Resumen:**
+Los hallazgos de certificado no confiable y CA no reconocida de `fr-oss`, `car-oss` y `fdo-dns-lxd` (IDs de Grafana 41817, 41818, 40608, 40609, 41771 y 41772) se informaron como resueltos, con la salida de `openssl` contra las 3 IP como evidencia. Queda que Seguridad cierre el ticket y que el próximo escaneo los dé de baja.
