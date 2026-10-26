@@ -516,3 +516,45 @@ Con el certificado nuevo, el acceso por IP muestra una advertencia, y el puerto 
 
 **Resumen:**
 Los hallazgos de certificado no confiable y CA no reconocida de `fr-oss`, `car-oss` y `fdo-dns-lxd` (IDs de Grafana 41817, 41818, 40608, 40609, 41771 y 41772) se informaron como resueltos, con la salida de `openssl` contra las 3 IP como evidencia. Queda que Seguridad cierre el ticket y que el próximo escaneo los dé de baja.
+
+### 2026-10-26 (vigesimoctava entrada)
+
+**Fuente:** Implementación a pedido del usuario.
+
+**Documentos creados:**
+- `proyectos/portal-oss/` (`src/index.html`, `README.md`, `CHANGELOG.md`): portal de la raíz de `oss.personal.com.py` con Kanboard y VulnApp NG
+
+**Documentos actualizados:**
+- `PENDIENTES.md`: portal publicado; push del 26/10 hecho
+
+**Resumen:**
+La raíz que quedó libre al mover Kanboard a `/kanboard/` ahora muestra el Portal OSS: una página estática sin recursos externos que lista las dos aplicaciones activas y propias de la plataforma LXD. Se publicó en `/var/www/html/index.html` de los 3 gateways, reemplazando la página por defecto de Apache (backup en `/root/index.html.bak-20261026`). Responde 200 en `https://oss.personal.com.py/`.
+
+### 2026-10-26 (vigesimonovena entrada)
+
+**Fuente:** Cambio aplicado a pedido del usuario y ticket de Jerure 452 #1083324.
+
+**Documentos actualizados:**
+- `laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md`: `/adm/` abierto a cualquier IP (se quitó el `Require ip 10.150.60.85` en `PFR-GW-SRV`), con el riesgo del ingreso de desarrollo y el rollback
+- `docs/18_Inventario_Ciberseguridad.md`: servicio `ADM-TECH-OSS` (#1083324) y sus pendientes
+- `PENDIENTES.md`: advertencia del ingreso de desarrollo expuesto; #1083324
+
+**Resumen:**
+El entorno de desarrollo de ADM-TECH en LXD quedó accesible desde cualquier IP, por decisión del responsable (los datos no son oficiales). El ingreso de desarrollo sigue activo y hay que quitarlo antes de usar datos oficiales. El servicio se dio de alta como `ADM-TECH-OSS`, asociado a la aplicación 608 y al activo `fr-oss`, igual que Kanboard y VulnApp NG.
+
+### 2026-10-26 (trigésima entrada)
+
+**Fuente:** Pedido de rediseño del usuario.
+
+**Documentos actualizados:**
+- `proyectos/portal-oss/`: versión 2.0.0 (concepto "la línea OSS", datos en `src/apps.json`, generación con `build.py`), publicada como vista previa en `https://oss.personal.com.py/portal-preview/` (solo `PFR-GW-SRV`)
+
+**Resumen:**
+Se rediseñó el portal para que cualquier persona entienda en la primera pantalla dónde está, qué herramienta necesita, cuál está en producción y cuál en pruebas, y cómo ingresar. Los datos de ingreso de cada aplicación se verificaron contra la aplicación real. El portal anterior sigue en la raíz hasta la aprobación.
+
+### 2026-10-26 (trigésima primera entrada)
+
+**Fuente:** Aprobación del usuario.
+
+**Resumen:**
+El Portal OSS 2.0.0 pasó de la vista previa a la raíz `https://oss.personal.com.py/` en los 3 gateways (backup de la versión anterior en `/root/index.html.bak-202610261858`), y se retiró `/portal-preview/`. Los enlaces a Kanboard, VulnApp NG y ADM-TECH se verificaron después del cambio.

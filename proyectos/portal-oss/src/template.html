@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal OSS</title>
+<meta name="description" content="Acceso a las herramientas del área de Sistemas de Soporte a la Operación (OSS).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a6670'/%3E%3Cpath d='M9 7v18M9 11h8M9 21h8' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='21' cy='11' r='3.2' fill='%23fff'/%3E%3Ccircle cx='21' cy='21' r='3.2' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+/* Concepto "la línea OSS": una sola línea conecta el área con cada herramienta.
+   Escritorio: introducción (izq.) + línea de herramientas (der.) en la primera pantalla;
+   capacidades del área más abajo. Teléfono: una columna, herramientas antes que los consejos. */
+:root {
+  color-scheme: light;
+  --bg: #eef2f1;
+  --surface: #ffffff;
+  --ink: #0c1a1f;
+  --muted: #4a5d64;
+  --line: #c9d5d8;
+  --rail: #9fb4b9;
+  --accent: #0a6670;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcecec;
+  --ok: #157347;
+  --dev: #9a5800;
+  --dev-soft: #fbf0dc;
+  --display: "Bahnschrift", "DIN Alternate", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --text: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "SFMono-Regular", Menlo, monospace;
+  --node: 14px;
+  --rail-x: 6px;
+  --rail-pad: 40px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #0b1417;
+    --surface: #111e22;
+    --ink: #e3ecee;
+    --muted: #9ab0b6;
+    --line: #23373d;
+    --rail: #3b5a62;
+    --accent: #5cc3cc;
+    --accent-ink: #04262a;
+    --accent-soft: #12343a;
+    --ok: #5fd08f;
+    --dev: #f1b85a;
+    --dev-soft: #2e2412;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 var(--text);
+  padding-inline: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+.cont { max-width: 1180px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.saltar { position: absolute; left: 16px; top: -60px; background: var(--accent); color: var(--accent-ink); padding: 8px 14px; border-radius: 6px; font-weight: 600; z-index: 2; }
+.saltar:focus { top: 12px; }
+
+/* Barra superior */
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+.marca svg { width: 34px; height: 34px; flex: none; }
+.sigla { font-family: var(--display); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.04em; }
+.area { color: var(--muted); font-size: 0.92rem; padding-left: 12px; border-left: 1px solid var(--line); }
+.dominio { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+
+/* Primera pantalla */
+.portada {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-areas: "intro herr" "consejos herr";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(32px, 6vw, 88px);
+  row-gap: 32px;
+  padding-block: clamp(32px, 6vh, 64px) 56px;
+}
+.intro { grid-area: intro; display: grid; gap: 18px; align-content: start; }
+.kicker { font-family: var(--display); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 600; letter-spacing: -0.015em; max-width: 14ch; }
+.lead { font-size: 1.08rem; color: var(--muted); max-width: 44ch; }
+.lead strong { color: var(--ink); font-weight: 600; }
+
+.consejos { grid-area: consejos; align-self: start; list-style: none; margin: 0; padding: 20px 0 0; border-top: 1px solid var(--line); display: grid; gap: 14px; max-width: 46ch; }
+.consejos li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; font-size: 0.95rem; }
+.consejos svg { width: 18px; height: 18px; margin-top: 3px; color: var(--accent); }
+.consejos code { font-family: var(--mono); font-size: 0.88em; background: var(--accent-soft); padding: 1px 6px; border-radius: 4px; }
+
+/* Herramientas: la línea */
+.herramientas { grid-area: herr; display: grid; gap: 18px; align-content: start; }
+.herr-cabeza { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.herr-cabeza h2 { font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+.cuenta { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+
+.linea { list-style: none; margin: 0; padding: 0 0 0 var(--rail-pad); position: relative; display: grid; gap: 22px; }
+.linea::before { content: ""; position: absolute; left: var(--rail-x); top: 10px; bottom: 34px; width: 2px; background: var(--rail); border-radius: 2px; }
+.grupo { display: grid; gap: 12px; }
+.grupo-titulo { position: relative; font-size: 0.86rem; color: var(--muted); }
+.grupo-titulo span { font-family: var(--display); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-right: 6px; }
+.grupo-titulo::before { content: ""; position: absolute; left: calc(var(--rail-x) + 1px - var(--rail-pad) - 5px); top: 0.62em; width: 12px; height: 2px; background: var(--rail); }
+
+.apps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.app {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px 28px;
+  align-items: center;
+  padding: 20px 22px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+/* tramo y parada sobre la línea */
+.app::before {
+  content: ""; position: absolute;
+  left: calc(var(--rail-x) + 1px - var(--rail-pad));
+  top: 30px; width: calc(var(--rail-pad) - var(--rail-x) - 1px); height: 2px; background: var(--rail);
+  transition: background-color .15s ease;
+}
+.app::after {
+  content: ""; position: absolute;
+  left: calc(var(--rail-x) + 1px - var(--rail-pad) - var(--node) / 2);
+  top: calc(31px - var(--node) / 2);
+  width: var(--node); height: var(--node); border-radius: 50%;
+  box-sizing: border-box;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.app--produccion::after { background: var(--ok); box-shadow: 0 0 0 4px var(--bg); }
+.app--desarrollo::after { background: var(--bg); border: 2.5px solid var(--dev); box-shadow: 0 0 0 4px var(--bg); }
+.app--desarrollo { background: transparent; border-style: dashed; }
+.app:hover, .app:focus-within { border-color: var(--accent); }
+.app:hover::before, .app:focus-within::before { background: var(--accent); }
+.app:hover::after, .app:focus-within::after { transform: scale(1.25); }
+
+.app-cuerpo { display: grid; gap: 8px; min-width: 0; }
+.app-titulo { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; }
+.app h3 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.005em; }
+.app--desarrollo h3 { font-size: 1.3rem; }
+.estado { display: inline-flex; align-items: center; gap: 7px; font-size: 0.8rem; font-weight: 600; }
+.estado-marca { width: 9px; height: 9px; border-radius: 50%; box-sizing: border-box; }
+.estado--produccion { color: var(--ok); }
+.estado--produccion .estado-marca { background: var(--ok); }
+.estado--desarrollo { color: var(--dev); }
+.estado--desarrollo .estado-marca { border: 2px solid var(--dev); }
+.app-desc { max-width: 52ch; }
+.app-aviso { font-size: 0.9rem; color: var(--ink); background: var(--dev-soft); border-left: 3px solid var(--dev); padding: 6px 10px; border-radius: 0 6px 6px 0; max-width: 56ch; }
+.app-ingreso { font-size: 0.88rem; color: var(--muted); }
+.rotulo { font-family: var(--display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-right: 4px; }
+
+.app-accion { display: grid; justify-items: end; gap: 8px; }
+.abrir {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 600; text-decoration: none; white-space: nowrap;
+  padding: 10px 16px; border-radius: 7px;
+  background: var(--accent); color: var(--accent-ink); border: 2px solid var(--accent);
+  transition: filter .15s ease;
+}
+.app--desarrollo .abrir { background: transparent; color: var(--accent); }
+.abrir:hover { filter: brightness(1.1); }
+.app--desarrollo .abrir:hover { background: var(--accent-soft); filter: none; }
+.flecha { width: 16px; height: 2px; background: currentColor; position: relative; transition: transform .15s ease; }
+.flecha::after { content: ""; position: absolute; right: -1px; top: -4px; width: 8px; height: 8px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; transform: rotate(45deg); }
+.abrir:hover .flecha, .abrir:focus-visible .flecha { transform: translateX(3px); }
+.abrir.abriendo { pointer-events: none; opacity: 0.75; }
+.ruta { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+
+.leyenda { padding-left: var(--rail-pad); font-size: 0.86rem; color: var(--muted); display: grid; gap: 4px; max-width: 70ch; }
+.leyenda strong { color: var(--ink); font-weight: 600; }
+
+/* Capacidades del área */
+.capacidades { border-top: 1px solid var(--line); padding-block: 48px 40px; display: grid; gap: 28px; }
+.cap-intro { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; }
+.cap-intro h2 { font-size: 1.6rem; font-weight: 600; }
+.cap-intro p { color: var(--muted); max-width: 60ch; }
+.cap-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px 28px; }
+.cap-lista li { display: grid; gap: 6px; align-content: start; padding-top: 12px; border-top: 2px solid var(--line); }
+.cap-lista h3 { font-size: 1.02rem; font-weight: 600; }
+.cap-lista p { font-size: 0.92rem; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); padding-block: 20px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.85rem; color: var(--muted); }
+
+/* Tablet y teléfono */
+@media (max-width: 960px) {
+  .portada { grid-template-columns: 1fr; grid-template-areas: "intro" "herr" "consejos"; padding-block: 28px 40px; }
+  h1 { max-width: 18ch; }
+  .cap-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  :root { --rail-pad: 30px; }
+  .area { display: none; }
+  .app { grid-template-columns: 1fr; padding: 18px; }
+  .app-accion { justify-items: start; }
+  .cap-lista { grid-template-columns: 1fr; }
+  .app h3 { font-size: 1.3rem; }
+  .dominio { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="saltar" href="#herramientas">Ir a las herramientas</a>
+<div class="cont">
+  <header class="barra">
+    <a class="marca" href="/" aria-label="Portal OSS, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="var(--accent)"/><path d="M9 7v18M9 11h8M9 21h8" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round"/><circle cx="21" cy="11" r="3.2" fill="var(--accent-ink)"/><circle cx="21" cy="21" r="3.2" fill="none" stroke="var(--accent-ink)" stroke-width="2"/></svg>
+      <span class="sigla">OSS</span>
+      <span class="area">Sistemas de Soporte a la Operación</span>
+    </a>
+    <span class="dominio">oss.personal.com.py</span>
+  </header>
+
+  <main>
+    <div class="portada">
+      <div class="intro">
+        <p class="kicker">Portal de herramientas</p>
+        <h1>Las herramientas de OSS, en un solo lugar</h1>
+        <p class="lead">Desde acá entrás a las aplicaciones que el área de <strong>Sistemas de Soporte a la Operación</strong> desarrolla y mantiene para Tecnología. Elegí una herramienta y entrá con su propio usuario.</p>
+      </div>
+
+      <ul class="consejos" aria-label="Antes de entrar">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg><span>Entrá siempre por <code>oss.personal.com.py</code>. Por dirección IP el navegador muestra un aviso de seguridad.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Cada herramienta tiene su propio ingreso: el usuario de una no sirve para otra.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke-dasharray="3 3"/></svg><span>Las herramientas <strong>en desarrollo</strong> son para pruebas: pueden cambiar o tener datos que no son oficiales.</span></li>
+      </ul>
+
+      <section class="herramientas" id="herramientas" aria-labelledby="t-herr" tabindex="-1">
+        <div class="herr-cabeza">
+          <h2 id="t-herr">Herramientas</h2>
+          <span class="cuenta"><!--CANTIDAD--> publicadas</span>
+        </div>
+        <ol class="linea">
+<!--APPS-->
+        </ol>
+        <div class="leyenda">
+          <p><strong>En producción:</strong> lista para el trabajo diario. <strong>En desarrollo:</strong> en etapa de pruebas.</p>
+          <p>El estado indica la etapa de cada herramienta, no si está funcionando en este momento.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="capacidades" aria-labelledby="t-cap">
+      <div class="cap-intro">
+        <h2 id="t-cap">Qué hace OSS</h2>
+        <p>Integramos sistemas, desarrollamos herramientas y mejoramos la eficiencia operativa de Tecnología.</p>
+      </div>
+      <ul class="cap-lista">
+        <li><h3>Monitoreo</h3><p>Seguimos redes y servicios para detectar problemas a tiempo y ayudar en el diagnóstico.</p></li>
+        <li><h3>Datos y tableros</h3><p>Reunimos información en dashboards y análisis para decidir con datos.</p></li>
+        <li><h3>Automatización</h3><p>Automatizamos procesos y tareas repetitivas para que el equipo gane tiempo.</p></li>
+        <li><h3>Aplicaciones</h3><p>Desarrollamos, integramos y hacemos evolucionar las herramientas de Tecnología.</p></li>
+        <li><h3>Plataformas</h3><p>Administramos servidores y entornos virtualizados, cuidando disponibilidad, seguridad y recursos.</p></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <span>OSS · Sistemas de Soporte a la Operación · Tecnología</span>
+    <span>Herramientas alojadas en la plataforma LXD de OSS (Franco, Carpinelli y Fernando)</span>
+  </footer>
+</div>
+<script>
+// Confirma el clic mientras carga la herramienta; se restablece si el usuario vuelve atrás.
+document.querySelectorAll('.abrir').forEach(function (a) {
+  a.addEventListener('click', function (ev) {
+    if (ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.button !== 0) return;
+    a.dataset.texto = a.firstChild.nodeValue;
+    a.firstChild.nodeValue = 'Abriendo ' + a.dataset.nombre + '…';
+    a.classList.add('abriendo');
+  });
+});
+window.addEventListener('pageshow', function () {
+  document.querySelectorAll('.abrir.abriendo').forEach(function (a) {
+    a.firstChild.nodeValue = a.dataset.texto;
+    a.classList.remove('abriendo');
+  });
+});
+</script>
+</body>
+</html>

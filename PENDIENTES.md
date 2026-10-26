@@ -6,7 +6,7 @@
 
 ## 0. Primero, al retomar
 
-- [ ] **Push** de los commits locales (`b773dff`, `e545b5f`, `bbc8c39` del 26/10) y commit de lo posterior (ventana del certificado y redirecciones).
+- [x] **Push** de los commits del 26/10 (`b773dff`, `e545b5f`, `bbc8c39`, `7aeb757`) hecho el 26/10.
 - [x] **Copiar las 2 transcripciones** de Descargas a `reunion/` con los nombres registrados en [`reunion/README.md`](reunion/README.md) (copiadas el 26/10, hash verificado).
 - [ ] Revisar el estado de los tickets Jerure abiertos (tabla de la sección 1).
 
@@ -19,7 +19,7 @@
 | #1079305 | 741 DNS `oss.personal.com.py` | 🟡 Cargada solo `10.143.11.8` (Abel) | Pedir `192.168.91.117` y `10.11.11.12` **recién después de la Etapa 2** |
 | #1083298 | 778 Gestión de vulnerabilidades: hallazgos de certificado de los 3 gateways, **RESUELTO** (IDs Grafana 41817, 41818 `fr-oss`; 40608, 40609 `car-oss`; 41771, 41772 `fdo-dns-lxd`) | 🟡 Abierto 26/10 14:59 | Seguir hasta que Seguridad lo cierre y el próximo escaneo los dé de baja. Si aparece "nombre de host incorrecto" (escaneo por IP), responder que el servicio se publica como `oss.personal.com.py`. Evidencia: `evidencia_certificado_oss_20261026.txt` |
 | Gestión de vulnerabilidades (778), aceptación del 16/10 | Aceptación de riesgo de certificados | 🟡 Revisión al 16/11/2026 | Queda superada por #1083298: cerrarla con esa referencia. LXD (8443/8444/8555): aceptación aparte, revisión semestral |
-| #1083088, #1083104 | 452 Alta de servicios `Kanboard-OSS` y `Vulnapp-OSS` | 🟡 Pendiente de aprobación / Abierto (26/10) | Correcciones pendientes (descripción de VulnApp, administrador de accesos, tipo y permiso de Kanboard): ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) |
+| #1083088, #1083104, #1083324 | 452 Alta de servicios `Kanboard-OSS`, `Vulnapp-OSS` y `ADM-TECH-OSS` | 🟡 Pendiente de aprobación / Abierto (26/10) | Correcciones pendientes (descripción de VulnApp, administrador de accesos, tipo y permiso de Kanboard): ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) |
 | #1083155 | Firewall VulnApp NG → API SDI `10.150.58.116:443` (origen: IP de gestión de los 3 hosts) | 🟡 Abierto 26/10 | Cuando lo aprueben, repetir la prueba de `/health` desde `PFR-VULNAPP-APP` e instalar el servicio de carga ([RIE-015](docs/11_Riesgos.md)). **Vence 31/05/2027**: pedir renovación antes |
 | #1075028 | Acceso BD Oxígeno | ✅ Habilitado 14/10 | — |
 | #1076134 | 939 IP de servicio al activo `fr-oss` | ✅ Resuelto 16/10 | — |
@@ -59,7 +59,7 @@
 
 ## 4b. Kanboard en `/kanboard/` y portal
 
-- [ ] **Portal de aplicaciones** en la raíz (`/var/www/html/index.html` de los gateways): **Kanboard y VulnApp NG** (las activas y propias de LXD, definido por el usuario el 26/10) ([bitácora](laboratorio/2026-10-26_kanboard-subruta/README.md)).
+- [x] **Portal de aplicaciones** en la raíz (`/var/www/html/index.html` de los gateways): **Kanboard y VulnApp NG** (las activas y propias de LXD). ✅ Publicado el 26/10 en los 3 gateways; código en [`proyectos/portal-oss/`](proyectos/portal-oss/) ([bitácora](laboratorio/2026-10-26_kanboard-subruta/README.md)).
 - [ ] Cargar en Kanboard la URL de la aplicación `https://oss.personal.com.py/kanboard/` (hoy vacía), para que los enlaces de correo y Telegram usen el nombre.
 - [ ] Actualizar la colección de Postman de [`recursos/kanboard-api/`](recursos/kanboard-api/) a `/kanboard/jsonrpc.php`, y avisar a los clientes de la API; después retirar el `ProxyPass /jsonrpc.php` temporal.
 - [ ] Al actualizar Kanboard de versión: volver a agregar `RewriteCond %{REQUEST_FILENAME} !-d` en su `.htaccess`.
@@ -72,6 +72,7 @@
   - [ ] **Correo saliente:** antes de pedir un servidor nuevo, preguntarle a Norberto si **`CAR-SystemSMTP`** (Postfix ya existente en `car.1`, `192.168.0.16`) puede hacer de relay de salida para ADM-TECH. Si no, pedir el servidor nuevo (relay SMTP autenticado con TLS, saliendo por el relay de Seguridad). ADM-TECH pasa a enviar sus propios correos (hoy lo hace un cron de Apache en tec-calidad05).
   - [x] ~~Fase 3: entorno de desarrollo~~ — listo el 25/10 ([bitácora](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md)).
   - [ ] **Probar ADM-TECH en `https://10.143.11.8/adm/`** (login usuario/clave) y revisar los 11 commits de `feature/php85` (worktree `adm-tech-php85`, sin push; sale de `fix/seguridad-tanda2`, no de `master`).
+  - [ ] ⚠️ **`/adm/` abierto a cualquier IP desde el 26/10 con el ingreso de desarrollo activo** (decisión del usuario). Antes de usar datos oficiales o del pase: quitar las `SetEnv ADM_*` del vhost `adm-dev.conf` ([bitácora](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#acceso-abierto-a-cualquier-ip-2026-10-26)).
   - [ ] Pendiente del refactor: Composer y actualización de librerías (confirmar si se completó), PHPCompatibility/PHPStan en limpio.
   - [ ] Confirmar que ningún proceso externo carga los datos de SAP (el usuario cree que no; serían cargas manuales desde la app).
   - [ ] Fase 3: entorno de desarrollo (PHP 8.5 + PG 18). Fase 4: rama `feature/php85`.

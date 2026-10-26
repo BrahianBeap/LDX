@@ -1,0 +1,29 @@
+{
+  "_ayuda": "Una entrada por aplicación. estado: 'produccion' o 'desarrollo'. aviso es opcional. Después de editar: python -I build.py",
+  "apps": [
+    {
+      "nombre": "Kanboard",
+      "ruta": "/kanboard/",
+      "estado": "produccion",
+      "que_permite": "Organizá las tareas y proyectos del equipo en tableros, con subtareas, calendario y carga de trabajo por persona.",
+      "ingreso": "Usuario y contraseña de Kanboard.",
+      "aviso": ""
+    },
+    {
+      "nombre": "Vulnapp",
+      "ruta": "/vulnapp/",
+      "estado": "desarrollo",
+      "que_permite": "Consultá el inventario de vulnerabilidades de los activos del área y seguí su tratamiento.",
+      "ingreso": "Usuario y contraseña de Vulnapp.",
+      "aviso": "Todavía no se actualiza automáticamente desde Ciberseguridad (SDI)."
+    },
+    {
+      "nombre": "ADM-TECH",
+      "ruta": "/adm/",
+      "estado": "desarrollo",
+      "que_permite": "Gestioná reservas y salidas de depósito, con seguimiento de los MIGO de SAP.",
+      "ingreso": "Ingreso de prueba. La cuenta corporativa se habilita al pasar a producción.",
+      "aviso": "Versión nueva en prueba, con datos no oficiales: no la uses para trámites ni decisiones."
+    }
+  ]
+}

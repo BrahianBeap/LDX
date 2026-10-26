@@ -15,13 +15,14 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Aplicación (707) | #1047036 | `PLATAFORMA-LXD-OSS` (aplicación **608**, PROD) | ✅ Resuelto | — |
 | Servicio (452) | #1083088 | `Kanboard-OSS` | 🟡 Pendiente de aprobación | `https://oss.personal.com.py/kanboard/` |
 | Servicio (452) | #1083104 | `Vulnapp-OSS` (VulnApp NG) | 🟡 Abierto | `https://oss.personal.com.py/vulnapp/` |
+| Servicio (452) | #1083324 | `ADM-TECH-OSS` (entorno de desarrollo) | 🟡 Abierto | `https://oss.personal.com.py/adm/` |
 
 ```
  Aplicación 608  PLATAFORMA-LXD-OSS  (707 #1047036)
         │
         ├── Servicio Kanboard-OSS  (452 #1083088)  ─┐
-        │                                            ├─ host: activo 10041 fr-oss (10.143.11.8)
-        └── Servicio Vulnapp-OSS   (452 #1083104)  ─┘     = gateway PFR-GW-SRV
+        ├── Servicio Vulnapp-OSS   (452 #1083104)  ─┼─ host: activo 10041 fr-oss (10.143.11.8)
+        └── Servicio ADM-TECH-OSS  (452 #1083324)  ─┘     = gateway PFR-GW-SRV
 ```
 
 ---
@@ -104,6 +105,39 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 
 ---
 
+## Servicio: ADM-TECH-OSS (452, ticket #1083324)
+
+| Campo | Valor |
+|---|---|
+| Creado | 2026-10-26 15:28 |
+| Estado | Abierto |
+| Finalizado | — |
+| Tipo | FRONTEND |
+| URL | `https://oss.personal.com.py/adm/` |
+| Aplicación | 608 `PLATAFORMA-LXD-OSS` |
+| BPO | `alfonzel` |
+| Soporte | Elias Alfonzo (`alfonzel`), 0972768056, elias.alfonzo@personal.com.py |
+| Host | Activo **10041**, `fr-oss` (`10.143.11.8`) |
+| Puertos | `443/tcp` https; `80/tcp` http (redirige a https) |
+| Criticidad | Alta |
+| Permiso | ActiveDirectory |
+| Administrador de accesos | OSS |
+
+**Descripción registrada:** ADM-TECH modernizado (PHP 8.5 y PostgreSQL 18) que reemplazará al de `tec-calidad05`. Hoy es un entorno de desarrollo y prueba, con copia de los datos de producción y sin envío de correos. Se publica por `PFR-GW-SRV` y corre en `DEV-ADMTECH-APP` (`192.168.0.19`, Apache y PHP 8.5) y `DEV-ADMTECH-DB` (`192.168.0.18`, PostgreSQL 18, solo accesible desde la aplicación). Autenticación por OAuth de SDI con grupos de AD; la URL de retorno está pendiente (ticket 623).
+
+**Endpoints declarados:**
+
+| Método | Ruta | Uso |
+|---|---|---|
+| `GET` | `/adm/` | Pantalla de inicio de sesión (redirige al OAuth de SDI) |
+| `GET` | `/adm/index.php?code=...` | Retorno del OAuth de SDI |
+| `GET` | `/adm/sing-in-backend.php` | Validación de grupos de AD y apertura de sesión |
+| `GET` | `/adm/main.php` | Aplicación (requiere sesión) |
+
+> **Nota:** desde el 2026-10-26 `/adm/` es accesible desde cualquier IP, con el ingreso de desarrollo activo (decisión del responsable). Ver la [bitácora de la Fase 3](../laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#acceso-abierto-a-cualquier-ip-2026-10-26).
+
+---
+
 ## Pendientes
 
 | # | Ticket | Pendiente | Estado |
@@ -113,6 +147,8 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | 3 | #1083088 Kanboard-OSS | El campo "Especificar" repite la descripción en lugar de detallar el permiso (usuarios locales; roles Administrador, Gerente y Usuario; permisos por proyecto). El tipo debería ser FRONTEND | 🔴 Pendiente |
 | 4 | — | Evaluar con SDI si hay que declarar como servicios de tipo CONSOLA el acceso administrativo de los nodos: API de LXD (`8443/tcp`) y SSH (`22/tcp`), si se alcanzan desde la red corporativa | 🔴 Pendiente |
 | 5 | #1083088 y #1083104 | Completar la fecha de finalización cuando se resuelvan | 🔴 Pendiente |
+| 7 | #1083324 ADM-TECH-OSS | El campo "Especificar" quedó solo con el primer párrafo. Completar con los grupos de AD, el alta automática en el primer ingreso y el ingreso de prueba que se elimina antes del pase | 🔴 Pendiente |
+| 8 | #1083324 ADM-TECH-OSS | Al pasar a producción: actualizar la descripción (contenedores `PFR-ADMTECH-*`, sin ingreso de prueba, datos oficiales) y completar la fecha de finalización | 🔴 Pendiente |
 | 6 | #1047036 | La descripción de la aplicación 608 dice "dos sitios" y hoy son tres. Evaluar si corresponde actualizarla en Jerure | 🟡 A evaluar (observación del repositorio, no del ticket) |
 
 ---

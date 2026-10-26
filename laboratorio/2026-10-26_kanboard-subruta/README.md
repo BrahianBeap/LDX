@@ -141,7 +141,7 @@ Y el bloqueo de `web.config` (Nessus 121479) se extiende a la ruta nueva, dentro
 
 ## Pendientes
 
-- Portal en la raíz (`/var/www/html/index.html` del gateway). Mientras tanto, la raíz muestra la página por defecto de Apache.
+- ✅ Portal en la raíz publicado el 26/10 en los 3 gateways: [`proyectos/portal-oss/`](../../proyectos/portal-oss/).
 - Prueba funcional de un usuario: login, tableros, tareas, adjuntos, plugins (Calendar, TeamWorkload).
 - Pasar el estado final a `docs/` (rutas del gateway en Configuración, ficha de Kanboard) cuando esté el portal.
 - Cargar la URL de la aplicación en Kanboard (`https://oss.personal.com.py/kanboard/`) cuando el certificado esté instalado.

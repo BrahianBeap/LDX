@@ -66,6 +66,20 @@ lxc exec PFR-GW-SRV --project PRJ-OSS -n -- sh -c 'cat /root/LB.conf.bak-2026102
 - **Correo:** no se envía. `enviarMail()` no tiene la conexión a `Infraestructura` y lo registra en el log, que es lo esperado.
 - **Log de errores:** `lxc exec DEV-ADMTECH-APP --project PRJ-OSS -n -- tail -f /var/log/apache2/error.log` (incluye `E_DEPRECATED`).
 
+## Acceso abierto a cualquier IP (2026-10-26)
+
+✅ Por decisión del responsable de la aplicación (Elías Alfonzo), que considera que los datos de desarrollo no son oficiales. Se le advirtió antes que el ingreso de desarrollo permite entrar como `alfonzel` con el grupo `ADMTECH_TEC_ADMIN` sin contraseña, y que la base es una copia de producción.
+
+- `PFR-GW-SRV`: se quitó el bloque `<LocationMatch "^/adm(/|$)"> Require ip 10.150.60.85 </LocationMatch>` y se actualizó el comentario. Backup `/root/LB.conf.bak-20261026-adm`; `LB.conf` nuevo `6e02fb15…`; `configtest` OK y recarga sin cortar conexiones.
+- Prueba desde un origen no autorizado antes (`127.0.0.1` en el gateway): `403` → después: `200`. Kanboard, VulnApp NG y el portal, sin cambios.
+
+> **Advertencia:** con el acceso abierto, **cualquier persona de la red corporativa** que llegue a `https://oss.personal.com.py/adm/` puede usar el botón de ingreso de desarrollo. Antes de cualquier uso con datos oficiales o del pase a producción, hay que quitar las 3 `SetEnv` `ADM_*` del vhost `adm-dev.conf` (o volver a restringir por IP).
+
+**Rollback** (volver a restringir):
+```bash
+lxc exec PFR-GW-SRV --project PRJ-OSS -n -- sh -c 'cat /root/LB.conf.bak-20261026-adm > /etc/apache2/sites-available/LB.conf && apache2ctl configtest && systemctl reload apache2' < /dev/null
+```
+
 ## Retiro del entorno
 
 Ver la sección final de [`fase3_entorno_desarrollo.md`](fase3_entorno_desarrollo.md). Además, quitar el bloque `/adm` de `LB.conf` (o restaurar el backup) y la regla `.19 → .18` de la ACL.
