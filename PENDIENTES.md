@@ -81,14 +81,14 @@
   - [ ] Adaptar `enviarMail()` de ADM-TECH para que llame a la API de NTF (remitente `adm-tech@personal.com.py`, cuerpo HTML en base64, adjuntos con su tipo MIME real) en lugar de la cola de `Infraestructura`.
   - [x] ~~Fase 3: entorno de desarrollo~~ — listo el 25/10 ([bitácora](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md)).
   - [ ] **Probar ADM-TECH en `https://10.143.11.8/adm/`** (login usuario/clave) y revisar los 11 commits de `feature/php85` (worktree `adm-tech-php85`, sin push; sale de `fix/seguridad-tanda2`, no de `master`).
-  - [ ] ⚠️ **`/adm/` abierto a cualquier IP desde el 26/10 con el ingreso de desarrollo activo** (decisión del usuario). Antes de usar datos oficiales o del pase: quitar las `SetEnv ADM_*` del vhost `adm-dev.conf` ([bitácora](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#acceso-abierto-a-cualquier-ip-2026-10-26)).
+  - [x] ~~⚠️ **`/adm/` abierto a cualquier IP desde el 26/10 con el ingreso de desarrollo activo** (decisión del usuario). Antes de usar datos oficiales o del pase: quitar las `SetEnv ADM_*` del vhost `adm-dev.conf` ([bitácora](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#acceso-abierto-a-cualquier-ip-2026-10-26)).~~ → Resuelto el 29/10: el ingreso de desarrollo se quitó y solo se entra con AD.
   - [ ] Pendiente del refactor: Composer y actualización de librerías (confirmar si se completó), PHPCompatibility/PHPStan en limpio.
   - [ ] Confirmar que ningún proceso externo carga los datos de SAP (el usuario cree que no; serían cargas manuales desde la app).
   - [ ] Fase 3: entorno de desarrollo (PHP 8.5 + PG 18). Fase 4: rama `feature/php85`.
   - [x] Pedir la aplicación OAuth para LXD: **623 #1084774** (pedida 28/10, ✅ creada 29/10 por Aldo Benítez, id 45). Es una aplicación **nueva** sobre el servicio 32989, con retorno `https://oss.personal.com.py/adm/` y los 5 grupos `ADMTECH_TEC_*` (ADMIN, MATERIALES, LOGISTICA, REQUIRENTE, AUDITORIA). No se reutiliza la de producción: `index.php` no envía `redirect_uri`, así que SDI devolvería al usuario a `infra.personal.com.py/adm/`.
   - [x] Credenciales OAuth cargadas en el vhost de `DEV-ADMTECH-APP` y regla de ACL `.19 → ciberseg (10.150.49.41):443` agregada (29/10): ver la [bitácora de la Fase 3](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#login-con-oauth-de-sdi-2026-10-29).
   - [x] Login con AD probado OK por el responsable (29/10).
-  - [ ] **Quitar el ingreso de desarrollo** (`SetEnv ADM_ENTORNO` y `ADM_DEV_LOGIN_*`), ahora que el login con AD funciona.
+  - [x] Ingreso de desarrollo quitado del vhost (29/10). Falta quitar su código (commit `cbb6159` de `feature/php85`) antes de unir la rama a `master`.
   - [ ] Antes del pase a producción: pedir a SDI que regeneren el `client_secret` (quedó expuesto en una captura) y crear la regla de ACL equivalente para `PFR-ADMTECH-APP` (`.17`).
   - [ ] Al cerrar la migración: pedir la baja de la aplicación OAuth vieja (servicio 23141, `infra.personal.com.py/adm/`), que tiene el secreto expuesto en `tec-calidad05`.
 - [ ] Contenedores de **Infrawork** (después de ADM-TECH, mismo esquema). **FileRoom (~800 GB) queda en tec-calidad05** por ahora.

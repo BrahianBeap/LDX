@@ -120,9 +120,30 @@ lxc exec DEV-ADMTECH-APP --project PRJ-OSS -- sh -c 'cat /root/adm-dev.conf.bak-
 
 **Pendiente:**
 - ✅ Prueba de login del responsable: **OK** (29/10). Confirma además que el `client_id` transcripto era correcto.
-- Si funciona: quitar el ingreso de desarrollo (`SetEnv ADM_ENTORNO`, `ADM_DEV_LOGIN_TPPY`, `ADM_DEV_LOGIN_GRUPO`).
+- ✅ Ingreso de desarrollo quitado el mismo día. Ver la sección siguiente.
 - Antes del pase a producción: pedir a SDI que regeneren el `client_secret`, que quedó expuesto en una captura compartida en una conversación.
 - En producción (`PFR-ADMTECH-APP`, `192.168.0.17`), crear la regla equivalente con ese origen.
+
+## Ingreso de desarrollo retirado (2026-10-29)
+
+✅ A pedido del responsable, después de probar el login con AD. Cierra la advertencia de la sección [Acceso abierto a cualquier IP](#acceso-abierto-a-cualquier-ip-2026-10-26): `/adm/` sigue abierto a la red corporativa, pero ahora solo se entra con una cuenta de AD que tenga un grupo `ADMTECH_TEC_*`.
+
+- Verificado antes: las tres variables solo las usa `index.php` (botón "Ingresar como alfonzel (desarrollo, sin OAuth)" y `?dev_login=1`), tanto en `feature/php85` como en el código desplegado. `ADM_ENTORNO` no controla el envío de correos ni nada más.
+- Backup: `/root/adm-dev.conf.bak-20261029-sin-devlogin` (SHA-256 `afbcbe84…58071d91`, verificado antes del cambio).
+- Se quitaron 3 líneas: `SetEnv ADM_ENTORNO`, `ADM_DEV_LOGIN_TPPY` y `ADM_DEV_LOGIN_GRUPO`. `configtest` OK, recarga sin corte, permisos `640 root:www-data`.
+
+| Prueba | Resultado |
+|---|---|
+| Botón de desarrollo en `/adm/` | No aparece (0 coincidencias; antes 1) |
+| Botón "Iniciar sesión con Active Directory" | Sigue (1) |
+| Forzar `index.php?dev_login=1` | `200` con la pantalla de login: no abre sesión ni redirige a la aplicación |
+
+**Rollback** (vuelve a habilitar el ingreso sin contraseña; solo para diagnóstico):
+```bash
+lxc exec DEV-ADMTECH-APP --project PRJ-OSS -- sh -c 'cat /root/adm-dev.conf.bak-20261029-sin-devlogin > /etc/apache2/sites-available/adm-dev.conf && apache2ctl configtest && systemctl reload apache2'
+```
+
+> **Nota:** el código del ingreso de desarrollo (commit `cbb6159` de `feature/php85`) sigue en la aplicación, inactivo sin esas variables. Conviene quitarlo antes de unir la rama a `master`, para que no llegue a producción.
 
 ## Retiro del entorno
 
