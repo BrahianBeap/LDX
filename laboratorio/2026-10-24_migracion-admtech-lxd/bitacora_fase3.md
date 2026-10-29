@@ -80,6 +80,50 @@ lxc exec PFR-GW-SRV --project PRJ-OSS -n -- sh -c 'cat /root/LB.conf.bak-2026102
 lxc exec PFR-GW-SRV --project PRJ-OSS -n -- sh -c 'cat /root/LB.conf.bak-20261026-adm > /etc/apache2/sites-available/LB.conf && apache2ctl configtest && systemctl reload apache2' < /dev/null
 ```
 
+## Login con OAuth de SDI (2026-10-29)
+
+✅ SDI creó la aplicación OAuth `ADM-TECH-OSS` (623 #1084774, id 45, retorno `https://oss.personal.com.py/adm/`). Ver [18_Inventario_Ciberseguridad.md](../../docs/18_Inventario_Ciberseguridad.md). Se aplicó a pedido del responsable, desde `pfr-oss`.
+
+**Verificación previa (solo lectura):**
+
+| Comprobación | Resultado |
+|---|---|
+| Variables del vhost `adm-dev.conf` (solo nombres) | `DB_*`, `ADM_DEBUG`, `ADM_ENTORNO`, `ADM_DEV_LOGIN_TPPY`, `ADM_DEV_LOGIN_GRUPO`. **Faltaban** `ADM_CLIENT_ID` y `ADM_CLIENT_SECRET`, que el código usa en `index.php` (botón de AD y canje del código por el token) |
+| Salida a `ciberseg.personal.com.py` (`10.150.49.41`) | Ruta por `192.168.0.6` (`PFR-GW-OAM`), pero la conexión era **rechazada** (7 ms): no había regla en `ACL-OVN-1` |
+
+**1. Credenciales en el vhost**
+
+- Backup: `/root/adm-dev.conf.bak-20261029-oauth` (SHA-256 `6fe98cf9…cc4faf2a`, verificado antes del cambio).
+- Se agregaron 3 líneas después de `SetEnv ADM_DEBUG`: un comentario con la referencia al ticket, `SetEnv ADM_CLIENT_ID` y `SetEnv ADM_CLIENT_SECRET`. Los valores se pasaron por la entrada estándar de la sesión, sin quedar en archivos intermedios, argumentos ni historial. **No se registran en este repositorio.**
+- Permisos sin cambios: `640 root:www-data`. `configtest` OK, recarga sin corte.
+- Comprobación: `/adm/` arma el botón con `oauth/authorize/?client_id=<id nuevo>`.
+
+> **Nota:** el `client_id` se transcribió de una captura del ticket. SDI devuelve la misma página para cualquier `client_id`, así que solo el login real confirma que es correcto. Si falla, cargar el valor copiado como texto desde el correo del ticket.
+
+**2. Regla de firewall**
+
+Backup de la ACL: `~/ACL-OVN-1.bak-20261029-oauth.yaml` en `pfr-oss` (19 reglas).
+
+```bash
+lxc network acl rule add ACL-OVN-1 ingress --project default action=allow \
+  source=192.168.0.19 destination=10.150.49.41 protocol=tcp destination_port=443 \
+  "description=DEV ADM-TECH: app hacia OAuth de SDI (ciberseg.personal.com.py)" state=enabled
+```
+
+Resultado: 20 reglas. Desde `DEV-ADMTECH-APP`, `curl https://ciberseg.personal.com.py/ad/login/oauth/authorize/` → `HTTP 200` en 0,04 s.
+
+**Rollback:**
+```bash
+lxc network acl rule remove ACL-OVN-1 ingress source=192.168.0.19 destination=10.150.49.41 protocol=tcp destination_port=443
+lxc exec DEV-ADMTECH-APP --project PRJ-OSS -- sh -c 'cat /root/adm-dev.conf.bak-20261029-oauth > /etc/apache2/sites-available/adm-dev.conf && apache2ctl configtest && systemctl reload apache2'
+```
+
+**Pendiente:**
+- ✅ Prueba de login del responsable: **OK** (29/10). Confirma además que el `client_id` transcripto era correcto.
+- Si funciona: quitar el ingreso de desarrollo (`SetEnv ADM_ENTORNO`, `ADM_DEV_LOGIN_TPPY`, `ADM_DEV_LOGIN_GRUPO`).
+- Antes del pase a producción: pedir a SDI que regeneren el `client_secret`, que quedó expuesto en una captura compartida en una conversación.
+- En producción (`PFR-ADMTECH-APP`, `192.168.0.17`), crear la regla equivalente con ese origen.
+
 ## Retiro del entorno
 
 Ver la sección final de [`fase3_entorno_desarrollo.md`](fase3_entorno_desarrollo.md). Además, quitar el bloque `/adm` de `LB.conf` (o restaurar el backup) y la regla `.19 → .18` de la ACL.

@@ -16,7 +16,10 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Servicio (452) | #1083088 | `Kanboard-OSS` | ✅ Inventariado 29/10 (IDs 33013 y 33014) | `https://oss.personal.com.py/kanboard/` |
 | Servicio (452) | #1083104 | `Vulnapp-OSS` (VulnApp NG) | ✅ Inventariado 29/10 (ID 33012) | `https://oss.personal.com.py/vulnapp/` |
 | Servicio (452) | #1083324 | `ADM-TECH-OSS` (entorno de desarrollo) | ✅ Resuelto (inventariado 28/10) | `https://oss.personal.com.py/adm/` |
-| OAuth AD (623) | #1084774 | Aplicación OAuth de `ADM-TECH-OSS` (servicio 32989) | ✅ Creada 29/10 (id 45) | Retorno `https://oss.personal.com.py/adm/` |
+| OAuth AD (623) | #1084774 | Aplicación OAuth de `ADM-TECH-OSS` (servicio 32989) | ✅ Creada 29/10 (id 45); login probado OK el 29/10 | Retorno `https://oss.personal.com.py/adm/` |
+| OAuth AD (623) | #1085317 | Aplicación OAuth de `Kanboard-OSS` (servicio 33013), solo autenticación | 🟡 Pendiente de aprobación (29/10) | Retorno `https://oss.personal.com.py/kanboard/?controller=OAuthController&action=handler&plugin=OAuth2` |
+| OAuth AD (623) | #1085320 | Aplicación OAuth de `Vulnapp-OSS` (servicio 33012), solo autenticación | 🟡 Pendiente de aprobación (29/10) | Retorno `https://oss.personal.com.py/vulnapp/oauth/callback` |
+| Acceso VPN/SDP (556) | #1085324 | Acceso de `alfonzel` a `Kanboard-OSS` (443) | 🟡 Abierto (29/10) | — |
 
 ```
  Aplicación 608  PLATAFORMA-LXD-OSS  (707 #1047036)
@@ -168,6 +171,19 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 > **Nota:** desde el 2026-10-26 `/adm/` es accesible desde cualquier IP, con el ingreso de desarrollo activo (decisión del responsable). Ver la [bitácora de la Fase 3](../laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#acceso-abierto-a-cualquier-ip-2026-10-26).
 
 ---
+
+## Aplicaciones OAuth de Kanboard y VulnApp NG (623, 2026-10-29)
+
+✅ Pedidas el 2026-10-29, con **solo autenticación** (sin grupos de AD por ahora). Circuito de aprobación: Marcos Casco, Julio César Acosta y Seguridad de la Información.
+
+| Ticket | Servicio | URL de retorno | Por qué esa URL |
+|---|---|---|---|
+| #1085317 | `33013 \| TCP/443 (Kanboard-OSS)` | `https://oss.personal.com.py/kanboard/?controller=OAuthController&action=handler&plugin=OAuth2` | Es la ruta del plugin oficial `OAuth2` de Kanboard, que **todavía no está instalado**. No es la pantalla de login (`AuthController&action=login`), que no procesa el `?code=` |
+| #1085320 | `33012 \| TCP/443 (Vulnapp-OSS)` | `https://oss.personal.com.py/vulnapp/oauth/callback` | VulnApp NG no tiene OAuth: la ruta se programa desde cero, separada del `/login` local. Flask distingue `/ruta` de `/ruta/`: la URL registrada va **sin** barra final |
+
+> **Advertencia:** 🔴 no está confirmado que el plugin oficial de Kanboard sea compatible con el OAuth de SDI. El plugin necesita un *endpoint* que devuelva los datos del usuario, y ADM-TECH lee esos datos del propio token. Probarlo en `PFR-KANBOARD-PRUEBA` antes de producción. En los dos sistemas hay que definir cómo se vincula el TPPY de AD con los usuarios locales existentes, para no crear usuarios duplicados.
+
+**Acceso VPN/SDP (556, #1085324, 2026-10-29):** acceso del usuario `alfonzel` a Kanboard por la VPN/SDP corporativa. 🟡 El ticket lista la aplicación con el ID **20341**, distinto del ID de inventario del servicio (33013). Probablemente sea un catálogo propio del SDP; no está confirmado.
 
 ## Pendientes
 

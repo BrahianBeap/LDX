@@ -45,6 +45,8 @@
 ## 3. Inventario (checklist de alta)
 
 - [ ] Recorrer el checklist completo para los **3 servidores** (hosts `fr-oss`, Carpinelli y Fernando). Falta conocer el nombre y la IP de gestión de Carpinelli y Fernando, y si ya existen como activos en Jerure.
+- [ ] **OAuth de Kanboard (623 #1085317) y VulnApp NG (623 #1085320)**, pedidos el 29/10 con solo autenticación. Cuando lleguen las credenciales: Kanboard → instalar y probar el plugin `OAuth2` en `PFR-KANBOARD-PRUEBA` (🔴 compatibilidad con SDI sin confirmar); VulnApp NG → programar `/vulnapp/oauth/callback`. En ambos: regla de ACL hacia `10.150.49.41:443` y vínculo TPPY ↔ usuario local. Ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#aplicaciones-oauth-de-kanboard-y-vulnapp-ng-623-2026-10-29).
+- [ ] Acceso VPN/SDP a Kanboard (556 #1085324, 29/10): seguir la aprobación.
 - [ ] Por cada servicio (Kanboard, VulnApp NG; NTF y Loki a confirmar con Norberto): 452 Alta de servicios, 707 Alta de aplicaciones, 623 OAuth + grupos AD, pase a producción.
 - [ ] Inventariar cada aplicación con **IP de servicio + 443 + URL** (`https://oss.personal.com.py/<app>`), no con la IP del contenedor (indicación de Norberto, 16/10).
 - [x] VulnApp NG: regla de firewall hacia la API de SDI `10.150.58.116:443` ([RIE-015](docs/11_Riesgos.md)): pedida en #1083155 (26/10).
@@ -75,7 +77,7 @@
   - [ ] Aprobar el diseño de la Fase 2: `PFR-ADMTECH-APP` / `PFR-ADMTECH-DB` en `PRJ-OSS`, volumen de 40 GiB, IP `.15`/`.16` (confirmar libres).
   - [x] ~~**Correo saliente:** preguntarle a Norberto si `CAR-SystemSMTP` puede hacer de relay~~ → Respondido el 29/10: **no se pide servidor nuevo, ADM-TECH envía por el módulo de email de NTF** ([ADR-0010](docs/adr/ADR-0010-envio-correo-sistemas-via-ntf.md)). Probado con destinatarios internos.
   - [ ] **Relay SMTP de Seguridad** para destinatarios externos: preguntar a Abel o Nico el tema de ayuda de Jerure (si no hay, ticket genérico), pasarle el borrador a Norberto y cargarlo ([RIE-023](docs/11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos)).
-  - [ ] Verificar en vivo la regla de `ACL-OVN-1` y la ruta hacia `10.150.49.103` agregadas en la llamada del 29/10: IP de origen, persistencia y con qué IP sale el tráfico ([05_Configuracion.md](docs/05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl)).
+  - [ ] Verificar en vivo la ruta hacia `10.150.49.103` agregada en la llamada del 29/10: persistencia y con qué IP sale el tráfico. La regla de ACL ya está confirmada (origen `192.168.0.110`, `FDO-WS-1`) ([05_Configuracion.md](docs/05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl)).
   - [ ] Adaptar `enviarMail()` de ADM-TECH para que llame a la API de NTF (remitente `adm-tech@personal.com.py`, cuerpo HTML en base64, adjuntos con su tipo MIME real) en lugar de la cola de `Infraestructura`.
   - [x] ~~Fase 3: entorno de desarrollo~~ — listo el 25/10 ([bitácora](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md)).
   - [ ] **Probar ADM-TECH en `https://10.143.11.8/adm/`** (login usuario/clave) y revisar los 11 commits de `feature/php85` (worktree `adm-tech-php85`, sin push; sale de `fix/seguridad-tanda2`, no de `master`).
@@ -84,7 +86,10 @@
   - [ ] Confirmar que ningún proceso externo carga los datos de SAP (el usuario cree que no; serían cargas manuales desde la app).
   - [ ] Fase 3: entorno de desarrollo (PHP 8.5 + PG 18). Fase 4: rama `feature/php85`.
   - [x] Pedir la aplicación OAuth para LXD: **623 #1084774** (pedida 28/10, ✅ creada 29/10 por Aldo Benítez, id 45). Es una aplicación **nueva** sobre el servicio 32989, con retorno `https://oss.personal.com.py/adm/` y los 5 grupos `ADMTECH_TEC_*` (ADMIN, MATERIALES, LOGISTICA, REQUIRENTE, AUDITORIA). No se reutiliza la de producción: `index.php` no envía `redirect_uri`, así que SDI devolvería al usuario a `infra.personal.com.py/adm/`.
-  - [ ] **Ya llegaron (29/10):** cargar `ADM_CLIENT_ID`/`ADM_CLIENT_SECRET` en el vhost de `DEV-ADMTECH-APP` (nunca en el repo), probar el login con AD y **quitar el ingreso de desarrollo** (`SetEnv ADM_ENTORNO` y `ADM_DEV_LOGIN_*`).
+  - [x] Credenciales OAuth cargadas en el vhost de `DEV-ADMTECH-APP` y regla de ACL `.19 → ciberseg (10.150.49.41):443` agregada (29/10): ver la [bitácora de la Fase 3](laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#login-con-oauth-de-sdi-2026-10-29).
+  - [x] Login con AD probado OK por el responsable (29/10).
+  - [ ] **Quitar el ingreso de desarrollo** (`SetEnv ADM_ENTORNO` y `ADM_DEV_LOGIN_*`), ahora que el login con AD funciona.
+  - [ ] Antes del pase a producción: pedir a SDI que regeneren el `client_secret` (quedó expuesto en una captura) y crear la regla de ACL equivalente para `PFR-ADMTECH-APP` (`.17`).
   - [ ] Al cerrar la migración: pedir la baja de la aplicación OAuth vieja (servicio 23141, `infra.personal.com.py/adm/`), que tiene el secreto expuesto en `tec-calidad05`.
 - [ ] Contenedores de **Infrawork** (después de ADM-TECH, mismo esquema). **FileRoom (~800 GB) queda en tec-calidad05** por ahora.
 - [ ] Evaluar centralizar las bases de datos del área en el servidor de Norberto, y usar su servicio **S3** (bucket ya creado, credenciales en PasswordSafe).
