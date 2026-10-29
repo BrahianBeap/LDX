@@ -18,8 +18,10 @@
 | #1078719 | 451 Certificado `oss.personal.com.py` | ✅ Resuelto 22/10 (Natalia Cardozo). Let's Encrypt, vence **2027-01-20** | Instalado el 26/10 en los 3 gateways. Renovación: Ciberseguridad reabre el ticket cada 3 meses ([RIE-022](docs/11_Riesgos.md)). Detalle: [`laboratorio/2026-10-26_certificado-lets-encrypt/`](laboratorio/2026-10-26_certificado-lets-encrypt/) |
 | #1079305 | 741 DNS `oss.personal.com.py` | 🟡 Cargada solo `10.143.11.8` (Abel) | Pedir `192.168.91.117` y `10.11.11.12` **recién después de la Etapa 2** |
 | #1083298 | 778 Gestión de vulnerabilidades: hallazgos de certificado de los 3 gateways, **RESUELTO** (IDs Grafana 41817, 41818 `fr-oss`; 40608, 40609 `car-oss`; 41771, 41772 `fdo-dns-lxd`) | 🟡 Abierto 26/10 14:59 | Seguir hasta que Seguridad lo cierre y el próximo escaneo los dé de baja. Si aparece "nombre de host incorrecto" (escaneo por IP), responder que el servicio se publica como `oss.personal.com.py`. Evidencia: `evidencia_certificado_oss_20261026.txt` |
+| #1083416 | 778 Gestión de vulnerabilidades: hallazgo **43743** (HSTS ausente en `10.143.11.8:443`, informado por Jerure en #1083324), **RESUELTO** | ✅ Resuelto 28/10 (aprobaron Julio César Acosta 27/10 y Abel Díaz 28/10 09:32). Reescaneo del 28/10 09:19: "No se detectaron vulnerabilidades relevantes" | **Compromiso pendiente: subir `max-age` a `31536000` el 02/11/2026** (quedó escrito en la evidencia del ticket). Evidencia: [`evidencia_hsts_43743_20261026.txt`](laboratorio/2026-10-26_hsts-pfr-gw-srv/evidencia_hsts_43743_20261026.txt) |
 | Gestión de vulnerabilidades (778), aceptación del 16/10 | Aceptación de riesgo de certificados | 🟡 Revisión al 16/11/2026 | Queda superada por #1083298: cerrarla con esa referencia. LXD (8443/8444/8555): aceptación aparte, revisión semestral |
-| #1083088, #1083104, #1083324 | 452 Alta de servicios `Kanboard-OSS`, `Vulnapp-OSS` y `ADM-TECH-OSS` | 🟡 Pendiente de aprobación / Abierto (26/10) | Correcciones pendientes (descripción de VulnApp, administrador de accesos, tipo y permiso de Kanboard): ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) |
+| #1083324 | 452 Alta de servicio `ADM-TECH-OSS` | ✅ Resuelto 28/10 17:50: inventariado (IDs 32989 `TCP/443` y 32990 `TCP/80`) | Pendientes 7 y 8 de [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) (campo "Especificar" incompleto y actualización al pasar a producción) |
+| #1083088, #1083104 | 452 Alta de servicios `Kanboard-OSS` y `Vulnapp-OSS` | 🟡 Pendiente de aprobación / Abierto (26/10) | Correcciones pendientes (descripción de VulnApp, administrador de accesos, tipo y permiso de Kanboard): ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) |
 | #1083155 | Firewall VulnApp NG → API SDI `10.150.58.116:443` (origen: IP de gestión de los 3 hosts) | 🟡 Abierto 26/10 | Cuando lo aprueben, repetir la prueba de `/health` desde `PFR-VULNAPP-APP` e instalar el servicio de carga ([RIE-015](docs/11_Riesgos.md)). **Vence 31/05/2027**: pedir renovación antes |
 | #1075028 | Acceso BD Oxígeno | ✅ Habilitado 14/10 | — |
 | #1076134 | 939 IP de servicio al activo `fr-oss` | ✅ Resuelto 16/10 | — |
@@ -33,7 +35,8 @@
    - Hecho además el 26/10: redirección de HTTP a HTTPS y del acceso por IP al nombre en los 3 gateways (ver la bitácora del certificado).
    - [x] Informar los hallazgos como resueltos: ticket 778 **#1083298** (26/10). Falta que Seguridad lo cierre y que el escaneo los dé de baja.
    - [ ] **Renovación:** Ciberseguridad reabre el ticket de Jerure cada 3 meses. Cuando llegue (antes del 20/01/2027), instalar en los 3 gateways ([RIE-022](docs/11_Riesgos.md)).
-   - [ ] Opcional: HSTS (`max-age` corto al principio); pasar las redirecciones de 302 a 301; quitar `AutoridadOSS` de `ntf-ca.crt` en Tembiapó.
+   - [x] HSTS en `PFR-GW-SRV` con `max-age=300` (26/10, hallazgo 43743 del ticket #1083324): ver [`laboratorio/2026-10-26_hsts-pfr-gw-srv/`](laboratorio/2026-10-26_hsts-pfr-gw-srv/). Falta subirlo a `31536000` tras unos días y sumarlo a CAR y FDO en la Etapa 2.
+   - [ ] Opcional: pasar las redirecciones de 302 a 301; quitar `AutoridadOSS` de `ntf-ca.crt` en Tembiapó.
    - [ ] Sincronizar el repo de Tembiapó con producción (tarea de Daniel Medina).
 5. [ ] **Etapa 2:** reescribir los `LB.conf` de `CAR-GW-SRV` y `FDO-GW-SRV` con el modelo de PFR: Kanboard y VulnApp NG por **proxy interno** hacia `192.168.0.106` / `192.168.0.14:5000` (no `Redirect`), `require` explícito en `/ntf` y `/supervisionge`, y bloqueo de `web.config`. Antes, probar el cliente de NTF con Norberto ([RIE-020](docs/11_Riesgos.md)).
 6. [ ] Pedir a Abel que sume las IP de CAR y FDO al DNS.
@@ -77,7 +80,9 @@
   - [ ] Pendiente del refactor: Composer y actualización de librerías (confirmar si se completó), PHPCompatibility/PHPStan en limpio.
   - [ ] Confirmar que ningún proceso externo carga los datos de SAP (el usuario cree que no; serían cargas manuales desde la app).
   - [ ] Fase 3: entorno de desarrollo (PHP 8.5 + PG 18). Fase 4: rama `feature/php85`.
-  - [ ] Actualizar la aplicación OAuth a la URL `oss.personal.com.py/adm` (ticket 623) y rotar credenciales.
+  - [x] Pedir la aplicación OAuth para LXD: **623 #1084774** (28/10 18:51, abierto). Es una aplicación **nueva** sobre el servicio 32989, con retorno `https://oss.personal.com.py/adm/` y los 5 grupos `ADMTECH_TEC_*` (ADMIN, MATERIALES, LOGISTICA, REQUIRENTE, AUDITORIA). No se reutiliza la de producción: `index.php` no envía `redirect_uri`, así que SDI devolvería al usuario a `infra.personal.com.py/adm/`.
+  - [ ] Cuando llegue el client_id: cargar `ADM_CLIENT_ID`/`ADM_CLIENT_SECRET` en el vhost de `DEV-ADMTECH-APP` (nunca en el repo), probar el login con AD y **quitar el ingreso de desarrollo** (`SetEnv ADM_ENTORNO` y `ADM_DEV_LOGIN_*`).
+  - [ ] Al cerrar la migración: pedir la baja de la aplicación OAuth vieja (servicio 23141, `infra.personal.com.py/adm/`), que tiene el secreto expuesto en `tec-calidad05`.
 - [ ] Contenedores de **Infrawork** (después de ADM-TECH, mismo esquema). **FileRoom (~800 GB) queda en tec-calidad05** por ahora.
 - [ ] Evaluar centralizar las bases de datos del área en el servidor de Norberto, y usar su servicio **S3** (bucket ya creado, credenciales en PasswordSafe).
 - [ ] Prueba de envío de SMS por NTF desde Infrawork (quedó pendiente un OK; Norberto revisa el correo).

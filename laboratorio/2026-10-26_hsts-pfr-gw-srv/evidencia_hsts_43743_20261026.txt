@@ -1,0 +1,25 @@
+Evidencia - Vulnerabilidad 43743 (HSTS Missing From HTTPS Server, RFC 6797)
+Activo: 10.143.11.8:443 (oss.personal.com.py) - gateway PFR-GW-SRV
+Cambio aplicado: 2026-10-26 16:27 (-03). Apache: Header always set Strict-Transport-Security "max-age=300"
+Captura generada: 2026-10-26 16:46:31 -0300 desde estacion de la red corporativa
+
+$ curl -skI https://10.143.11.8/
+HTTP/1.1 302 Found
+Date: Mon, 26 Oct 2026 19:46:29 GMT
+Server: Apache/2.4.66 (Ubuntu)
+Strict-Transport-Security: max-age=300
+Location: https://oss.personal.com.py/
+Content-Type: text/html; charset=iso-8859-1
+
+$ curl -skI --resolve oss.personal.com.py:443:10.143.11.8 https://oss.personal.com.py/
+HTTP/1.1 200 OK
+Date: Mon, 26 Oct 2026 19:46:30 GMT
+Server: Apache/2.4.66 (Ubuntu)
+Strict-Transport-Security: max-age=300
+Last-Modified: Mon, 26 Oct 2026 19:02:13 GMT
+ETag: "48dd-65ec2f7be4fce"
+Accept-Ranges: bytes
+Content-Length: 18653
+Vary: Accept-Encoding
+Content-Type: text/html
+

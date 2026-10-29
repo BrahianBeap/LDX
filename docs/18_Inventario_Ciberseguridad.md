@@ -15,7 +15,8 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Aplicación (707) | #1047036 | `PLATAFORMA-LXD-OSS` (aplicación **608**, PROD) | ✅ Resuelto | — |
 | Servicio (452) | #1083088 | `Kanboard-OSS` | 🟡 Pendiente de aprobación | `https://oss.personal.com.py/kanboard/` |
 | Servicio (452) | #1083104 | `Vulnapp-OSS` (VulnApp NG) | 🟡 Abierto | `https://oss.personal.com.py/vulnapp/` |
-| Servicio (452) | #1083324 | `ADM-TECH-OSS` (entorno de desarrollo) | 🟡 Abierto | `https://oss.personal.com.py/adm/` |
+| Servicio (452) | #1083324 | `ADM-TECH-OSS` (entorno de desarrollo) | ✅ Resuelto (inventariado 28/10) | `https://oss.personal.com.py/adm/` |
+| OAuth AD (623) | #1084774 | Aplicación OAuth de `ADM-TECH-OSS` (servicio 32989) | 🟡 Abierto (28/10) | Retorno `https://oss.personal.com.py/adm/` |
 
 ```
  Aplicación 608  PLATAFORMA-LXD-OSS  (707 #1047036)
@@ -23,6 +24,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
         ├── Servicio Kanboard-OSS  (452 #1083088)  ─┐
         ├── Servicio Vulnapp-OSS   (452 #1083104)  ─┼─ host: activo 10041 fr-oss (10.143.11.8)
         └── Servicio ADM-TECH-OSS  (452 #1083324)  ─┘     = gateway PFR-GW-SRV
+                 └── Aplicación OAuth AD (623 #1084774)
 ```
 
 ---
@@ -110,8 +112,10 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Campo | Valor |
 |---|---|
 | Creado | 2026-10-26 15:28 |
-| Estado | Abierto |
-| Finalizado | — |
+| Estado | ✅ Resuelto |
+| Finalizado | 2026-10-28 17:50 (inventariado por Seguridad de la Información) |
+| Registros de inventario | **ID 32989** `TCP/443 (ADM-TECH-OSS)` y **ID 32990** `TCP/80 (ADM-TECH-OSS)`, ambos sobre `10.143.11.8` |
+| Copia impresa | `Ticket-1083324.pdf` (en las descargas del usuario; no está en el repositorio) |
 | Tipo | FRONTEND |
 | URL | `https://oss.personal.com.py/adm/` |
 | Aplicación | 608 `PLATAFORMA-LXD-OSS` |
@@ -134,6 +138,29 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | `GET` | `/adm/sing-in-backend.php` | Validación de grupos de AD y apertura de sesión |
 | `GET` | `/adm/main.php` | Aplicación (requiere sesión) |
 
+**Circuito de aprobación:**
+
+| Paso | Responsable | Resultado | Fecha |
+|---|---|---|---|
+| 1 | Abel Díaz | Aprobó | 2026-10-26 18:17 |
+| 2 | Salvador Deu | Aprobó (aprobación masiva) | 2026-10-28 10:12 |
+| 3 | Julio César Acosta | Aprobó | 2026-10-28 17:36 |
+| 4 | Elias Alfonzo (BPO) | Aprobó | 2026-10-28 17:41 |
+| 5 | Seguridad de la Información | Inventarió el servicio (IDs 32989 y 32990) | 2026-10-28 17:50 |
+
+**Aplicación OAuth (623, ticket #1084774, abierto desde 2026-10-28 18:51):**
+
+| Campo | Valor |
+|---|---|
+| Aplicación | `32989 \| TCP/443 (ADM-TECH-OSS)` |
+| URL de redirección | `https://oss.personal.com.py/adm/` |
+| ¿Solo autenticación? | NO: los grupos de AD definen el rol (DEC-010 del repo `adm-tech`) |
+| Grupos de AD | `ADMTECH_TEC_ADMIN`, `ADMTECH_TEC_MATERIALES`, `ADMTECH_TEC_LOGISTICA`, `ADMTECH_TEC_REQUIRENTE`, `ADMTECH_TEC_AUDITORIA` |
+
+✅ Se pidió una aplicación **nueva** en lugar de reutilizar la de producción (servicio 23141, `infra.personal.com.py/adm/`). El motivo es que `index.php` llama a `.../oauth/authorize/?client_id=...` sin `redirect_uri`, y SDI devuelve al usuario a la única URL registrada para ese client_id. Con la aplicación de producción, el login terminaría en `tec-calidad05`. Además, así se rotan las credenciales, porque el secreto actual quedó expuesto en ese servidor.
+
+**Escaneo durante el alta:** Jerure escaneó `10.143.11.8` (26/10 16:04) e informó un solo hallazgo: **43743** *HSTS Missing From HTTPS Server*, criticidad Baja. Se corrigió el mismo día y se declaró RESUELTO en el ticket 778 **#1083416**. El hallazgo no bloqueó la aprobación. Ver [`laboratorio/2026-10-26_hsts-pfr-gw-srv/`](../laboratorio/2026-10-26_hsts-pfr-gw-srv/).
+
 > **Nota:** desde el 2026-10-26 `/adm/` es accesible desde cualquier IP, con el ingreso de desarrollo activo (decisión del responsable). Ver la [bitácora de la Fase 3](../laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#acceso-abierto-a-cualquier-ip-2026-10-26).
 
 ---
@@ -148,7 +175,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | 4 | — | Evaluar con SDI si hay que declarar como servicios de tipo CONSOLA el acceso administrativo de los nodos: API de LXD (`8443/tcp`) y SSH (`22/tcp`), si se alcanzan desde la red corporativa | 🔴 Pendiente |
 | 5 | #1083088 y #1083104 | Completar la fecha de finalización cuando se resuelvan | 🔴 Pendiente |
 | 7 | #1083324 ADM-TECH-OSS | El campo "Especificar" quedó solo con el primer párrafo. Completar con los grupos de AD, el alta automática en el primer ingreso y el ingreso de prueba que se elimina antes del pase | 🔴 Pendiente |
-| 8 | #1083324 ADM-TECH-OSS | Al pasar a producción: actualizar la descripción (contenedores `PFR-ADMTECH-*`, sin ingreso de prueba, datos oficiales) y completar la fecha de finalización | 🔴 Pendiente |
+| 8 | #1083324 ADM-TECH-OSS | Al pasar a producción: actualizar la descripción (contenedores `PFR-ADMTECH-*`, sin ingreso de prueba, datos oficiales). 🟡 El ticket ya está resuelto, así que probablemente haga falta un ticket nuevo para modificar el registro (confirmar con Seguridad cómo se actualiza un servicio ya inventariado) | 🔴 Pendiente |
 | 6 | #1047036 | La descripción de la aplicación 608 dice "dos sitios" y hoy son tres. Evaluar si corresponde actualizarla en Jerure | 🟡 A evaluar (observación del repositorio, no del ticket) |
 
 ---

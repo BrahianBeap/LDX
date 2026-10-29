@@ -571,3 +571,18 @@ El Portal OSS 2.0.0 pasó de la vista previa a la raíz `https://oss.personal.co
 
 **Resumen:**
 Kanboard tiene ahora la identidad visual de OSS mediante el plugin propio `OssTheme` (código en el repositorio de Kanboard del usuario): inicio de sesión nuevo, cabecera, tarjetas con el título primero y vencimientos con texto, y colores para los temas claro, oscuro y automático. No toca el núcleo ni la base. Se probó en una copia aislada y se pasó a producción después de respaldar (snapshot, aplicación, base y adjuntos). Se desactivaron Customizer y Essential, que reemplazaban las mismas plantillas.
+
+### 2026-10-26 a 2026-10-28 (trigésima tercera entrada)
+
+**Fuente:** Escaneo de vulnerabilidades de Jerure (ticket 452 #1083324), tickets 778 #1083416 y 623 #1084774; implementación en `PFR-GW-SRV` a pedido del usuario.
+
+**Documentos creados:**
+- `laboratorio/2026-10-26_hsts-pfr-gw-srv/README.md`: verificación previa, cambio, verificación, rollback y seguimiento de los tickets
+- `laboratorio/2026-10-26_hsts-pfr-gw-srv/evidencia_hsts_43743_20261026.txt`: evidencia adjuntada al ticket #1083416
+
+**Documentos actualizados:**
+- `docs/18_Inventario_Ciberseguridad.md`: `ADM-TECH-OSS` inventariado (IDs 32989 y 32990), circuito de aprobación, aplicación OAuth 623 #1084774
+- `PENDIENTES.md`
+
+**Resumen:**
+El escaneo hecho durante el alta de `ADM-TECH-OSS` informó el hallazgo 43743 (falta HSTS en `10.143.11.8:443`). Se agregó `Strict-Transport-Security: max-age=300` en el `VirtualHost` 443 de `PFR-GW-SRV`, con backup propio y verificación de rutas antes y después. El hallazgo se declaró resuelto en #1083416 y el reescaneo del 28/10 no informó nada. Falta subir `max-age` a `31536000` el 02/11/2026, compromiso escrito en el ticket. El 28/10 se completó el alta del servicio y se pidió una aplicación OAuth **nueva** para `https://oss.personal.com.py/adm/`: la de producción no sirve, porque `index.php` no envía `redirect_uri`.
