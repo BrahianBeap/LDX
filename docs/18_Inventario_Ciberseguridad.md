@@ -13,10 +13,10 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Tipo | Ticket | Nombre | Estado | URL |
 |---|---|---|---|---|
 | Aplicación (707) | #1047036 | `PLATAFORMA-LXD-OSS` (aplicación **608**, PROD) | ✅ Resuelto | — |
-| Servicio (452) | #1083088 | `Kanboard-OSS` | 🟡 Pendiente de aprobación | `https://oss.personal.com.py/kanboard/` |
-| Servicio (452) | #1083104 | `Vulnapp-OSS` (VulnApp NG) | 🟡 Abierto | `https://oss.personal.com.py/vulnapp/` |
+| Servicio (452) | #1083088 | `Kanboard-OSS` | ✅ Inventariado 29/10 (IDs 33013 y 33014) | `https://oss.personal.com.py/kanboard/` |
+| Servicio (452) | #1083104 | `Vulnapp-OSS` (VulnApp NG) | ✅ Inventariado 29/10 (ID 33012) | `https://oss.personal.com.py/vulnapp/` |
 | Servicio (452) | #1083324 | `ADM-TECH-OSS` (entorno de desarrollo) | ✅ Resuelto (inventariado 28/10) | `https://oss.personal.com.py/adm/` |
-| OAuth AD (623) | #1084774 | Aplicación OAuth de `ADM-TECH-OSS` (servicio 32989) | 🟡 Abierto (28/10) | Retorno `https://oss.personal.com.py/adm/` |
+| OAuth AD (623) | #1084774 | Aplicación OAuth de `ADM-TECH-OSS` (servicio 32989) | ✅ Creada 29/10 (id 45) | Retorno `https://oss.personal.com.py/adm/` |
 
 ```
  Aplicación 608  PLATAFORMA-LXD-OSS  (707 #1047036)
@@ -58,8 +58,9 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Campo | Valor |
 |---|---|
 | Creado | 2026-10-26 10:33 |
-| Estado | Pendiente de aprobación |
-| Finalizado | — |
+| Estado | ✅ Inventariado |
+| Finalizado | 2026-10-29 16:20 (inventariado por Seguridad de la Información) |
+| Registros de inventario | **ID 33013** `TCP/443 (Kanboard-OSS)` y **ID 33014** `TCP/80 (Kanboard-OSS)`, ambos sobre `10.143.11.8` |
 | Tipo | OTRO (corresponde FRONTEND, ver pendientes) |
 | URL | `https://oss.personal.com.py/kanboard/` |
 | Aplicación | 608 `PLATAFORMA-LXD-OSS` |
@@ -84,8 +85,9 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Campo | Valor |
 |---|---|
 | Creado | 2026-10-26 10:51 |
-| Estado | Abierto |
-| Finalizado | — |
+| Estado | ✅ Inventariado |
+| Finalizado | 2026-10-29 16:19 (inventariado por Seguridad de la Información) |
+| Registros de inventario | **ID 33012** `TCP/443 (Vulnapp-OSS)` sobre `10.143.11.8` (solo 443, como se declaró) |
 | Tipo | FRONTEND |
 | URL | `https://oss.personal.com.py/vulnapp/` |
 | Aplicación | 608 `PLATAFORMA-LXD-OSS` |
@@ -148,7 +150,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | 4 | Elias Alfonzo (BPO) | Aprobó | 2026-10-28 17:41 |
 | 5 | Seguridad de la Información | Inventarió el servicio (IDs 32989 y 32990) | 2026-10-28 17:50 |
 
-**Aplicación OAuth (623, ticket #1084774, abierto desde 2026-10-28 18:51):**
+**Aplicación OAuth (623, ticket #1084774, pedida el 2026-10-28 18:51, ✅ creada el 2026-10-29 por Aldo Benítez):**
 
 | Campo | Valor |
 |---|---|
@@ -156,6 +158,8 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | URL de redirección | `https://oss.personal.com.py/adm/` |
 | ¿Solo autenticación? | NO: los grupos de AD definen el rol (DEC-010 del repo `adm-tech`) |
 | Grupos de AD | `ADMTECH_TEC_ADMIN`, `ADMTECH_TEC_MATERIALES`, `ADMTECH_TEC_LOGISTICA`, `ADMTECH_TEC_REQUIRENTE`, `ADMTECH_TEC_AUDITORIA` |
+| Registro en SDI | id **45**, `client_name` `ADM-TECH-OSS`, `auth_only: false`, `redirect_uri` `https://oss.personal.com.py/adm/`, creado `2026-10-29T17:32:32Z` |
+| Credenciales | `client_id` y `client_secret` entregados en el ticket. **No se guardan en este repositorio**: van solo en el vhost del contenedor (`SetEnv ADM_CLIENT_ID` / `ADM_CLIENT_SECRET`) |
 
 ✅ Se pidió una aplicación **nueva** en lugar de reutilizar la de producción (servicio 23141, `infra.personal.com.py/adm/`). El motivo es que `index.php` llama a `.../oauth/authorize/?client_id=...` sin `redirect_uri`, y SDI devuelve al usuario a la única URL registrada para ese client_id. Con la aplicación de producción, el login terminaría en `tec-calidad05`. Además, así se rotan las credenciales, porque el secreto actual quedó expuesto en ese servidor.
 
@@ -173,7 +177,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | 2 | #1083088 y #1083104 | "Permiso: Local" con "Administrador: SSO" no coinciden. Con usuarios locales, el administrador de accesos es OSS | 🔴 Pendiente |
 | 3 | #1083088 Kanboard-OSS | El campo "Especificar" repite la descripción en lugar de detallar el permiso (usuarios locales; roles Administrador, Gerente y Usuario; permisos por proyecto). El tipo debería ser FRONTEND | 🔴 Pendiente |
 | 4 | — | Evaluar con SDI si hay que declarar como servicios de tipo CONSOLA el acceso administrativo de los nodos: API de LXD (`8443/tcp`) y SSH (`22/tcp`), si se alcanzan desde la red corporativa | 🔴 Pendiente |
-| 5 | #1083088 y #1083104 | Completar la fecha de finalización cuando se resuelvan | 🔴 Pendiente |
+| 5 | #1083088 y #1083104 | Completar la fecha de finalización cuando se resuelvan | ✅ Inventariados el 29/10. Los pendientes 1 a 3 siguen: con los servicios ya inventariados, 🟡 probablemente haga falta un ticket nuevo para corregir los registros |
 | 7 | #1083324 ADM-TECH-OSS | El campo "Especificar" quedó solo con el primer párrafo. Completar con los grupos de AD, el alta automática en el primer ingreso y el ingreso de prueba que se elimina antes del pase | 🔴 Pendiente |
 | 8 | #1083324 ADM-TECH-OSS | Al pasar a producción: actualizar la descripción (contenedores `PFR-ADMTECH-*`, sin ingreso de prueba, datos oficiales). 🟡 El ticket ya está resuelto, así que probablemente haga falta un ticket nuevo para modificar el registro (confirmar con Seguridad cómo se actualiza un servicio ya inventariado) | 🔴 Pendiente |
 | 6 | #1047036 | La descripción de la aplicación 608 dice "dos sitios" y hoy son tres. Evaluar si corresponde actualizarla en Jerure | 🟡 A evaluar (observación del repositorio, no del ticket) |
