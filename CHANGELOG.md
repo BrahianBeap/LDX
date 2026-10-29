@@ -586,3 +586,21 @@ Kanboard tiene ahora la identidad visual de OSS mediante el plugin propio `OssTh
 
 **Resumen:**
 El escaneo hecho durante el alta de `ADM-TECH-OSS` informó el hallazgo 43743 (falta HSTS en `10.143.11.8:443`). Se agregó `Strict-Transport-Security: max-age=300` en el `VirtualHost` 443 de `PFR-GW-SRV`, con backup propio y verificación de rutas antes y después. El hallazgo se declaró resuelto en #1083416 y el reescaneo del 28/10 no informó nada. Falta subir `max-age` a `31536000` el 02/11/2026, compromiso escrito en el ticket. El 28/10 se completó el alta del servicio y se pidió una aplicación OAuth **nueva** para `https://oss.personal.com.py/adm/`: la de producción no sirve, porque `index.php` no envía `redirect_uri`.
+
+### 2026-10-29 (trigésima cuarta entrada)
+
+**Fuente:** Llamada con Norberto Núñez (`reunion/2026-10-29_llamada-norberto-envio-correo-ntf.srt`).
+
+**Documentos creados:**
+- `docs/adr/ADR-0010-envio-correo-sistemas-via-ntf.md`
+- `reunion/2026-10-29_llamada-norberto-envio-correo-ntf.srt` (transcripción original)
+
+**Documentos actualizados:**
+- `docs/03_Componentes.md`: ficha del componente NTF y uso de su API de email
+- `docs/05_Configuracion.md`: regla de `ACL-OVN-1` hacia el Exchange y ruta agregadas en la llamada (pendientes de verificación)
+- `docs/07_Troubleshooting.md`: TRB-020, TRB-021 y TRB-022
+- `docs/10_Decisiones.md`, `docs/11_Riesgos.md` (RIE-023), `docs/13_Linea_de_Tiempo.md`
+- `laboratorio/2026-10-24_migracion-admtech-lxd/README.md`, `reunion/README.md`, `PENDIENTES.md`
+
+**Resumen:**
+Los sistemas del área (ADM-TECH, Infrawork, Tembiapó) envían correo por el módulo de email de NTF, sin pedir un servidor de correo nuevo ni una cuenta por sistema. Se probó en vivo: llegó un correo HTML con adjunto a casillas internas, después de abrir la salida hacia el Exchange `10.150.49.103:25` solo para el contenedor de NTF. Quedan dos problemas: el Exchange ya no hace relay hacia destinatarios externos, por lo que hay que pedir el relay SMTP de Seguridad, y Outlook marca los correos como sospechosos.

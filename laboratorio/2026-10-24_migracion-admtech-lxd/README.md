@@ -57,7 +57,7 @@ Tomadas de `knowledge/01_Arquitectura/integraciones.md` del repo de la aplicaci�
 
 | Dependencia | Cómo funciona hoy | Qué implica al migrar |
 |---|---|---|
-| **Correo** | `enviarMail()` **no envía**: inserta en `Infraestructura.public.mail_historial` (otra base del mismo servidor) y registra adjuntos en `reserva.mail_adjunto`. ✅ Confirmado por el usuario (2026-10-24): **un cron de Apache en `tec-calidad05`** lee esa cola y envía | ✅ Decisión: **se pedirá un servidor de correo nuevo**. Diseño propuesto: ADM-TECH envía sus propios correos (cola en su base, cron dentro del contenedor, adjuntos desde el volumen) usando el servidor nuevo como relay SMTP. Así desaparece la dependencia de `Infraestructura` y del cron de `tec-calidad05`, que sigue funcionando para Infrawork |
+| **Correo** | `enviarMail()` **no envía**: inserta en `Infraestructura.public.mail_historial` (otra base del mismo servidor) y registra adjuntos en `reserva.mail_adjunto`. ✅ Confirmado por el usuario (2026-10-24): **un cron de Apache en `tec-calidad05`** lee esa cola y envía | ✅ Decisión: **se pedirá un servidor de correo nuevo**. Diseño propuesto: ADM-TECH envía sus propios correos (cola en su base, cron dentro del contenedor, adjuntos desde el volumen) usando el servidor nuevo como relay SMTP. Así desaparece la dependencia de `Infraestructura` y del cron de `tec-calidad05`, que sigue funcionando para Infrawork. **Reemplazada el 2026-10-29:** no se pide un servidor nuevo; ADM-TECH envía por el módulo de email de NTF ([ADR-0010](../../docs/adr/ADR-0010-envio-correo-sistemas-via-ntf.md)) |
 | **Datos de SAP** | Tablas de `reserva` con datos de SAP (MIGO 101/281, `fecha_salida_sap`, `adm_inicial_detalle`, `deposito_salida_detalle`) | 🟡 Según el usuario, probablemente **ningún proceso externo** las carga: la aplicación tiene pantallas de carga manual (`csv_cargar_*`, carga de MIGO 101/281). Confirmarlo en la Fase 3. Si es así, no hay nada que redirigir |
 | **Login OAuth** | Contra `ciberseg.personal.com.py/ad/login/oauth/`, con `ADM_CLIENT_ID`/`SECRET` | La URL de retorno cambia de `infra.personal.com.py/adm` a `oss.personal.com.py/adm`: hay que actualizar la aplicación OAuth (ticket 623). El contenedor necesita salida HTTPS hacia `ciberseg.personal.com.py` |
 | **Notificaciones MIGO** | Scripts en `migo_notificacion/`, pensados para cron. No se pudo ver quién los programa (no hay sudo) | Confirmar la programación real y recrearla en el contenedor |
@@ -113,13 +113,15 @@ Encontrado al verificar las IP (2026-10-24, solo lectura). No estaba documentado
 
 **Implicancia:** antes de pedir un servidor de correo nuevo, consultar a Norberto si `CAR-SystemSMTP` puede funcionar también como relay de **salida** para ADM-TECH (con autenticación SASL desde `.17` y `relayhost` hacia el relay de Seguridad). Puede que no haga falta pedir nada.
 
+> ✅ **Respondido el 2026-10-29** (llamada con Norberto Núñez): no hace falta pedir nada ni usar `CAR-SystemSMTP`. ADM-TECH envía por el **módulo de email de NTF**, llamando a su API con el remitente `adm-tech@personal.com.py`. Por eso, en la tabla de arriba, la regla de ACL `.17 → servidor de correo nuevo` y el cron de envío propio ya no aplican: `enviarMail()` pasa a llamar a NTF. Los destinatarios externos dependen del relay SMTP de Seguridad, que está pendiente. Ver [ADR-0010](../../docs/adr/ADR-0010-envio-correo-sistemas-via-ntf.md) y [RIE-023](../../docs/11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos).
+
 ## Fases siguientes
 
 | Fase | Contenido | Estado |
 |---|---|---|
 | 3. Entorno de desarrollo | Contenedores de prueba con PHP 8.5 y PostgreSQL 18, copia de la base y una muestra de archivos | ✅ Listo 2026-10-25 — `https://10.143.11.8/adm/` (solo 10.150.60.85). Ver [`bitacora_fase3.md`](bitacora_fase3.md) |
 | 4. Modernización | Rama `feature/php85` en el repo de la aplicación (plan en su `knowledge/`) | 🟡 11 commits locales, desplegados en desarrollo; falta la prueba funcional del usuario |
-| 5. Migración a producción | Crear la plataforma, copiar los archivos, dump y restore de la base, correo por el servidor nuevo, corte | 🔴 Pendiente — depende del **servidor de correo nuevo** (a pedir) |
-| 6. Cierre | Retirar ADM-TECH de `tec-calidad05`, inventario en Jerure (452, 707, OAuth 623) | 🔴 Pendiente |
+| 5. Migración a producción | Crear la plataforma, copiar los archivos, dump y restore de la base, correo por NTF, corte | 🔴 Pendiente — ya no depende de un servidor de correo nuevo (ADR-0010). Falta adaptar `enviarMail()` a la API de NTF y, para destinatarios externos, el relay de Seguridad |
+| 6. Cierre | Retirar ADM-TECH de `tec-calidad05`, inventario en Jerure (452, 707, OAuth 623) | 🟡 En curso — 452 #1083324 resuelto (28/10); OAuth 623 #1084774 abierto (28/10). Ver [18_Inventario_Ciberseguridad.md](../../docs/18_Inventario_Ciberseguridad.md) |
 
 Detalle de las consultas ejecutadas: [`bitacora.md`](bitacora.md).

@@ -1009,6 +1009,12 @@ lxc network acl show ACL-OVN-1 --project default
 | `192.168.0.2,192.168.0.4` | `192.168.0.14` | tcp 5000 | VulnApp NG: balanceadores de Carpinelli y Fernando → Gunicorn *(agregada 2026-10-16, regla separada para no tocar la de Franco; ver [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/))* |
 | `192.168.0.14` | `10.150.58.116` | tcp 443 | VulnApp NG: app → API de SDI *(agregada 2026-10-09, ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) — permitida acá, pero bloqueada más allá de este cluster)* |
 | `192.168.0.14` | `10.150.31.68` | tcp 80 | VulnApp NG: app → pasarela de SMS *(agregada 2026-10-09)* |
+| Contenedor de NTF (🟡 en el audio se oye "192.168.0.10"; probablemente `192.168.0.110`, `FDO-WS-1`) | `10.150.49.103` | tcp 25 | Envío de correo por el Exchange interno *(agregada 2026-10-29 por Norberto Núñez durante la llamada, descripción "envío de e-mail vía exchange"; 🔴 no verificada después. Ver abajo)* |
+
+> 🔴 **Pendiente de verificación (2026-10-29):** para la prueba de correo de NTF ([ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md)), además de la regla de arriba, se agregó **dentro del contenedor de NTF** una ruta hacia `10.150.49.103` a través de un gateway. Se probó por `CAR-GW-SRV` (`192.168.0.2`), y se mencionaron `FDO-GW-SRV` (`.4`) y la interfaz OAM de Fernando (`FDO-GW-OAM`, `.9`). El envío funcionó por Carpinelli. Falta confirmar:
+> 1. **La IP de origen exacta de la regla.** `lxc network acl show ACL-OVN-1 --project default | grep -B2 -A6 10.150.49.103`.
+> 2. **Qué ruta quedó y si persiste.** Una ruta agregada con `ip route add` se pierde al reiniciar el contenedor. Para que persista, tiene que ir en su configuración de red. Verificar con `lxc exec FDO-WS-1 --project PRJ-OSS -- ip route get 10.150.49.103`.
+> 3. **Con qué IP sale el tráfico** hacia el servidor de correo (la del gateway por el que se enruta). Es la IP que se le va a informar a Seguridad para el relay.
 
 ### Agregar una regla nueva
 ```bash

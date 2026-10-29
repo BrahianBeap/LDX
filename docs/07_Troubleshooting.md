@@ -306,6 +306,47 @@ Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Ferna
 
 ---
 
+## TRB-020 — Outlook marca los correos de NTF como posible phishing
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Los correos enviados por el módulo de email de NTF llegan con un aviso de seguridad y con los vínculos deshabilitados |
+| **Síntomas** | Outlook: "Este podría ser un mensaje de phishing… Los vínculos y otras funciones se han deshabilitado" y "No hemos podido comprobar la identidad del remitente". En inglés: "This mail appears to be suspicious" |
+| **Causa** | ✅ Una causa confirmada: el **alias del remitente sin `@`** (ej. `ADM-TECH`). Al cambiarlo por una dirección completa (`adm-tech@personal.com.py`), el aviso en rojo desapareció para Norberto Núñez. 🟡 Otra causa probable: el correo sale por el Exchange interno sin que el dominio pueda validar al remitente. A Elías Alfonzo le siguió apareciendo el aviso de identidad aun con el alias corregido |
+| **Diagnóstico** | Revisar en el JSON enviado a NTF los campos de remitente y alias: los dos tienen que ser direcciones completas. Comparar con un correo de NetEco, que sale sin aviso con remitente `noreply`, para ver qué encabezados cambian |
+| **Solución** | 1) Usar remitente y alias con dirección completa. 2) 🔴 Pendiente: resolver la identidad del remitente con Seguridad, al pedir el relay SMTP ([RIE-023](11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos)) o pidiendo a Informática que agregue el remitente a la lista de confianza |
+| **Prevención** | Remitente y alias siempre con `@`. Evitar palabras como "test" en asunto y cuerpo: los filtros las asocian a mensajes masivos |
+
+**Contexto:** prueba del 2026-10-29 con Norberto Núñez, ver [ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md).
+
+---
+
+## TRB-021 — Outlook bloquea el adjunto de un correo enviado por NTF
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | El correo llega, pero el adjunto no se puede abrir |
+| **Síntomas** | Outlook: "Outlook bloqueó el acceso al siguiente dato adjunto potencialmente inseguro". En OWA, o para otros destinatarios, el mismo correo puede llegar bien |
+| **Causa** | ✅ El script de ejemplo de NTF declaraba todos los adjuntos como `application/octet-stream`, porque originalmente solo se enviaban PDF. Con un tipo genérico, Outlook trata el adjunto como ejecutable potencial |
+| **Diagnóstico** | Ver el tipo con que se envió el adjunto. Probar con un `.txt` declarado como `text/plain`: si llega, la causa es el tipo MIME |
+| **Solución** | Declarar el tipo real del archivo: `file --mime-type -b archivo` (en el contenedor hubo que instalar el paquete `file`). Desde PHP o Python, usar la librería de correo del lenguaje, que lo resuelve sola |
+| **Prevención** | No fijar `octet-stream` para todos los adjuntos. Enviar solo tipos habituales (PDF, XLSX, CSV, TXT) |
+
+---
+
+## TRB-022 — Los correos de NTF a destinatarios externos no llegan
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Un correo enviado por NTF a una dirección fuera de `personal.com.py` (ej. Gmail) nunca llega |
+| **Síntomas** | Los destinatarios internos lo reciben; el externo no. NTF no devuelve error ni deja nada visible para quien hizo el pedido |
+| **Causa** | ✅ El Exchange interno (`10.150.49.103`) **ya no hace relay hacia dominios externos**, según Norberto Núñez (2026-10-29) |
+| **Diagnóstico** | Enviar el mismo correo a una casilla interna y a una externa. Si solo llega la interna, es esta causa. Revisar el log de NTF (`journalctl`) por rechazos del servidor SMTP |
+| **Solución** | 🔴 Pendiente: pedir a Seguridad acceso a su **relay SMTP** (IP y puerto) y enviar por ahí los correos con destinatarios externos. Ver [RIE-023](11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos) |
+| **Prevención** | Hasta tener el relay, no usar NTF para notificar a contratistas o a cualquier destinatario externo. 🔴 Pedir que NTF informe los envíos fallidos |
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash

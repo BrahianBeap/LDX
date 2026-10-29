@@ -348,6 +348,46 @@ Ver el patrón de configuración (regla ACL por `path` + balanceo hacia los miem
 
 ---
 
+## NTF (servicio de notificaciones SMS y email)
+
+Servicio propio de Norberto Núñez para enviar notificaciones. Lo usan Tembiapó (SMS) y, desde el 2026-10-29, es también el camino definido para el **correo saliente** de los sistemas del área. Ver [ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md).
+
+| Campo | Descripción |
+|---|---|
+| **Nombre** | NTF. Contenedores `FDO-WS-1` (`192.168.0.110`, `fdo.1`) y `PFR-WS-1` (`192.168.0.111`, `pfr.1`), proyecto `PRJ-OSS` |
+| **Función** | Recibe pedidos de notificación por API y los entrega como SMS (por SMPP) o como correo (por SMTP) |
+| **Responsabilidad** | Ser el único punto de salida de SMS y correo de los sistemas del cluster |
+| **Dependencias** | Para SMS: centros SMPP (`10.150.30.18:5016`, `10.150.48.230:8060`). Para correo: el Exchange interno `10.150.49.103:25` (✅ usado en la prueba del 2026-10-29) y, para destinatarios externos, el relay SMTP de Seguridad (🔴 pendiente). Reglas en `ACL-OVN-1` para cada salida |
+| **Entradas** | Pedidos por la API (puerto `8000` del contenedor). Desde afuera del cluster, por `/ntf` en los gateways, con certificado de cliente (ver [Variante embebida](#variante-balanceador-embebido-en-el-gateway-cuando-se-necesita-la-ip-real-de-origen)) |
+| **Salidas** | SMS y correos entregados. 🔴 Si el servidor de correo rechaza un envío, NTF no lo informa a quien lo pidió |
+| **Impacto si falla** | Los sistemas no pueden notificar: Tembiapó deja de enviar SMS y los sistemas migrados (ADM-TECH y los que sigan) dejan de enviar correo |
+| **Cómo verificar** | Enviar un correo de prueba a una casilla interna (ver abajo) y revisar el log: `lxc exec FDO-WS-1 --project PRJ-OSS -- journalctl -n 50`. Si dice `connection refused`, revisar la ruta y `ACL-OVN-1` |
+| **Buenas prácticas** | Ver abajo |
+
+### Envío de correo por la API
+
+✅ Mostrado por Norberto Núñez en la llamada del 2026-10-29. El pedido es un JSON. Estos son los campos que se usaron en la prueba; los nombres exactos están en el repo de NTF en GitLab, donde Elías Alfonzo tiene acceso Developer:
+
+| Campo | Uso |
+|---|---|
+| Tipo | `email` (el mismo servicio envía SMS) |
+| Destinatarios | Lista de direcciones |
+| Asunto | Texto. Evitar palabras como "test", que disparan los filtros de correo |
+| Remitente | Dirección del sistema, **con `@`**: ej. `adm-tech@personal.com.py`. Cada sistema define el suyo en cada llamada |
+| Alias del remitente | Nombre visible. Tiene que ser también una dirección completa: sin `@`, Outlook marca el correo como sospechoso |
+| Cuerpo | HTML **codificado en base64**, con el *flag* que indica que el cuerpo va en base64 y el tipo de contenido HTML (por defecto es texto plano) |
+| Adjunto | Opcional. Se envía con su tipo MIME real (`file --mime-type -b archivo`). Con `application/octet-stream` fijo, Outlook bloquea los adjuntos |
+
+> **Nota:** la prueba se hizo con un script de bash. Norberto aclaró que, desde un lenguaje como PHP o Python, conviene usar una librería que arme el MIME en lugar de hacerlo a mano.
+
+### Buenas prácticas
+
+- **Salida restringida por ACL al contenedor de NTF.** El cluster no deja salir tráfico por defecto: el primer intento de envío falló con `connection refused`. Norberto lo consideró correcto, porque impide que un atacante use cualquier contenedor para enviar correo. La regla hacia el servidor de correo se limita al contenedor de NTF ("así nos ahorramos problemas en el futuro").
+- **Definir qué orígenes pueden enviar y con qué remitente.** 🔴 Pendiente. Hoy cualquiera que llegue a la API puede usar cualquier remitente.
+- **Probar con un destinatario interno y uno externo** después de cada cambio de salida. Un envío a un destinatario externo puede fallar sin error visible (ver [TRB-022](07_Troubleshooting.md#trb-022--los-correos-de-ntf-a-destinatarios-externos-no-llegan)).
+
+---
+
 ## Proyectos LXD (multi-tenancy)
 
 | Campo | Valor |

@@ -17,6 +17,7 @@
 | 6 | Aislamiento multi-tenant | Proyectos LXD con límites y grupos | Proyecto `default` único para todos | [ADR-0007](adr/ADR-0007-proyectos-lxd-multitenancy.md) |
 | 7 | Exposición de servicios | Gateway + balanceador (variante embebida en la práctica) | Exposición directa de cada contenedor | [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
 | 8 | Nombres DNS de los servicios | `oss.personal.com.py` por round-robin + nombres propios por sitio cuando hay restricción de ruta | Solo un nombre por sitio | [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) |
+| 9 | Correo saliente de los sistemas | Módulo de email de NTF (+ relay SMTP de Seguridad para externos, pendiente) | Servidor de correo propio con una cuenta por sistema | [ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md) |
 
 ---
 

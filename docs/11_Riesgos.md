@@ -354,13 +354,27 @@ Detalle del certificado y plan de instalación: [`laboratorio/2026-10-26_certifi
 
 ---
 
+## RIE-023 — Correo de los sistemas sin relay hacia destinatarios externos
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | ✅ El correo de los sistemas del cluster sale por el módulo de email de NTF ([ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md)) hacia el Exchange interno `10.150.49.103:25`. Ese Exchange entrega a direcciones internas pero **no hace relay hacia dominios externos**. Además, los correos llegan a Outlook con el aviso "no se pudo comprobar la identidad del remitente" |
+| **Causa** | El Exchange corporativo restringe el relay. El acceso al relay SMTP de Seguridad todavía no se pidió |
+| **Impacto** | Los avisos a destinatarios externos (por ejemplo, contratistas desde Tembiapó) no llegan, y nadie se entera porque NTF no informa el fallo. Los internos llegan marcados como sospechosos, y un destinatario puede descartarlos ("si a una persona extraña le llega, no va a aceptar") |
+| **Severidad** | Media (no bloquea el envío interno, pero impide el externo y erosiona la confianza en los avisos) |
+| **Mitigación actual** | Remitente y alias con dirección completa ([TRB-020](07_Troubleshooting.md#trb-020--outlook-marca-los-correos-de-ntf-como-posible-phishing)). Solo usar NTF para destinatarios internos |
+| **Acción requerida** | 1) Preguntar a Abel Díaz o Nico qué tema de ayuda de Jerure corresponde al relay SMTP de Seguridad; si no hay, cargar un ticket genérico, revisado antes por Norberto Núñez. 2) Informar la IP de origen (ver la verificación pendiente en [05_Configuracion.md](05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl)). 3) Con la IP y el puerto del relay, ajustar la ruta y la ACL y probar con un destinatario interno y uno externo |
+| **Responsable** | Elías Alfonzo (pedido) y Norberto Núñez (revisión y ajustes en NTF) |
+
+---
+
 ## Resumen de severidades
 
 | Severidad | Riesgos |
 |---|---|
 | **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-006 (sin backup), RIE-015 (conectividad SDI de VulnApp NG bloqueada) |
-| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria), RIE-018 (métricas de LXD sin autenticación), RIE-020 (gateways CAR/FDO no homogéneos, bloquean el DNS), RIE-021 (`PFR-GW-SRV` sin snapshots), RIE-022 (certificado de 90 días sin renovación automática) |
+| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria), RIE-018 (métricas de LXD sin autenticación), RIE-020 (gateways CAR/FDO no homogéneos, bloquean el DNS), RIE-021 (`PFR-GW-SRV` sin snapshots), RIE-022 (certificado de 90 días sin renovación automática), RIE-023 (correo sin relay hacia destinatarios externos) |
 | **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades), RIE-017 (3 contenedores con límite de memoria ajustado), RIE-019 (certificados TLS no confiables y cifrados heredados) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas) |
 | **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |

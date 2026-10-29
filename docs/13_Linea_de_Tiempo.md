@@ -196,6 +196,20 @@
 | Infrawork y ADM-TECH | Migrar a contenedores en los 3 sitios, arrancando con 1 CPU y ajustando por uso real. **FileRoom (~800 GB) se queda en tec-calidad05** hasta tener capacidad | Esta línea de tiempo |
 | Bases de datos | Se habilita centralizarlas en el servidor de Norberto (asignado a SDA); Marcos pidió a Marta reservar esa capacidad en el presupuesto del año próximo. Norberto habilitó ahí un servicio **S3** (bucket ya creado, credenciales en PasswordSafe) | Esta línea de tiempo |
 
+### Llamada con Norberto Núñez sobre el correo saliente de los contenedores (2026-10-29)
+
+**Referencia:** `reunion/2026-10-29_llamada-norberto-envio-correo-ntf.srt`. 🟡 La fecha se tomó del archivo, no de la grabación.
+
+| Tema | Qué se definió | Dónde quedó documentado |
+|---|---|---|
+| Correo de los sistemas | No se pide un servidor de correo nuevo: se usa el **módulo de email de NTF**. Cada sistema define su remitente en la llamada a la API | [ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md), [03_Componentes.md](03_Componentes.md#ntf-servicio-de-notificaciones-sms-y-email) |
+| Prueba en vivo | Llegó un correo HTML con adjunto a casillas internas, después de agregar una ruta y una regla de ACL hacia el Exchange `10.150.49.103:25` | [05_Configuracion.md](05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl) (🔴 verificar persistencia) |
+| Avisos de Outlook | Alias sin `@` (corregido) y adjuntos con tipo MIME genérico | [TRB-020](07_Troubleshooting.md#trb-020--outlook-marca-los-correos-de-ntf-como-posible-phishing), [TRB-021](07_Troubleshooting.md#trb-021--outlook-bloquea-el-adjunto-de-un-correo-enviado-por-ntf) |
+| Destinatarios externos | El Exchange ya no hace relay: hay que pedir el relay SMTP de Seguridad por ticket (Abel Díaz o Nico indican el tema de ayuda) | [RIE-023](11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos), [TRB-022](07_Troubleshooting.md#trb-022--los-correos-de-ntf-a-destinatarios-externos-no-llegan) |
+| Inventario del correo saliente | 🟡 Opinión de Norberto: un servicio saliente no se inventaría como servicio (eso es para puertos que escuchan); sí cuenta la IP de origen. Elías lo va a consultar igual | Esta línea de tiempo |
+| Certificados en los gateways | 🟡 Propuesta de Norberto, no aplicada: dos `VirtualHost` 443. Uno con el certificado autofirmado, solo para servicios internos de OSS que validan al cliente (Tembiapó → NTF), y otro con el certificado oficial para los servicios públicos. El 80 se mantiene por Loki | Esta línea de tiempo (a evaluar contra el modelo actual de [05_Configuracion.md](05_Configuracion.md#mtls-opcional-por-defecto-obligatorio-solo-en-rutas-específicas)) |
+| DNS | 🔴 En la llamada se dijo que el nombre apunta a Fernando. [PENDIENTES.md](../PENDIENTES.md) registra que apunta solo a `10.143.11.8` (Franco). Confirmar con `nslookup oss.personal.com.py` | — |
+
 ---
 
 ## Hitos pendientes (próximos pasos)
@@ -239,6 +253,7 @@
 | Contenedores de Infrawork y ADM-TECH en los 3 sitios (1 CPU inicial) | Elías Alfonzo | 🔴 Pendiente — FileRoom queda fuera del clúster |
 | Centralizar bases de datos del área en el servidor de Norberto y usar su servicio S3 | Elías Alfonzo + Norberto Núñez | 🟡 Habilitado, sin iniciar |
 | Prueba de envío de SMS por NTF desde Infrawork | Elías Alfonzo + Daniel Medina | 🔴 Pendiente — falta el OK de un tercero (Norberto revisa el correo) |
+| Pedir acceso al relay SMTP de Seguridad para el correo de NTF a destinatarios externos | Elías Alfonzo (Norberto revisa el ticket) | 🔴 Pendiente — ver [RIE-023](11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos) |
 | Servidor de correo entrante para permisos de ingreso a sitios (Postfix/Exim, puerto 25 con TLS) | Norberto Núñez | 🟡 Propuesto y aprobado por Marcos Casco para alojar en el clúster (segundo entregable) |
 | Contenedor con Docker para OSRM (cálculo de rutas de técnicos) | Sin asignar | 🟡 Pedido de Marcos Casco; requiere `security.nesting` y evaluar RAM |
 
