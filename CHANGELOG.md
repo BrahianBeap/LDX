@@ -558,3 +558,16 @@ Se rediseñó el portal para que cualquier persona entienda en la primera pantal
 
 **Resumen:**
 El Portal OSS 2.0.0 pasó de la vista previa a la raíz `https://oss.personal.com.py/` en los 3 gateways (backup de la versión anterior en `/root/index.html.bak-202610261858`), y se retiró `/portal-preview/`. Los enlaces a Kanboard, VulnApp NG y ADM-TECH se verificaron después del cambio.
+
+### 2026-10-26 (trigésima segunda entrada)
+
+**Fuente:** Pedido y aprobación del usuario; implementación con entorno de prueba.
+
+**Documentos creados:**
+- `laboratorio/2026-10-26_kanboard-tema-osstheme/README.md`: relevamiento, entorno de prueba `PFR-KANBOARD-PRUEBA` (`/kanboard-prueba/`), pase a producción con respaldos, rollback y pendientes
+
+**Documentos actualizados:**
+- `PENDIENTES.md`
+
+**Resumen:**
+Kanboard tiene ahora la identidad visual de OSS mediante el plugin propio `OssTheme` (código en el repositorio de Kanboard del usuario): inicio de sesión nuevo, cabecera, tarjetas con el título primero y vencimientos con texto, y colores para los temas claro, oscuro y automático. No toca el núcleo ni la base. Se probó en una copia aislada y se pasó a producción después de respaldar (snapshot, aplicación, base y adjuntos). Se desactivaron Customizer y Essential, que reemplazaban las mismas plantillas.

@@ -63,6 +63,7 @@
 - [ ] Cargar en Kanboard la URL de la aplicación `https://oss.personal.com.py/kanboard/` (hoy vacía), para que los enlaces de correo y Telegram usen el nombre.
 - [ ] Actualizar la colección de Postman de [`recursos/kanboard-api/`](recursos/kanboard-api/) a `/kanboard/jsonrpc.php`, y avisar a los clientes de la API; después retirar el `ProxyPass /jsonrpc.php` temporal.
 - [ ] Al actualizar Kanboard de versión: volver a agregar `RewriteCond %{REQUEST_FILENAME} !-d` en su `.htaccess`.
+- [x] Tema **OssTheme** en producción (26/10); Customizer y Essential desactivados. Pendientes de prueba manual y retiro de `PFR-KANBOARD-PRUEBA` + `/kanboard-prueba/`: ver [`laboratorio/2026-10-26_kanboard-tema-osstheme/`](laboratorio/2026-10-26_kanboard-tema-osstheme/).
 
 ## 5. Migraciones y cargas nuevas
 
