@@ -18,7 +18,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | Servicio (452) | #1083324 | `ADM-TECH-OSS` (entorno de desarrollo) | ✅ Resuelto (inventariado 28/10) | `https://oss.personal.com.py/adm/` |
 | OAuth AD (623) | #1084774 | Aplicación OAuth de `ADM-TECH-OSS` (servicio 32989) | ✅ Creada 29/10 (id 45); login probado OK el 29/10 | Retorno `https://oss.personal.com.py/adm/` |
 | OAuth AD (623) | #1085317 | Aplicación OAuth de `Kanboard-OSS` (servicio 33013), solo autenticación | ✅ Creada por SDI el 30/10 (id 48) | Retorno `https://oss.personal.com.py/kanboard/?controller=OAuthController&action=handler&plugin=OAuth2` |
-| OAuth AD (623) | #1085320 | Aplicación OAuth de `Vulnapp-OSS` (servicio 33012), solo autenticación | 🟡 Pendiente de aprobación (29/10) | Retorno `https://oss.personal.com.py/vulnapp/oauth/callback` |
+| OAuth AD (623) | #1085320 | Aplicación OAuth de `Vulnapp-OSS` (servicio 33012), solo autenticación | ✅ Creada (id 47) y funcionando desde el 30/10 | Retorno `https://oss.personal.com.py/vulnapp/oauth/callback` |
 | Acceso VPN/SDP (556) | #1085324 | Acceso de `alfonzel` a `Kanboard-OSS` (443) | 🟡 Abierto (29/10) | — |
 
 ```
@@ -185,7 +185,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 
 **Login con AD en Kanboard funcionando (2026-10-30):** ✅ el plugin oficial `OAuth2` de Kanboard no es compatible con SDI, así que se escribió un plugin propio con el mismo nombre de carpeta, para respetar la URL de retorno registrada. El responsable ingresó con su cuenta de AD. Ver [`proyectos/kanboard-oauth-sdi/`](../proyectos/kanboard-oauth-sdi/) y [TRB-023](07_Troubleshooting.md#trb-023--el-retorno-del-login-con-ad-oauth-de-sdi-da-action-not-implemented).
 
-> **Advertencia:** en VulnApp NG hay que definir cómo se vincula el TPPY de AD con los usuarios locales existentes, para no crear usuarios duplicados.
+**Login con AD en VulnApp NG funcionando (2026-10-30):** ✅ SDI respondió en #1085320 (Aldo Benítez) con la aplicación `Vulnapp-OSS`: id **47**, `client_id` `v42arEJ86g`, `auth_only: true`. Es el único ingreso: entra quien ya tenga usuario creado, y se verifica por su TPPY. El `client_secret` también se vio en una captura: pedir a SDI que lo regenere. Ver [`laboratorio/2026-10-30_vulnapp-oauth-ad/`](../laboratorio/2026-10-30_vulnapp-oauth-ad/).
 
 **Acceso VPN/SDP (556, #1085324, 2026-10-29):** acceso del usuario `alfonzel` a Kanboard por la VPN/SDP corporativa. 🟡 El ticket lista la aplicación con el ID **20341**, distinto del ID de inventario del servicio (33013). Probablemente sea un catálogo propio del SDP; no está confirmado.
 

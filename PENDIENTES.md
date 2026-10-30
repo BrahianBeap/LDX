@@ -53,7 +53,10 @@
   - [x] Limpieza diaria de sesiones vencidas con `kanboard-sesiones.timer` (30/10; el contenedor no tiene `cron`). Ver [instalacion-v1.0.md](proyectos/kanboard-oauth-sdi/docs/decisiones/instalacion-v1.0.md#limpieza-diaria-de-sesiones-vencidas-).
   - [ ] Ajustar en `OssTheme` el texto "Ingresá con tu usuario de Kanboard." (ahora es con AD).
   - [ ] Evaluar: completar nombre/correo desde AD, roles por grupos de AD (requiere un 623 nuevo con grupos), IP real del cliente en `last_logins` (hoy se ve `192.168.0.1`).
-- [ ] **OAuth de VulnApp NG (623 #1085320)**: esperando credenciales. Programar `/vulnapp/oauth/callback` (canje igual que ADM-TECH: JSON y respuesta dentro de `data`; SDI no devuelve `state`), regla de ACL hacia `10.150.49.41:443` y vínculo TPPY ↔ usuario local. Ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#aplicaciones-oauth-de-kanboard-y-vulnapp-ng-623-2026-10-29).
+- [x] **Login con AD en VulnApp NG** (623 #1085320): funcionando desde el 30/10 como único ingreso. Ver [bitácora](laboratorio/2026-10-30_vulnapp-oauth-ad/README.md).
+  - [ ] Pedir a SDI que regenere el `client_secret` (se vio en una captura) y cargar el nuevo en `env.conf`.
+  - [ ] Confirmar el ingreso del resto del equipo, sobre todo los usuarios `u99xxxx`: solo se probó `alfonzel`.
+  - [ ] Evaluar: corregir `TIMEOUT_MS` de `login.html` (da 1,8 s) y dar de baja `admin`, `sdi` y `visita`.
 - [ ] Acceso VPN/SDP a Kanboard (556 #1085324, 29/10): seguir la aprobación.
 - [ ] Por cada servicio (Kanboard, VulnApp NG; NTF y Loki a confirmar con Norberto): 452 Alta de servicios, 707 Alta de aplicaciones, 623 OAuth + grupos AD, pase a producción.
 - [ ] Inventariar cada aplicación con **IP de servicio + 443 + URL** (`https://oss.personal.com.py/<app>`), no con la IP del contenedor (indicación de Norberto, 16/10).

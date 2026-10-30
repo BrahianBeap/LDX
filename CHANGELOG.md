@@ -623,3 +623,20 @@ Los sistemas del área (ADM-TECH, Infrawork, Tembiapó) envían correo por el m�
 El plugin oficial `OAuth2` de Kanboard no es compatible con SDI: el token se pide en JSON, la respuesta viene dentro de `data` y los datos del usuario están en el propio JWT. Se escribió un plugin propio que reproduce el canje de ADM-TECH y vincula la cuenta de AD con el usuario local por el correo, sin crear usuarios. El login con contraseña sigue activo. Se agregaron una ruta persistente y una regla de ACL hacia `ciberseg`. En la primera prueba apareció un defecto de SDI (agrega `?code=` aunque la URL ya tenga `?`, y no devuelve `state`), corregido en la v1.0.1. El responsable ingresó con su cuenta de AD.
 
 Ese mismo día, a pedido del responsable, Kanboard pasó a **solo ingreso con AD**: contraseña deshabilitada para todos los usuarios (incluido `admin`) y formulario de login oculto. Después se borraron las 22 sesiones "Recordarme" (las 20 vigentes permitían seguir entrando sin AD hasta 60 días) y 13.843 sesiones vencidas acumuladas, y se agregó una limpieza diaria con un temporizador de systemd. Detalle y rollback en [`instalacion-v1.0.md`](proyectos/kanboard-oauth-sdi/docs/decisiones/instalacion-v1.0.md).
+
+---
+
+### 2026-10-30 (trigésima sexta entrada)
+
+**Fuente:** Ticket 623 #1085320 (credenciales OAuth de `Vulnapp-OSS`) e implementación en `PFR-VULNAPP-APP` a pedido del usuario.
+
+**Documentos creados:**
+- `laboratorio/2026-10-30_vulnapp-oauth-ad/README.md`: cambios, verificación, acceso de emergencia y rollback
+
+**Documentos actualizados:**
+- `docs/05_Configuracion.md`: regla de `ACL-OVN-1` `192.168.0.14 → 10.150.49.41:443`
+- `docs/18_Inventario_Ciberseguridad.md`: aplicación OAuth de VulnApp NG creada (id 47) y login con AD funcionando
+- `PENDIENTES.md`
+
+**Resumen:**
+VulnApp NG pasó a **solo ingreso con AD**. Entra quien ya tenga usuario creado, y se vincula el claim `sub` (TPPY) con `usuarios.username`, sin crear usuarios. Las cuentas `admin`, `sdi` y `visita` quedan sin ingreso. El código está en el repositorio `DockerLab` (`vulnapp-ng/app`). El responsable ingresó con su cuenta de AD.
