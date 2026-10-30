@@ -5,7 +5,7 @@
 
 ## Objetivo
 
-Que el equipo ingrese a Kanboard (`https://oss.personal.com.py/kanboard/`) con su cuenta de AD, usando la aplicación OAuth `Kanboard-OSS` que SDI creó en el ticket 623 **#1085317** (id 48). El login con usuario y contraseña de Kanboard **sigue funcionando**.
+Que el equipo ingrese a Kanboard (`https://oss.personal.com.py/kanboard/`) con su cuenta de AD, usando la aplicación OAuth `Kanboard-OSS` que SDI creó en el ticket 623 **#1085317** (id 48). Desde el 2026-10-30 es el **único** ingreso: el login con contraseña está deshabilitado y oculto (ver [instalacion-v1.0.md](docs/decisiones/instalacion-v1.0.md#8-solo-ingreso-con-ad-formulario-oculto-y-admin-sin-contraseña-)).
 
 ## Por qué un plugin propio
 

@@ -76,13 +76,25 @@ El pedido del token sale del contenedor por `PFR-GW-OAM` (`192.168.0.6`). Necesi
 | `state` | Se genera y se guarda en la sesión por 10 minutos, y es de un solo uso. Si SDI lo devuelve, tiene que coincidir. ✅ SDI no lo devuelve (2026-10-30): en ese caso alcanza con que este navegador haya iniciado el ingreso: protege contra un `code` inyectado desde otro sitio, pero no tanto como el `state` completo |
 | Firma del JWT | No se verifica (ADM-TECH tampoco lo hace). El token llega directo de SDI por HTTPS, con el certificado validado (`HTTP_VERIFY_SSL_CERTIFICATE = true`), en un pedido autenticado con el secreto |
 | Secreto | Solo en `config.php` del contenedor, con permisos `640`. Nunca en el repositorio |
-| Login local | Sigue activo. Si SDI no responde, el equipo entra con su contraseña |
+| Login local | Deshabilitado para todos y formulario oculto (`HIDE_LOGIN_FORM`) desde el 2026-10-30. Si SDI no responde, ver el acceso de emergencia en [instalacion-v1.0.md](decisiones/instalacion-v1.0.md#8-solo-ingreso-con-ad-formulario-oculto-y-admin-sin-contraseña-) |
+
+## Duración de la sesión
+
+✅ Verificado en el código y la configuración de Kanboard 1.2.46 (2026-10-30):
+
+| Qué | Valor | Efecto |
+|---|---|---|
+| `SESSION_DURATION` (`config.php`) | `0` | La cookie dura hasta que se cierra el navegador |
+| `session.gc_maxlifetime` (PHP) | `1440` s | La sesión vence tras **24 minutos sin actividad**. `SessionHandler::write` corre el vencimiento en cada pedido |
+| "Recordarme" | 60 días | No se crea: el ingreso por AD no lo usa y el formulario está oculto. `RememberMeAuth` no controla `disable_login_form`, por eso se borraron los existentes |
+
+🔴 No se sabe si SDI mantiene una sesión propia. Si la mantiene, al volver a entrar no se pide de nuevo la contraseña de AD.
 
 ## Dependencias
 
 | Dependencia | Si falla |
 |---|---|
-| `ciberseg.personal.com.py` (`10.150.49.41:443`) | El botón de AD da error. El login local sigue funcionando |
+| `ciberseg.personal.com.py` (`10.150.49.41:443`) | El botón de AD da error y **nadie puede entrar** (sin login local). Las sesiones ya abiertas siguen |
 | Ruta `10.150.49.41 via 192.168.0.6` y `PFR-GW-OAM` | Igual que la anterior |
 | Regla `192.168.0.106 → 10.150.49.41 tcp/443` en `ACL-OVN-1` | Igual que la anterior |
 | Constantes en `config.php` | El plugin no se activa y el botón no aparece |

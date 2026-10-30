@@ -130,3 +130,36 @@ lxc exec PFR-KANBOARD-TEST -- sh -c "
 Cuando SDI vuelva, revertir los dos cambios (`true` y `disable_login_form=1`).
 
 **Reactivar la contraseña a una persona:** no alcanza con hacerlo desde la interfaz, porque el formulario está oculto. Mientras se resuelve su caso, la opción es corregir el usuario de Kanboard para que coincida con su correo de AD (Usuarios → usuario → Editar → nombre de usuario).
+
+## 9. Sesiones "Recordarme" y sesiones vencidas borradas ✅
+
+**Por qué:** `RememberMeAuth` de Kanboard no controla `disable_login_form`. Las 20 sesiones "Recordarme" vigentes, de 5 usuarios y con 60 días de duración, permitían seguir entrando sin AD hasta el 27/12/2026. Además, la tabla `sessions` acumulaba 13.843 sesiones vencidas: Ubuntu desactiva la limpieza de PHP (`session.gc_probability = 0`) y su `phpsessionclean.timer` solo limpia archivos, no la base de Kanboard (`SESSION_HANDLER = db`).
+
+- Backup previo: `/root/kanboard-bak-20261030-oauth/db-antes-limpieza-sesiones.sqlite` (`fe1a5b60…d143`, permisos `600`).
+- Ejecutado como `www-data`: `delete from remember_me` (22 filas, 2 ya vencidas), `delete from sessions where expire_at <= now` (13.843 filas) y `VACUUM`. La base bajó de 12,7 MB a 10,3 MB.
+- Quedaron 0 sesiones "Recordarme" y las 3 sesiones activas en ese momento. El login responde `200`.
+- Las 5 personas afectadas vuelven a entrar con el botón de AD.
+
+**Rollback:** restaurar la base desde el backup con Apache detenido. Esto también revierte cualquier cambio posterior de Kanboard, así que solo sirve inmediatamente después.
+
+### Limpieza diaria de sesiones vencidas ✅
+
+✅ El contenedor **no tiene `cron`** (paquete sin instalar y sin internet para agregarlo). Por eso se usa un temporizador de systemd, el mismo mecanismo de `phpsessionclean.timer`:
+
+| Archivo | Contenido |
+|---|---|
+| `/etc/systemd/system/kanboard-sesiones.service` | `Type=oneshot`, `User=www-data`. Ejecuta con `php` el `delete from sessions where expire_at < now` |
+| `/etc/systemd/system/kanboard-sesiones.timer` | `OnCalendar=*-*-* 04:17:00` (UTC) y `Persistent=true`: si el contenedor estaba apagado, corre al arrancar |
+
+> **Nota:** en `ExecStart`, las variables de PHP se escriben `$$d`, porque systemd interpreta `$d` como variable de entorno.
+
+**Verificación:** `systemctl start kanboard-sesiones.service` terminó con `Result=success` y borró 2 sesiones vencidas. La próxima corrida programada figura en:
+```bash
+lxc exec PFR-KANBOARD-TEST -- systemctl list-timers kanboard-sesiones.timer --no-pager
+lxc exec PFR-KANBOARD-TEST -- journalctl -u kanboard-sesiones.service -n 5 --no-pager
+```
+
+**Rollback:**
+```bash
+lxc exec PFR-KANBOARD-TEST -- sh -c 'systemctl disable --now kanboard-sesiones.timer && rm /etc/systemd/system/kanboard-sesiones.service /etc/systemd/system/kanboard-sesiones.timer && systemctl daemon-reload'
+```
