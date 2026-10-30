@@ -347,6 +347,19 @@ Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Ferna
 
 ---
 
+## TRB-023 — El retorno del login con AD (OAuth de SDI) da "Action not implemented"
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Después de ingresar en SDI, el navegador vuelve a la aplicación y esta muestra un error en lugar de iniciar la sesión |
+| **Síntomas** | En Kanboard: `Internal Error: Action not implemented`. La barra de direcciones muestra **dos** `?`: `...&plugin=OAuth2?code=2070d859-...` |
+| **Causa** | ✅ SDI agrega `?code=...` a la URL de retorno registrada **aunque esta ya tenga parámetros** (debería usar `&`). La aplicación recibe un parámetro corrupto (`plugin` = `OAuth2?code=...`) y pierde el código. Visto el 2026-10-30 con la aplicación `Kanboard-OSS` (623 #1085317). SDI tampoco devuelve el parámetro `state` |
+| **Diagnóstico** | Mirar la URL de retorno: si el último parámetro registrado termina en `?code=`, es esta causa |
+| **Solución** | En Kanboard, el plugin propio `OAuth2` corrige la URL antes de que la procese Kanboard (v1.0.1, ver [kanboard-oauth-sdi](../proyectos/kanboard-oauth-sdi/docs/00_Arquitectura.md)). En otra aplicación: separar el último parámetro en `?` y tomar `code` de ahí |
+| **Prevención** | Al pedir una aplicación OAuth (623), registrar una URL de retorno **sin** `?` (por ejemplo `/vulnapp/oauth/callback`). Si la aplicación necesita parámetros, prever esta corrección desde el principio |
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash

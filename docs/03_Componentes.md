@@ -248,7 +248,7 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 | **Nombre** | Kanboard |
 | **Función** | Gestión de tareas del equipo (tableros kanban) — reemplazo de Microsoft Planner |
 | **Responsabilidad** | Seguimiento del trabajo del equipo: proyectos, columnas, tareas, comentarios |
-| **Dependencias** | PHP vía `mod_php` de Apache; base de datos SQLite propia (sin motor externo) |
+| **Dependencias** | PHP vía `mod_php` de Apache; base de datos SQLite propia (sin motor externo); OAuth de SDI (`ciberseg.personal.com.py`) solo para el login con AD, por `PFR-GW-OAM` |
 | **Entradas** | Peticiones HTTP/HTTPS reenviadas por el gateway de Franco (`PFR-GW-SRV`, ver [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md)) |
 | **Salidas** | Interfaz web y API JSON-RPC (`/jsonrpc.php`) |
 | **Impacto si falla** | El equipo pierde acceso al tablero de tareas; no afecta al resto del cluster |
@@ -264,8 +264,9 @@ Ver el procedimiento completo en [`onenote/Clúster-OSS/Clúster/SSSD.md`](../on
 | Runtime | PHP 8.5.4, con OPcache activo |
 | Base de datos | SQLite (`DB_DRIVER=sqlite` en `config.php`) — un único archivo, `/var/www/kanboard/data/db.sqlite` (~2 MB). No usa MySQL/MariaDB ni PostgreSQL, aunque Kanboard los soporta |
 | Aplicación | Kanboard **v1.2.46** (junio 2025) — en `/var/www/kanboard` |
-| Plugins instalados | `Calendar`, `Customizer`, `Essential`, `Subtaskdescription`, `TeamWorkload`, `Telegram` |
-| Autenticación | Local (usuario/clave) — `LDAP_AUTH` y `REVERSE_PROXY_AUTH` desactivados en `config.php` |
+| Plugins instalados | ✅ 2026-10-30: `Calendar`, `OAuth2` (propio, login con AD), `OssTheme` (propio), `Subtaskdescription`, `TeamWorkload`, `Telegram`. `Customizer` y `Essential` se desactivaron el 2026-10-26 |
+| Autenticación | Local (usuario/clave) y, desde el 2026-10-30, **cuenta de AD** por el OAuth de SDI con el plugin propio [`OAuth2`](../proyectos/kanboard-oauth-sdi/). No crea usuarios: vincula por correo con el usuario existente. `LDAP_AUTH` y `REVERSE_PROXY_AUTH` siguen desactivados |
+| Rutas propias | `10.150.49.41 via 192.168.0.6` (`PFR-GW-OAM`), en `/etc/netplan/60-ruta-sdi-oauth.yaml`. El resto sale por `192.168.0.254` |
 | API | JSON-RPC en `https://10.143.11.8/jsonrpc.php`. Referencia de uso y colección Postman en [`recursos/kanboard-api/`](../recursos/kanboard-api/); error 401 típico en [TRB-019](07_Troubleshooting.md#trb-019--la-api-json-rpc-de-kanboard-devuelve-401-con-un-token-de-usuario) |
 | Archivos de fábrica expuestos | `web.config` (reglas IIS) quedaba público por el gateway; bloqueado el 2026-10-16. `/.htaccess` y `/data/` (base SQLite) responden 403 |
 | Snapshot | `0 */6 * * *`, retiene 7 días — mismo patrón que Kanboard le dio después a VulnApp NG, ver [`laboratorio/2026-10-09_alta-vulnapp-ng/`](../laboratorio/2026-10-09_alta-vulnapp-ng/). 9 snapshots activos al momento de esta verificación |

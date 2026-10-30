@@ -1012,6 +1012,7 @@ lxc network acl show ACL-OVN-1 --project default
 | `192.168.0.110` (`FDO-WS-1`, NTF) | `10.150.49.103` | tcp 25 | Envío de correo por el Exchange interno *(agregada 2026-10-29 por Norberto Núñez durante la llamada; ✅ verificada en la ACL el mismo día, descripción "Envío de email vía Exchange")* |
 | `192.168.0.19` | `192.168.0.18` | tcp 5432 | ADM-TECH desarrollo: app → PostgreSQL *(Fase 3, 2026-10-25; vista en la ACL el 2026-10-29)* |
 | `192.168.0.19` | `10.150.49.41` | tcp 443 | ADM-TECH desarrollo → OAuth de SDI (`ciberseg.personal.com.py`) *(agregada 2026-10-29; ver [bitácora de la Fase 3](../laboratorio/2026-10-24_migracion-admtech-lxd/bitacora_fase3.md#login-con-oauth-de-sdi-2026-10-29))* |
+| `192.168.0.106` | `10.150.49.41` | tcp 443 | Kanboard → OAuth de SDI (`ciberseg.personal.com.py`), login con AD *(agregada 2026-10-30; ver [instalación del plugin](../proyectos/kanboard-oauth-sdi/docs/decisiones/instalacion-v1.0.md))* |
 
 > 🔴 **Pendiente de verificación (2026-10-29):** para la prueba de correo de NTF ([ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md)), además de la regla de arriba, se agregó **dentro del contenedor de NTF** una ruta hacia `10.150.49.103` a través de un gateway. Se probó por `CAR-GW-SRV` (`192.168.0.2`), y se mencionaron `FDO-GW-SRV` (`.4`) y la interfaz OAM de Fernando (`FDO-GW-OAM`, `.9`). El envío funcionó por Carpinelli. Falta confirmar:
 > 1. ~~**La IP de origen exacta de la regla.**~~ ✅ Confirmada el 2026-10-29: `192.168.0.110` (`FDO-WS-1`).

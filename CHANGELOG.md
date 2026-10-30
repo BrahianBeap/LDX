@@ -604,3 +604,20 @@ El escaneo hecho durante el alta de `ADM-TECH-OSS` informó el hallazgo 43743 (f
 
 **Resumen:**
 Los sistemas del área (ADM-TECH, Infrawork, Tembiapó) envían correo por el módulo de email de NTF, sin pedir un servidor de correo nuevo ni una cuenta por sistema. Se probó en vivo: llegó un correo HTML con adjunto a casillas internas, después de abrir la salida hacia el Exchange `10.150.49.103:25` solo para el contenedor de NTF. Quedan dos problemas: el Exchange ya no hace relay hacia destinatarios externos, por lo que hay que pedir el relay SMTP de Seguridad, y Outlook marca los correos como sospechosos.
+
+### 2026-10-30 (trigésima quinta entrada)
+
+**Fuente:** Ticket 623 #1085317 (credenciales OAuth de `Kanboard-OSS`) e implementación en `PFR-KANBOARD-TEST` a pedido del usuario.
+
+**Documentos creados:**
+- `proyectos/kanboard-oauth-sdi/`: plugin propio `OAuth2` para ingresar a Kanboard con la cuenta de AD (código, README, CHANGELOG, arquitectura y bitácora de instalación)
+
+**Documentos actualizados:**
+- `docs/03_Componentes.md`: plugins, autenticación y ruta propia de Kanboard
+- `docs/05_Configuracion.md`: regla de `ACL-OVN-1` `192.168.0.106 → 10.150.49.41:443`
+- `docs/07_Troubleshooting.md`: TRB-023 (SDI agrega `?code=` a una URL de retorno que ya tiene `?`)
+- `docs/18_Inventario_Ciberseguridad.md`: aplicación OAuth de Kanboard creada (id 48) y login con AD funcionando
+- `PENDIENTES.md`
+
+**Resumen:**
+El plugin oficial `OAuth2` de Kanboard no es compatible con SDI: el token se pide en JSON, la respuesta viene dentro de `data` y los datos del usuario están en el propio JWT. Se escribió un plugin propio que reproduce el canje de ADM-TECH y vincula la cuenta de AD con el usuario local por el correo, sin crear usuarios. El login con contraseña sigue activo. Se agregaron una ruta persistente y una regla de ACL hacia `ciberseg`. En la primera prueba apareció un defecto de SDI (agrega `?code=` aunque la URL ya tenga `?`, y no devuelve `state`), corregido en la v1.0.1. El responsable ingresó con su cuenta de AD.

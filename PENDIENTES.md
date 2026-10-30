@@ -45,7 +45,11 @@
 ## 3. Inventario (checklist de alta)
 
 - [ ] Recorrer el checklist completo para los **3 servidores** (hosts `fr-oss`, Carpinelli y Fernando). Falta conocer el nombre y la IP de gestión de Carpinelli y Fernando, y si ya existen como activos en Jerure.
-- [ ] **OAuth de Kanboard (623 #1085317) y VulnApp NG (623 #1085320)**, pedidos el 29/10 con solo autenticación. Cuando lleguen las credenciales: Kanboard → instalar y probar el plugin `OAuth2` en `PFR-KANBOARD-PRUEBA` (🔴 compatibilidad con SDI sin confirmar); VulnApp NG → programar `/vulnapp/oauth/callback`. En ambos: regla de ACL hacia `10.150.49.41:443` y vínculo TPPY ↔ usuario local. Ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#aplicaciones-oauth-de-kanboard-y-vulnapp-ng-623-2026-10-29).
+- [x] **Login con AD en Kanboard** (623 #1085317): funcionando desde el 30/10 con el plugin propio [`kanboard-oauth-sdi`](proyectos/kanboard-oauth-sdi/), más ruta y regla de ACL hacia `10.150.49.41:443`.
+  - [ ] Pedir a SDI que regenere el `client_secret` (se vio en una captura) y cargar el nuevo en `config.php`.
+  - [x] Claims del token relevados y registro temporal quitado (30/10): llegan `mail`, `displayName`, `gerencia`, `cargo`, etc.; `grupos` vacío.
+  - [ ] Evaluar: completar nombre/correo desde AD, desactivar el login con contraseña a quienes usan AD, roles por grupos de AD (requiere un 623 nuevo con grupos), IP real del cliente en `last_logins` (hoy se ve `192.168.0.1`).
+- [ ] **OAuth de VulnApp NG (623 #1085320)**: esperando credenciales. Programar `/vulnapp/oauth/callback` (canje igual que ADM-TECH: JSON y respuesta dentro de `data`; SDI no devuelve `state`), regla de ACL hacia `10.150.49.41:443` y vínculo TPPY ↔ usuario local. Ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#aplicaciones-oauth-de-kanboard-y-vulnapp-ng-623-2026-10-29).
 - [ ] Acceso VPN/SDP a Kanboard (556 #1085324, 29/10): seguir la aprobación.
 - [ ] Por cada servicio (Kanboard, VulnApp NG; NTF y Loki a confirmar con Norberto): 452 Alta de servicios, 707 Alta de aplicaciones, 623 OAuth + grupos AD, pase a producción.
 - [ ] Inventariar cada aplicación con **IP de servicio + 443 + URL** (`https://oss.personal.com.py/<app>`), no con la IP del contenedor (indicación de Norberto, 16/10).
