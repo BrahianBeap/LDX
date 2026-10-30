@@ -108,3 +108,25 @@ A pedido del responsable (2026-10-30), mientras la aplicación siga sin grupos d
 lxc exec PFR-KANBOARD-TEST -- php -r '$d=new PDO("sqlite:/var/www/kanboard/data/db.sqlite"); echo $d->exec("update users set disable_login_form=0 where username<>\"admin\"");'
 # un solo usuario: ... where username="nombre.apellido"
 ```
+
+## 8. Solo ingreso con AD: formulario oculto y `admin` sin contraseña ✅
+
+A pedido del responsable (2026-10-30), que se encarga de reactivar a quien no pueda entrar:
+
+- `admin` también con `disable_login_form = 1`. **Ningún usuario puede entrar con contraseña.** Backup previo: `/root/kanboard-bak-20261030-oauth/db-antes-admin-sin-password.sqlite`.
+- `config.php` línea 245: `HIDE_LOGIN_FORM` de `false` a `true`. La plantilla de login de `OssTheme` respeta esa constante: oculta usuario, contraseña, "Recordarme" y "¿Olvidaste tu contraseña?". Los mensajes de error y el botón de AD quedan visibles. Backup previo: `/root/kanboard-bak-20261030-oauth/config-antes-solo-ad.php`.
+- Comprobación: la página de login responde `200`, sin el campo de contraseña y con el botón de AD.
+- 🟡 El texto de `OssTheme` "Ingresá con tu usuario de Kanboard." ya no corresponde. Se corrige en el repositorio de `OssTheme`.
+- Sin "Recordarme", cada sesión nueva pasa por SDI.
+
+> **Advertencia:** si SDI (`ciberseg.personal.com.py`) no responde, **nadie puede entrar a Kanboard**. Los datos no se pierden. Para entrar igual, habilitar la contraseña de `admin` y volver a mostrar el formulario desde la consola.
+
+**Acceso de emergencia (sin SDI):**
+```bash
+lxc exec PFR-KANBOARD-TEST -- sh -c "
+  sed -i \"s/^define('HIDE_LOGIN_FORM', true);/define('HIDE_LOGIN_FORM', false);/\" /var/www/kanboard/config.php &&
+  php -r '\$d=new PDO(\"sqlite:/var/www/kanboard/data/db.sqlite\"); \$d->exec(\"update users set disable_login_form=0 where username=\\\"admin\\\"\");'"
+```
+Cuando SDI vuelva, revertir los dos cambios (`true` y `disable_login_form=1`).
+
+**Reactivar la contraseña a una persona:** no alcanza con hacerlo desde la interfaz, porque el formulario está oculto. Mientras se resuelve su caso, la opción es corregir el usuario de Kanboard para que coincida con su correo de AD (Usuarios → usuario → Editar → nombre de usuario).

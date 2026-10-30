@@ -48,7 +48,8 @@
 - [x] **Login con AD en Kanboard** (623 #1085317): funcionando desde el 30/10 con el plugin propio [`kanboard-oauth-sdi`](proyectos/kanboard-oauth-sdi/), más ruta y regla de ACL hacia `10.150.49.41:443`.
   - [ ] Pedir a SDI que regenere el `client_secret` (se vio en una captura) y cargar el nuevo en `config.php`.
   - [x] Claims del token relevados y registro temporal quitado (30/10): llegan `mail`, `displayName`, `gerencia`, `cargo`, etc.; `grupos` vacío.
-  - [x] Login con contraseña deshabilitado para los 9 usuarios del equipo (30/10); `admin` queda como emergencia. Confirmar que cada uno pueda entrar por AD.
+  - [x] Solo ingreso con AD (30/10): contraseña deshabilitada para todos, incluido `admin`, y formulario oculto. Quien no pueda entrar lo resuelve el responsable.
+  - [ ] Ajustar en `OssTheme` el texto "Ingresá con tu usuario de Kanboard." (ahora es con AD).
   - [ ] Evaluar: completar nombre/correo desde AD, roles por grupos de AD (requiere un 623 nuevo con grupos), IP real del cliente en `last_logins` (hoy se ve `192.168.0.1`).
 - [ ] **OAuth de VulnApp NG (623 #1085320)**: esperando credenciales. Programar `/vulnapp/oauth/callback` (canje igual que ADM-TECH: JSON y respuesta dentro de `data`; SDI no devuelve `state`), regla de ACL hacia `10.150.49.41:443` y vínculo TPPY ↔ usuario local. Ver [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#aplicaciones-oauth-de-kanboard-y-vulnapp-ng-623-2026-10-29).
 - [ ] Acceso VPN/SDP a Kanboard (556 #1085324, 29/10): seguir la aprobación.
