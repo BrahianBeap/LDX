@@ -92,3 +92,19 @@ grupos,perfil,displayName,dn,employeeID,mail,mobile,gerencia,cargo,iat,exp,aud,i
 - ✅ `grupos` llega **vacío**: la aplicación se pidió sin grupos de AD. Para asignar roles por grupo hace falta un 623 nuevo.
 - ✅ `sub` es el usuario de red de AD (`alfonzel`), no `nombre.apellido`. Por eso la vinculación usa `mail`.
 - Los mensajes del plugin (`$this->logger`) salen en `/var/log/apache2/kanboard-error.log`, por ejemplo: `SdiAd: alfonzel ingresó como elias.alfonzo`.
+
+## 7. Login con contraseña deshabilitado (salvo `admin`) ✅
+
+A pedido del responsable (2026-10-30), mientras la aplicación siga sin grupos de AD: `disable_login_form = 1` para los 9 usuarios del equipo. `DatabaseAuth` de Kanboard rechaza el login con contraseña de esos usuarios (`->eq('disable_login_form', 0)`), así que solo pueden entrar con el botón de AD.
+
+- `admin` sigue con contraseña, como **entrada de emergencia** si SDI no responde.
+- Backup previo: `/root/kanboard-bak-20261030-oauth/db-antes-sin-password.sqlite` (`fdfcff6d…`).
+- Al 30/10 solo `elias.alfonzo` había probado el ingreso por AD. 🟡 Si a alguien no le coincide el correo de AD con su usuario, no va a poder entrar: un administrador le reactiva la contraseña desde la interfaz (Usuarios → usuario → Autenticación → quitar "No permitir el formulario de inicio de sesión") o con el comando de abajo.
+- 🟡 El formulario de contraseña sigue visible. Si un usuario bloqueado lo usa, ve el error genérico de usuario o contraseña incorrectos.
+- Las sesiones abiertas con "Recordarme" siguen activas hasta que vencen.
+
+**Rollback (todos o un usuario):**
+```bash
+lxc exec PFR-KANBOARD-TEST -- php -r '$d=new PDO("sqlite:/var/www/kanboard/data/db.sqlite"); echo $d->exec("update users set disable_login_form=0 where username<>\"admin\"");'
+# un solo usuario: ... where username="nombre.apellido"
+```
