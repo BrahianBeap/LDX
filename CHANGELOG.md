@@ -655,4 +655,4 @@ VulnApp NG pasó a **solo ingreso con AD**. Entra quien ya tenga usuario creado,
 - `PENDIENTES.md`
 
 **Resumen:**
-`CAR-GW-SRV` y `FDO-GW-SRV` quedaron con el modelo de `PFR-GW-SRV`: certificado de cliente solo en `/ntf`, Kanboard y VulnApp NG hacia Franco, bloqueo de `web.config` y HSTS. En FDO, `/supervisionge` conserva el certificado y la restricción por IP sin pedir el certificado después de conectar, porque Grafana usa un cliente Go. Se verificó un SMS real de Tembiapó y Grafana después del `reload`. `/adm` sigue publicado solo en PFR.
+`CAR-GW-SRV` y `FDO-GW-SRV` quedaron con el modelo de `PFR-GW-SRV`: certificado de cliente solo en `/ntf`, Kanboard y VulnApp NG hacia Franco, bloqueo de `web.config` y HSTS. En FDO, `/supervisionge` conserva el certificado y la restricción por IP sin pedir el certificado después de conectar, porque Grafana usa un cliente Go. Se verificó un SMS real de Tembiapó y Grafana después del `reload`. Ese mismo día se publicó `/adm` en CAR y FDO hacia el contenedor de Franco, porque esos accesos daban `404`.
