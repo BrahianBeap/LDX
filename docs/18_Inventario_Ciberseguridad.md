@@ -108,7 +108,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | `PFR-VULNAPP-APP` | `192.168.0.14` | Aplicación (Gunicorn en el puerto 5000) |
 | `PFR-VULNAPP-DB` | `192.168.0.13` | PostgreSQL 18. No se publica fuera del clúster |
 
-**Dependencia externa:** consume la API de Ciberseguridad `https://ciberseg3.sis.personal.net.py/vulnapp-sdi-services` (`10.150.58.116:443`). El acceso desde el clúster todavía no funciona: falta el permiso de firewall, pedido en el ticket **#1083155** (ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada)).
+**Dependencia externa:** consume la API de Ciberseguridad `https://ciberseg3.sis.personal.net.py/vulnapp-sdi-services` (`10.150.58.116:443`). El firewall hacia esa API (ticket **#1083155**) está **aprobado y validado** (02/11: la conexión llega de punta a punta desde el contenedor). Pero la carga **todavía no funciona**: la API responde **403** porque falta **autorizar la IP de origen del clúster del lado de SDI** — pedido en el ticket **#1086592** (02/11). La API key cargada es la misma que usa `tec-calidad05` (verificada por hash). Ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada).
 
 ---
 

@@ -640,3 +640,19 @@ Ese mismo día, a pedido del responsable, Kanboard pasó a **solo ingreso con AD
 
 **Resumen:**
 VulnApp NG pasó a **solo ingreso con AD**. Entra quien ya tenga usuario creado, y se vincula el claim `sub` (TPPY) con `usuarios.username`, sin crear usuarios. Las cuentas `admin`, `sdi` y `visita` quedan sin ingreso. El código está en el repositorio `DockerLab` (`vulnapp-ng/app`). El responsable ingresó con su cuenta de AD.
+
+---
+
+### 2026-11-02 (trigésima séptima entrada)
+
+**Fuente:** Etapa 2 de los gateways, aplicada a pedido del usuario tras la carga de las 3 IP en el DNS.
+
+**Documentos creados:**
+- `laboratorio/2026-11-02_etapa2-homogeneizar-gateways/`: bitácora, `LB_car.conf` y `LB_fdo.conf`
+
+**Documentos actualizados:**
+- `docs/11_Riesgos.md`: RIE-020 resuelto para portal, Kanboard y VulnApp NG
+- `PENDIENTES.md`
+
+**Resumen:**
+`CAR-GW-SRV` y `FDO-GW-SRV` quedaron con el modelo de `PFR-GW-SRV`: certificado de cliente solo en `/ntf`, Kanboard y VulnApp NG hacia Franco, bloqueo de `web.config` y HSTS. En FDO, `/supervisionge` conserva el certificado y la restricción por IP sin pedir el certificado después de conectar, porque Grafana usa un cliente Go. Se verificó un SMS real de Tembiapó y Grafana después del `reload`. `/adm` sigue publicado solo en PFR.

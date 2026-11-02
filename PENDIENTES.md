@@ -16,13 +16,14 @@
 |---|---|---|---|
 | #1076072 | 447 Alta servidor virtual `PFR-GW-SRV` | 🟡 En verificación de SDI | Si Abel insiste con SSH: la verificación se hace con `lxc exec` desde `10.143.11.228` ([TRB-018](docs/07_Troubleshooting.md)) |
 | #1078719 | 451 Certificado `oss.personal.com.py` | ✅ Resuelto 22/10 (Natalia Cardozo). Let's Encrypt, vence **2027-01-20** | Instalado el 26/10 en los 3 gateways. Renovación: Ciberseguridad reabre el ticket cada 3 meses ([RIE-022](docs/11_Riesgos.md)). Detalle: [`laboratorio/2026-10-26_certificado-lets-encrypt/`](laboratorio/2026-10-26_certificado-lets-encrypt/) |
-| #1079305 | 741 DNS `oss.personal.com.py` | 🟡 Cargada solo `10.143.11.8` (Abel) | Pedir `192.168.91.117` y `10.11.11.12` **recién después de la Etapa 2** |
+| #1079305 | 741 DNS `oss.personal.com.py` | ✅ **Las 3 IP cargadas el 02/11** (`10.143.11.8`, `10.11.11.12`, `192.168.91.117`) y **Etapa 2 aplicada en CAR y FDO** el mismo día ([RIE-020](docs/11_Riesgos.md)) | Publicar `/adm` en CAR y FDO, probar el ingreso con AD por navegador y subir HSTS. Ver [`laboratorio/2026-11-02_etapa2-homogeneizar-gateways/`](laboratorio/2026-11-02_etapa2-homogeneizar-gateways/README.md) |
 | #1083298 | 778 Gestión de vulnerabilidades: hallazgos de certificado de los 3 gateways, **RESUELTO** (IDs Grafana 41817, 41818 `fr-oss`; 40608, 40609 `car-oss`; 41771, 41772 `fdo-dns-lxd`) | 🟡 Abierto 26/10 14:59 | Seguir hasta que Seguridad lo cierre y el próximo escaneo los dé de baja. Si aparece "nombre de host incorrecto" (escaneo por IP), responder que el servicio se publica como `oss.personal.com.py`. Evidencia: `evidencia_certificado_oss_20261026.txt` |
 | #1083416 | 778 Gestión de vulnerabilidades: hallazgo **43743** (HSTS ausente en `10.143.11.8:443`, informado por Jerure en #1083324), **RESUELTO** | ✅ Resuelto 28/10 (aprobaron Julio César Acosta 27/10 y Abel Díaz 28/10 09:32). Reescaneo del 28/10 09:19: "No se detectaron vulnerabilidades relevantes" | **Compromiso pendiente: subir `max-age` a `31536000` el 02/11/2026** (quedó escrito en la evidencia del ticket). Evidencia: [`evidencia_hsts_43743_20261026.txt`](laboratorio/2026-10-26_hsts-pfr-gw-srv/evidencia_hsts_43743_20261026.txt) |
 | Gestión de vulnerabilidades (778), aceptación del 16/10 | Aceptación de riesgo de certificados | 🟡 Revisión al 16/11/2026 | Queda superada por #1083298: cerrarla con esa referencia. LXD (8443/8444/8555): aceptación aparte, revisión semestral |
 | #1083324 | 452 Alta de servicio `ADM-TECH-OSS` | ✅ Resuelto 28/10 17:50: inventariado (IDs 32989 `TCP/443` y 32990 `TCP/80`) | Pendientes 7 y 8 de [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) (campo "Especificar" incompleto y actualización al pasar a producción) |
 | #1083088, #1083104 | 452 Alta de servicios `Kanboard-OSS` y `Vulnapp-OSS` | ✅ Inventariados 29/10: Kanboard IDs 33013 (`TCP/443`) y 33014 (`TCP/80`); VulnApp ID 33012 (`TCP/443`) | Correcciones de los registros (descripción de VulnApp, administrador de accesos, tipo y permiso de Kanboard): pendientes 1 a 3 de [18_Inventario_Ciberseguridad.md](docs/18_Inventario_Ciberseguridad.md#pendientes) |
-| #1083155 | Firewall VulnApp NG → API SDI `10.150.58.116:443` (origen: IP de gestión de los 3 hosts) | 🟡 Abierto 26/10 | Cuando lo aprueben, repetir la prueba de `/health` desde `PFR-VULNAPP-APP` e instalar el servicio de carga ([RIE-015](docs/11_Riesgos.md)). **Vence 31/05/2027**: pedir renovación antes |
+| #1083155 | Firewall VulnApp NG → API SDI `10.150.58.116:443` (origen: IP de gestión de los 3 hosts) | ✅ Aprobado y validado 02/11 (prueba de punta a punta desde el contenedor) | Firewall OK, pero la API responde **403**: falta autorizar la IP de origen del clúster del lado de SDI → ticket **#1086592**. Al habilitarla, instalar el servicio de carga ([RIE-015](docs/11_Riesgos.md)). **Vence 31/05/2027**: pedir renovación antes |
+| #1086592 | Autorización de IP de origen del clúster en la API SDI `vulnapp-sdi-services` (da 403 pese al firewall OK) | 🟡 Abierto 02/11 | SDI debe habilitar `10.143.11.228`, `192.168.91.116`, `10.150.32.101` para la misma API key que usa `tec-calidad05`. Al resolverse, correr el ensayo e instalar la carga ([RIE-015](docs/11_Riesgos.md)) |
 | #1075028 | Acceso BD Oxígeno | ✅ Habilitado 14/10 | — |
 | #1076134 | 939 IP de servicio al activo `fr-oss` | ✅ Resuelto 16/10 | — |
 
@@ -35,11 +36,11 @@
    - Hecho además el 26/10: redirección de HTTP a HTTPS y del acceso por IP al nombre en los 3 gateways (ver la bitácora del certificado).
    - [x] Informar los hallazgos como resueltos: ticket 778 **#1083298** (26/10). Falta que Seguridad lo cierre y que el escaneo los dé de baja.
    - [ ] **Renovación:** Ciberseguridad reabre el ticket de Jerure cada 3 meses. Cuando llegue (antes del 20/01/2027), instalar en los 3 gateways ([RIE-022](docs/11_Riesgos.md)).
-   - [x] HSTS en `PFR-GW-SRV` con `max-age=300` (26/10, hallazgo 43743 del ticket #1083324): ver [`laboratorio/2026-10-26_hsts-pfr-gw-srv/`](laboratorio/2026-10-26_hsts-pfr-gw-srv/). Falta subirlo a `31536000` tras unos días y sumarlo a CAR y FDO en la Etapa 2.
+   - [x] HSTS en `PFR-GW-SRV` con `max-age=300` (26/10, hallazgo 43743 del ticket #1083324): ver [`laboratorio/2026-10-26_hsts-pfr-gw-srv/`](laboratorio/2026-10-26_hsts-pfr-gw-srv/). ✅ Sumado a CAR y FDO el 02/11 con `max-age=300`. Falta subirlo a `31536000` en los 3.
    - [ ] Opcional: pasar las redirecciones de 302 a 301; quitar `AutoridadOSS` de `ntf-ca.crt` en Tembiapó.
    - [ ] Sincronizar el repo de Tembiapó con producción (tarea de Daniel Medina).
-5. [ ] **Etapa 2:** reescribir los `LB.conf` de `CAR-GW-SRV` y `FDO-GW-SRV` con el modelo de PFR: Kanboard y VulnApp NG por **proxy interno** hacia `192.168.0.106` / `192.168.0.14:5000` (no `Redirect`), `require` explícito en `/ntf` y `/supervisionge`, y bloqueo de `web.config`. Antes, probar el cliente de NTF con Norberto ([RIE-020](docs/11_Riesgos.md)).
-6. [ ] Pedir a Abel que sume las IP de CAR y FDO al DNS.
+5. [ ] **Etapa 2 (EN CURSO, 02/11):** reescribir los `LB.conf` de `CAR-GW-SRV` y `FDO-GW-SRV` con el modelo de PFR: Kanboard y VulnApp NG por **proxy interno** hacia `192.168.0.106` / `192.168.0.14:5000` (no `Redirect`), `require` explícito en `/ntf` y `/supervisionge`, y bloqueo de `web.config`. Antes de FDO, probar el cliente de NTF de Tembiapó con un SMS real (riesgo de producción). **CAR listo para aplicar, FDO pendiente — handoff con config y comandos: [`laboratorio/2026-11-02_etapa2-homogeneizar-gateways/`](laboratorio/2026-11-02_etapa2-homogeneizar-gateways/README.md).**
+6. [x] ~~Pedir a Abel que sume las IP de CAR y FDO al DNS.~~ Hecho el 02/11 — **antes de tiempo** (ver fila #1079305 y [RIE-020](docs/11_Riesgos.md)).
 7. [ ] Definir el nombre propio para Comap (`/supervisionge`, solo hacia Fernando).
 
 ## 3. Inventario (checklist de alta)
@@ -60,7 +61,7 @@
 - [ ] Acceso VPN/SDP a Kanboard (556 #1085324, 29/10): seguir la aprobación.
 - [ ] Por cada servicio (Kanboard, VulnApp NG; NTF y Loki a confirmar con Norberto): 452 Alta de servicios, 707 Alta de aplicaciones, 623 OAuth + grupos AD, pase a producción.
 - [ ] Inventariar cada aplicación con **IP de servicio + 443 + URL** (`https://oss.personal.com.py/<app>`), no con la IP del contenedor (indicación de Norberto, 16/10).
-- [x] VulnApp NG: regla de firewall hacia la API de SDI `10.150.58.116:443` ([RIE-015](docs/11_Riesgos.md)): pedida en #1083155 (26/10).
+- [x] VulnApp NG: regla de firewall hacia la API de SDI `10.150.58.116:443` ([RIE-015](docs/11_Riesgos.md)): pedida en #1083155 (26/10), **aprobada y validada el 02/11** (prueba de punta a punta desde el contenedor). Queda un bloqueo nuevo: la API responde **403** por falta de autorización de IP de origen del lado de SDI → ticket **#1086592**.
 - [ ] Armar el **Gantt** (borrador en la conversación del 22/10) cuando estén las fechas de los tickets de nivel servidor (535, 404, 500, IPAM, SIEM) y la de la 2.ª reunión.
 
 ## 4. Seguridad y operación del clúster
