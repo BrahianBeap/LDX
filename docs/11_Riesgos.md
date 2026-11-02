@@ -317,9 +317,9 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 | **Descripción** | ✅ Verificado el 2026-10-16: CAR-GW-SRV y FDO-GW-SRV exigen certificado de cliente para todo el sitio, apuntan Kanboard a `CAR-kanboard-1` (inexistente) y no publican VulnApp NG. CAR además hace proxy de `/` por HTTP sin cifrar hacia `PFR-KANBOARD-DR` (detenido). Detalle en [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/) |
 | **Causa** | Solo PFR-GW-SRV se fue actualizando a medida que se publicaron Kanboard y VulnApp NG |
 | **Impacto** | Si se pide el DNS round-robin `oss.personal.com.py` hacia los 3 gateways (ver [02_Arquitectura.md](02_Arquitectura.md#nombre-de-dominio-compartido-entre-sitios-fqdn--dns-round-robin)), **2 de cada 3 accesos fallarían** (error de certificado o backend detenido) |
-| **Severidad** | ✅ Resuelto para portal, Kanboard y VulnApp NG el 2026-11-02. Queda el pendiente de `/adm` |
+| **Severidad** | ✅ Resuelto para portal, Kanboard, VulnApp NG y ADM-TECH de desarrollo el 2026-11-02 |
 | **Mitigación actual** | ✅ Etapa 2 aplicada en CAR y FDO el 2026-11-02, con SMS real de Tembiapó y Grafana verificados. El DNS ya tiene las 3 IP. Ver [`laboratorio/2026-11-02_etapa2-homogeneizar-gateways/`](../laboratorio/2026-11-02_etapa2-homogeneizar-gateways/README.md) |
-| **Acción requerida** | Publicar `/adm` en CAR y FDO, porque hoy solo existe en PFR, y probar el ingreso con AD por navegador en esos dos gateways |
+| **Acción requerida** | Probar el ingreso con AD por navegador en CAR y FDO. `/kanboard-prueba` queda solo en PFR por decisión: es una ruta de prueba con acceso por IP |
 | **Responsable** | Elías Alfonzo, con Norberto Núñez |
 
 ---
@@ -376,7 +376,7 @@ Detalle del certificado y plan de instalación: [`laboratorio/2026-10-26_certifi
 | **Media-Alta** | RIE-006 (sin backup), RIE-015 (conectividad SDI de VulnApp NG bloqueada) |
 | **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria), RIE-018 (métricas de LXD sin autenticación), RIE-021 (`PFR-GW-SRV` sin snapshots), RIE-022 (certificado de 90 días sin renovación automática), RIE-023 (correo sin relay hacia destinatarios externos) |
 | **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades), RIE-017 (3 contenedores con límite de memoria ajustado), RIE-019 (certificados TLS no confiables y cifrados heredados) |
-| **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas), RIE-020 (gateways CAR/FDO homogeneizados el 2026-11-02; queda `/adm`) |
+| **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas), RIE-020 (gateways CAR/FDO homogeneizados el 2026-11-02) |
 | **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |
 
 ---

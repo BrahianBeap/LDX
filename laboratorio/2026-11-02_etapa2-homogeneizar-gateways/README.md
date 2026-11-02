@@ -1,6 +1,6 @@
 # Etapa 2 — Homogeneizar CAR y FDO con PFR (handoff en curso)
 
-> **Estado (2026-11-02):** CAR y FDO ✅ **aplicados** (ver [Parte A](#resultado-de-la-parte-a-2026-11-02) y [Parte B](#resultado-de-la-parte-b-2026-11-02)). Falta la Parte C: `/adm` en CAR y FDO, ingreso con AD por navegador y HSTS. 
+> **Estado (2026-11-02):** CAR y FDO ✅ **aplicados** (ver [Parte A](#resultado-de-la-parte-a-2026-11-02) y [Parte B](#resultado-de-la-parte-b-2026-11-02)). `/adm` publicado en ambos. Falta de la Parte C: ingreso con AD por navegador en CAR y FDO, y HSTS. 
 > **Para quien retoma:** esta bitácora es autocontenida. Leer primero el contexto, después ejecutar la Parte A.
 
 ---
@@ -211,7 +211,7 @@ lxc exec FDO-GW-SRV --project PRJ-OSS -n -- systemctl reload apache2
 
 ## PARTE C — Cierre (cuando CAR y FDO estén homogéneos)
 
-0. 🔴 **Efecto de tener las 3 IP en el DNS:** `/adm/` solo existe en PFR, y su retorno de OAuth es `https://oss.personal.com.py/adm/`. Los accesos que caen en CAR o FDO no llegan a ADM-TECH hasta publicar esa ruta ahí, con su regla de ACL hacia `192.168.0.19:80`. `/kanboard-prueba` tiene el mismo límite.
+0. ✅ **`/adm` publicado en CAR y FDO (2026-11-02):** los accesos que caían en esos gateways daban `404`. Ambos hacen proxy a `192.168.0.19`, igual que PFR; no hizo falta regla de ACL porque ya llegaban. `LB_car.conf` y `LB_fdo.conf` incluyen el bloque, así que sus huellas pasan a ser `03d1ab3e…51abb37` y `6019a79d…351e784`. Backups previos: `/root/LB.conf.bak-20261102-adm`. En CAR, `/adm` da 302 y `/adm/` da 200, igual que PFR. En FDO se probó desde el gateway con el mismo resultado, y después del `reload` (19:15:59 UTC) Grafana y Tembiapó siguieron con 200. `/kanboard-prueba` queda solo en PFR por decisión: es una ruta de prueba con acceso por IP, y se entra por `10.143.11.8`.
 1. Verificar que las **3 IP** sirven Kanboard/VulnApp/portal igual que PFR, y que `/ntf` sigue protegido en las 3. ✅ Rutas verificadas; 🔴 falta probar el ingreso con AD en un navegador por CAR y FDO.
 2. Subir HSTS a `max-age=31536000` en los 3 (compromiso del ticket #1083416, ya vencido el plazo del 02/11).
 3. Actualizar el repo:
