@@ -1007,7 +1007,7 @@ lxc network acl show ACL-OVN-1 --project default
 | `192.168.0.14` | `192.168.0.13` | tcp 5432 | VulnApp NG: app → PostgreSQL *(agregada 2026-10-09)* |
 | `192.168.0.1` | `192.168.0.14` | tcp 5000 | VulnApp NG: balanceador de Franco → Gunicorn *(agregada 2026-10-09)* |
 | `192.168.0.2,192.168.0.4` | `192.168.0.14` | tcp 5000 | VulnApp NG: balanceadores de Carpinelli y Fernando → Gunicorn *(agregada 2026-10-16, regla separada para no tocar la de Franco; ver [`laboratorio/2026-10-16_hardening-gateways-nessus/`](../laboratorio/2026-10-16_hardening-gateways-nessus/))* |
-| `192.168.0.14` | `10.150.58.116` | tcp 443 | VulnApp NG: app → API de SDI *(agregada 2026-10-09, ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) — permitida acá, pero bloqueada más allá de este cluster)* |
+| `192.168.0.14` | `10.150.58.116` | tcp 443 | VulnApp NG: app → API de SDI *(agregada 2026-10-09; ✅ operativa de punta a punta desde el 04/11, ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada))* |
 | `192.168.0.14` | `10.150.31.68` | tcp 80 | VulnApp NG: app → pasarela de SMS *(agregada 2026-10-09)* |
 | `192.168.0.14` | `10.150.49.41` | tcp 443 | VulnApp NG: login con el OAuth de SDI, 623 #1085320 *(agregada 2026-10-30, ver [bitácora](../laboratorio/2026-10-30_vulnapp-oauth-ad/README.md))* |
 | `192.168.0.110` (`FDO-WS-1`, NTF) | `10.150.49.103` | tcp 25 | Envío de correo por el Exchange interno *(agregada 2026-10-29 por Norberto Núñez durante la llamada; ✅ verificada en la ACL el mismo día, descripción "Envío de email vía Exchange")* |

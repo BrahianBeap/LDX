@@ -154,7 +154,7 @@
 | Instalación de la aplicación (Gunicorn) | 🔴 Falló la primera vez (permisos en `uploads/`, ver [TRB-016](07_Troubleshooting.md#trb-016--permissionerror-al-crear-una-carpeta-propia-de-la-aplicación-dentro-de-un-árbol-de-solo-lectura-para-su-grupo)) → ✅ Corregido y validado |
 | Publicación en `PFR-GW-SRV` (`/vulnapp`) | 🔴 Primer intento rechazado por Apache (`mod_headers` no habilitado, ver [TRB-015](07_Troubleshooting.md#trb-015--requestheader-falla-con-invalid-command-porque-mod_headers-no-está-habilitado)) → ✅ Habilitado el módulo, validado en loopback y desde afuera del contenedor; Kanboard/Loki/NTF sin cambios |
 | Snapshot programado de `PFR-VULNAPP-DB` (mismo patrón que Kanboard: cada 6h, retiene 7 días) | ✅ Completado |
-| Carga diaria de datos desde la API de SDI | 🔴 Pendiente — conectividad bloqueada fuera de este cluster, ver [RIE-015 en 11_Riesgos.md](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) |
+| Carga diaria de datos desde la API de SDI | ✅ Operativa el 04/11 — `systemd` timer diario (05:00), primera carga real aplicada. Diagnóstico (doble NAT + `invalid_api_key`) en [RIE-015 en 11_Riesgos.md](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada) |
 | Documentación de `ACL-OVN-1` (previamente no documentada en este repositorio) | ✅ Completado — ver [05_Configuracion.md](05_Configuracion.md#firewall-de-la-red-ovn_1-lxc-network-acl) |
 
 ### Alta de `PFR-GW-SRV` en el inventario Jerure (2026-10-12 → 2026-10-16)

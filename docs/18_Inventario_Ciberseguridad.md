@@ -108,7 +108,7 @@ Este documento registra el **estado**. El procedimiento y el criterio para inven
 | `PFR-VULNAPP-APP` | `192.168.0.14` | Aplicación (Gunicorn en el puerto 5000) |
 | `PFR-VULNAPP-DB` | `192.168.0.13` | PostgreSQL 18. No se publica fuera del clúster |
 
-**Dependencia externa:** consume la API de Ciberseguridad `https://ciberseg3.sis.personal.net.py/vulnapp-sdi-services` (`10.150.58.116:443`). El firewall hacia esa API (ticket **#1083155**) está **aprobado y validado** (02/11: la conexión llega de punta a punta desde el contenedor). Pero la carga **todavía no funciona**: la API responde **403** por *allowlist de IP de origen*. Se confirmó (04/11, por `tcpdump`) que el contenedor **no sale con las IP de gestión** que se pidió habilitar, sino con **`10.231.193.114`** — el NAT del gateway OAM `PFR-GW-OAM`, por donde enruta el destino `10.150.0.0/16`. Falta que SDI habilite **esa** IP (el #1086592 se resolvió con las IP equivocadas). Ver [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada).
+**Dependencia externa:** consume la API de Ciberseguridad `https://ciberseg3.sis.personal.net.py/vulnapp-sdi-services` (`10.150.58.116:443`). ✅ **Operativo desde el 04/11:** el firewall (ticket **#1083155**) está aprobado, y la API autoriza la key para **`10.143.11.228`** — la IP con la que, tras doble NAT (gateway OAM + NAT corporativo), la API recibe las peticiones del clúster. La carga diaria corre por `systemd` (05:00). Corre con `SDI_VERIFY_TLS=0` hasta que SDI renueve el certificado de `ciberseg3`. Detalle del diagnóstico (doble NAT, `invalid_api_key`) en [RIE-015](11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada).
 
 ---
 

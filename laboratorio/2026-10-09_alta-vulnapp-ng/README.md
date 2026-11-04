@@ -36,7 +36,6 @@ Dos son bugs del paquete de instalación de la aplicación (repositorio `DockerL
 
 ## Pendiente
 
-- 🔴 Conectividad hacia la API de SDI (`10.150.58.116:443`) bloqueada — ver [RIE-015 en 11_Riesgos.md](../../docs/11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada). Requiere acción de Seguridad (ver detalle en la bitácora).
-- 🔴 Mientras lo anterior no se resuelva, no se instala ni se activa `vulnapp-sdi.service`/`.timer` (paso 4 del runbook de la aplicación).
+- ✅ **Resuelto el 04/11:** la conectividad hacia la API de SDI (`10.150.58.116:443`) quedó operativa y `vulnapp-sdi.service`/`.timer` instalado y **activo** (carga diaria 05:00, primera carga real aplicada). El diagnóstico completo (doble NAT + `invalid_api_key` del lado de SDI) está en [RIE-015 en 11_Riesgos.md](../../docs/11_Riesgos.md#rie-015--conectividad-de-vulnapp-ng-hacia-la-api-de-sdi-bloqueada).
 
 Ver el detalle completo, comando por comando, en [`bitacora.md`](bitacora.md).
