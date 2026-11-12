@@ -1,0 +1,19 @@
+# Rutas persistentes OSS (FDO-GW-SRV). Complementa 50-cloud-init.yaml, no lo reemplaza.
+# Ver laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147 en el repo de docs.
+network:
+  version: 2
+  ethernets:
+    eth0:
+      routes:
+        - {to: "10.150.58.126/32", via: "192.168.0.1"}
+    eth1:
+      routes:
+        - {to: "10.147.8.2/32",    via: "10.11.11.253"}
+        - {to: "10.147.5.119/32",  via: "10.11.11.253"}
+        - {to: "10.12.151.30/32",  via: "10.11.11.253"}
+        - {to: "10.12.151.202/32", via: "10.11.11.253"}
+        - {to: "10.12.151.220/32", via: "10.11.11.253"}
+        - {to: "10.12.151.222/32", via: "10.11.11.253"}
+        - {to: "10.12.151.238/32", via: "10.11.11.253"}
+        - {to: "10.12.151.249/32", via: "10.11.11.253"}
+        - {to: "10.12.151.250/32", via: "10.11.11.253"}

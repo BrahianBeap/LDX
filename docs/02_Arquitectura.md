@@ -147,8 +147,13 @@ Los contenedores usan IP privadas de `OVN_1` (`192.168.0.x`) que la red corporat
 |---|---|---|---|---|---|
 | **Entrada** | Un usuario o sistema externo hacia una aplicación del cluster | IP de servicio del gateway de servicios (`*-GW-SRV`) | `10.143.11.8` | `192.168.91.117` | `10.11.11.12` |
 | **Salida** | Una aplicación del cluster hacia un servicio corporativo (10.150.x: SDI, ciberseg, proxy, SMS) | IP de gestión del **host** del sitio | `10.143.11.228` | `192.168.91.116` 🟡 | `10.150.32.101` |
+| **Salida desde el propio gateway** | El gateway de servicios (`*-GW-SRV`) hacia una red corporativa **fuera de `10.150.x`** por su interfaz de servicio `eth1` (NCE `10.147.x`, monitoreo SNMP `10.12.151.x`, DNS `10.129.4.x`) | IP de servicio del gateway (la misma de "Entrada") | `10.143.11.8` | `192.168.91.117` | `10.11.11.12` |
 
 ✅ Verificado en vivo el 2026-10-26 para Franco y Fernando (`ip route get 10.150.58.116`). 🟡 Carpinelli: es la IP de gestión con la que el nodo está registrado en el cluster y en el inventario de Jerure (`car-oss`), pero su ruta de salida no se probó.
+
+✅ La fila "Salida desde el propio gateway" se verificó el 2026-11-12: `curl` desde `FDO-GW-SRV` al NCE conectó `from 10.11.11.12`. Ese tráfico no pasa por el host ni por el OAM: el gateway tiene IP propia en la LAN de servicio (IPVLAN) y sale directo por el router de esa LAN. Por eso el ticket #1089314 lista correctamente `10.11.11.12` y `10.143.11.8` como orígenes (🟡 pero `192.168.91.112` no corresponde a ningún contenedor de `PRJ-OSS`; el gateway de Carpinelli es `.117`).
+
+> **Pendiente de definir:** 🟡 si la colecta hacia el NCE corre en un **contenedor de aplicación** (OVN `192.168.0.x`) y no en el gateway, su camino hacia `10.147.x` todavía no existe: las aplicaciones solo tienen ruta hacia `10.150.0.0/16` vía el OAM. Haría falta una ruta por el `*-GW-SRV` con NAT y la regla de ACL correspondiente. Ver [`laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/`](../laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/).
 
 **Por qué la salida no usa la IP del gateway de OAM:** el tráfico de salida pasa por **dos NAT**.
 

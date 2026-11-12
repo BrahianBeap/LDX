@@ -248,6 +248,19 @@ Esto confirma en la práctica un riesgo que ya se había anticipado al decidir W
 
 ---
 
+## LL-021 — Una ruta agregada con `ip route add` no existe hasta que está en netplan
+
+**¿Qué pasó?**
+Al resolver el acceso de `FDO-GW-SRV` al NCE (2026-11-12), se descubrió que el gateway ya dependía de **10 rutas agregadas a mano** (monitoreo SNMP, `10.147.5.119`, una en `eth0`) que no figuraban en ningún archivo: vivían en memoria desde el último arranque, 12 semanas atrás. Un reboot, o un `netplan apply` por cualquier otro motivo (`systemd-networkd` borra las rutas "ajenas" por defecto), las habría eliminado en silencio y cortado el monitoreo sin que nadie viera un error. Ver [RIE-024](11_Riesgos.md#rie-024--rutas-agregadas-a-mano-en-los-gateways-no-persistentes) y [TRB-024](07_Troubleshooting.md#trb-024--un-gateway-de-servicios-no-alcanza-una-red-corporativa-timeout-o-net-unreachable-y-seguridad-responde-que-no-es-firewall).
+
+**Lección:**
+1. `ip route add` sirve para **probar** y para desbloquear en el momento. La tarea no está terminada hasta que la misma ruta está en netplan, el mismo día, y validada con `netplan generate` antes de `netplan try`. Procedimiento en [05_Configuracion.md](05_Configuracion.md#rutas-estáticas-persistentes-del-gateway-de-servicios-netplan).
+2. Antes de cualquier `netplan apply`/`try` en un gateway, comparar `ip -4 route` con lo que netplan declara: toda ruta **sin `proto static`** es una ruta manual que se va a perder. Guardar `ip -4 route` en un archivo primero.
+3. Dos trampas de método descubiertas en el camino: **(a)** `lxc exec CT -n -- sh -c 'cat > archivo' <<EOF` deja el archivo **vacío** (el modo no interactivo no reenvía stdin): escribir siempre con `lxc file push`. **(b)** El proyecto `PRJ-OSS` **no permite snapshots** (`doesn't allow for snapshot creation`), así que el respaldo previo a un cambio de configuración tiene que ser en texto (copia de `/etc/netplan` y de la tabla de rutas). Esto matiza [LL-017](#ll-017--snapshot-antes-de-cualquier-cambio-riesgoso-y-reglas-de-firewall-primero-en-runtime): el principio vale, el mecanismo depende del proyecto.
+4. Mientras se diagnostica, no reproducir en documentos lo que aparece en `/root/.bash_history`: en este caso contenía una community SNMP en claro. Rotar y limpiar.
+
+---
+
 ## Documentos relacionados
 
 | Tema | Documento |

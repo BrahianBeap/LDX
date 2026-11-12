@@ -884,6 +884,63 @@ lxc exec CONTENEDOR -- journalctl --disk-usage
 
 ---
 
+## Rutas estáticas persistentes del gateway de servicios (netplan)
+
+### ¿Qué controla?
+Hacia qué router de la LAN de servicio envía el gateway el tráfico de **cada destino que no cubre la ruta por defecto**. En la LAN de Fernando conviven dos routers: el default `10.11.11.1` y `10.11.11.253`, que es el único que alcanza las redes de monitoreo (`10.12.151.x`) y del NCE (`10.147.x`). Sin estas rutas, ese tráfico sale por el default y muere con *Net Unreachable* ([TRB-024](07_Troubleshooting.md#trb-024--un-gateway-de-servicios-no-alcanza-una-red-corporativa-timeout-o-net-unreachable-y-seguridad-responde-que-no-es-firewall)).
+
+### Dónde vive
+
+| Archivo | Quién lo escribe | Contenido |
+|---|---|---|
+| `/etc/netplan/50-cloud-init.yaml` | cloud-init (desde LXD) | IP de `eth1`, nameservers y el **default** por `.1`. **No editar**: un boot puede regenerarlo |
+| `/etc/netplan/90-oss-rutas.yaml` | El equipo (modo `0600`) | Solo la lista `routes` adicional de cada interfaz. Netplan **suma** las rutas de los dos archivos (✅ verificado con `netplan generate` el 2026-11-12: 10 `[Route]` en `10-netplan-eth1.network`) |
+
+Copia del archivo vigente en `FDO-GW-SRV`: [`laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/90-oss-rutas.yaml`](../laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/90-oss-rutas.yaml). `PFR-GW-SRV` y `CAR-GW-SRV` no lo necesitan hoy: en sus LAN hay un único gateway.
+
+### Parámetros
+
+| Parámetro | Valor | Efecto |
+|---|---|---|
+| `to` | Destino en CIDR, siempre `/32` por host (`10.147.8.2/32`) | Un prefijo (`10.147.0.0/16`) sería más mantenible, pero el informe de Seguridad pide no asumir rangos sin validación de la red. 🟡 Consulta pendiente |
+| `via` | Router de la LAN de servicio (`10.11.11.253`) | Debe estar en la misma subred de la interfaz; netplan lo rechaza si no |
+| (sin `metric`) | — | Las rutas `/32` siempre ganan al default por ser más específicas |
+
+### Impacto de cambiarlo
+Cada `netplan apply`/`try` reconfigura `eth1`: hay un corte de segundos y **se borran las rutas que no estén en netplan** (`ManageForeignRoutes=yes`, default de `systemd-networkd`). Por eso el archivo tiene que contener **todas** las rutas manuales vigentes, no solo la nueva: es un *superset* del estado actual.
+
+### Procedimiento de cambio
+
+```bash
+# 1) Respaldo (PRJ-OSS no permite snapshots: el respaldo es en texto)
+lxc exec FDO-GW-SRV --project PRJ-OSS -n -- sh -c 'ip -4 route > /root/rutas-antes-$(date +%Y%m%d).txt; cp -a /etc/netplan /root/netplan.bak-$(date +%Y%m%d)'
+
+# 2) Editar la copia en pfr-oss y subirla (NO usar heredoc por lxc exec: deja el archivo vacío)
+lxc file push --uid 0 --gid 0 --mode 0600 ~/90-oss-rutas.yaml FDO-GW-SRV/etc/netplan/90-oss-rutas.yaml --project PRJ-OSS
+
+# 3) Validar sin aplicar: debe contar default + todas las rutas
+lxc exec FDO-GW-SRV --project PRJ-OSS -n -- sh -c 'netplan generate && grep -c "^\[Route\]" /run/systemd/network/10-netplan-eth1.network'
+
+# 4) Aplicar con auto-revert (interactivo, sin -n; Enter para confirmar antes de 120 s)
+lxc exec FDO-GW-SRV --project PRJ-OSS -- netplan try
+```
+
+### Cómo verificar
+```bash
+lxc exec FDO-GW-SRV --project PRJ-OSS -n -- sh -c 'ip -4 route | grep -c "proto static"; ping -c 2 10.147.8.2'
+# Las rutas del archivo aparecen con "proto static" (son de netplan, no "ajenas")
+```
+
+### Rollback
+```bash
+lxc exec FDO-GW-SRV --project PRJ-OSS -n -- sh -c 'rm /etc/netplan/90-oss-rutas.yaml && netplan apply'
+# y re-agregar a mano las rutas del respaldo /root/rutas-antes-*.txt si hiciera falta
+```
+
+> **Advertencia:** si `netplan try` revierte por timeout, vuelve a la configuración de netplan **pero no restaura las rutas manuales** que ya borró. El respaldo en texto del paso 1 es lo que permite re-agregarlas. `lxc exec` sigue funcionando siempre, aunque la red del contenedor quede mal.
+
+---
+
 ## Variable de entorno de proxy para APT y snap
 
 ### ¿Qué controla?

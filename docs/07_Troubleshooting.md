@@ -360,6 +360,21 @@ Ver el seguimiento de este bloqueo en el caso real (incorporación de FDO1/Ferna
 
 ---
 
+## TRB-024 — Un gateway de servicios no alcanza una red corporativa (timeout o "Net Unreachable") y Seguridad responde que "no es firewall"
+
+| Campo | Contenido |
+|---|---|
+| **Problema** | Desde un `*-GW-SRV` no se llega a un destino corporativo fuera de `10.150.x` (caso real: el NCE `10.147.8.2:22`, ticket #1089314). El pedido de permiso de firewall vuelve cerrado con el diagnóstico "falta de rutas, no de reglas" |
+| **Síntomas** | `curl --connect-timeout 5 telnet://DESTINO:PUERTO` termina en *Connection timed out*; o `ping` responde `Destination Net Unreachable` **desde la IP del gateway por defecto** de la LAN de servicio |
+| **Causa** | Hay **dos casos distintos**, y se distinguen por la LAN de servicio del sitio: **(a)** ✅ Fernando (`10.11.11.0/24`): el default `10.11.11.1` no conoce la red destino, pero en la misma LAN existe otro router (`10.11.11.253`) que sí. Falta una ruta **en el contenedor**. **(b)** ✅ Franco (`10.143.11.0/26`) y Carpinelli (`192.168.91.96/27`): existe un único gateway (VRRP), la interfaz funciona hacia otros destinos y toda la red destino se descarta **en silencio aguas arriba**. No hay nada que corregir en el contenedor: es ruta o firewall de la red corporativa |
+| **Diagnóstico** | Desde el host, con `lxc exec CT --project PRJ-OSS -n --`: 1) `ip -4 route get DESTINO` → qué next-hop elige. 2) `ip neigh show dev eth1` → qué routers existen en la LAN (MAC `00:00:5e:00:01:xx` = VRRP). 3) Control positivo por la misma interfaz: `curl --connect-timeout 4 telnet://10.129.4.176:53` debe conectar. 4) `curl --connect-timeout 5 telnet://DESTINO:PUERTO`. Si el *Net Unreachable* lo emite un router de la LAN y hay otro router → caso (a). Si es timeout silencioso y no hay otro router → caso (b). `PFR-GW-SRV` y `CAR-GW-SRV` no tienen `ping` ni `traceroute`; usar `curl`/`nc` |
+| **Solución** | **(a)** Ruta `/32` por el router correcto: `ip route add DESTINO/32 via ROUTER dev eth1` (efecto inmediato) y **persistirla en netplan** el mismo día: ver [05_Configuracion.md — Rutas estáticas persistentes](05_Configuracion.md#rutas-estáticas-persistentes-del-gateway-de-servicios-netplan). **(b)** Reabrir o ampliar el ticket con la evidencia de los puntos 1–4, indicando como origen la **IP de servicio del gateway** (ver [02_Arquitectura.md](02_Arquitectura.md#ip-que-ve-el-firewall-corporativo-entrada-y-salida)) |
+| **Prevención** | Al pedir un permiso de firewall con varios orígenes, pedir a Seguridad que pruebe **desde cada uno**: en el ticket #1089314 probaron solo desde FDO (caso a) y cerraron sin probar PFR/CAR (caso b). Nunca dejar una ruta agregada a mano sin su entrada en netplan ([RIE-024](11_Riesgos.md#rie-024--rutas-agregadas-a-mano-en-los-gateways-no-persistentes), [LL-021](12_Lecciones_Aprendidas.md#ll-021--una-ruta-agregada-con-ip-route-add-no-existe-hasta-que-está-en-netplan)) |
+
+Ejecución completa y evidencia: [`laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/`](../laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/).
+
+---
+
 ## Comandos de diagnóstico rápido
 
 ```bash

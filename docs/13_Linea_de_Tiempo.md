@@ -256,6 +256,9 @@
 | Pedir acceso al relay SMTP de Seguridad para el correo de NTF a destinatarios externos | Elías Alfonzo (Norberto revisa el ticket) | 🔴 Pendiente — ver [RIE-023](11_Riesgos.md#rie-023--correo-de-los-sistemas-sin-relay-hacia-destinatarios-externos) |
 | Servidor de correo entrante para permisos de ingreso a sitios (Postfix/Exim, puerto 25 con TLS) | Norberto Núñez | 🟡 Propuesto y aprobado por Marcos Casco para alojar en el clúster (segundo entregable) |
 | Contenedor con Docker para OSRM (cálculo de rutas de técnicos) | Sin asignar | 🟡 Pedido de Marcos Casco; requiere `security.nesting` y evaluar RAM |
+| Acceso SSH al NCE (`10.147.8.2:22`) desde los gateways — ticket #1089314 (Rocío Duarte, 06/11), cerrado por Seguridad el 11/11 como "ruteo, no firewall" probando solo FDO | Elías Alfonzo + Rocío Duarte | ✅ FDO resuelto 2026-11-12 (ruta persistente). 🔴 PFR y CAR siguen sin alcance (único gateway VRRP, descarte aguas arriba): confirmar con Rocío si la colecta corre desde los 3 sitios y, si sí, reabrir con la evidencia de [TRB-024](07_Troubleshooting.md#trb-024--un-gateway-de-servicios-no-alcanza-una-red-corporativa-timeout-o-net-unreachable-y-seguridad-responde-que-no-es-firewall) y corregir el origen de Carpinelli (`.117`, no `.112`) |
+| Reboot controlado de `FDO-GW-SRV` para demostrar la persistencia de las rutas | Elías Alfonzo | 🔴 Pendiente — ver [RIE-024](11_Riesgos.md#rie-024--rutas-agregadas-a-mano-en-los-gateways-no-persistentes) |
+| Rotar la community SNMP expuesta en el historial de `FDO-GW-SRV` y confirmar dueño de las rutas `10.12.151.30` y `10.150.58.126` | Elías Alfonzo | 🔴 Pendiente — ver [RIE-024](11_Riesgos.md#rie-024--rutas-agregadas-a-mano-en-los-gateways-no-persistentes) |
 
 ---
 
