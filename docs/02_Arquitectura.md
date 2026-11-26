@@ -255,7 +255,7 @@ La idea es que los 3 balanceadores (uno por sitio) **compartan un mismo nombre d
 > ✅ **Actualización 2026-10-16/21:** el nombre compartido tiene una excepción para clientes que solo alcanzan un sitio (ej. Comap → solo Fernando): un nombre propio por sitio, independiente del compartido. Ver [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md). El alta del nombre está en el ticket #1079305: hoy resuelve solo a `10.143.11.8`; las IP de Carpinelli y Fernando se suman después de la Etapa 2.
 
 > 🔴 **Requisitos previos antes de pedir el DNS (verificado 2026-10-16):**
-> 1. **Los 3 gateways tienen que publicar lo mismo.** Hoy solo PFR publica Kanboard y VulnApp NG sin certificado de cliente; con el DNS activo, 2 de cada 3 accesos fallarían. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
+> 1. ✅ **Los 3 gateways tienen que publicar lo mismo.** Resuelto con la Etapa 2 (2026-11-02) y re-verificado en vivo el 2026-11-26: los 3 publican lo mismo sin certificado de cliente. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
 > 2. **Las redirecciones HTTP → HTTPS no pueden apuntar a IP fija.** Hoy PFR redirige a `https://10.143.11.8/`; con DNS debe ser `https://oss.personal.com.py/`.
 > 3. **El certificado necesita SAN** con el FQDN. El actual de `AutoridadOSS` no tiene, y los navegadores modernos lo rechazan. Ver [RIE-019](11_Riesgos.md#rie-019--certificados-tls-no-confiables-y-configuración-tls-heredada-en-gateways-y-hosts).
 > 4. **Cada gateway sirve a los usuarios de otros sitios.** CAR y FDO acceden por `OVN_1` a los contenedores de PFR (`192.168.0.106`, `192.168.0.14`); la ACL ya lo permite desde la Etapa 1.

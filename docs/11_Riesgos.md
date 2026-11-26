@@ -321,6 +321,7 @@ Ver el detalle de la prueba realizada en [`laboratorio/2026-10-09_alta-vulnapp-n
 | **Impacto** | Si se pide el DNS round-robin `oss.personal.com.py` hacia los 3 gateways (ver [02_Arquitectura.md](02_Arquitectura.md#nombre-de-dominio-compartido-entre-sitios-fqdn--dns-round-robin)), **2 de cada 3 accesos fallarían** (error de certificado o backend detenido) |
 | **Severidad** | ✅ Resuelto para portal, Kanboard, VulnApp NG y ADM-TECH de desarrollo el 2026-11-02 |
 | **Mitigación actual** | ✅ Etapa 2 aplicada en CAR y FDO el 2026-11-02, con SMS real de Tembiapó y Grafana verificados. El DNS ya tiene las 3 IP. Ver [`laboratorio/2026-11-02_etapa2-homogeneizar-gateways/`](../laboratorio/2026-11-02_etapa2-homogeneizar-gateways/README.md) |
+| **Verificación 2026-11-26** | En vivo: los 3 `LB.conf` iguales (`optional` en el vhost, `none` en `/`, `require` solo en `/ntf`). PFR y CAR responden igual desde `pfr-oss`. FDO responde igual probado desde el propio `FDO-GW-SRV`; desde `pfr-oss` (10.143.11.228) la IP 10.11.11.12 no es alcanzable (timeout de red, no del gateway) |
 | **Acción requerida** | Probar el ingreso con AD por navegador en CAR y FDO. `/kanboard-prueba` queda solo en PFR por decisión: es una ruta de prueba con acceso por IP |
 | **Responsable** | Elías Alfonzo, con Norberto Núñez |
 

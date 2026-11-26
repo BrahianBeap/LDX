@@ -693,7 +693,9 @@ curl -k -I https://IP_GATEWAY/ntf       # sin certificado -> debe seguir rechaza
 ### Rollback
 Volver `SSLVerifyClient` a `require` a nivel de `VirtualHost` y sacar el override dentro del `<Location>` del servicio protegido — vuelve al estado donde todo el vhost exige certificado de cliente.
 
-> 🟡 **Estado real (verificado 2026-10-16):** solo `PFR-GW-SRV` usa este modelo. `CAR-GW-SRV` y `FDO-GW-SRV` siguen con `SSLVerifyClient require` en todo el vhost, y sus `<Location '/ntf'>` (y `/supervisionge` en FDO) **no** declaran `SSLVerifyClient require` propio: hoy dependen del `require` del vhost. Al migrarlos a este modelo, hay que agregar el `require` explícito en cada una de esas rutas. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
+> ✅ **Actualización 2026-11-26 (verificado en vivo):** los 3 gateways tienen el mismo `LB.conf`: vhost en `SSLVerifyClient optional`, `/` en `none` y certificado obligatorio solo en `/ntf`. `/`, `/kanboard/`, `/vulnapp/` y `/adm/` responden igual en los 3 sin certificado de cliente.
+>
+> 🟡 **Estado al 2026-10-16 (superado):** solo `PFR-GW-SRV` usa este modelo. `CAR-GW-SRV` y `FDO-GW-SRV` siguen con `SSLVerifyClient require` en todo el vhost, y sus `<Location '/ntf'>` (y `/supervisionge` en FDO) **no** declaran `SSLVerifyClient require` propio: hoy dependen del `require` del vhost. Al migrarlos a este modelo, hay que agregar el `require` explícito en cada una de esas rutas. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
 >
 > **Advertencia:** con TLS 1.3, el certificado pedido por ruta requiere que el cliente soporte autenticación posterior al handshake. Muchos clientes de scripts (librerías HTTP) no la soportan y fallarían con 403. Probar con el cliente real de NTF antes de migrar un gateway que hoy pide el certificado en el handshake.
 
