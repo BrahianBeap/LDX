@@ -42,6 +42,7 @@
 5. [ ] **Etapa 2 (EN CURSO, 02/11):** reescribir los `LB.conf` de `CAR-GW-SRV` y `FDO-GW-SRV` con el modelo de PFR: Kanboard y VulnApp NG por **proxy interno** hacia `192.168.0.106` / `192.168.0.14:5000` (no `Redirect`), `require` explícito en `/ntf` y `/supervisionge`, y bloqueo de `web.config`. Antes de FDO, probar el cliente de NTF de Tembiapó con un SMS real (riesgo de producción). **CAR listo para aplicar, FDO pendiente — handoff con config y comandos: [`laboratorio/2026-11-02_etapa2-homogeneizar-gateways/`](laboratorio/2026-11-02_etapa2-homogeneizar-gateways/README.md).**
 6. [x] ~~Pedir a Abel que sume las IP de CAR y FDO al DNS.~~ Hecho el 02/11 — **antes de tiempo** (ver fila #1079305 y [RIE-020](docs/11_Riesgos.md)).
 7. [ ] Definir el nombre propio para Comap (`/supervisionge`, solo hacia Fernando).
+8. [ ] **VIP dedicada para `oss.personal.com.py`** (acordado el 26/11 con Rocío y Maximiliano Romero), para que el acceso por VPN/SDP sea un solo permiso. Rocío le pasa el pedido a Maxi. Pasos: confirmar con Sistemas el canal del pedido → IP de Da Silva → VIP en el balanceador de Sistemas en **TCP pasante** (por `/ntf`) → firewall del balanceador a los 3 nodos al 443 (verificar que llegue a Fernando) → probar `/ntf` por la VIP → DNS a la VIP → inventariar con Abel y migrar los accesos a `10.143.11.8:443`. Ver [ADR-0011](docs/adr/ADR-0011-vip-dedicada-oss-balanceador-sistemas.md).
 
 ## 3. Inventario (checklist de alta)
 
@@ -83,6 +84,12 @@
 - [x] Tema **OssTheme** en producción (26/10); Customizer y Essential desactivados. Pendientes de prueba manual y retiro de `PFR-KANBOARD-PRUEBA` + `/kanboard-prueba/`: ver [`laboratorio/2026-10-26_kanboard-tema-osstheme/`](laboratorio/2026-10-26_kanboard-tema-osstheme/).
 
 ## 5. Migraciones y cargas nuevas
+
+- [ ] **Oxígeno (Néstor Cardozo)**: camino a los nodos Huawei probado el 27/11, vía `FDO-GW-OAM` + regla en `ACL-OVN-1` + rutas ([bitácora](laboratorio/2026-11-27_alcance-oxigeno-huawei/README.md)).
+  - [ ] Pedirle a Néstor el repo del backend (Python).
+  - [ ] Crear el contenedor en `fdo.1`, aplicar la regla de ACL y las rutas en netplan, y repetir la prueba de puertos.
+  - [ ] Avisar a Seguridad que una aplicación usa el camino de OAM.
+  - [ ] Sumar a `90-oss-rutas.yaml` de `FDO-GW-SRV` las 10 rutas Comap agregadas a mano ([RIE-024](docs/11_Riesgos.md)).
 
 - [ ] **ADM-TECH → LXD** (plan en [`laboratorio/2026-10-24_migracion-admtech-lxd/`](laboratorio/2026-10-24_migracion-admtech-lxd/README.md), refactor en el repo `adm-tech`: `knowledge/06_Roadmap/plan_migracion_lxd_php85.md`):
   - [x] Fase 1: relevamiento (24/10).

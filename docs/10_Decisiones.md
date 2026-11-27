@@ -18,6 +18,7 @@
 | 7 | Exposición de servicios | Gateway + balanceador (variante embebida en la práctica) | Exposición directa de cada contenedor | [ADR-0008](adr/ADR-0008-gateway-balanceador-dos-etapas.md) |
 | 8 | Nombres DNS de los servicios | `oss.personal.com.py` por round-robin + nombres propios por sitio cuando hay restricción de ruta | Solo un nombre por sitio | [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) |
 | 9 | Correo saliente de los sistemas | Módulo de email de NTF (+ relay SMTP de Seguridad para externos, pendiente) | Servidor de correo propio con una cuenta por sistema | [ADR-0010](adr/ADR-0010-envio-correo-sistemas-via-ntf.md) |
+| 10 | Acceso único a `oss.personal.com.py` (propuesto) | VIP dedicada en el balanceador de Sistemas, TCP pasante, IP pedida a Da Silva | Round-robin con 3 permisos, IP flotante propia, VIP compartida | [ADR-0011](adr/ADR-0011-vip-dedicada-oss-balanceador-sistemas.md) |
 
 ---
 

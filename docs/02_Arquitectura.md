@@ -254,6 +254,17 @@ La idea es que los 3 balanceadores (uno por sitio) **compartan un mismo nombre d
 
 > ✅ **Actualización 2026-10-16/21:** el nombre compartido tiene una excepción para clientes que solo alcanzan un sitio (ej. Comap → solo Fernando): un nombre propio por sitio, independiente del compartido. Ver [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md). El alta del nombre está en el ticket #1079305: hoy resuelve solo a `10.143.11.8`; las IP de Carpinelli y Fernando se suman después de la Etapa 2.
 
+> 🟡 **Propuesta 2026-11-26: reemplazar el round-robin por una VIP.** Los permisos de VPN/SDP se otorgan por ip:puerto, así que con round-robin un usuario con permiso a una sola IP falla cuando el DNS le devuelve otra (ver [RIE-025](11_Riesgos.md#rie-025--permisos-vpnsdp-por-ip-con-dns-round-robin)). Se acordó pedir una IP a Da Silva y configurarla como VIP dedicada para OSS en el balanceador de Sistemas, en TCP pasante para no romper el certificado de cliente de `/ntf`. El DNS apuntaría a la VIP. Decisión, alternativas y pendientes en [ADR-0011](adr/ADR-0011-vip-dedicada-oss-balanceador-sistemas.md).
+>
+> ```
+>   Usuario ──VPN (1 permiso: VIP:443)──► VIP dedicada OSS (balanceador de Sistemas, TCP pasante)
+>                                              │ health check + least connections
+>                        ┌─────────────────────┼─────────────────────┐
+>                        ▼                     ▼                     ▼
+>                10.143.11.8:443      192.168.91.117:443      10.11.11.12:443
+>                   (Franco)             (Carpinelli)           (Fernando)
+> ```
+
 > 🔴 **Requisitos previos antes de pedir el DNS (verificado 2026-10-16):**
 > 1. ✅ **Los 3 gateways tienen que publicar lo mismo.** Resuelto con la Etapa 2 (2026-11-02) y re-verificado en vivo el 2026-11-26: los 3 publican lo mismo sin certificado de cliente. Ver [RIE-020](11_Riesgos.md#rie-020--gateways-de-car-y-fdo-no-homogéneos-con-pfr-bloquean-el-dns-compartido).
 > 2. **Las redirecciones HTTP → HTTPS no pueden apuntar a IP fija.** Hoy PFR redirige a `https://10.143.11.8/`; con DNS debe ser `https://oss.personal.com.py/`.

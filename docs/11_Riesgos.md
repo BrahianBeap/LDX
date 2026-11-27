@@ -381,9 +381,24 @@ Detalle del certificado y plan de instalación: [`laboratorio/2026-10-26_certifi
 | **Severidad** | Baja desde el 2026-11-12 (las rutas quedaron persistidas en `/etc/netplan/90-oss-rutas.yaml`; falta la prueba de reboot). Antes era Media |
 | **Mitigación actual** | ✅ `90-oss-rutas.yaml` en `FDO-GW-SRV` con las 10 rutas, aplicado con `netplan try` y verificado (`proto static`). Ver [05_Configuracion.md](05_Configuracion.md#rutas-estáticas-persistentes-del-gateway-de-servicios-netplan) |
 | **Acción requerida** | 1) Reboot controlado de `FDO-GW-SRV` en horario tranquilo y repetir la verificación (rutas + pings). 2) Confirmar dueño y uso de `10.12.151.30` (inalcanzable desde `.253`, sin rastro en ningún historial) y de `10.150.58.126`; retirarlas del YAML si nadie las reclama. 3) Rotar la community SNMP que quedó en claro en `/root/.bash_history` del contenedor y limpiar el historial. 4) Regla de equipo: ninguna ruta a mano sin netplan ([LL-021](12_Lecciones_Aprendidas.md#ll-021--una-ruta-agregada-con-ip-route-add-no-existe-hasta-que-está-en-netplan)) |
+| **Recaída 2026-11-27** | 🔴 Aparecieron **10 rutas nuevas a mano** en `FDO-GW-SRV`, sin `proto static`: `10.12.151.226/.230/.242/.246` y `10.12.159.10/.38/.54/.58/.74/.86`. Todas menos `.54` coinciden con reglas nuevas de `ACL-OVN-1` para sitios Comap. Hay que sumarlas a `90-oss-rutas.yaml` y averiguar quién las agregó, para aplicar la regla de LL-021. Ver [`laboratorio/2026-11-27_alcance-oxigeno-huawei/`](../laboratorio/2026-11-27_alcance-oxigeno-huawei/README.md#hallazgo-lateral) |
 | **Responsable** | Elías Alfonzo |
 
 Detalle y bitácora: [`laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/`](../laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/).
+
+---
+
+## RIE-025 — Permisos VPN/SDP por IP con DNS round-robin
+
+| Campo | Detalle |
+|---|---|
+| **Descripción** | ✅ `oss.personal.com.py` resuelve por round-robin a las 3 IP de los gateways, pero Seguridad otorga los accesos VPN/SDP por ip:puerto. Al 2026-11-26 solo está inventariado `10.143.11.8:443` (Franco) |
+| **Causa** | El diseño de [ADR-0009](adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md) supone que el usuario puede llegar a cualquier sitio, y el modelo de permisos de la VPN se lo impide |
+| **Impacto** | Un usuario con permiso a una sola IP falla en las conexiones que el DNS le manda a las otras dos. Además, el DNS no saca de la lista a un sitio caído |
+| **Severidad** | Media |
+| **Mitigación actual** | Ninguna. Los usuarios por VPN dependen de que su cliente reintente con otra IP |
+| **Acción requerida** | Implementar la VIP dedicada del [ADR-0011](adr/ADR-0011-vip-dedicada-oss-balanceador-sistemas.md): IP de Da Silva, balanceador de Sistemas en TCP pasante, firewall hacia los 3 nodos y DNS a la VIP. 🔴 Confirmar que el balanceador llegue a `10.11.11.12` |
+| **Responsable** | Elías Alfonzo + Rocío Duarte |
 
 ---
 
@@ -393,7 +408,7 @@ Detalle y bitácora: [`laboratorio/2026-11-12_ruteo-fdo-gw-srv-10147/`](../labor
 |---|---|
 | **Alta** | RIE-004 (CentOS 7 EOL) |
 | **Media-Alta** | RIE-006 (sin backup) |
-| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria), RIE-018 (métricas de LXD sin autenticación), RIE-021 (`PFR-GW-SRV` sin snapshots), RIE-022 (certificado de 90 días sin renovación automática), RIE-023 (correo sin relay hacia destinatarios externos) |
+| **Media** | RIE-001c (mesh WireGuard manual), RIE-003 (proxy temporal), RIE-005 (sin VPN), RIE-011 (sesiones balanceador), RIE-012 (réplica BD entre sitios), RIE-014 (overcommit de memoria), RIE-018 (métricas de LXD sin autenticación), RIE-021 (`PFR-GW-SRV` sin snapshots), RIE-022 (certificado de 90 días sin renovación automática), RIE-023 (correo sin relay hacia destinatarios externos), RIE-025 (permisos VPN/SDP por IP con DNS round-robin) |
 | **Baja** | RIE-009 (alta de servicio CAR1), RIE-010 (arranque lento Ubuntu 26.04), RIE-016 (acceso temporal del escáner de vulnerabilidades), RIE-017 (3 contenedores con límite de memoria ajustado), RIE-019 (certificados TLS no confiables y cifrados heredados), RIE-024 (rutas a mano en los gateways — persistidas en FDO el 2026-11-12, falta prueba de reboot) |
 | **Resuelto** | RIE-001 (OVN entre PFR1 y CAR1), RIE-001b (WireGuard persistido en netplan), RIE-007 (IP de proxy confirmada), RIE-008 (IPs de operadores confirmadas), RIE-015 (carga SDI de VulnApp NG operativa el 2026-11-04), RIE-020 (gateways CAR/FDO homogeneizados el 2026-11-02) |
 | **🟡 Posiblemente resuelto (pendiente confirmación formal)** | RIE-002 (3/3 nodos `ONLINE`, verificado en vivo 2026-10-06), RIE-013 (contenedor corriendo sobre `OVN_1` en Fernando, verificado en vivo 2026-10-06 — causa raíz original aún sin confirmar) |

@@ -656,3 +656,40 @@ VulnApp NG pasó a **solo ingreso con AD**. Entra quien ya tenga usuario creado,
 
 **Resumen:**
 `CAR-GW-SRV` y `FDO-GW-SRV` quedaron con el modelo de `PFR-GW-SRV`: certificado de cliente solo en `/ntf`, Kanboard y VulnApp NG hacia Franco, bloqueo de `web.config` y HSTS. En FDO, `/supervisionge` conserva el certificado y la restricción por IP sin pedir el certificado después de conectar, porque Grafana usa un cliente Go. Se verificó un SMS real de Tembiapó y Grafana después del `reload`. Ese mismo día se publicó `/adm` en CAR y FDO hacia el contenedor de Franco, porque esos accesos daban `404`.
+
+---
+
+### 2026-11-26 (trigésima octava entrada)
+
+**Fuente:** Chat de Teams con Abel Díaz, Maximiliano Romero (Seguridad) y Rocío Duarte sobre el acceso por VPN/SDP a `oss.personal.com.py`.
+
+**Documentos creados:**
+- `docs/adr/ADR-0011-vip-dedicada-oss-balanceador-sistemas.md`
+
+**Documentos actualizados:**
+- `docs/02_Arquitectura.md`: nota y diagrama de la VIP propuesta
+- `docs/10_Decisiones.md`: decisión 10
+- `docs/11_Riesgos.md`: RIE-025 nuevo
+- `docs/13_Linea_de_Tiempo.md`
+- `docs/adr/ADR-0009-dns-fqdn-compartido-y-nombres-por-sitio.md`: pendientes
+- `PENDIENTES.md`
+
+**Resumen:**
+Los permisos de VPN/SDP se dan por ip:puerto, así que con round-robin el usuario falla si el DNS le devuelve una IP para la que no tiene permiso. La propuesta acordada es pedir una IP a Da Silva y configurarla como VIP dedicada para OSS en el balanceador de Sistemas, en TCP pasante para no romper el certificado de cliente de `/ntf`. El DNS apuntaría a la VIP y el firewall se abriría desde el balanceador a los 3 nodos al 443. Se descartó la IP flotante propia porque los 3 sitios están en redes distintas, y la VIP compartida porque no separa los permisos. No hay nada implementado todavía.
+
+---
+
+### 2026-11-27 (trigésima novena entrada)
+
+**Fuente:** Pruebas en vivo para el módulo Oxígeno (Néstor Cardozo).
+
+**Documentos creados:**
+- `laboratorio/2026-11-27_alcance-oxigeno-huawei/README.md`
+
+**Documentos actualizados:**
+- `docs/11_Riesgos.md`: RIE-024, recaída con 10 rutas Comap agregadas a mano en `FDO-GW-SRV`
+- `docs/13_Linea_de_Tiempo.md`
+- `PENDIENTES.md`
+
+**Resumen:**
+Se buscó un camino desde el cluster hasta los nodos Huawei de Oxígeno (UDM/UPCF en `10.148.x:7776` y el MAE en `10.147.10.7:31114`). Los gateways de servicio y los OAM de Franco y Carpinelli no llegan. Llegan el host `fdo-oss1` y `FDO-GW-OAM`, por la red de gestión de Fernando. Un contenedor de `OVN_1` llega con dos cosas juntas: una regla en `ACL-OVN-1` y rutas vía `192.168.0.9`. Se probó con cambios temporales, se revirtieron y la ACL quedó idéntica. Falta crear el contenedor en `fdo.1` y aplicar el esquema.

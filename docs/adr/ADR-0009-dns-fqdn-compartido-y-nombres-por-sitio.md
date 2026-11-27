@@ -97,7 +97,8 @@ La decisión final sobre qué servicios usan cada nombre es del equipo dueño de
 ## Pendientes de seguimiento
 
 - [x] Alta de `oss.personal.com.py` en el DNS interno (ticket #1079305): cargado solo `10.143.11.8` (Abel Díaz, 2026-10-21). Abel confirmó que el esquema de varios registros A es posible.
-- [ ] Sumar `192.168.91.117` y `10.11.11.12` después de la Etapa 2 de los gateways.
+- [x] Sumar `192.168.91.117` y `10.11.11.12` después de la Etapa 2 de los gateways (el DNS ya resuelve a las 3 IP).
+- [ ] 🟡 Propuesto el 2026-11-26: reemplazar el round-robin por una VIP dedicada en el balanceador de Sistemas, para que el acceso VPN/SDP sea un solo permiso. Ver [ADR-0011](ADR-0011-vip-dedicada-oss-balanceador-sistemas.md).
 - [ ] Definir el nombre propio de Fernando para Comap y decidir si entra como SAN en el certificado del ticket #1078719.
 - [ ] TTL de 300 segundos, para que sacar un sitio del DNS se refleje en minutos.
 
