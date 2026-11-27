@@ -25,6 +25,8 @@ Reglas de conversión:
   - Los "clave = valor" antes de la primera sección van a 'datos'.
   - Cada línea entre comillas abre una sección.
   - Las líneas sin '=' dentro de una sección son ítems de una lista ('items').
+    Excepción: si la línea siguiente empieza con '=', es una clave larga
+    partida en dos líneas (pasa en LST DYNSUB) y se une como clave = valor.
   - Si una clave se repite dentro de la sección, empieza un grupo nuevo y los
     grupos se juntan en una lista ('grupos'). Las claves que no son del grupo
     quedan sueltas en la sección.
@@ -40,6 +42,7 @@ COMANDO = re.compile(r"^%%\s*(.*?)\s*%%\s*$")
 RETCODE = re.compile(r"^RETCODE\s*=\s*(\d+)\s*(.*)$")
 SECCION = re.compile(r'^"(.+)"$')
 CLAVE_VALOR = re.compile(r"^(.+?)\s+=\s+(.*)$")
+CONTINUACION = re.compile(r"^=\s*(.*)$")
 TOTAL = re.compile(r"^Total count\s*=\s*(\d+)")
 FIN = re.compile(r"^(---\s+END|There is together)")
 
@@ -107,6 +110,7 @@ def parsear(texto):
     secciones = {}
     actual = raiz
     en_cuerpo = False
+    pendiente = None  # sección donde la línea anterior quedó como ítem
 
     for linea in texto.splitlines():
         limpia = linea.strip()
@@ -135,10 +139,17 @@ def parsear(texto):
             nombre = m.group(1)
             actual = secciones.setdefault(nombre, _Seccion())
             continue
+        if (m := CONTINUACION.match(limpia)) and pendiente is actual and actual.items:
+            # Clave larga partida en dos líneas: la anterior era la clave.
+            actual.clave_valor(actual.items.pop(), m.group(1).strip())
+            pendiente = None
+            continue
+        pendiente = None
         if m := CLAVE_VALOR.match(limpia):
             actual.clave_valor(m.group(1).strip(), m.group(2).strip())
         else:
             actual.item(limpia)
+            pendiente = actual
 
     datos = raiz.resultado()
     datos = dict(datos) if isinstance(datos, dict) else ({} if datos is True else {"items": datos})

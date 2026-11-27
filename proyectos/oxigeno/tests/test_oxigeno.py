@@ -60,6 +60,30 @@ class TestParser(unittest.TestCase):
         self.assertEqual(r["retcode"], 1013)
         self.assertEqual(r["mensaje"], "Username or password incorrect")
 
+    def test_dynsub_claves_partidas_en_dos_lineas(self):
+        r = parsear((FIXTURES / "udm_lst_dynsub_ok.txt").read_text())
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["total"], 81)
+        d = r["datos"]
+        self.assertEqual(d["ISDN"], "595900000000")
+        gsm = d["Dynamic Status Information For GSM"]
+        self.assertEqual(gsm["RoamingRestrictInMscDueToUnsupportedFeature"], "FALSE")
+        self.assertEqual(gsm["CsUplStatus"], "Normal")
+        self.assertNotIn("items", gsm)
+        lcs = d["Supported LCS"]
+        self.assertEqual(lcs, {"MSC Supported LCS Capability Set1": "FALSE",
+                               "MSC Supported LCS Capability Set2": "FALSE",
+                               "SGSN Supported LCS Capability Set2": "FALSE"})
+        self.assertEqual(d["ODB Supported Features For GPRS"]["Barring of Packet Oriented Services"], "TRUE")
+        self.assertEqual(d["Short Message Dynamic Data for GSM"]["MNRR"], "No Reason for Non-GPRS")
+        self.assertEqual(len(d["Resend Information"]), 11)
+
+    def test_upcf_abonado_inexistente(self):
+        r = parsear((FIXTURES / "upcf_lst_psrv_noexiste.txt").read_text())
+        self.assertFalse(r["ok"])
+        self.assertEqual(r["retcode"], 12302)
+        self.assertEqual(r["mensaje"], "The subscriber does not exist")
+
     def test_sin_retcode(self):
         self.assertFalse(parsear("basura")["ok"])
 

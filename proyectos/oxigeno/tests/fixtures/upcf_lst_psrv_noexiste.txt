@@ -1,0 +1,8 @@
++++    USCDB        2026-11-27 14:12:26
+PGW    #001938
+%%  LST PSRV: USRIDENTIFIER="595900000000";%%
+RETCODE = 12302 The subscriber does not exist
+
+There is together 1 report
+
+---    END

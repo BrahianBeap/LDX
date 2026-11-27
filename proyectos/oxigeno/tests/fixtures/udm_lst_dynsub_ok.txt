@@ -1,0 +1,126 @@
++++    USCDB        2026-11-27 14:12:20
+PGW    #000005
+%%  LST DYNSUB: ISDN="595900000000", CONTENT=ALL;%%
+RETCODE = 0 SUCCESS0001:Operation is successful
+
+                          IMSI = 744050000000000
+                          ISDN = 595900000000
+
+"Dynamic Status Information For GSM"
+            MsPurgedForNonGprs = FALSE
+                    VLRInHplmn = TRUE
+              VLRInHomeCountry = TRUE
+                     VLRInArea = FALSE
+                RequireCheckSS = FALSE
+    RoamingRestrictInMscDueToUnsupportedFeature
+                               = FALSE
+    MscOrVlrAreaRoamingRestrict
+                               = FALSE
+    ODBarredForUnsupportedCamel
+                               = FALSE
+          SupportedCamelPhase1 = FALSE
+          SupportedCamelPhase2 = FALSE
+          SupportedCamelPhase3 = FALSE
+          SupportedCamelPhase4 = FALSE
+               SRIMsrnCfActive = TRUE
+           ZoneCodeStatusAtMsc = zoneCodesSupported
+          longGroupIDSupported = FALSE
+             basicISTSupported = FALSE
+           istCommandSupported = FALSE
+   SuperChargerSupportedForGsm = FALSE
+                ECATEGORYAtMsc = FALSE
+                        LSFLAG = FALSE
+         camelInduceBarringSMS = FALSE
+                  RoamBaocTs11 = FALSE
+                 MTRFSupported = FALSE
+                CS-MSISDN-LESS = FALSE
+                   CsUplStatus = Normal
+            BaocForVlrRestrict = FALSE
+
+"Dynamic Status Information For GPRS"
+                   SgsnInHplmn = TRUE
+               MsPurgedForGprs = FALSE
+             SgsnInHomeCountry = TRUE
+                    SgsnInArea = FALSE
+    RoamingRestrictInSgsnDueToUnsupportedFeature
+                               = FALSE
+       SgsnAreaRoamingRestrict = FALSE
+    ODBarredForUnsupportedCamelForGprs
+                               = FALSE
+                PS-MSISDN-LESS = FALSE
+                   PsUplStatus = Normal
+          SupportedCamelPhase3 = FALSE
+          SupportedCamelPhase4 = FALSE
+          ZoneCodeStatusAtSgsn = zoneCodesSupported
+  SuperChargerSupportedForGprs = FALSE
+"Short Message Dynamic Data for GSM"
+                          MCEF = FALSE
+                          MNRF = FALSE
+                          MNRR = No Reason for Non-GPRS
+
+"Short Message Dynamic Data for GPRS"
+                          MCEF = FALSE
+                          MNRG = FALSE
+                          MNRR = No Reason
+    SupportedShortMessageMT-PP = TRUE
+    SupportedShortMessageMO-PP = TRUE
+
+"ODB Supported Features For GSM"
+                BarredSSAccess = TRUE
+    BarredOutgoingEntertainmentCall
+                               = TRUE
+    BarredOutgoingInformationCall
+                               = TRUE
+    BarredOutgoingInternationalCallExHC
+                               = TRUE
+    BarredOutgoingInternationalCall
+                               = TRUE
+         BarredAllOutgoingCall = TRUE
+                  BarredAllECT = TRUE
+           BarredChargeableECT = TRUE
+        BarredInternationalECT = TRUE
+           BarredInterzonalECT = TRUE
+                    BarredDECT = TRUE
+                    BarredMECT = TRUE
+
+"ODB Supported Features For GPRS"
+         BarredAllOutgoingCall = TRUE
+    BarredOutgoingInternationalCall
+                               = TRUE
+    BarredOutgoingInternationalCallExHC
+                               = TRUE
+    Barring of Packet Oriented Services
+                               = TRUE
+
+"Supported LCS"
+    MSC Supported LCS Capability Set1
+                               = FALSE
+    MSC Supported LCS Capability Set2
+                               = FALSE
+    SGSN Supported LCS Capability Set2
+                               = FALSE
+
+"Featured Service Supported Features"
+                           ALS = FALSE
+                          VVDN = FALSE
+
+"Resend Information"
+                        CS_ISD = FALSE
+                        CS_DSD = FALSE
+                        CS_CLR = FALSE
+                        PS_ISD = FALSE
+                        PS_DSD = FALSE
+                        PS_CLR = FALSE
+                       S6a_IDR = FALSE
+                       S6a_CLR = FALSE
+                       S6d_IDR = FALSE
+                       S6d_CLR = FALSE
+                          UDCD = FALSE
+
+
+
+Total count = 81
+
+There is together 1 report
+
+---    END

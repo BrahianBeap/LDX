@@ -1,7 +1,7 @@
 # Oxígeno: consultas a UDM/UPCF Huawei con salida JSON
 
 > **Fecha de inicio:** 2026-11-27
-> **Estado:** 🟡 v0.1.0, prototipo de consola. Probado contra un equipo simulado y contra una respuesta real guardada (con los datos del abonado reemplazados). Falta la prueba contra el UDM real con el comando de consola.
+> **Estado:** 🟡 v0.1.0, prototipo de consola. Probado contra un equipo simulado y contra una respuesta real guardada (con los datos del abonado reemplazados). Probado contra el UDM real (`udm-car`, `LST SUB`) desde `fdo-oss1`.
 
 ## Objetivo
 
@@ -110,16 +110,18 @@ Reglas de conversión, implementadas en [`respuesta.py`](src/oxigeno/respuesta.p
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 ```
 
-Son 14 pruebas, todas sin red real:
-- El parser, contra la respuesta guardada de `LST SUB` (con IMSI y número reemplazados) y contra un error de login.
+Son 16 pruebas, todas sin red real:
+- El parser, contra las respuestas guardadas de `LST SUB` y `LST DYNSUB` (con IMSI y número reemplazados), un error de login y un abonado inexistente en el UPCF.
 - La validación de números.
 - El cliente contra un equipo MML simulado en `localhost`: login, lectura por partes, logout, login rechazado sin mostrar la contraseña y rechazo de comandos de escritura.
 
 ## Pendientes
 
-- [ ] Probar `consulta.py` contra el UDM real desde `fdo-oss1`.
-- [ ] Probar el login en el UPCF. No está confirmado que use el mismo `LGI` con `HLRSN=1`.
+- [x] Probar `consulta.py` contra el UDM real desde `fdo-oss1` (2026-11-27: `LST SUB` OK, JSON correcto).
+- [x] Probar el login en el UPCF (2026-11-27: el mismo `LGI` con `HLRSN=1` funciona; el equipo también se identifica como `USCDB`).
+- [ ] 🔴 `LST PSRV` en el UPCF devolvió `RETCODE = 12302 The subscriber does not exist` para una línea que sí existe en el UDM. Falta saber si la línea no tiene política PCC o si el UPCF espera otro formato de `USRIDENTIFIER` (sin `595`, o el IMSI). Consultar a Néstor.
 - [ ] Confirmar con Néstor si siguen en uso el MNP y el MSC (puerto 6000), que no figuran en la lista de equipos nuevos.
-- [ ] Juntar más respuestas reales (`LST DYNSUB`, `LST PSRV`, `LST PQUOTA`) para ajustar el parser.
+- [x] `LST DYNSUB` real: trae claves largas partidas en dos líneas; el parser ya las une.
+- [ ] Juntar respuestas reales exitosas de `LST PSRV` y `LST PQUOTA` para ajustar el parser.
 - [ ] Contenedor en `fdo.1`, con regla en ACL y rutas (ver la bitácora de alcance).
 - [ ] API y web.
