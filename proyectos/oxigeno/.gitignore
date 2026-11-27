@@ -1,0 +1,5 @@
+# Credenciales y salidas reales de los equipos (traen datos de abonados)
+.env
+*.env
+salidas/
+__pycache__/

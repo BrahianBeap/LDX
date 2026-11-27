@@ -1,0 +1,8 @@
++++    USCDB        2026-11-27 11:55:50
+PGW    #000001
+%%LGI: HLRSN=1, OPNAME="lared", PWD="******";%%
+RETCODE = 1013 Username or password incorrect
+
+There is together 1 report
+
+---    END

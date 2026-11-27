@@ -1,0 +1,80 @@
++++    USCDB        2026-11-27 11:59:38
+PGW    #000002
+%%  LST SUB: ISDN="595900000000";%%
+RETCODE = 0 SUCCESS0001:Operation is successful
+
+                         HLRSN = 1
+                          IMSI = 744050000000000
+                          ISDN = 595900000000
+              ANCHOR-Indicator = TCSI
+                      CardType = USIM
+                           NAM = BOTH
+                      CATEGORY = COMMON
+"SABLOCK"
+
+"Basic Service"
+                    Telephony (TS11)
+                    Emergency Call (TS12)
+                    Short Message MT_PP (TS21)
+                    Short Message MO_PP (TS22)
+                    General-DataCDS  (BS30)
+                   DefaultCall = Telephony (TS11)
+
+"ODB Data"
+                         ODBOC = BOIC
+                       ODBROAM = BROHPLMNC
+
+"SS Data"
+                           CFU = PROV
+                           CFB = PROV
+                         CFNRY = PROV
+                         CFNRC = PROV
+                           CFD = PROV
+                          BAOC = PROV
+                          BOIC = PROV
+                      BOICEXHC = PROV
+                          BAIC = PROV
+                       BICROAM = PROV
+                          CLIP = PROV
+                            CW = PROV
+                          HOLD = PROV
+                          MPTY = PROV
+                    CCBSTARGET = PROV
+"O-CSI"
+                         TPLID = 1
+                         STATE = TRUE
+"T-CSI"
+                         TPLID = 15
+                         STATE = TRUE
+"IM-VT-CSI"
+                         TPLID = 1
+"GPRS Data"
+                        CNTXID = 1
+                      APNTPLID = 1
+                        CNTXID = 2
+                      APNTPLID = 0
+"EPS Data"
+                        CNTXID = 1
+                      APNTPLID = 1
+
+                        CNTXID = 2
+                      APNTPLID = 0
+
+                        CNTXID = 3
+                      APNTPLID = 33
+
+                        CNTXID = 4
+                      APNTPLID = 98
+
+                          SMDP = MSC
+                      RROption = ALL_PLMNS
+
+"SMS INAP Service"
+                          SKEY = 0
+
+
+Total count = 50
+
+There is together 1 report
+
+---    END
